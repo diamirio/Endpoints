@@ -83,6 +83,20 @@ extension Data: ResponseType {
     }
 }
 
+extension String: ResponseType {
+    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> String? {
+        guard let data = responseData else {
+            return nil
+        }
+        
+        if let string = String(data: data, encoding: encoding) {
+            return string
+        } else {
+            throw APIError.parsingError(description: "String could not be parsed with encoding: \(encoding)")
+        }
+    }
+}
+
 public struct Result<Value: ResponseType> {
     fileprivate(set) var value: Value?
     fileprivate(set) var error: Error?
@@ -147,6 +161,15 @@ public class HTTPAPI {
             } else if let response = result.response {
                 if let error = self.validate(response: response) {
                     result.error = error
+                } else {
+                    //TODO: use response encoding, if present
+                    let encoding: String.Encoding = .utf8
+                    
+                    do {
+                        result.value = try P.parse(responseData: data, encoding: encoding)
+                    } catch {
+                        result.error = error
+                    }
                 }
             }
             

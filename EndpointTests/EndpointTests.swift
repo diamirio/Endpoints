@@ -73,7 +73,7 @@ class EndpointTests: XCTestCase {
             XCTAssertFalse(result.isSuccess)
             
             XCTAssertNotNil(result.response)
-            XCTAssertNotNil(result.response?.statusCode)
+            XCTAssertEqual(result.response?.statusCode, 400)
             
             if let error = result.error as? APIError {
                 switch error {
@@ -84,6 +84,58 @@ class EndpointTests: XCTestCase {
                 }
             } else {
                 XCTFail("wrong error: \(result.error)")
+            }
+            
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testGetData() {
+        let endpoint = Endpoint<RequestData, Data>(method: .get, path: "get")
+        let data = RequestData(dynamicPath: nil,
+                               queryParameters: nil,
+                               headers: nil,
+                               body: nil)
+        
+        let exp = expectation(description: "")
+
+        api.call(endpoint: endpoint, with: data) { result in
+            XCTAssertNotNil(result.value)
+            XCTAssertNil(result.error)
+            XCTAssertFalse(result.isError)
+            XCTAssertTrue(result.isSuccess)
+            
+            XCTAssertNotNil(result.response)
+            XCTAssertEqual(result.response?.statusCode, 200)
+            
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testGetString() {
+        let endpoint = Endpoint<RequestData, String>(method: .get, path: "get")
+        let data = RequestData(dynamicPath: nil,
+                               queryParameters: [ "inputParam" : "inputParamValue" ],
+                               headers: nil,
+                               body: nil)
+        
+        let exp = expectation(description: "")
+        
+        api.call(endpoint: endpoint, with: data) { result in
+            XCTAssertNotNil(result.value)
+            XCTAssertNil(result.error)
+            XCTAssertFalse(result.isError)
+            XCTAssertTrue(result.isSuccess)
+            
+            XCTAssertNotNil(result.response)
+            XCTAssertEqual(result.response?.statusCode, 200)
+            
+            if let string = result.value {
+                XCTAssertTrue(string.contains("inputParamValue"))
             }
             
             exp.fulfill()
