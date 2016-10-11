@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>EndpointExample.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,16 @@
 			<true/>
 		</dict>
 		<key>787AECC41DABDEC8001A49BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>787AECDB1DABE56A001A49BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>787AECEE1DABE56A001A49BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
