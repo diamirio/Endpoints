@@ -9,7 +9,7 @@
 import Foundation
 import Endpoint
 
-struct OutputValue: ResponseType {
+struct OutputValue: ParsableResponse {
     let value: String
     
     static func parse(responseData: Data?, encoding: String.Encoding) throws -> OutputValue? {
@@ -21,31 +21,41 @@ struct OutputValue: ResponseType {
     }
 }
 
-struct InputValue: RequestEncoder {
+struct CustomInputValue: RequestEncoder {
     let value: String
     
     func encode(request: URLRequest) -> URLRequest {
-        return RequestData(query: ["value": value]).encode(request: request)
+        return DynamicRequestData(query: ["value": value]).encode(request: request)
+    }
+}
+
+struct InputValue: RequestData {
+    let value: String
+    
+    var query: Parameters? {
+        return [ "value": value ]
     }
 }
 
 class BinAPI: HTTPAPI {
     static let GetOutputValue = Endpoint<InputValue, OutputValue>(.get, "get")
+    static let DynamicEndpoint = Endpoint<DynamicRequestData, OutputValue>(.get, "get")
+    static let CustomRequestEndpoint = Endpoint<CustomInputValue, OutputValue>(.get, "get")
     
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
     
     func getOutput(for value: String, completion: @escaping (Result<OutputValue>)->()) {
-        let endpoint = Endpoint<RequestData, OutputValue>(.get, "get")
-        let data = RequestData(query: ["value": value])
+        let endpoint = Endpoint<DynamicRequestData, OutputValue>(.get, "get")
+        let data = DynamicRequestData(query: ["value": value])
         
         self.call(endpoint: endpoint, with: data, completion: completion)
     }
     
     func outputRequest(with value: String) -> URLRequest {
-        let endpoint = Endpoint<RequestData, OutputValue>(.get, "get")
-        let data = RequestData(query: ["value": value])
+        let endpoint = Endpoint<DynamicRequestData, OutputValue>(.get, "get")
+        let data = DynamicRequestData(query: ["value": value])
         
         return self.request(for: endpoint, with: data)
     }

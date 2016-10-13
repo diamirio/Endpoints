@@ -23,8 +23,14 @@ class EndpointExampleTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testGetStringValueGeneric() {
+    func testGenericGetValue() {
         test(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
+            self.checkOutput(result: result)
+        }
+    }
+    
+    func testDynamicEndpoint() {
+        test(endpoint: BinAPI.DynamicEndpoint, with: DynamicRequestData(query: ["value": input])) { result in
             self.checkOutput(result: result)
         }
     }
@@ -69,7 +75,7 @@ class EndpointExampleTests: XCTestCase {
 }
 
 extension EndpointExampleTests {
-    func test<E: RequestEncoder, P: ResponseType>(endpoint: Endpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
+    func test<E: RequestEncoder, P: ParsableResponse>(endpoint: Endpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
         let exp = expectation(description: "")
         BinAPI().call(endpoint: endpoint, with: data) { result in
             XCTAssertNil(result.error)

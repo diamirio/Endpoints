@@ -16,6 +16,8 @@
 		78685CC21DAFBDF500B72F18 /* EndpointMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */; };
 		78685CC31DAFBDF500B72F18 /* EndpointMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78685CCA1DAFBE0600B72F18 /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
+		78685CCE1DAFD04E00B72F18 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CCD1DAFD04E00B72F18 /* Request.swift */; };
+		78685CD01DAFD0BE00B72F18 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CCF1DAFD0BE00B72F18 /* Response.swift */; };
 		787AECC61DABDEC8001A49BB /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		787AECCB1DABDEC8001A49BB /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECCA1DABDEC8001A49BB /* EndpointTests.swift */; };
 		787AECCD1DABDEC8001A49BB /* Endpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 787AECBF1DABDEC7001A49BB /* Endpoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -103,6 +105,8 @@
 		78685CB51DAFBDF500B72F18 /* EndpointMapperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointMapperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CBC1DAFBDF500B72F18 /* EndpointMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMapperTests.swift; sourceTree = "<group>"; };
 		78685CBE1DAFBDF500B72F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78685CCD1DAFD04E00B72F18 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		78685CCF1DAFD0BE00B72F18 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		787AECBC1DABDEC7001A49BB /* Endpoint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECBF1DABDEC7001A49BB /* Endpoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Endpoint.h; sourceTree = "<group>"; };
 		787AECC01DABDEC7001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 			isa = PBXGroup;
 			children = (
 				787AECD61DABE037001A49BB /* HTTPAPI.swift */,
+				78685CCD1DAFD04E00B72F18 /* Request.swift */,
+				78685CCF1DAFD0BE00B72F18 /* Response.swift */,
 				787AECBF1DABDEC7001A49BB /* Endpoint.h */,
 				787AECC01DABDEC7001A49BB /* Info.plist */,
 				787AECFC1DABE738001A49BB /* DataParsable.swift */,
@@ -542,6 +548,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				787AECD71DABE037001A49BB /* HTTPAPI.swift in Sources */,
+				78685CD01DAFD0BE00B72F18 /* Response.swift in Sources */,
+				78685CCE1DAFD04E00B72F18 /* Request.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
