@@ -19,15 +19,22 @@ public protocol RequestEncoder {
 }
 
 public struct RequestData: RequestEncoder {
-    public var dynamicPath: String?
+    public typealias Parameters = [String: String]
     
-    public var queryParameters: [String: String]?
-    public var headers: [String: String]?
-    
+    public var path: String?
+    public var query: Parameters?
+    public var header: Parameters?
     public var body: Data?
     
+    public init(path: String?=nil, query: Parameters?=nil, headers: Parameters?=nil, body: Data?=nil) {
+        self.path = path
+        self.query = query
+        self.header = headers
+        self.body = body
+    }
+    
     private func createQueryItems() -> [URLQueryItem]? {
-        guard let params = queryParameters else {
+        guard let params = query else {
             return nil
         }
         
@@ -48,7 +55,7 @@ public struct RequestData: RequestEncoder {
         
         var encoded = request
         
-        if let dynamicPath = dynamicPath {
+        if let dynamicPath = path {
             url = url.appendingPathComponent(dynamicPath)
         }
         
@@ -67,7 +74,7 @@ public struct RequestData: RequestEncoder {
         
         encoded.url = url
         encoded.httpBody = body
-        encoded.allHTTPHeaderFields = headers
+        encoded.allHTTPHeaderFields = header
         
         return encoded
     }
@@ -124,10 +131,10 @@ extension Array: ResponseType {
 }
 
 public struct Result<Value: ResponseType> {
-    fileprivate(set) var value: Value?
-    fileprivate(set) var error: Error?
+    public fileprivate(set) var value: Value?
+    public fileprivate(set) var error: Error?
     
-    fileprivate(set) var response: HTTPURLResponse?
+    public fileprivate(set) var response: HTTPURLResponse?
     
     public var isSuccess: Bool {
         return !isError
@@ -150,17 +157,22 @@ public enum EndpointMethod: String {
 public struct Endpoint<E: RequestEncoder, P: ResponseType> {
     public var method: EndpointMethod
     public var path: String?
+    
+    public init(_ method: EndpointMethod, _ path: String?) {
+        self.method = method
+        self.path = path
+    }
 }
 
-public class HTTPAPI {
+open class HTTPAPI {
     public let baseURL: URL
     let session = URLSession.shared
     
-    init(baseURL: URL) {
+    public init(baseURL: URL) {
         self.baseURL = baseURL
     }
     
-    func request<E: RequestEncoder, P: ResponseType>(for endpoint: Endpoint<E, P>, with data: E?=nil) -> URLRequest {
+    public func request<E: RequestEncoder, P: ResponseType>(for endpoint: Endpoint<E, P>, with data: E?=nil) -> URLRequest {
         var url = baseURL
         
         if let path = endpoint.path {
@@ -180,7 +192,7 @@ public class HTTPAPI {
         return request
     }
     
-    @discardableResult func start<P: ResponseType>(request: URLRequest, responseType: P.Type, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
+    @discardableResult public func start<P: ResponseType>(request: URLRequest, responseType: P.Type, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
         let task = session.dataTask(with: request) { data, response, error in
             var result = Result<P>(response: response as? HTTPURLResponse)
             
@@ -208,11 +220,11 @@ public class HTTPAPI {
         return task
     }
     
-    @discardableResult func start<E: RequestEncoder, P: ResponseType>(request: URLRequest, for endpoint: Endpoint<E, P>, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
+    @discardableResult public func start<E: RequestEncoder, P: ResponseType>(request: URLRequest, for endpoint: Endpoint<E, P>, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
         return start(request: request, responseType: P.self, completion: completion)
     }
     
-    @discardableResult func call<E: RequestEncoder, P: ResponseType>(endpoint: Endpoint<E, P>, with data: E?=nil, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
+    @discardableResult public func call<E: RequestEncoder, P: ResponseType>(endpoint: Endpoint<E, P>, with data: E?=nil, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
         let request = self.request(for: endpoint, with: data)
         
         return start(request: request, for: endpoint, completion: completion)
@@ -220,7 +232,7 @@ public class HTTPAPI {
     
     private let acceptableStatusCodes = 200..<300
     
-    func validate(response: HTTPURLResponse) -> Error? {
+    open func validate(response: HTTPURLResponse) -> Error? {
         let code = response.statusCode
         if !acceptableStatusCodes.contains(code) {
             return APIError.unacceptableStatus(code: code)

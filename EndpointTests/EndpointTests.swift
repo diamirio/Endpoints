@@ -29,11 +29,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testTimeoutError() {
-        let endpoint = Endpoint<RequestData, Data>(method: .get, path: "delay")
-        let data = RequestData(dynamicPath: "1",
-                                       queryParameters: nil,
-                                       headers: nil,
-                                       body: nil)
+        let endpoint = Endpoint<RequestData, Data>(.get, "delay")
+        let data = RequestData(path: "1")
         
         let exp = expectation(description: "")
         var req = api.request(for: endpoint, with: data)
@@ -58,11 +55,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testStatusError() {
-        let endpoint = Endpoint<RequestData, Data>(method: .get, path: "status")
-        let data = RequestData(dynamicPath: "400",
-                               queryParameters: nil,
-                               headers: nil,
-                               body: nil)
+        let endpoint = Endpoint<RequestData, Data>(.get, "status")
+        let data = RequestData(path: "400")
         
         let exp = expectation(description: "")
         
@@ -93,11 +87,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetData() {
-        let endpoint = Endpoint<RequestData, Data>(method: .get, path: "get")
-        let data = RequestData(dynamicPath: nil,
-                               queryParameters: nil,
-                               headers: nil,
-                               body: nil)
+        let endpoint = Endpoint<RequestData, Data>(.get, "get")
+        let data = RequestData()
         
         let exp = expectation(description: "")
 
@@ -117,11 +108,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetString() {
-        let endpoint = Endpoint<RequestData, String>(method: .get, path: "get")
-        let data = RequestData(dynamicPath: nil,
-                               queryParameters: [ "inputParam" : "inputParamValue" ],
-                               headers: nil,
-                               body: nil)
+        let endpoint = Endpoint<RequestData, String>(.get, "get")
+        let data = RequestData(query: [ "inputParam" : "inputParamValue" ])
         
         let exp = expectation(description: "")
         
@@ -145,11 +133,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetJSONDictionary() {
-        let endpoint = Endpoint<RequestData, [String: Any]>(method: .get, path: "get")
-        let data = RequestData(dynamicPath: nil,
-                               queryParameters: [ "inputParam" : "inputParamValue" ],
-                               headers: nil,
-                               body: nil)
+        let endpoint = Endpoint<RequestData, [String: Any]>(.get, "get")
+        let data = RequestData(query: [ "inputParam" : "inputParamValue" ])
         
         let exp = expectation(description: "")
         
@@ -189,11 +174,8 @@ class EndpointTests: XCTestCase {
     func testPostJSONArray() {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
-        let endpoint = Endpoint<RequestData, [String]>(method: .post, path: "post")
-        let data = RequestData(dynamicPath: nil,
-                               queryParameters: nil,
-                               headers: nil,
-                               body: arrayData)
+        let endpoint = Endpoint<RequestData, [String]>(.post, "post")
+        let data = RequestData(body: arrayData)
         
         let exp = expectation(description: "")
         
@@ -217,11 +199,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testFailJSONParsing() {
-        let endpoint = Endpoint<RequestData, [String: Any]>(method: .get, path: "xml")
-        let data = RequestData(dynamicPath: nil,
-                               queryParameters: nil,
-                               headers: nil,
-                               body: nil)
+        let endpoint = Endpoint<RequestData, [String: Any]>(.get, "xml")
+        let data = RequestData()
         
         let exp = expectation(description: "")
         api.call(endpoint: endpoint, with: data) { result in
@@ -250,11 +229,8 @@ class EndpointTests: XCTestCase {
 extension EndpointTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil, dynamicPath: String?=nil ) -> URLRequest {
         let api = HTTPAPI(baseURL: URL(string: baseUrl)!)
-        let endpoint = Endpoint<RequestData, Data>(method: .get, path: path)
-        let requestData = RequestData(dynamicPath: dynamicPath,
-                                       queryParameters: queryParams,
-                                       headers: nil,
-                                       body: nil)
+        let endpoint = Endpoint<RequestData, Data>(.get, path)
+        let requestData = RequestData(path: dynamicPath, query: queryParams)
         
         let request = api.request(for: endpoint, with: requestData)
         

@@ -10,27 +10,21 @@ import XCTest
 @testable import EndpointExample
 
 class EndpointExampleTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+
+    func testGetOutput() {
+        let input = "inout"
+        let exp = expectation(description: "")
+        BinAPI().call(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
+            XCTAssertNil(result.error)
+            XCTAssertNotNil(result.value)
+            
+            if let output = result.value {
+                XCTAssertEqual(output.value, input)
+            }
+            exp.fulfill()
         }
+        
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		786736791DAFA34D0082828B /* BinAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786736781DAFA34D0082828B /* BinAPI.swift */; };
+		7867367C1DAFAD370082828B /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
+		7867367D1DAFAD370082828B /* Endpoint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		787AECC61DABDEC8001A49BB /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		787AECCB1DABDEC8001A49BB /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECCA1DABDEC8001A49BB /* EndpointTests.swift */; };
 		787AECCD1DABDEC8001A49BB /* Endpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 787AECBF1DABDEC7001A49BB /* Endpoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -20,6 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
+			remoteInfo = Endpoint;
+		};
 		787AECC71DABDEC8001A49BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
@@ -36,7 +46,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		7867367E1DAFAD380082828B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7867367D1DAFAD370082828B /* Endpoint.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		786736781DAFA34D0082828B /* BinAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinAPI.swift; sourceTree = "<group>"; };
 		787AECBC1DABDEC7001A49BB /* Endpoint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECBF1DABDEC7001A49BB /* Endpoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Endpoint.h; sourceTree = "<group>"; };
 		787AECC01DABDEC7001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7867367C1DAFAD370082828B /* Endpoint.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +171,7 @@
 		787AECDD1DABE56A001A49BB /* EndpointExample */ = {
 			isa = PBXGroup;
 			children = (
+				786736781DAFA34D0082828B /* BinAPI.swift */,
 				787AECDE1DABE56A001A49BB /* AppDelegate.swift */,
 				787AECE01DABE56A001A49BB /* ViewController.swift */,
 				787AECE21DABE56A001A49BB /* Main.storyboard */,
@@ -221,10 +248,12 @@
 				787AECD81DABE56A001A49BB /* Sources */,
 				787AECD91DABE56A001A49BB /* Frameworks */,
 				787AECDA1DABE56A001A49BB /* Resources */,
+				7867367E1DAFAD380082828B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7867367B1DAFA6CE0082828B /* PBXTargetDependency */,
 			);
 			name = EndpointExample;
 			productName = EndpointExample;
@@ -359,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				786736791DAFA34D0082828B /* BinAPI.swift in Sources */,
 				787AECE11DABE56A001A49BB /* ViewController.swift in Sources */,
 				787AECDF1DABE56A001A49BB /* AppDelegate.swift in Sources */,
 			);
@@ -375,6 +405,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		7867367B1DAFA6CE0082828B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoint */;
+			targetProxy = 7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */;
+		};
 		787AECC81DABDEC8001A49BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 787AECBB1DABDEC7001A49BB /* Endpoint */;
@@ -576,6 +611,7 @@
 		787AECF71DABE56A001A49BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointExample/Info.plist;
@@ -589,6 +625,7 @@
 		787AECF81DABE56A001A49BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointExample/Info.plist;
@@ -648,6 +685,7 @@
 				787AECD21DABDEC8001A49BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		787AECD31DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "EndpointTests" */ = {
 			isa = XCConfigurationList;
@@ -656,6 +694,7 @@
 				787AECD51DABDEC8001A49BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		787AECF61DABE56A001A49BB /* Build configuration list for PBXNativeTarget "EndpointExample" */ = {
 			isa = XCConfigurationList;
@@ -664,6 +703,7 @@
 				787AECF81DABE56A001A49BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		787AECF91DABE56A001A49BB /* Build configuration list for PBXNativeTarget "EndpointExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -672,6 +712,7 @@
 				787AECFB1DABE56A001A49BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
