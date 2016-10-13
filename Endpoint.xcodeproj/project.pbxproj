@@ -21,7 +21,7 @@
 		787AECC61DABDEC8001A49BB /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		787AECCB1DABDEC8001A49BB /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECCA1DABDEC8001A49BB /* EndpointTests.swift */; };
 		787AECCD1DABDEC8001A49BB /* Endpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 787AECBF1DABDEC7001A49BB /* Endpoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		787AECD71DABE037001A49BB /* HTTPAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECD61DABE037001A49BB /* HTTPAPI.swift */; };
+		787AECD71DABE037001A49BB /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECD61DABE037001A49BB /* API.swift */; };
 		787AECDF1DABE56A001A49BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECDE1DABE56A001A49BB /* AppDelegate.swift */; };
 		787AECE11DABE56A001A49BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECE01DABE56A001A49BB /* ViewController.swift */; };
 		787AECE41DABE56A001A49BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787AECE21DABE56A001A49BB /* Main.storyboard */; };
@@ -113,7 +113,7 @@
 		787AECC51DABDEC8001A49BB /* EndpointTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECCA1DABDEC8001A49BB /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
 		787AECCC1DABDEC8001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		787AECD61DABE037001A49BB /* HTTPAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPAPI.swift; sourceTree = "<group>"; };
+		787AECD61DABE037001A49BB /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		787AECDC1DABE56A001A49BB /* EndpointExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EndpointExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECDE1DABE56A001A49BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		787AECE01DABE56A001A49BB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 		787AECBE1DABDEC7001A49BB /* Endpoint */ = {
 			isa = PBXGroup;
 			children = (
-				787AECD61DABE037001A49BB /* HTTPAPI.swift */,
+				787AECD61DABE037001A49BB /* API.swift */,
 				78685CCD1DAFD04E00B72F18 /* Request.swift */,
 				78685CCF1DAFD0BE00B72F18 /* Response.swift */,
 				787AECBF1DABDEC7001A49BB /* Endpoint.h */,
@@ -547,7 +547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				787AECD71DABE037001A49BB /* HTTPAPI.swift in Sources */,
+				787AECD71DABE037001A49BB /* API.swift in Sources */,
 				78685CD01DAFD0BE00B72F18 /* Response.swift in Sources */,
 				78685CCE1DAFD04E00B72F18 /* Request.swift in Sources */,
 			);

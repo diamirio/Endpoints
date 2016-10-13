@@ -10,7 +10,7 @@ import XCTest
 @testable import Endpoint
 
 class EndpointTests: XCTestCase {
-    let api = HTTPAPI(baseURL: URL(string: "http://httpbin.org")!)
+    let api = API(baseURL: URL(string: "http://httpbin.org")!)
     
     func testRequestEncoding() {
         let base = "http://httpbin.org"
@@ -29,8 +29,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testTimeoutError() {
-        let endpoint = Endpoint<DynamicRequestData, Data>(.get, "delay")
-        let data = DynamicRequestData(path: "1")
+        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "delay")
+        let data = DynamicRequestData(dynamicPath: "1")
         
         let exp = expectation(description: "")
         var req = api.request(for: endpoint, with: data)
@@ -55,8 +55,8 @@ class EndpointTests: XCTestCase {
     }
     
     func testStatusError() {
-        let endpoint = Endpoint<DynamicRequestData, Data>(.get, "status")
-        let data = DynamicRequestData(path: "400")
+        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "status")
+        let data = DynamicRequestData(dynamicPath: "400")
         
         let exp = expectation(description: "")
         
@@ -87,7 +87,7 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetData() {
-        let endpoint = Endpoint<DynamicRequestData, Data>(.get, "get")
+        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "get")
         let data = DynamicRequestData()
         
         let exp = expectation(description: "")
@@ -108,7 +108,7 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetString() {
-        let endpoint = Endpoint<DynamicRequestData, String>(.get, "get")
+        let endpoint = DynamicEndpoint<DynamicRequestData, String>(.get, "get")
         let data = DynamicRequestData(query: [ "inputParam" : "inputParamValue" ])
         
         let exp = expectation(description: "")
@@ -133,7 +133,7 @@ class EndpointTests: XCTestCase {
     }
     
     func testGetJSONDictionary() {
-        let endpoint = Endpoint<DynamicRequestData, [String: Any]>(.get, "get")
+        let endpoint = DynamicEndpoint<DynamicRequestData, [String: Any]>(.get, "get")
         let data = DynamicRequestData(query: [ "inputParam" : "inputParamValue" ])
         
         let exp = expectation(description: "")
@@ -174,7 +174,7 @@ class EndpointTests: XCTestCase {
     func testPostJSONArray() {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
-        let endpoint = Endpoint<DynamicRequestData, [String]>(.post, "post")
+        let endpoint = DynamicEndpoint<DynamicRequestData, [String]>(.post, "post")
         let data = DynamicRequestData(body: arrayData)
         
         let exp = expectation(description: "")
@@ -199,7 +199,7 @@ class EndpointTests: XCTestCase {
     }
     
     func testFailJSONParsing() {
-        let endpoint = Endpoint<DynamicRequestData, [String: Any]>(.get, "xml")
+        let endpoint = DynamicEndpoint<DynamicRequestData, [String: Any]>(.get, "xml")
         let data = DynamicRequestData()
         
         let exp = expectation(description: "")
@@ -224,13 +224,66 @@ class EndpointTests: XCTestCase {
         
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    struct GetOutput: EndpointRequest {
+        typealias Request = GetOutput
+        typealias Response = [String: Any]
+        
+        let value: String
+        
+        var path: String? { return "get" }
+        var method: EndpointMethod { return .get }
+        
+        var query: Parameters? {
+            return [ "param" : value ]
+        }
+    }
+    
+    func testTypedEndpointRequest() {
+        let value = "value"
+        
+        test(endpoint: GetOutput(value: value)) { result in
+            if let jsonDict = result.value {
+                let args = jsonDict["args"]
+                XCTAssertNotNil(args)
+                
+                if let args = args {
+                    XCTAssertTrue(args is Dictionary<String, String>)
+                    
+                    if let args = args as? Dictionary<String, String> {
+                        let param = args["param"]
+                        XCTAssertNotNil(param)
+                        
+                        if let param = param {
+                            XCTAssertEqual(param, value)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension EndpointTests {
+    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P  {
+        let exp = expectation(description: "")
+        api.call(endpoint: endpoint, with: data, debug: true) { result in
+            XCTAssertNil(result.error)
+            XCTAssertNotNil(result.value)
+            XCTAssertTrue(result.isSuccess)
+            XCTAssertFalse(result.isError)
+            
+            validateResult?(result)
+            
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil, dynamicPath: String?=nil ) -> URLRequest {
-        let api = HTTPAPI(baseURL: URL(string: baseUrl)!)
-        let endpoint = Endpoint<DynamicRequestData, Data>(.get, path)
-        let requestData = DynamicRequestData(path: dynamicPath, query: queryParams)
+        let api = API(baseURL: URL(string: baseUrl)!)
+        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, path)
+        let requestData = DynamicRequestData(dynamicPath: dynamicPath, query: queryParams)
         
         let request = api.request(for: endpoint, with: requestData)
         

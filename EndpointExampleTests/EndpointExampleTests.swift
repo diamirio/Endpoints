@@ -30,7 +30,7 @@ class EndpointExampleTests: XCTestCase {
     }
     
     func testDynamicEndpoint() {
-        test(endpoint: BinAPI.DynamicEndpoint, with: DynamicRequestData(query: ["value": input])) { result in
+        test(endpoint: BinAPI.DynamicRequest, with: DynamicRequestData(query: ["value": input])) { result in
             self.checkOutput(result: result)
         }
     }
@@ -75,7 +75,7 @@ class EndpointExampleTests: XCTestCase {
 }
 
 extension EndpointExampleTests {
-    func test<E: RequestEncoder, P: ParsableResponse>(endpoint: Endpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
+    func test<E: RequestEncoder, P: ParsableResponse>(endpoint: DynamicEndpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
         let exp = expectation(description: "")
         BinAPI().call(endpoint: endpoint, with: data) { result in
             XCTAssertNil(result.error)

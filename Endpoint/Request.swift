@@ -15,33 +15,33 @@ public protocol RequestEncoder {
 }
 
 public protocol RequestData: RequestEncoder {
-    var path: String? { get }
+    var dynamicPath: String? { get }
     var query: Parameters? { get }
     var header: Parameters? { get }
     var body: Data? { get }
 }
 
 public extension RequestData {
-    var path: String? { return nil }
+    var dynamicPath: String? { return nil }
     var query: Parameters? { return nil }
     var header: Parameters? { return nil }
     var body: Data? { return nil }
     
     public func encode(request: URLRequest) -> URLRequest {
-        let data = DynamicRequestData(path: path, query: query, header: header, body: body)
+        let data = DynamicRequestData(dynamicPath: dynamicPath, query: query, header: header, body: body)
         
         return data.encode(request: request)
     }
 }
 
 public struct DynamicRequestData: RequestEncoder {
-    public var path: String?
+    public var dynamicPath: String?
     public var query: Parameters?
     public var header: Parameters?
     public var body: Data?
     
-    public init(path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil) {
-        self.path = path
+    public init(dynamicPath: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil) {
+        self.dynamicPath = dynamicPath
         self.query = query
         self.header = header
         self.body = body
@@ -69,7 +69,7 @@ public struct DynamicRequestData: RequestEncoder {
         
         var encoded = request
         
-        if let dynamicPath = path {
+        if let dynamicPath = dynamicPath {
             url = url.appendingPathComponent(dynamicPath)
         }
         
