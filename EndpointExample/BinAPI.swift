@@ -35,4 +35,18 @@ class BinAPI: HTTPAPI {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
+    
+    func getOutput(for value: String, completion: @escaping (Result<OutputValue>)->()) {
+        let endpoint = Endpoint<RequestData, OutputValue>(.get, "get")
+        let data = RequestData(query: ["value": value])
+        
+        self.call(endpoint: endpoint, with: data, completion: completion)
+    }
+    
+    func outputRequest(with value: String) -> URLRequest {
+        let endpoint = Endpoint<RequestData, OutputValue>(.get, "get")
+        let data = RequestData(query: ["value": value])
+        
+        return self.request(for: endpoint, with: data)
+    }
 }

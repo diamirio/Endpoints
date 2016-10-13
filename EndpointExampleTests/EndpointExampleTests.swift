@@ -7,24 +7,70 @@
 //
 
 import XCTest
+import Endpoint
 @testable import EndpointExample
 
 class EndpointExampleTests: XCTestCase {
-
+    let input = "inout"
+    
     func testGetOutput() {
-        let input = "inout"
         let exp = expectation(description: "")
         BinAPI().call(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-            
-            if let output = result.value {
-                XCTAssertEqual(output.value, input)
-            }
+            self.checkOutput(result: result)
             exp.fulfill()
         }
         
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testGetOutputFunctional() {
+        let exp = expectation(description: "")
+        BinAPI().getOutput(for: input) { result in
+            self.checkOutput(result: result)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testGetOutputBuilder() {
+        let exp = expectation(description: "")
+        let api = BinAPI()
+        api.start(request: api.outputRequest(with: input), for: BinAPI.GetOutputValue) { result in
+            self.checkOutput(result: result)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testGetOutputManual() {
+        let exp = expectation(description: "")
+        URLSession.shared.dataTask(with: BinAPI().outputRequest(with: input)) { data, response, error in
+            do {
+                let value = try OutputValue.parse(responseData: data, encoding: .utf8)
+                
+                XCTAssertNotNil(value)
+            } catch {
+                XCTFail("error: \(error)")
+            }
+            
+            exp.fulfill()
+        }.resume()
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+}
+
+extension EndpointExampleTests {
+    func checkOutput(result: Result<OutputValue>) {
+        XCTAssertNil(result.error)
+        XCTAssertNotNil(result.value)
+        XCTAssertTrue(result.isSuccess)
+        XCTAssertFalse(result.isError)
+        
+        if let output = result.value {
+            XCTAssertEqual(output.value, input)
+        }
+    }
 }
