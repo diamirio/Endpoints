@@ -9,7 +9,7 @@
 import Foundation
 
 public enum APIError: Error {
-    case unacceptableStatus(code: Int)
+    case unacceptableStatus(code: Int, description: String)
     case parsingError(description: String)
     case serverError(description: String)
 }
@@ -42,17 +42,8 @@ open class API {
         return request
     }
     
-    open func validate(response: HTTPURLResponse) -> Error? {
-        let code = response.statusCode
-        if !(200..<300).contains(code) {
-            return APIError.unacceptableStatus(code: code)
-        }
-        
-        return nil
-    }
-    
-    public func complete<P: ParsableResponse>(response: URLResponse?, for request: URLRequest, with data: Data?, error: Error?, debug: Bool, completion: (Result<P>)->()) {
-        var result = Result<P>(response: response as? HTTPURLResponse)
+    public func transform<P: ResponseParser>(response: URLResponse?, for request: URLRequest, with data: Data?, error: Error?, debug: Bool, parser: P.Type) -> Result<P.OutputType> {
+        var result = Result<P.OutputType>(response: response as? HTTPURLResponse)
         
         if debug || debugAll {
             if let data = data, let string = String(data: data, encoding: .utf8) {
@@ -72,32 +63,51 @@ open class API {
                 let encoding: String.Encoding = .utf8
                 
                 do {
-                    result.value = try P.parse(responseData: data, encoding: encoding)
+                    result.value = try parser.parse(responseData: data, encoding: encoding)
                 } catch {
                     result.error = error
                 }
             }
         }
         
-        completion(result)
+        return result
+    }
+    
+    open func validate(response: HTTPURLResponse) -> Error? {
+        let code = response.statusCode
+        
+        if !(200..<300).contains(code) {
+            var message = response.allHeaderFields["X-Error-Message"] as? String
+            message = message?.removingPercentEncoding
+            
+            if message == nil {
+                message = HTTPURLResponse.localizedString(forStatusCode: code)
+            }
+            
+            return APIError.unacceptableStatus(code: code, description: message!)
+        }
+
+        return nil
     }
     
     @discardableResult
-    public func call<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.RequestType == R, E.ResponseType == P {
+    public func call<E: Endpoint, P: ResponseParser>(endpoint: E, with data: E.RequestType?=nil, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask where E.ResponseType == P {
         let request = self.request(for: endpoint, with: data)
         
         return start(request: request, for: endpoint, session: session, debug: debug, completion: completion)
     }
     
     @discardableResult
-    public func start<E: Endpoint, P: ParsableResponse>(request: URLRequest, for endpoint: E, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.ResponseType == P {
+    public func start<E: Endpoint, P: ResponseParser>(request: URLRequest, for endpoint: E, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask where E.ResponseType == P {
         return start(request: request, responseType: P.self, session: session, debug: debug, completion: completion)
     }
     
     @discardableResult
-    public func start<P: ParsableResponse>(request: URLRequest, responseType: P.Type, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
+    public func start<P: ResponseParser>(request: URLRequest, responseType: P.Type, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask {
         let task = session.dataTask(with: request) { data, response, error in
-            self.complete(response: response, for: request, with: data, error: error, debug: debug, completion: completion)
+            let result = self.transform(response: response, for: request, with: data, error: error, debug: debug, parser: responseType)
+            
+            completion(result)
         }
         task.resume()
         

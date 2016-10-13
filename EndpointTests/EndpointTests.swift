@@ -10,7 +10,12 @@ import XCTest
 @testable import Endpoint
 
 class EndpointTests: XCTestCase {
-    let api = API(baseURL: URL(string: "http://httpbin.org")!)
+    let api: API = {
+        let api = API(baseURL: URL(string: "http://httpbin.org")!)
+        api.debugAll = true
+        
+        return api
+    }()
     
     func testRequestEncoding() {
         let base = "http://httpbin.org"
@@ -265,7 +270,7 @@ class EndpointTests: XCTestCase {
 }
 
 extension EndpointTests {
-    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.RequestType == R, E.ResponseType == P {
+    func test<E: Endpoint, P: ResponseParser>(endpoint: E, with data: E.RequestType?=nil, validateResult: ((Result<P.OutputType>)->())?=nil) where E.ResponseType == P {
         let exp = expectation(description: "")
         api.call(endpoint: endpoint, with: data, debug: true) { result in
             XCTAssertNil(result.error)

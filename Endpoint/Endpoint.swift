@@ -10,7 +10,7 @@ import Foundation
 
 public protocol Endpoint {
     associatedtype RequestType: RequestEncoder
-    associatedtype ResponseType: ParsableResponse
+    associatedtype ResponseType: ResponseParser
     
     var method: HTTPMethod { get }
     var path: String? { get }
@@ -18,7 +18,7 @@ public protocol Endpoint {
 
 public protocol EndpointRequest: Endpoint, RequestData {}
 
-public struct DynamicEndpoint<Request: RequestEncoder, Response: ParsableResponse>: Endpoint {
+public struct DynamicEndpoint<Request: RequestEncoder, Response: ResponseParser>: Endpoint {
     public typealias RequestType = Request
     public typealias ResponseType = Response
     

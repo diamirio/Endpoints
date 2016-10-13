@@ -33,7 +33,7 @@ class BinAPI: API {
     }
 }
 
-struct OutputValue: ParsableResponse {
+struct OutputValue: ResponseParser {
     let value: String
     
     static func parse(responseData: Data?, encoding: String.Encoding) throws -> OutputValue? {

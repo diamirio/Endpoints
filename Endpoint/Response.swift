@@ -8,23 +8,25 @@
 
 import Foundation
 
-public protocol ParsableResponse {
-    static func parse(responseData: Data?, encoding: String.Encoding) throws -> Self?
+public protocol ResponseParser {
+    associatedtype OutputType = Self
+    
+    static func parse(responseData: Data?, encoding: String.Encoding) throws -> OutputType?
 }
 
-extension ParsableResponse {
+extension ResponseParser {
     static func parseJSON(responseData: Data?) throws -> Any {
         return try JSONSerialization.jsonObject(with: responseData ?? Data(), options: .allowFragments)
     }
 }
 
-extension Data: ParsableResponse {
+extension Data: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Data? {
         return responseData
     }
 }
 
-extension String: ParsableResponse {
+extension String: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> String? {
         guard let data = responseData else {
             return nil
@@ -38,7 +40,7 @@ extension String: ParsableResponse {
     }
 }
 
-extension Dictionary: ParsableResponse {
+extension Dictionary: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Dictionary? {
         guard let dict = try parseJSON(responseData: responseData) as? Dictionary else {
             throw APIError.parsingError(description: "JSON structure is not an Object")
@@ -48,7 +50,7 @@ extension Dictionary: ParsableResponse {
     }
 }
 
-extension Array: ParsableResponse {
+extension Array: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Array? {
         guard let array = try parseJSON(responseData: responseData) as? Array else {
             throw APIError.parsingError(description: "JSON structure is not an Array")
@@ -58,7 +60,7 @@ extension Array: ParsableResponse {
     }
 }
 
-public struct Result<Value: ParsableResponse> {
+public struct Result<Value: ResponseParser> {
     public internal(set) var value: Value?
     public internal(set) var error: Error?
     
