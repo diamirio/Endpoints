@@ -9,6 +9,26 @@
 import Foundation
 import Endpoint
 
+class BinAPI: API {
+    struct GetOutput: EndpointRequest {
+        typealias RequestType = GetOutput
+        typealias ResponseType = OutputValue
+        
+        let value: String
+        
+        var path: String? { return "get" }
+        var method: HTTPMethod { return .get }
+        
+        var query: Parameters? {
+            return [ "value" : value ]
+        }
+    }
+    
+    init() {
+        super.init(baseURL: URL(string: "https://httpbin.org")!)
+    }
+}
+
 struct OutputValue: ParsableResponse {
     let value: String
     
@@ -21,13 +41,8 @@ struct OutputValue: ParsableResponse {
     }
 }
 
-struct CustomInputValue: RequestEncoder {
-    let value: String
-    
-    func encode(request: URLRequest) -> URLRequest {
-        return DynamicRequestData(query: ["value": value]).encode(request: request)
-    }
-}
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 
 struct InputValue: RequestData {
     let value: String
@@ -37,28 +52,18 @@ struct InputValue: RequestData {
     }
 }
 
-class BinAPI: API {
-    struct GetOutput: EndpointRequest {
-        typealias Request = GetOutput
-        typealias Response = OutputValue
-        
-        let value: String
-        
-        var path: String? { return "get" }
-        var method: HTTPMethod { return .get }
-        
-        var query: Parameters? {
-            return [ "value" : value ]
-        }
-    }
+struct CustomInputValue: RequestEncoder {
+    let value: String
     
+    func encode(request: URLRequest) -> URLRequest {
+        return DynamicRequestData(query: ["value": value]).encode(request: request)
+    }
+}
+
+extension BinAPI {
     static let GetOutputValue = DynamicEndpoint<InputValue, OutputValue>(.get, "get")
     static let DynamicRequest = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")
     static let CustomRequestEndpoint = DynamicEndpoint<CustomInputValue, OutputValue>(.get, "get")
-    
-    init() {
-        super.init(baseURL: URL(string: "https://httpbin.org")!)
-    }
     
     func getOutput(for value: String, completion: @escaping (Result<OutputValue>)->()) {
         let endpoint = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")

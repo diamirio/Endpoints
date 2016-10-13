@@ -81,9 +81,12 @@ class BinAPITests: XCTestCase {
 }
 
 extension BinAPITests {
-    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P {
+    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.RequestType == R, E.ResponseType == P {
         let exp = expectation(description: "")
-        BinAPI().call(endpoint: endpoint, with: data) { result in
+        BinAPI().call(endpoint: endpoint, with: data, debug: true) { result in
+            if let error = result.error {
+                dump(error)
+            }
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
             XCTAssertTrue(result.isSuccess)

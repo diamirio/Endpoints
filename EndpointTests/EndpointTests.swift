@@ -226,13 +226,13 @@ class EndpointTests: XCTestCase {
     }
     
     struct GetOutput: EndpointRequest {
-        typealias Request = GetOutput
-        typealias Response = [String: Any]
+        typealias RequestType = GetOutput
+        typealias ResponseType = [String: Any]
         
         let value: String
         
         var path: String? { return "get" }
-        var method: EndpointMethod { return .get }
+        var method: HTTPMethod { return .get }
         
         var query: Parameters? {
             return [ "param" : value ]
@@ -265,7 +265,7 @@ class EndpointTests: XCTestCase {
 }
 
 extension EndpointTests {
-    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P {
+    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.RequestType == R, E.ResponseType == P {
         let exp = expectation(description: "")
         api.call(endpoint: endpoint, with: data, debug: true) { result in
             XCTAssertNil(result.error)

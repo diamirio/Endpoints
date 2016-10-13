@@ -20,18 +20,18 @@ public enum HTTPMethod: String {
 }
 
 public protocol Endpoint {
-    associatedtype Request: RequestEncoder
-    associatedtype Response: ParsableResponse
+    associatedtype RequestType: RequestEncoder
+    associatedtype ResponseType: ParsableResponse
     
     var method: HTTPMethod { get }
     var path: String? { get }
 }
 
-public protocol EndpointRequest: Endpoint, RequestData { }
+public protocol EndpointRequest: Endpoint, RequestData {}
 
-public struct DynamicEndpoint<Input: RequestEncoder, Output: ParsableResponse>: Endpoint {
-    public typealias Request = Input
-    public typealias Response = Output
+public struct DynamicEndpoint<Request: RequestEncoder, Response: ParsableResponse>: Endpoint {
+    public typealias RequestType = Request
+    public typealias ResponseType = Response
     
     public var method: HTTPMethod
     public var path: String?
@@ -50,7 +50,7 @@ open class API {
         self.baseURL = baseURL
     }
     
-    public func request<E: Endpoint, R: RequestEncoder>(for endpoint: E, with data: R?=nil) -> URLRequest where E.Request == R {
+    public func request<E: Endpoint, R: RequestEncoder>(for endpoint: E, with data: R?=nil) -> URLRequest where E.RequestType == R {
         var url = baseURL
         
         if let path = endpoint.path {
@@ -102,11 +102,11 @@ open class API {
         return task
     }
     
-    @discardableResult public func start<E: Endpoint, P: ParsableResponse>(request: URLRequest, for endpoint: E, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.Response == P {
+    @discardableResult public func start<E: Endpoint, P: ParsableResponse>(request: URLRequest, for endpoint: E, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.ResponseType == P {
         return start(request: request, responseType: P.self, debug: debug, completion: completion)
     }
     
-    @discardableResult public func call<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.Request == R, E.Response == P {
+    @discardableResult public func call<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.RequestType == R, E.ResponseType == P {
         let request = self.request(for: endpoint, with: data)
         
         return start(request: request, for: endpoint, debug: debug, completion: completion)
