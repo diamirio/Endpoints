@@ -10,8 +10,14 @@ import XCTest
 import Endpoint
 @testable import EndpointExample
 
-class EndpointExampleTests: XCTestCase {
+class BinAPITests: XCTestCase {
     let input = "inout"
+    
+    func testGetOutputEndpointRequest() {
+        test(endpoint: BinAPI.GetOutput(value: input)) { result in
+            self.checkOutput(result: result)
+        }
+    }
     
     func testGetOutput() {
         let exp = expectation(description: "")
@@ -74,8 +80,8 @@ class EndpointExampleTests: XCTestCase {
     }
 }
 
-extension EndpointExampleTests {
-    func test<E: RequestEncoder, P: ParsableResponse>(endpoint: DynamicEndpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
+extension BinAPITests {
+    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P {
         let exp = expectation(description: "")
         BinAPI().call(endpoint: endpoint, with: data) { result in
             XCTAssertNil(result.error)

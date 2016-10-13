@@ -265,7 +265,7 @@ class EndpointTests: XCTestCase {
 }
 
 extension EndpointTests {
-    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P  {
+    func test<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, validateResult: ((Result<P>)->())?=nil) where E.Request == R, E.Response == P {
         let exp = expectation(description: "")
         api.call(endpoint: endpoint, with: data, debug: true) { result in
             XCTAssertNil(result.error)

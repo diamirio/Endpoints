@@ -27,7 +27,7 @@
 		787AECE41DABE56A001A49BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787AECE21DABE56A001A49BB /* Main.storyboard */; };
 		787AECE61DABE56A001A49BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 787AECE51DABE56A001A49BB /* Assets.xcassets */; };
 		787AECE91DABE56A001A49BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 787AECE71DABE56A001A49BB /* LaunchScreen.storyboard */; };
-		787AECF41DABE56A001A49BB /* EndpointExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECF31DABE56A001A49BB /* EndpointExampleTests.swift */; };
+		787AECF41DABE56A001A49BB /* BinAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECF31DABE56A001A49BB /* BinAPITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,7 +122,7 @@
 		787AECE81DABE56A001A49BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		787AECEA1DABE56A001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		787AECEF1DABE56A001A49BB /* EndpointExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		787AECF31DABE56A001A49BB /* EndpointExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointExampleTests.swift; sourceTree = "<group>"; };
+		787AECF31DABE56A001A49BB /* BinAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinAPITests.swift; sourceTree = "<group>"; };
 		787AECF51DABE56A001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		787AECFC1DABE738001A49BB /* DataParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataParsable.swift; sourceTree = "<group>"; };
 		787AECFD1DABE738001A49BB /* PWHTTPClientt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PWHTTPClientt.swift; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 		787AECF21DABE56A001A49BB /* EndpointExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				787AECF31DABE56A001A49BB /* EndpointExampleTests.swift */,
+				787AECF31DABE56A001A49BB /* BinAPITests.swift */,
 				787AECF51DABE56A001A49BB /* Info.plist */,
 			);
 			path = EndpointExampleTests;
@@ -575,7 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				787AECF41DABE56A001A49BB /* EndpointExampleTests.swift in Sources */,
+				787AECF41DABE56A001A49BB /* BinAPITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

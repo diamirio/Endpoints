@@ -37,21 +37,21 @@ struct InputValue: RequestData {
     }
 }
 
-struct GetOutput: EndpointRequest {
-    typealias Request = GetOutput
-    typealias Response = OutputValue
-    
-    let value: String
-    
-    var path: String? { return "get" }
-    var method: HTTPMethod { return .get }
-    
-    var query: Parameters? {
-        return [ "value" : value ]
-    }
-}
-
 class BinAPI: API {
+    struct GetOutput: EndpointRequest {
+        typealias Request = GetOutput
+        typealias Response = OutputValue
+        
+        let value: String
+        
+        var path: String? { return "get" }
+        var method: HTTPMethod { return .get }
+        
+        var query: Parameters? {
+            return [ "value" : value ]
+        }
+    }
+    
     static let GetOutputValue = DynamicEndpoint<InputValue, OutputValue>(.get, "get")
     static let DynamicRequest = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")
     static let CustomRequestEndpoint = DynamicEndpoint<CustomInputValue, OutputValue>(.get, "get")
