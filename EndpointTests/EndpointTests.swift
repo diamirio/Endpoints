@@ -143,6 +143,108 @@ class EndpointTests: XCTestCase {
         
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    func testGetJSONDictionary() {
+        let endpoint = Endpoint<RequestData, [String: Any]>(method: .get, path: "get")
+        let data = RequestData(dynamicPath: nil,
+                               queryParameters: [ "inputParam" : "inputParamValue" ],
+                               headers: nil,
+                               body: nil)
+        
+        let exp = expectation(description: "")
+        
+        api.call(endpoint: endpoint, with: data) { result in
+            XCTAssertNotNil(result.value)
+            XCTAssertNil(result.error)
+            XCTAssertFalse(result.isError)
+            XCTAssertTrue(result.isSuccess)
+            
+            XCTAssertNotNil(result.response)
+            XCTAssertEqual(result.response?.statusCode, 200)
+            
+            if let jsonDict = result.value {
+                let args = jsonDict["args"]
+                XCTAssertNotNil(args)
+                
+                if let args = args {
+                    XCTAssertTrue(args is Dictionary<String, String>)
+                    
+                    if let args = args as? Dictionary<String, String> {
+                        let param = args["inputParam"]
+                        XCTAssertNotNil(param)
+                        
+                        if let param = param {
+                            XCTAssertEqual(param, "inputParamValue")
+                        }
+                    }
+                }
+            }
+            
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testPostJSONArray() {
+        let inputArray = [ "one", "two", "three" ]
+        let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
+        let endpoint = Endpoint<RequestData, [String]>(method: .post, path: "post")
+        let data = RequestData(dynamicPath: nil,
+                               queryParameters: nil,
+                               headers: nil,
+                               body: arrayData)
+        
+        let exp = expectation(description: "")
+        
+        api.call(endpoint: endpoint, with: data) { result in
+            XCTAssertNil(result.value)
+            XCTAssertNotNil(result.error)
+            XCTAssertTrue(result.isError)
+            XCTAssertFalse(result.isSuccess)
+            
+            XCTAssertNotNil(result.response)
+            XCTAssertEqual(result.response?.statusCode, 200)
+            
+            if let jsonArray = result.value {
+                XCTAssertEqual(jsonArray, inputArray)
+            }
+            
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testFailJSONParsing() {
+        let endpoint = Endpoint<RequestData, [String: Any]>(method: .get, path: "xml")
+        let data = RequestData(dynamicPath: nil,
+                               queryParameters: nil,
+                               headers: nil,
+                               body: nil)
+        
+        let exp = expectation(description: "")
+        api.call(endpoint: endpoint, with: data) { result in
+            XCTAssertNil(result.value)
+            XCTAssertNotNil(result.error)
+            XCTAssertTrue(result.isError)
+            XCTAssertFalse(result.isSuccess)
+            
+            XCTAssertNotNil(result.response)
+            XCTAssertEqual(result.response?.statusCode, 200)
+            
+            if let error = result.error as? CocoaError {
+                XCTAssertTrue(error.isPropertyListError)
+                XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
+            } else {
+                XCTFail("wrong error: \(result.error)")
+            }
+            
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
 }
 
 extension EndpointTests {

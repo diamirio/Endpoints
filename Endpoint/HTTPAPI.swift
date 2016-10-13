@@ -77,6 +77,12 @@ public protocol ResponseType {
     static func parse(responseData: Data?, encoding: String.Encoding) throws -> Self?
 }
 
+extension ResponseType {
+    static func parseJSON(responseData: Data?) throws -> Any {
+        return try JSONSerialization.jsonObject(with: responseData ?? Data(), options: .allowFragments)
+    }
+}
+
 extension Data: ResponseType {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Data? {
         return responseData
@@ -94,6 +100,26 @@ extension String: ResponseType {
         } else {
             throw APIError.parsingError(description: "String could not be parsed with encoding: \(encoding)")
         }
+    }
+}
+
+extension Dictionary: ResponseType {
+    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Dictionary? {
+        guard let dict = try parseJSON(responseData: responseData) as? Dictionary else {
+            throw APIError.parsingError(description: "JSON structure is not an Object")
+        }
+        
+        return dict
+    }
+}
+
+extension Array: ResponseType {
+    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Array? {
+        guard let array = try parseJSON(responseData: responseData) as? Array else {
+            throw APIError.parsingError(description: "JSON structure is not an Array")
+        }
+        
+        return array
     }
 }
 
@@ -145,6 +171,8 @@ public class HTTPAPI {
         }
         
         var request = URLRequest(url: url)
+        request.httpMethod = endpoint.method.rawValue
+        
         if let data = data {
             request = data.encode(request: request)
         }
