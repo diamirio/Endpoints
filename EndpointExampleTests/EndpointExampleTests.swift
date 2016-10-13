@@ -23,6 +23,12 @@ class EndpointExampleTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func testGetStringValueGeneric() {
+        testEndpoint(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
+            self.checkOutput(result: result)
+        }
+    }
+    
     func testGetOutputFunctional() {
         let exp = expectation(description: "")
         BinAPI().getOutput(for: input) { result in
@@ -63,6 +69,21 @@ class EndpointExampleTests: XCTestCase {
 }
 
 extension EndpointExampleTests {
+    func testEndpoint<E: RequestEncoder, P: ResponseType>(endpoint: Endpoint<E, P>, with data: E, validateResult: ((Result<P>)->())?=nil) {
+        let exp = expectation(description: "")
+        BinAPI().call(endpoint: endpoint, with: data) { result in
+            XCTAssertNil(result.error)
+            XCTAssertNotNil(result.value)
+            XCTAssertTrue(result.isSuccess)
+            XCTAssertFalse(result.isError)
+            
+            validateResult?(result)
+            
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
     func checkOutput(result: Result<OutputValue>) {
         XCTAssertNil(result.error)
         XCTAssertNotNil(result.value)

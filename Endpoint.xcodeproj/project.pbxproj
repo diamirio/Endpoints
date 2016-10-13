@@ -10,6 +10,12 @@
 		786736791DAFA34D0082828B /* BinAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786736781DAFA34D0082828B /* BinAPI.swift */; };
 		7867367C1DAFAD370082828B /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		7867367D1DAFAD370082828B /* Endpoint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78685CB61DAFBDF500B72F18 /* EndpointMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */; };
+		78685CBD1DAFBDF500B72F18 /* EndpointMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CBC1DAFBDF500B72F18 /* EndpointMapperTests.swift */; };
+		78685CBF1DAFBDF500B72F18 /* EndpointMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 78685CAF1DAFBDF500B72F18 /* EndpointMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		78685CC21DAFBDF500B72F18 /* EndpointMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */; };
+		78685CC31DAFBDF500B72F18 /* EndpointMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		78685CCA1DAFBE0600B72F18 /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		787AECC61DABDEC8001A49BB /* Endpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoint.framework */; };
 		787AECCB1DABDEC8001A49BB /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787AECCA1DABDEC8001A49BB /* EndpointTests.swift */; };
 		787AECCD1DABDEC8001A49BB /* Endpoint.h in Headers */ = {isa = PBXBuildFile; fileRef = 787AECBF1DABDEC7001A49BB /* Endpoint.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,6 +30,34 @@
 
 /* Begin PBXContainerItemProxy section */
 		7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
+			remoteInfo = Endpoint;
+		};
+		78685CB71DAFBDF500B72F18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78685CAC1DAFBDF500B72F18;
+			remoteInfo = EndpointMapper;
+		};
+		78685CB91DAFBDF500B72F18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 787AECDB1DABE56A001A49BB;
+			remoteInfo = EndpointExample;
+		};
+		78685CC01DAFBDF500B72F18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78685CAC1DAFBDF500B72F18;
+			remoteInfo = EndpointMapper;
+		};
+		78685CCB1DAFBE0C00B72F18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
 			proxyType = 1;
@@ -53,6 +87,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				78685CC31DAFBDF500B72F18 /* EndpointMapper.framework in Embed Frameworks */,
 				7867367D1DAFAD370082828B /* Endpoint.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -62,6 +97,12 @@
 
 /* Begin PBXFileReference section */
 		786736781DAFA34D0082828B /* BinAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinAPI.swift; sourceTree = "<group>"; };
+		78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78685CAF1DAFBDF500B72F18 /* EndpointMapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EndpointMapper.h; sourceTree = "<group>"; };
+		78685CB01DAFBDF500B72F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78685CB51DAFBDF500B72F18 /* EndpointMapperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointMapperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		78685CBC1DAFBDF500B72F18 /* EndpointMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMapperTests.swift; sourceTree = "<group>"; };
+		78685CBE1DAFBDF500B72F18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		787AECBC1DABDEC7001A49BB /* Endpoint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECBF1DABDEC7001A49BB /* Endpoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Endpoint.h; sourceTree = "<group>"; };
 		787AECC01DABDEC7001A49BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -88,6 +129,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		78685CA91DAFBDF500B72F18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78685CCA1DAFBE0600B72F18 /* Endpoint.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78685CB21DAFBDF500B72F18 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78685CB61DAFBDF500B72F18 /* EndpointMapper.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		787AECB81DABDEC7001A49BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -107,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78685CC21DAFBDF500B72F18 /* EndpointMapper.framework in Frameworks */,
 				7867367C1DAFAD370082828B /* Endpoint.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +179,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78685CAE1DAFBDF500B72F18 /* EndpointMapper */ = {
+			isa = PBXGroup;
+			children = (
+				78685CAF1DAFBDF500B72F18 /* EndpointMapper.h */,
+				78685CB01DAFBDF500B72F18 /* Info.plist */,
+			);
+			path = EndpointMapper;
+			sourceTree = "<group>";
+		};
+		78685CBB1DAFBDF500B72F18 /* EndpointMapperTests */ = {
+			isa = PBXGroup;
+			children = (
+				78685CBC1DAFBDF500B72F18 /* EndpointMapperTests.swift */,
+				78685CBE1DAFBDF500B72F18 /* Info.plist */,
+			);
+			path = EndpointMapperTests;
+			sourceTree = "<group>";
+		};
 		787AECB21DABDEC7001A49BB = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +204,8 @@
 				787AECC91DABDEC8001A49BB /* EndpointTests */,
 				787AECDD1DABE56A001A49BB /* EndpointExample */,
 				787AECF21DABE56A001A49BB /* EndpointExampleTests */,
+				78685CAE1DAFBDF500B72F18 /* EndpointMapper */,
+				78685CBB1DAFBDF500B72F18 /* EndpointMapperTests */,
 				787AECBD1DABDEC7001A49BB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -139,6 +217,8 @@
 				787AECC51DABDEC8001A49BB /* EndpointTests.xctest */,
 				787AECDC1DABE56A001A49BB /* EndpointExample.app */,
 				787AECEF1DABE56A001A49BB /* EndpointExampleTests.xctest */,
+				78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */,
+				78685CB51DAFBDF500B72F18 /* EndpointMapperTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -194,6 +274,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		78685CAA1DAFBDF500B72F18 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78685CBF1DAFBDF500B72F18 /* EndpointMapper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		787AECB91DABDEC7001A49BB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,6 +293,44 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		78685CAC1DAFBDF500B72F18 /* EndpointMapper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78685CC81DAFBDF500B72F18 /* Build configuration list for PBXNativeTarget "EndpointMapper" */;
+			buildPhases = (
+				78685CA81DAFBDF500B72F18 /* Sources */,
+				78685CA91DAFBDF500B72F18 /* Frameworks */,
+				78685CAA1DAFBDF500B72F18 /* Headers */,
+				78685CAB1DAFBDF500B72F18 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78685CCC1DAFBE0C00B72F18 /* PBXTargetDependency */,
+			);
+			name = EndpointMapper;
+			productName = EndpointMapper;
+			productReference = 78685CAD1DAFBDF500B72F18 /* EndpointMapper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		78685CB41DAFBDF500B72F18 /* EndpointMapperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78685CC91DAFBDF500B72F18 /* Build configuration list for PBXNativeTarget "EndpointMapperTests" */;
+			buildPhases = (
+				78685CB11DAFBDF500B72F18 /* Sources */,
+				78685CB21DAFBDF500B72F18 /* Frameworks */,
+				78685CB31DAFBDF500B72F18 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78685CB81DAFBDF500B72F18 /* PBXTargetDependency */,
+				78685CBA1DAFBDF500B72F18 /* PBXTargetDependency */,
+			);
+			name = EndpointMapperTests;
+			productName = EndpointMapperTests;
+			productReference = 78685CB51DAFBDF500B72F18 /* EndpointMapperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		787AECBB1DABDEC7001A49BB /* Endpoint */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 787AECD01DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "Endpoint" */;
@@ -254,6 +380,7 @@
 			);
 			dependencies = (
 				7867367B1DAFA6CE0082828B /* PBXTargetDependency */,
+				78685CC11DAFBDF500B72F18 /* PBXTargetDependency */,
 			);
 			name = EndpointExample;
 			productName = EndpointExample;
@@ -288,6 +415,17 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Tailored Apps";
 				TargetAttributes = {
+					78685CAC1DAFBDF500B72F18 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = U37QH9QGB8;
+						ProvisioningStyle = Automatic;
+					};
+					78685CB41DAFBDF500B72F18 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = U37QH9QGB8;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 787AECDB1DABE56A001A49BB;
+					};
 					787AECBB1DABDEC7001A49BB = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = U37QH9QGB8;
@@ -329,11 +467,27 @@
 				787AECC41DABDEC8001A49BB /* EndpointTests */,
 				787AECDB1DABE56A001A49BB /* EndpointExample */,
 				787AECEE1DABE56A001A49BB /* EndpointExampleTests */,
+				78685CAC1DAFBDF500B72F18 /* EndpointMapper */,
+				78685CB41DAFBDF500B72F18 /* EndpointMapperTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		78685CAB1DAFBDF500B72F18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78685CB31DAFBDF500B72F18 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		787AECBA1DABDEC7001A49BB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -368,6 +522,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		78685CA81DAFBDF500B72F18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78685CB11DAFBDF500B72F18 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78685CBD1DAFBDF500B72F18 /* EndpointMapperTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		787AECB71DABDEC7001A49BB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -410,6 +579,26 @@
 			target = 787AECBB1DABDEC7001A49BB /* Endpoint */;
 			targetProxy = 7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */;
 		};
+		78685CB81DAFBDF500B72F18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78685CAC1DAFBDF500B72F18 /* EndpointMapper */;
+			targetProxy = 78685CB71DAFBDF500B72F18 /* PBXContainerItemProxy */;
+		};
+		78685CBA1DAFBDF500B72F18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 787AECDB1DABE56A001A49BB /* EndpointExample */;
+			targetProxy = 78685CB91DAFBDF500B72F18 /* PBXContainerItemProxy */;
+		};
+		78685CC11DAFBDF500B72F18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78685CAC1DAFBDF500B72F18 /* EndpointMapper */;
+			targetProxy = 78685CC01DAFBDF500B72F18 /* PBXContainerItemProxy */;
+		};
+		78685CCC1DAFBE0C00B72F18 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoint */;
+			targetProxy = 78685CCB1DAFBE0C00B72F18 /* PBXContainerItemProxy */;
+		};
 		787AECC81DABDEC8001A49BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 787AECBB1DABDEC7001A49BB /* Endpoint */;
@@ -442,6 +631,72 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		78685CC41DAFBDF500B72F18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = U37QH9QGB8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = EndpointMapper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointMapper";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		78685CC51DAFBDF500B72F18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = U37QH9QGB8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = EndpointMapper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointMapper";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		78685CC61DAFBDF500B72F18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = U37QH9QGB8;
+				INFOPLIST_FILE = EndpointMapperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointMapperTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EndpointExample.app/EndpointExample";
+			};
+			name = Debug;
+		};
+		78685CC71DAFBDF500B72F18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = U37QH9QGB8;
+				INFOPLIST_FILE = EndpointMapperTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointMapperTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EndpointExample.app/EndpointExample";
+			};
+			name = Release;
+		};
 		787AECCE1DABDEC8001A49BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -669,6 +924,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		78685CC81DAFBDF500B72F18 /* Build configuration list for PBXNativeTarget "EndpointMapper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78685CC41DAFBDF500B72F18 /* Debug */,
+				78685CC51DAFBDF500B72F18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		78685CC91DAFBDF500B72F18 /* Build configuration list for PBXNativeTarget "EndpointMapperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78685CC61DAFBDF500B72F18 /* Debug */,
+				78685CC71DAFBDF500B72F18 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		787AECB61DABDEC7001A49BB /* Build configuration list for PBXProject "Endpoint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
