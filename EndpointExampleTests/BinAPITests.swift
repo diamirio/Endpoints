@@ -14,7 +14,7 @@ class BinAPITests: XCTestCase {
     let input = "inout"
     
     func testGetOutputEndpointRequest() {
-        test(endpoint: BinAPI.GetOutput(value: input)) { result in
+        test(endpoint: GetOutput(value: input)) { result in
             self.checkOutput(result: result)
         }
     }

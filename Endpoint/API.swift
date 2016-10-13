@@ -14,63 +14,36 @@ public enum APIError: Error {
     case serverError(description: String)
 }
 
-public enum HTTPMethod: String {
-    case get = "GET"
-    case post = "POST"
-}
-
-public protocol Endpoint {
-    associatedtype RequestType: RequestEncoder
-    associatedtype ResponseType: ParsableResponse
-    
-    var method: HTTPMethod { get }
-    var path: String? { get }
-}
-
-public protocol EndpointRequest: Endpoint, RequestData {}
-
-public struct DynamicEndpoint<Request: RequestEncoder, Response: ParsableResponse>: Endpoint {
-    public typealias RequestType = Request
-    public typealias ResponseType = Response
-    
-    public var method: HTTPMethod
-    public var path: String?
-    
-    public init(_ method: HTTPMethod, _ path: String?) {
-        self.method = method
-        self.path = path
-    }
-}
-
 open class API {
     public let baseURL: URL
-    let session = URLSession.shared
     
     public init(baseURL: URL) {
         self.baseURL = baseURL
     }
     
-    public func request<E: Endpoint, R: RequestEncoder>(for endpoint: E, with data: R?=nil) -> URLRequest where E.RequestType == R {
-        var url = baseURL
-        
-        if let path = endpoint.path {
-            guard let urlWithPath = URL(string: path, relativeTo: baseURL) else {
-                fatalError("invalid path \(path)")
-            }
-            url = urlWithPath
+    open func validate(response: HTTPURLResponse) -> Error? {
+        let code = response.statusCode
+        if !(200..<300).contains(code) {
+            return APIError.unacceptableStatus(code: code)
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = endpoint.method.rawValue
-        
-        if let data = data ?? endpoint as? R {
-            request = data.encode(request: request)
-        }
-        
-        return request
+        return nil
     }
     
-    @discardableResult public func start<P: ParsableResponse>(request: URLRequest, responseType: P.Type, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
+    @discardableResult
+    public func call<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.RequestType == R, E.ResponseType == P {
+        let request = self.request(for: endpoint, with: data)
+        
+        return start(request: request, for: endpoint, session: session, debug: debug, completion: completion)
+    }
+    
+    @discardableResult
+    public func start<E: Endpoint, P: ParsableResponse>(request: URLRequest, for endpoint: E, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.ResponseType == P {
+        return start(request: request, responseType: P.self, session: session, debug: debug, completion: completion)
+    }
+    
+    @discardableResult
+    public func start<P: ParsableResponse>(request: URLRequest, responseType: P.Type, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask {
         let task = session.dataTask(with: request) { data, response, error in
             if debug {
                 dump(request)
@@ -102,28 +75,23 @@ open class API {
         return task
     }
     
-    @discardableResult public func start<E: Endpoint, P: ParsableResponse>(request: URLRequest, for endpoint: E, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.ResponseType == P {
-        return start(request: request, responseType: P.self, debug: debug, completion: completion)
-    }
-    
-    @discardableResult public func call<E: Endpoint, R: RequestEncoder, P: ParsableResponse>(endpoint: E, with data: R?=nil, debug: Bool=false, completion: @escaping (Result<P>)->()) -> URLSessionDataTask where E.RequestType == R, E.ResponseType == P {
-        let request = self.request(for: endpoint, with: data)
+    public func request<E: Endpoint, R: RequestEncoder>(for endpoint: E, with data: R?=nil) -> URLRequest where E.RequestType == R {
+        var url = baseURL
         
-        return start(request: request, for: endpoint, debug: debug, completion: completion)
-    }
-    
-    private let acceptableStatusCodes = 200..<300
-    
-    open func validate(response: HTTPURLResponse) -> Error? {
-        let code = response.statusCode
-        if !acceptableStatusCodes.contains(code) {
-            return APIError.unacceptableStatus(code: code)
+        if let path = endpoint.path {
+            guard let urlWithPath = URL(string: path, relativeTo: baseURL) else {
+                fatalError("invalid path \(path)")
+            }
+            url = urlWithPath
         }
         
-        return nil
+        var request = URLRequest(url: url)
+        request.httpMethod = endpoint.method.rawValue
+        
+        if let data = data ?? endpoint as? R {
+            request = data.encode(request: request)
+        }
+        
+        return request
     }
-}
-
-extension API {
-    
 }

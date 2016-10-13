@@ -9,23 +9,27 @@
 import Foundation
 import Endpoint
 
-class BinAPI: API {
-    struct GetOutput: EndpointRequest {
-        typealias RequestType = GetOutput
-        typealias ResponseType = OutputValue
-        
-        let value: String
-        
-        var path: String? { return "get" }
-        var method: HTTPMethod { return .get }
-        
-        var query: Parameters? {
-            return [ "value" : value ]
-        }
-    }
+struct GetOutput: EndpointRequest {
+    typealias RequestType = GetOutput
+    typealias ResponseType = OutputValue
     
+    let value: String
+    
+    var path: String? { return "get" }
+    var method: HTTPMethod { return .get }
+    
+    var query: Parameters? {
+        return [ "value" : value ]
+    }
+}
+
+class BinAPI: API {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
+    }
+    
+    override func validate(response: HTTPURLResponse) -> Error? {
+        return nil
     }
 }
 
