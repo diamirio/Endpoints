@@ -232,10 +232,10 @@
 		787AECBE1DABDEC7001A49BB /* Endpoint */ = {
 			isa = PBXGroup;
 			children = (
-				78685CD11DB00AFA00B72F18 /* Endpoint.swift */,
-				787AECD61DABE037001A49BB /* API.swift */,
 				78685CCD1DAFD04E00B72F18 /* Request.swift */,
 				78685CCF1DAFD0BE00B72F18 /* Response.swift */,
+				78685CD11DB00AFA00B72F18 /* Endpoint.swift */,
+				787AECD61DABE037001A49BB /* API.swift */,
 				787AECBF1DABDEC7001A49BB /* Endpoint.h */,
 				787AECC01DABDEC7001A49BB /* Info.plist */,
 				787AECFC1DABE738001A49BB /* DataParsable.swift */,
