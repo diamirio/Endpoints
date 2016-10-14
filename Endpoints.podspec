@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Mapper' do |cs|
     s.source_files = 'EndpointsMapper/*.swift'
+    cs.dependency 'Endpoints/Core'
     s.dependency 'ObjectMapper', '~> 2.1'
   end
 end
