@@ -16,8 +16,16 @@ public extension Mappable {
     }
 }
 
+extension DynamicRequestData {
+    public init(mappable: Mappable?=nil) throws {
+        try self.init(body: mappable?.toData())
+    }
+}
+
 public protocol MappableEndpointRequest: EndpointRequest {
-    var mappable: Mappable { get }
+    associatedtype MappableType: Mappable
+    
+    var mappable: MappableType { get }
 }
 
 public extension MappableEndpointRequest {

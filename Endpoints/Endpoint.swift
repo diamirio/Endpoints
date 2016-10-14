@@ -16,7 +16,9 @@ public protocol Endpoint {
     var path: String? { get }
 }
 
-public protocol EndpointRequest: Endpoint, RequestData {}
+public protocol EndpointRequest: Endpoint, RequestData {
+    typealias RequestType = Self
+}
 
 public struct DynamicEndpoint<Request: RequestEncoder, Response: ResponseParser>: Endpoint {
     public typealias RequestType = Request
