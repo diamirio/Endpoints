@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import EndpointMapper
+@testable import EndpointsMapper
 
 class EndpointMapperTests: XCTestCase {
     

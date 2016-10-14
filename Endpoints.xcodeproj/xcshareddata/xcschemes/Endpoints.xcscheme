@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-               BuildableName = "EndpointExample.app"
-               BlueprintName = "EndpointExample"
-               ReferencedContainer = "container:Endpoint.xcodeproj">
+               BlueprintIdentifier = "787AECBB1DABDEC7001A49BB"
+               BuildableName = "Endpoints.framework"
+               BlueprintName = "Endpoints"
+               ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,36 +26,27 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "787AECEE1DABE56A001A49BB"
-               BuildableName = "EndpointExampleTests.xctest"
-               BlueprintName = "EndpointExampleTests"
-               ReferencedContainer = "container:Endpoint.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "78685CB41DAFBDF500B72F18"
-               BuildableName = "EndpointMapperTests.xctest"
-               BlueprintName = "EndpointMapperTests"
-               ReferencedContainer = "container:Endpoint.xcodeproj">
+               BlueprintIdentifier = "787AECC41DABDEC8001A49BB"
+               BuildableName = "EndpointsTests.xctest"
+               BlueprintName = "EndpointsTests"
+               ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "EndpointExample.app"
-            BlueprintName = "EndpointExample"
-            ReferencedContainer = "container:Endpoint.xcodeproj">
+            BlueprintIdentifier = "787AECBB1DABDEC7001A49BB"
+            BuildableName = "Endpoints.framework"
+            BlueprintName = "Endpoints"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -71,16 +62,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "EndpointExample.app"
-            BlueprintName = "EndpointExample"
-            ReferencedContainer = "container:Endpoint.xcodeproj">
+            BlueprintIdentifier = "787AECBB1DABDEC7001A49BB"
+            BuildableName = "Endpoints.framework"
+            BlueprintName = "Endpoints"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +80,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "EndpointExample.app"
-            BlueprintName = "EndpointExample"
-            ReferencedContainer = "container:Endpoint.xcodeproj">
+            BlueprintIdentifier = "787AECBB1DABDEC7001A49BB"
+            BuildableName = "Endpoints.framework"
+            BlueprintName = "Endpoints"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

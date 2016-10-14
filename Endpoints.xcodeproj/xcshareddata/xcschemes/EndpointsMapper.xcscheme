@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
-               BuildableName = "EndpointMapper.framework"
-               BlueprintName = "EndpointMapper"
-               ReferencedContainer = "container:Endpoint.xcodeproj">
+               BuildableName = "EndpointsMapper.framework"
+               BlueprintName = "EndpointsMapper"
+               ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "78685CB41DAFBDF500B72F18"
+               BuildableName = "EndpointsMapperTests.xctest"
+               BlueprintName = "EndpointsMapperTests"
+               ReferencedContainer = "container:Endpoints.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
+            BuildableName = "EndpointsMapper.framework"
+            BlueprintName = "EndpointsMapper"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -46,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
-            BuildableName = "EndpointMapper.framework"
-            BlueprintName = "EndpointMapper"
-            ReferencedContainer = "container:Endpoint.xcodeproj">
+            BuildableName = "EndpointsMapper.framework"
+            BlueprintName = "EndpointsMapper"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -64,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
-            BuildableName = "EndpointMapper.framework"
-            BlueprintName = "EndpointMapper"
-            ReferencedContainer = "container:Endpoint.xcodeproj">
+            BuildableName = "EndpointsMapper.framework"
+            BlueprintName = "EndpointsMapper"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

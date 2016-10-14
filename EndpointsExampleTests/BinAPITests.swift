@@ -7,44 +7,46 @@
 //
 
 import XCTest
-import Endpoint
-@testable import EndpointExample
+import Endpoints
+@testable import EndpointsExample
 
-class BinAPITests: XCTestCase {
+class BinAPITests: APITestCase {
     let input = "inout"
+    
+    override func setUp() {
+        api = BinAPI()
+        api.debugAll = true
+    }
     
     func testGetOutputEndpointRequest() {
         test(endpoint: GetOutput(value: input)) { result in
-            self.checkOutput(result: result)
+            self.assert(result: result, isSuccess: true, status: 200)
         }
     }
     
     func testGetOutput() {
-        let exp = expectation(description: "")
-        BinAPI().call(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
-            self.checkOutput(result: result)
-            exp.fulfill()
+        test(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
+            self.assert(result: result, isSuccess: true, status: 200)
         }
-        
-        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testGenericGetValue() {
         test(endpoint: BinAPI.GetOutputValue, with: InputValue(value: input)) { result in
-            self.checkOutput(result: result)
+            self.assert(result: result, isSuccess: true, status: 200)
         }
     }
     
     func testDynamicEndpoint() {
         test(endpoint: BinAPI.DynamicRequest, with: DynamicRequestData(query: ["value": input])) { result in
-            self.checkOutput(result: result)
+            self.assert(result: result, isSuccess: true, status: 200)
         }
     }
     
     func testGetOutputFunctional() {
         let exp = expectation(description: "")
         BinAPI().getOutput(for: input) { result in
-            self.checkOutput(result: result)
+            self.assert(result: result, isSuccess: true, status: 200)
+            
             exp.fulfill()
         }
         
@@ -55,7 +57,8 @@ class BinAPITests: XCTestCase {
         let exp = expectation(description: "")
         let api = BinAPI()
         api.start(request: api.outputRequest(with: input), for: BinAPI.GetOutputValue) { result in
-            self.checkOutput(result: result)
+            self.assert(result: result, isSuccess: true, status: 200)
+            
             exp.fulfill()
         }
         
@@ -77,36 +80,5 @@ class BinAPITests: XCTestCase {
         }.resume()
         
         waitForExpectations(timeout: 10, handler: nil)
-    }
-}
-
-extension BinAPITests {
-    func test<E: Endpoint, P: ResponseParser>(endpoint: E, with data: E.RequestType?=nil, validateResult: ((Result<P.OutputType>)->())?=nil) where E.ResponseType == P {
-        let exp = expectation(description: "")
-        BinAPI().call(endpoint: endpoint, with: data, debug: true) { result in
-            if let error = result.error {
-                dump(error)
-            }
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-            XCTAssertTrue(result.isSuccess)
-            XCTAssertFalse(result.isError)
-            
-            validateResult?(result)
-            
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
-    func checkOutput(result: Result<OutputValue>) {
-        XCTAssertNil(result.error)
-        XCTAssertNotNil(result.value)
-        XCTAssertTrue(result.isSuccess)
-        XCTAssertFalse(result.isError)
-        
-        if let output = result.value {
-            XCTAssertEqual(output.value, input)
-        }
     }
 }

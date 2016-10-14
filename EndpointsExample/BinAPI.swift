@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Endpoint
+import Endpoints
 
 struct GetOutput: EndpointRequest {
     typealias RequestType = GetOutput
