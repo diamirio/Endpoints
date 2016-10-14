@@ -10,13 +10,13 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.subspec 'Core' do |cs|
-    s.source_files = 'Endpoints/*.swift'
+  s.subspec 'Core' do |sp|
+    sp.source_files = 'Endpoints/*.swift'
   end
 
-  s.subspec 'Mapper' do |cs|
-    s.source_files = 'EndpointsMapper/*.swift'
-    cs.dependency 'Endpoints/Core'
-    s.dependency 'ObjectMapper', '~> 2.1'
+  s.subspec 'Mapper' do |sp|
+    sp.source_files = 'EndpointsMapper/*.swift'
+    sp.dependency 'Endpoints/Core'
+    sp.dependency 'ObjectMapper', '~> 2.1'
   end
 end
