@@ -8,7 +8,7 @@
 
 import XCTest
 import Endpoints
-@testable import EndpointsExample
+@testable import Example
 
 class BinAPITests: APITestCase {
     let input = "inout"
