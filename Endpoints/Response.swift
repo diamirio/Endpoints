@@ -15,7 +15,7 @@ public protocol ResponseParser {
 }
 
 extension ResponseParser {
-    static func parseJSON(responseData: Data?) throws -> Any {
+    public static func parseJSON(responseData: Data?) throws -> Any {
         return try JSONSerialization.jsonObject(with: responseData ?? Data(), options: .allowFragments)
     }
 }

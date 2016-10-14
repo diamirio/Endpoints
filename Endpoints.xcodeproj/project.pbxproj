@@ -18,7 +18,7 @@
 		78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CDF1DB0B0A400B72F18 /* Request.swift */; };
 		78685CEC1DB0B0A400B72F18 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Response.swift */; };
 		78685CF01DB0B10500B72F18 /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CEE1DB0B10500B72F18 /* APITests.swift */; };
-		78685CFD1DB0B15B00B72F18 /* EndpointMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CFB1DB0B15B00B72F18 /* EndpointMapperTests.swift */; };
+		78685CFD1DB0B15B00B72F18 /* EndpointsMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CFB1DB0B15B00B72F18 /* EndpointsMapperTests.swift */; };
 		78685D091DB0B20500B72F18 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685D001DB0B20500B72F18 /* AppDelegate.swift */; };
 		78685D0A1DB0B20500B72F18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78685D011DB0B20500B72F18 /* Assets.xcassets */; };
 		78685D0B1DB0B20500B72F18 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78685D021DB0B20500B72F18 /* LaunchScreen.storyboard */; };
@@ -32,6 +32,7 @@
 		78A5F0851DB0D1B000108A45 /* APITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0841DB0D1B000108A45 /* APITestCase.swift */; };
 		78A5F0861DB0D1B000108A45 /* APITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0841DB0D1B000108A45 /* APITestCase.swift */; };
 		78A5F0871DB0D1B000108A45 /* APITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0841DB0D1B000108A45 /* APITestCase.swift */; };
+		78A5F0A41DB0D98C00108A45 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +106,7 @@
 		78685CEE1DB0B10500B72F18 /* APITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
 		78685CEF1DB0B10500B72F18 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78685CF71DB0B14F00B72F18 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		78685CFB1DB0B15B00B72F18 /* EndpointMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointMapperTests.swift; sourceTree = "<group>"; };
+		78685CFB1DB0B15B00B72F18 /* EndpointsMapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointsMapperTests.swift; sourceTree = "<group>"; };
 		78685CFC1DB0B15B00B72F18 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78685D001DB0B20500B72F18 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78685D011DB0B20500B72F18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -123,6 +124,8 @@
 		787AECEF1DABE56A001A49BB /* EndpointsExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78A5F0821DB0D01A00108A45 /* EndpointsMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointsMapper.swift; sourceTree = "<group>"; };
 		78A5F0841DB0D1B000108A45 /* APITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APITestCase.swift; sourceTree = "<group>"; };
+		78A5F08A1DB0D92000108A45 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = ../Carthage/Checkouts/ObjectMapper/ObjectMapper.xcodeproj; sourceTree = "<group>"; };
+		78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78A5F0A41DB0D98C00108A45 /* ObjectMapper.framework in Frameworks */,
 				78685CCA1DAFBE0600B72F18 /* Endpoints.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -201,6 +205,7 @@
 		78685CF51DB0B14F00B72F18 /* EndpointsMapper */ = {
 			isa = PBXGroup;
 			children = (
+				78A5F08A1DB0D92000108A45 /* ObjectMapper.xcodeproj */,
 				78A5F0821DB0D01A00108A45 /* EndpointsMapper.swift */,
 				78685CF71DB0B14F00B72F18 /* Info.plist */,
 			);
@@ -210,7 +215,7 @@
 		78685CFA1DB0B15B00B72F18 /* EndpointsMapperTests */ = {
 			isa = PBXGroup;
 			children = (
-				78685CFB1DB0B15B00B72F18 /* EndpointMapperTests.swift */,
+				78685CFB1DB0B15B00B72F18 /* EndpointsMapperTests.swift */,
 				78685CFC1DB0B15B00B72F18 /* Info.plist */,
 			);
 			path = EndpointsMapperTests;
@@ -250,6 +255,7 @@
 				78685CFF1DB0B20500B72F18 /* EndpointsExample */,
 				78685D171DB0BD0700B72F18 /* EndpointsExampleTests */,
 				787AECBD1DABDEC7001A49BB /* Products */,
+				78A5F0A21DB0D98C00108A45 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -264,6 +270,14 @@
 				78685CB51DAFBDF500B72F18 /* EndpointsMapperTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		78A5F0A21DB0D98C00108A45 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -528,7 +542,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A5F0871DB0D1B000108A45 /* APITestCase.swift in Sources */,
-				78685CFD1DB0B15B00B72F18 /* EndpointMapperTests.swift in Sources */,
+				78685CFD1DB0B15B00B72F18 /* EndpointsMapperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +651,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = EndpointsMapper/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -658,6 +676,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = EndpointsMapper/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
