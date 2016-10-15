@@ -34,7 +34,7 @@ public extension RequestData {
     }
 }
 
-public struct DynamicRequestData: RequestEncoder {
+public struct DynamicRequestData: RequestData {
     public var dynamicPath: String?
     public var query: Parameters?
     public var header: Parameters?
