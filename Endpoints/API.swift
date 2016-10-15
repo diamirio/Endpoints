@@ -22,7 +22,7 @@ open class API {
         self.baseURL = baseURL
     }
     
-    public func request<E: Endpoint, R: RequestEncoder>(for endpoint: E, with data: R?=nil) -> URLRequest where E.RequestType == R {
+    public func request<E: Endpoint>(for endpoint: E, with data: E.RequestType?=nil) -> URLRequest {
         var url = baseURL
         
         if let path = endpoint.path {
@@ -35,7 +35,7 @@ open class API {
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
         
-        if let data = data ?? endpoint as? R {
+        if let data = data ?? endpoint as? E.RequestType {
             request = data.encode(request: request)
         }
         
