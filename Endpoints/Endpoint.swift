@@ -16,7 +16,7 @@ public protocol Endpoint {
     var path: String? { get }
 }
 
-public protocol EndpointRequest: Endpoint, RequestData {
+public protocol Request: Endpoint, RequestData {
     typealias RequestType = Self
 }
 

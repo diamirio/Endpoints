@@ -9,7 +9,7 @@
 import Foundation
 import Endpoints
 
-struct GetOutput: EndpointRequest {
+struct GetOutput: Request {
     typealias RequestType = GetOutput
     typealias ResponseType = OutputValue
     

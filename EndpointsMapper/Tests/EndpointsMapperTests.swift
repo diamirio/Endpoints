@@ -64,8 +64,8 @@ class EndpointMapperTests: APITestCase {
         }
     }
     
-    struct PostJSONEndpointRequest: EndpointRequest {
-        typealias RequestType = PostJSONEndpointRequest
+    struct PostJSONRequest: Request {
+        typealias RequestType = PostJSONRequest
         typealias ResponseType = String
         
         var method: HTTPMethod { return .post }
@@ -82,7 +82,7 @@ class EndpointMapperTests: APITestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(endpoint: PostJSONEndpointRequest(object: jsonBody)) { result in
+        test(endpoint: PostJSONRequest(object: jsonBody)) { result in
             self.assert(result: result)
             
             if let string = result.value {
@@ -91,9 +91,9 @@ class EndpointMapperTests: APITestCase {
         }
     }
     
-    struct ConvenientPostJSONEndpointRequest: MappableEndpointRequest {
+    struct ConvenientPostJSONRequest: MappableRequest {
         typealias MappableType = RequestObject
-        typealias RequestType = ConvenientPostJSONEndpointRequest
+        typealias RequestType = ConvenientPostJSONRequest
         typealias ResponseType = String
         
         var mappable: RequestObject
@@ -104,7 +104,7 @@ class EndpointMapperTests: APITestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(endpoint: ConvenientPostJSONEndpointRequest(mappable: jsonBody)) { result in
+        test(endpoint: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
             self.assert(result: result)
             
             if let string = result.value {

@@ -18,7 +18,7 @@ class BinAPITests: APITestCase {
         api.debugAll = true
     }
     
-    func testGetOutputEndpointRequest() {
+    func testGetOutputRequest() {
         test(endpoint: GetOutput(value: input)) { result in
             self.assert(result: result, isSuccess: true, status: 200)
         }

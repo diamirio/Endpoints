@@ -130,7 +130,7 @@ class APITests: APITestCase {
         }
     }
     
-    struct GetOutput: EndpointRequest {
+    struct GetOutput: Request {
         typealias RequestType = GetOutput
         typealias ResponseType = [String: Any]
         
@@ -144,7 +144,7 @@ class APITests: APITestCase {
         }
     }
     
-    func testTypedEndpointRequest() {
+    func testTypedRequest() {
         let value = "value"
         
         test(endpoint: GetOutput(value: value)) { result in

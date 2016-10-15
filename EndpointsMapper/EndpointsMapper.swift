@@ -22,13 +22,13 @@ extension DynamicRequestData {
     }
 }
 
-public protocol MappableEndpointRequest: EndpointRequest {
+public protocol MappableRequest: Request {
     associatedtype MappableType: Mappable
     
     var mappable: MappableType { get }
 }
 
-public extension MappableEndpointRequest {
+public extension MappableRequest {
     var method: HTTPMethod { return .post }
     
     var body: Data? {
