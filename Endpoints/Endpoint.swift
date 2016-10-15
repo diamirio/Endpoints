@@ -9,6 +9,7 @@
 import Foundation
 
 public protocol Endpoint {
+    //TODO: Let Endpoint optionally constrain API Type
     associatedtype RequestType: RequestEncoder
     associatedtype ResponseType: ResponseParser
     
@@ -17,6 +18,8 @@ public protocol Endpoint {
 }
 
 public protocol Request: Endpoint, RequestData {
+    //FIXME: this seems to be ignored by the compiler. should probable work with Swift 4
+    //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
     typealias RequestType = Self
 }
 
