@@ -28,10 +28,9 @@ class EndpointMapperTests: APITestCase {
     
     func testResponseParsing() {
         let value = "value"
-        let ep = DynamicEndpoint<DynamicRequestData, ResponseObject>(.get, "get")
-        let data = DynamicRequestData(query: [ "input": value ])
+        let request = DynamicRequest<ResponseObject>(.get, "get", query: [ "input": value ])
         
-        test(endpoint: ep, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result)
             
             XCTAssertEqual(result.value?.value, value)
@@ -52,10 +51,9 @@ class EndpointMapperTests: APITestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        let data = try! DynamicRequestData(mappable: jsonBody)
-        let ep = DynamicEndpoint<DynamicRequestData, String>(.post, "post")
+        let request = DynamicRequest<String>(.post, "post", body: jsonBody.toData())
         
-        test(endpoint: ep, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result)
             
             if let string = result.value {
@@ -74,7 +72,7 @@ class EndpointMapperTests: APITestCase {
         var object: RequestObject
         
         var body: Data? {
-            return try! object.toData()
+            return object.toData()
         }
     }
     

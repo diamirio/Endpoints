@@ -11,14 +11,8 @@ import ObjectMapper
 import Endpoints
 
 public extension Mappable {
-    func toData() throws -> Data {
-        return try JSONSerialization.data(withJSONObject: toJSON(), options: .prettyPrinted)
-    }
-}
-
-extension DynamicRequestData {
-    public init(mappable: Mappable?=nil) throws {
-        try self.init(body: mappable?.toData())
+    func toData() -> Data? {
+        return try? JSONSerialization.data(withJSONObject: toJSON(), options: .prettyPrinted)
     }
 }
 
@@ -32,7 +26,7 @@ public extension MappableRequest {
     var method: HTTPMethod { return .post }
     
     var body: Data? {
-        return try! mappable.toData()
+        return mappable.toData()
     }
 }
 

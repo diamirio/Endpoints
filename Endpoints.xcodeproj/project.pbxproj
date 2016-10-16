@@ -14,7 +14,6 @@
 		78685CC31DAFBDF500B72F18 /* EndpointsMapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78685CCA1DAFBE0600B72F18 /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
 		78685CE11DB0B0A400B72F18 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CD51DB0B0A400B72F18 /* API.swift */; };
-		78685CE41DB0B0A400B72F18 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CD81DB0B0A400B72F18 /* Endpoint.swift */; };
 		78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CDF1DB0B0A400B72F18 /* Request.swift */; };
 		78685CEC1DB0B0A400B72F18 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Response.swift */; };
 		787AECC61DABDEC8001A49BB /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
@@ -148,7 +147,6 @@
 		78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CB51DAFBDF500B72F18 /* EndpointsMapperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsMapperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CD51DB0B0A400B72F18 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		78685CD81DB0B0A400B72F18 /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		78685CD91DB0B0A400B72F18 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78685CDF1DB0B0A400B72F18 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		78685CE01DB0B0A400B72F18 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -235,7 +233,6 @@
 				78A5F0EA1DB1573800108A45 /* Tests */,
 				78685CDF1DB0B0A400B72F18 /* Request.swift */,
 				78685CE01DB0B0A400B72F18 /* Response.swift */,
-				78685CD81DB0B0A400B72F18 /* Endpoint.swift */,
 				78685CD51DB0B0A400B72F18 /* API.swift */,
 				78685CD91DB0B0A400B72F18 /* Info.plist */,
 			);
@@ -671,7 +668,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */,
-				78685CE41DB0B0A400B72F18 /* Endpoint.swift in Sources */,
 				78685CEC1DB0B0A400B72F18 /* Response.swift in Sources */,
 				78685CE11DB0B0A400B72F18 /* API.swift in Sources */,
 			);

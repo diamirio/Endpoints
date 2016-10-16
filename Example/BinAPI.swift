@@ -9,27 +9,34 @@
 import Foundation
 import Endpoints
 
-struct GetOutput: Request {
-    typealias RequestType = GetOutput
-    typealias ResponseType = OutputValue
-    
-    let value: String
-    
-    var path: String? { return "get" }
-    var method: HTTPMethod { return .get }
-    
-    var query: Parameters? {
-        return [ "value" : value ]
-    }
-}
-
 class BinAPI: API {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
-    
-    override func validate(response: HTTPURLResponse) -> Error? {
-        return nil
+}
+
+protocol BinRequest: Request {}
+
+extension BinRequest {
+//    func start(completion: ((Result<ResponseType.OutputType>)->())?) {
+//        BinAPI().call(endpoint: self) { result in
+//        }
+//    }
+}
+
+extension BinAPI {
+    struct GetOutput: Request {
+        typealias RequestType = GetOutput
+        typealias ResponseType = OutputValue
+        
+        let value: String
+        
+        var path: String? { return "get" }
+        var method: HTTPMethod { return .get }
+        
+        var query: Parameters? {
+            return [ "value" : value ]
+        }
     }
 }
 
@@ -42,44 +49,5 @@ struct OutputValue: ResponseParser {
             return OutputValue(value: value)
         }
         return nil
-    }
-}
-
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-
-struct InputValue: RequestData {
-    let value: String
-    
-    var query: Parameters? {
-        return [ "value": value ]
-    }
-}
-
-struct CustomInputValue: RequestEncoder {
-    let value: String
-    
-    func encode(request: URLRequest) -> URLRequest {
-        return DynamicRequestData(query: ["value": value]).encode(request: request)
-    }
-}
-
-extension BinAPI {
-    static let GetOutputValue = DynamicEndpoint<InputValue, OutputValue>(.get, "get")
-    static let DynamicRequest = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")
-    static let CustomRequestEndpoint = DynamicEndpoint<CustomInputValue, OutputValue>(.get, "get")
-    
-    func getOutput(for value: String, completion: @escaping (Result<OutputValue>)->()) {
-        let endpoint = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")
-        let data = DynamicRequestData(query: ["value": value])
-        
-        self.call(endpoint: endpoint, with: data, completion: completion)
-    }
-    
-    func outputRequest(with value: String) -> URLRequest {
-        let endpoint = DynamicEndpoint<DynamicRequestData, OutputValue>(.get, "get")
-        let data = DynamicRequestData(query: ["value": value])
-        
-        return self.request(for: endpoint, with: data)
     }
 }

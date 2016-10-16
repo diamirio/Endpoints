@@ -11,10 +11,10 @@ import XCTest
 
 class RequestTests: XCTestCase {
     func testRequestEncoding() {
-        let base = "http://httpbin.org"
+        let base = "https://httpbin.org"
         let queryParams = [ "q": "Äin €uro", "a": "test" ]
         let encodedQueryString = "q=%C3%84in%20%E2%82%ACuro&a=test"
-        let expectedUrlString = "http://httpbin.org/get?\(encodedQueryString)"
+        let expectedUrlString = "https://httpbin.org/get?\(encodedQueryString)"
         
         var req = testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams)
         XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
@@ -28,13 +28,13 @@ class RequestTests: XCTestCase {
     
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil, dynamicPath: String?=nil ) -> URLRequest {
         let api = API(baseURL: URL(string: baseUrl)!)
-        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, path)
-        let requestData = DynamicRequestData(dynamicPath: dynamicPath, query: queryParams)
+        var request = DynamicRequest<Data>(.get, path, query: queryParams)
+        request.dynamicPath = dynamicPath
         
-        let request = api.request(for: endpoint, with: requestData)
+        let urlRequest = api.request(for: request)
         
         let exp = expectation(description: "")
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
+        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             let httpResponse = response as! HTTPURLResponse
             XCTAssertNotNil(data)
             XCTAssertNil(error)
@@ -45,6 +45,6 @@ class RequestTests: XCTestCase {
         
         waitForExpectations(timeout: 10, handler: nil)
         
-        return request
+        return urlRequest
     }
 }

@@ -9,6 +9,26 @@
 import Foundation
 
 public typealias Parameters = [String: String]
+public enum HTTPMethod: String {
+    case get     = "GET"
+    case post    = "POST"
+    case put     = "PUT"
+    case patch   = "PATCH"
+    case delete  = "DELETE"
+    case head    = "HEAD"
+    case options = "OPTIONS"
+    case trace   = "TRACE"
+    case connect = "CONNECT"
+}
+
+public protocol Endpoint {
+    //TODO: Let Endpoint optionally constrain API Type
+    associatedtype RequestType: RequestEncoder
+    associatedtype ResponseType: ResponseParser
+    
+    var method: HTTPMethod { get }
+    var path: String? { get }
+}
 
 public protocol RequestEncoder {
     func encode(request: URLRequest) -> URLRequest
@@ -26,41 +46,6 @@ public extension RequestData {
     var query: Parameters? { return nil }
     var header: Parameters? { return nil }
     var body: Data? { return nil }
-    
-    public func encode(request: URLRequest) -> URLRequest {
-        let data = DynamicRequestData(dynamicPath: dynamicPath, query: query, header: header, body: body)
-        
-        return data.encode(request: request)
-    }
-}
-
-public struct DynamicRequestData: RequestData {
-    public var dynamicPath: String?
-    public var query: Parameters?
-    public var header: Parameters?
-    public var body: Data?
-    
-    public init(dynamicPath: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil) {
-        self.dynamicPath = dynamicPath
-        self.query = query
-        self.header = header
-        self.body = body
-    }
-    
-    private func createQueryItems() -> [URLQueryItem]? {
-        guard let params = query else {
-            return nil
-        }
-        
-        var items = [URLQueryItem]()
-        for param in params {
-            let queryItem = URLQueryItem(name: param.key, value: param.value)
-            
-            items.append(queryItem)
-        }
-        
-        return items
-    }
     
     public func encode(request: URLRequest) -> URLRequest {
         guard var url = request.url else {
@@ -91,5 +76,50 @@ public struct DynamicRequestData: RequestData {
         encoded.allHTTPHeaderFields = header
         
         return encoded
+    }
+    
+    private func createQueryItems() -> [URLQueryItem]? {
+        guard let params = query else {
+            return nil
+        }
+        
+        var items = [URLQueryItem]()
+        for param in params {
+            let queryItem = URLQueryItem(name: param.key, value: param.value)
+            
+            items.append(queryItem)
+        }
+        
+        return items
+    }
+}
+
+public protocol Request: Endpoint, RequestData {
+    //FIXME: this seems to be ignored by the compiler. should probable work with Swift 4
+    //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
+    typealias RequestType = Self
+}
+
+public struct DynamicRequest<Response: ResponseParser>: Request {
+    public typealias RequestType = DynamicRequest
+    public typealias ResponseType = Response
+    
+    //Endpoint
+    public var method: HTTPMethod
+    public var path: String?
+    
+    //RequestData
+    public var dynamicPath: String? //not required here, can use path instead
+    public var query: Parameters?
+    public var header: Parameters?
+    public var body: Data?
+    
+    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil) {
+        self.method = method
+        self.path = path
+        
+        self.query = query
+        self.header = header
+        self.body = body
     }
 }

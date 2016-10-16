@@ -16,11 +16,10 @@ class APITests: APITestCase {
     }
     
     func testTimeoutError() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "delay")
-        let data = DynamicRequestData(dynamicPath: "1")
+        let request = DynamicRequest<Data>(.get, "delay/1")
         
         let exp = expectation(description: "")
-        var req = api.request(for: endpoint, with: data)
+        var req = api.request(for: request)
         req.timeoutInterval = 0.5
         
         api.start(request: req, responseType: Data.self) { result in
@@ -37,10 +36,9 @@ class APITests: APITestCase {
     }
     
     func testStatusError() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "status")
-        let data = DynamicRequestData(dynamicPath: "400")
+        let request = DynamicRequest<Data>(.get, "status/400")
         
-        test(endpoint: endpoint, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result, isSuccess: false, status: 400)
             
             if let error = result.error as? APIError {
@@ -57,19 +55,17 @@ class APITests: APITestCase {
     }
     
     func testGetData() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, Data>(.get, "get")
-        let data = DynamicRequestData()
+        let request = DynamicRequest<Data>(.get, "get")
         
-        test(endpoint: endpoint, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
         }
     }
     
     func testGetString() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, String>(.get, "get")
-        let data = DynamicRequestData(query: [ "inputParam" : "inputParamValue" ])
+        let request = DynamicRequest<String>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(endpoint: endpoint, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
             
             if let string = result.value {
@@ -79,10 +75,9 @@ class APITests: APITestCase {
     }
     
     func testGetJSONDictionary() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, [String: Any]>(.get, "get")
-        let data = DynamicRequestData(query: [ "inputParam" : "inputParamValue" ])
+        let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(endpoint: endpoint, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
             
             if let jsonDict = result.value {
@@ -109,16 +104,15 @@ class APITests: APITestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! DynamicEndpoint<DynamicRequestData, [String]>.ResponseType.parse(responseData: arrayData, encoding: .utf8)!
+        let parsedObject = try! DynamicRequest<[String]>.ResponseType.parse(responseData: arrayData, encoding: .utf8)!
         
         XCTAssertEqual(inputArray, parsedObject)
     }
     
     func testFailJSONParsing() {
-        let endpoint = DynamicEndpoint<DynamicRequestData, [String: Any]>(.get, "xml")
-        let data = DynamicRequestData()
+        let request = DynamicRequest<[String: Any]>(.get, "xml")
         
-        test(endpoint: endpoint, with: data) { result in
+        test(endpoint: request) { result in
             self.assert(result: result, isSuccess: false, status: 200)
             
             if let error = result.error as? CocoaError {
