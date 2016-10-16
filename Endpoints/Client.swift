@@ -14,6 +14,99 @@ public enum APIError: Error {
     case serverError(description: String)
 }
 
+public struct Result<Value> {
+    public internal(set) var value: Value?
+    public internal(set) var error: Error?
+    
+    public internal(set) var response: HTTPURLResponse?
+    
+    public var isSuccess: Bool { return !isError }
+    
+    public var isError: Bool { return error != nil }
+    
+    internal init(response: HTTPURLResponse?) {
+        self.response = response
+    }
+}
+
+protocol Client {
+    func encode<R: Request>(request: R) -> URLRequest
+    func transform<P: ResponseParser>(response: URLResponse?, data: Data?, error: Error?, parser: P.Type) -> Result<P.OutputType>
+}
+
+extension Client {
+    var session: URLSession {
+        return URLSession.shared
+    }
+    
+    @discardableResult
+    func start<P: ResponseParser>(urlRequest: URLRequest, responseParser: P.Type, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask {
+        let task = session.dataTask(with: urlRequest) { data, response, error in
+            let result = self.transform(response: response, data: data, error: error, parser: responseParser.self)
+            
+            completion(result)
+        }
+        task.resume()
+        
+        return task
+    }
+    
+    @discardableResult
+    func call<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+        let urlRequest = encode(request: request)
+        
+        return start(urlRequest: urlRequest, responseParser: R.ResponseType.self, completion: completion)
+    }
+}
+
+open class BaseClient: Client {
+    public let baseURL: URL
+    public let session: URLSession
+    public var debug = false
+    
+    public init(baseURL: URL, session: URLSession=URLSession.shared) {
+        self.baseURL = baseURL
+        self.session = session
+    }
+    
+    func encode<R: Request>(request: R) -> URLRequest {
+        return request.encode(withBaseURL: baseURL)
+    }
+    
+    func transform<P: ResponseParser>(response: URLResponse?, data: Data?, error: Error?, parser: P.Type) -> Result<P.OutputType> {
+        var result = Result<P.OutputType>(response: response as? HTTPURLResponse)
+        
+        if let error = error {
+            result.error = error
+        } else if let response = result.response {
+            if let error = self.validate(response: response) {
+                result.error = error
+            } else {
+                //TODO: use response encoding, if present
+                let encoding: String.Encoding = .utf8
+                
+                do {
+                    result.value = try parser.parse(responseData: data, encoding: encoding)
+                } catch {
+                    result.error = error
+                }
+            }
+        }
+        
+        return result
+    }
+    
+    open func validate(response: HTTPURLResponse) -> APIError? {
+        let code = response.statusCode
+        
+        if !(200..<300).contains(code) {
+            return APIError.unacceptableStatus(code: code, description: HTTPURLResponse.localizedString(forStatusCode: code))
+        }
+        
+        return nil
+    }
+}
+
 open class API {
     public let baseURL: URL
     public var debugAll = false

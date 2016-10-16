@@ -59,22 +59,3 @@ extension Array: ResponseParser {
         return array
     }
 }
-
-public struct Result<Value> {
-    public internal(set) var value: Value?
-    public internal(set) var error: Error?
-    
-    public internal(set) var response: HTTPURLResponse?
-    
-    public var isSuccess: Bool {
-        return !isError
-    }
-    
-    public var isError: Bool {
-        return error != nil
-    }
-    
-    internal init(response: HTTPURLResponse?) {
-        self.response = response
-    }
-}

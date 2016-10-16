@@ -11,10 +11,9 @@ import ObjectMapper
 import Endpoints
 @testable import EndpointsMapper
 
-class EndpointMapperTests: APITestCase {
+class EndpointMapperTests: ClientTestCase {
     override func setUp() {
-        api = API(baseURL: URL(string: "https://httpbin.org")!)
-        api.debugAll = true
+        client = BaseClient(baseURL: URL(string: "https://httpbin.org")!)
     }
     
     struct ResponseObject: MappableResponse {
@@ -30,7 +29,7 @@ class EndpointMapperTests: APITestCase {
         let value = "value"
         let request = DynamicRequest<ResponseObject>(.get, "get", query: [ "input": value ])
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result)
             
             XCTAssertEqual(result.value?.value, value)
@@ -53,7 +52,7 @@ class EndpointMapperTests: APITestCase {
         
         let request = DynamicRequest<String>(.post, "post", body: jsonBody.toData())
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result)
             
             if let string = result.value {
@@ -80,7 +79,7 @@ class EndpointMapperTests: APITestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(endpoint: PostJSONRequest(object: jsonBody)) { result in
+        test(request: PostJSONRequest(object: jsonBody)) { result in
             self.assert(result: result)
             
             if let string = result.value {
@@ -102,7 +101,7 @@ class EndpointMapperTests: APITestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(endpoint: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
+        test(request: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
             self.assert(result: result)
             
             if let string = result.value {

@@ -9,20 +9,19 @@
 import XCTest
 @testable import Endpoints
 
-class APITests: APITestCase {
+class ClientTests: ClientTestCase {
     override func setUp() {
-        api = API(baseURL: URL(string: "http://httpbin.org")!)
-        api.debugAll = true
+        client = BaseClient(baseURL: URL(string: "http://httpbin.org")!)
     }
     
     func testTimeoutError() {
         let request = DynamicRequest<Data>(.get, "delay/1")
         
         let exp = expectation(description: "")
-        var req = api.request(for: request)
+        var req = client.encode(request: request)
         req.timeoutInterval = 0.5
         
-        api.start(request: req, responseType: Data.self) { result in
+        client.start(urlRequest: req, responseParser: Data.self) { result in
             self.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
             
@@ -38,7 +37,7 @@ class APITests: APITestCase {
     func testStatusError() {
         let request = DynamicRequest<Data>(.get, "status/400")
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: false, status: 400)
             
             if let error = result.error as? APIError {
@@ -57,7 +56,7 @@ class APITests: APITestCase {
     func testGetData() {
         let request = DynamicRequest<Data>(.get, "get")
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
         }
     }
@@ -65,7 +64,7 @@ class APITests: APITestCase {
     func testGetString() {
         let request = DynamicRequest<String>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
             
             if let string = result.value {
@@ -77,7 +76,7 @@ class APITests: APITestCase {
     func testGetJSONDictionary() {
         let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: true, status: 200)
             
             if let jsonDict = result.value {
@@ -112,7 +111,7 @@ class APITests: APITestCase {
     func testFailJSONParsing() {
         let request = DynamicRequest<[String: Any]>(.get, "xml")
         
-        test(endpoint: request) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: false, status: 200)
             
             if let error = result.error as? CocoaError {
@@ -141,7 +140,7 @@ class APITests: APITestCase {
     func testTypedRequest() {
         let value = "value"
         
-        test(endpoint: GetOutput(value: value)) { result in
+        test(request: GetOutput(value: value)) { result in
             self.assert(result: result)
             
             if let jsonDict = result.value {

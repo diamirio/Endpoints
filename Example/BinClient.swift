@@ -9,9 +9,25 @@
 import Foundation
 import Endpoints
 
-class BinAPI: API {
+class BinClient: BaseClient {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
+    }
+    
+    override func validate(response: HTTPURLResponse) -> APIError? {
+        var error = super.validate(response: response)
+        
+        
+        if let error = error {
+            switch error {
+            case .unacceptableStatus(code: _, description: _):
+                var message = response.allHeaderFields["X-Error-Message"] as? String
+                message = message?.removingPercentEncoding
+            default:
+                
+            }
+            
+        }
     }
 }
 
@@ -24,7 +40,7 @@ extension BinRequest {
 //    }
 }
 
-extension BinAPI {
+extension BinClient {
     struct GetOutput: Request {
         typealias RequestType = GetOutput
         typealias ResponseType = OutputValue

@@ -21,15 +21,6 @@ public enum HTTPMethod: String {
     case connect = "CONNECT"
 }
 
-public protocol Endpoint {
-    //TODO: Let Endpoint optionally constrain API Type
-    associatedtype RequestType: RequestEncoder
-    associatedtype ResponseType: ResponseParser
-    
-    var method: HTTPMethod { get }
-    var path: String? { get }
-}
-
 public protocol RequestEncoder {
     func encode(request: URLRequest) -> URLRequest
 }
@@ -94,10 +85,37 @@ public extension RequestData {
     }
 }
 
+public protocol Endpoint {
+    //TODO: Let Endpoint optionally constrain API Type
+    associatedtype RequestType: RequestEncoder
+    associatedtype ResponseType: ResponseParser
+    
+    var method: HTTPMethod { get }
+    var path: String? { get }
+}
+
 public protocol Request: Endpoint, RequestData {
     //FIXME: this seems to be ignored by the compiler. should probable work with Swift 4
     //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
     typealias RequestType = Self
+}
+
+extension Request {
+    func encode(withBaseURL baseURL: URL) -> URLRequest {
+        var url = baseURL
+        
+        if let path = path {
+            guard let urlWithPath = URL(string: path, relativeTo: url) else {
+                fatalError("invalid path \(path)")
+            }
+            url = urlWithPath
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = method.rawValue
+        
+        return self.encode(request: urlRequest)
+    }
 }
 
 public struct DynamicRequest<Response: ResponseParser>: Request {
@@ -121,5 +139,9 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
         self.query = query
         self.header = header
         self.body = body
+    }
+    
+    public init<E: Endpoint, R: RequestData>(endpoint: E, data: R) {
+        self.init(endpoint.method, endpoint.path, query: data.query, header: data.header, body: data.body)
     }
 }
