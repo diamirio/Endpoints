@@ -60,7 +60,7 @@ extension Array: ResponseParser {
     }
 }
 
-public struct Result<Value: ResponseParser> {
+public struct Result<Value> {
     public internal(set) var value: Value?
     public internal(set) var error: Error?
     
