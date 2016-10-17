@@ -10,16 +10,15 @@ import XCTest
 import Endpoints
 @testable import Example
 
-class BinAPITests: APITestCase {
+class BinAPITests: ClientTestCase {
     let input = "inout"
     
     override func setUp() {
-        api = BinAPI()
-        api.debugAll = true
+        client = BinClient()
     }
     
     func testGetOutputRequest() {
-        test(endpoint: BinAPI.GetOutput(value: input)) { result in
+        test(request: BinClient.GetOutput(value: input)) { result in
             self.assert(result: result, isSuccess: true, status: 200)
             
             XCTAssertEqual(self.input, result.value?.value)

@@ -15,7 +15,7 @@ class ClientTestCase: XCTestCase {
     
     func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
         let exp = expectation(description: "")
-        client.call(request: request) { result in
+        client.start(request: request) { result in
             validateResult?(result)
             
             exp.fulfill()

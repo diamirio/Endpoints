@@ -35,11 +35,11 @@ public protocol MappableResponse: Mappable, ResponseParser {}
 public extension MappableResponse {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Self? {
         guard let dict = try parseJSON(responseData: responseData) as? [String: Any] else {
-            throw APIError.parsingError(description: "JSON structure is not a Dictionary")
+            throw ParsingError.invalidData(description: "JSON structure is not a Dictionary")
         }
         
         guard let object:Self = Mapper().map(JSON: dict) else {
-            throw APIError.parsingError(description: "JSON structure could not be mapped to \(self) class")
+            throw ParsingError.invalidData(description: "JSON structure could not be mapped to \(self) class")
         }
         
         return object

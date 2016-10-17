@@ -8,6 +8,10 @@
 
 import Foundation
 
+public enum ParsingError: Error {
+    case invalidData(description: String)
+}
+
 public protocol ResponseParser {
     associatedtype OutputType = Self
     
@@ -35,7 +39,7 @@ extension String: ResponseParser {
         if let string = String(data: data, encoding: encoding) {
             return string
         } else {
-            throw APIError.parsingError(description: "String could not be parsed with encoding: \(encoding)")
+            throw ParsingError.invalidData(description: "String could not be parsed with encoding: \(encoding)")
         }
     }
 }
@@ -43,7 +47,7 @@ extension String: ResponseParser {
 extension Dictionary: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Dictionary? {
         guard let dict = try parseJSON(responseData: responseData) as? Dictionary else {
-            throw APIError.parsingError(description: "JSON structure is not an Object")
+            throw ParsingError.invalidData(description: "JSON structure is not an Object")
         }
         
         return dict
@@ -53,7 +57,7 @@ extension Dictionary: ResponseParser {
 extension Array: ResponseParser {
     public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Array? {
         guard let array = try parseJSON(responseData: responseData) as? Array else {
-            throw APIError.parsingError(description: "JSON structure is not an Array")
+            throw ParsingError.invalidData(description: "JSON structure is not an Array")
         }
         
         return array

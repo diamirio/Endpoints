@@ -13,29 +13,28 @@ class BinClient: BaseClient {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
-    
-    override func validate(response: HTTPURLResponse) -> APIError? {
-        var error = super.validate(response: response)
-        
-        
-        if let error = error {
-            switch error {
-            case .unacceptableStatus(code: _, description: _):
-                var message = response.allHeaderFields["X-Error-Message"] as? String
-                message = message?.removingPercentEncoding
-            default:
-                
-            }
-            
-        }
-    }
+//    
+//    func validate(response: HTTPURLResponse) -> Error? {
+//        let statusError = statusCodeValidator.validate(response: response)
+//        if let error = statusError, let message = response.allHeaderFields["X-Error-Message"] as? String {
+//            return NSError()
+//        }
+//    }
+//    
+//    func errorMessage(for response: HTTPURLResponse) -> String? {
+//         {
+//            return message.removingPercentEncoding
+//        }
+//        
+//        return nil
+//    }
 }
 
 protocol BinRequest: Request {}
 
 extension BinRequest {
 //    func start(completion: ((Result<ResponseType.OutputType>)->())?) {
-//        BinAPI().call(endpoint: self) { result in
+//        BinAPI().start(endpoint: self) { result in
 //        }
 //    }
 }

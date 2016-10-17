@@ -27,11 +27,11 @@ class RequestTests: XCTestCase {
     }
     
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil, dynamicPath: String?=nil ) -> URLRequest {
-        let api = API(baseURL: URL(string: baseUrl)!)
+        let client = BaseClient(baseURL: URL(string: baseUrl)!)
         var request = DynamicRequest<Data>(.get, path, query: queryParams)
         request.dynamicPath = dynamicPath
         
-        let urlRequest = api.request(for: request)
+        let urlRequest = client.encode(request: request)
         
         let exp = expectation(description: "")
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
@@ -41,7 +41,7 @@ class RequestTests: XCTestCase {
             XCTAssertEqual(httpResponse.statusCode, 200)
             
             exp.fulfill()
-            }.resume()
+        }.resume()
         
         waitForExpectations(timeout: 10, handler: nil)
         

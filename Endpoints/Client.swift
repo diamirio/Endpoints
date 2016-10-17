@@ -8,24 +8,67 @@
 
 import Foundation
 
-public enum APIError: Error {
-    case unacceptableStatus(code: Int, description: String)
-    case parsingError(description: String)
-    case serverError(description: String)
-}
-
 public struct Result<Value> {
-    public internal(set) var value: Value?
-    public internal(set) var error: Error?
+    public private(set) var value: Value?
+    public private(set) var error: Error?
     
-    public internal(set) var response: HTTPURLResponse?
+    public let response: HTTPURLResponse?
     
     public var isSuccess: Bool { return !isError }
-    
     public var isError: Bool { return error != nil }
     
-    internal init(response: HTTPURLResponse?) {
-        self.response = response
+    init<P: ResponseParser>(response: URLResponse?, data: Data?, error: Error?, parser: P.Type, validator: ResponseValidator?=nil) where P.OutputType == Value {
+        self.response = response as? HTTPURLResponse
+        
+        if let error = error {
+            self.error = error
+        } else if let response = self.response {
+            if let error = validator?.validate(response: response) {
+                self.error = error
+            } else {
+                //TODO: use response encoding, if present
+                let encoding: String.Encoding = .utf8
+                
+                do {
+                    value = try parser.parse(responseData: data, encoding: encoding)
+                } catch {
+                    self.error = error
+                }
+            }
+        }
+    }
+}
+
+public enum StatusCodeError: Error {
+    case unacceptable(code: Int)
+}
+
+extension StatusCodeError {
+    public var localizedDescription: String {
+        switch  self {
+        case .unacceptable(let code):
+            return HTTPURLResponse.localizedString(forStatusCode: code)
+        }
+    }
+}
+
+public protocol ResponseValidator {
+    func validate(response: HTTPURLResponse) -> Error?
+}
+
+public class StatusCodeValidator: ResponseValidator {
+    public func isAcceptableStatus(code: Int) -> Bool {
+        return (200..<300).contains(code)
+    }
+    
+    public func validate(response: HTTPURLResponse) -> Error? {
+        let code = response.statusCode
+        
+        if !isAcceptableStatus(code: code) {
+            return StatusCodeError.unacceptable(code: code)
+        }
+        
+        return nil
     }
 }
 
@@ -52,16 +95,18 @@ extension Client {
     }
     
     @discardableResult
-    func call<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+    func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = encode(request: request)
         
         return start(urlRequest: urlRequest, responseParser: R.ResponseType.self, completion: completion)
     }
 }
 
-open class BaseClient: Client {
+open class BaseClient: Client, ResponseValidator {
     public let baseURL: URL
     public let session: URLSession
+    public lazy var statusCodeValidator = StatusCodeValidator()
+    //TODO: implement debugging
     public var debug = false
     
     public init(baseURL: URL, session: URLSession=URLSession.shared) {
@@ -74,136 +119,10 @@ open class BaseClient: Client {
     }
     
     func transform<P: ResponseParser>(response: URLResponse?, data: Data?, error: Error?, parser: P.Type) -> Result<P.OutputType> {
-        var result = Result<P.OutputType>(response: response as? HTTPURLResponse)
-        
-        if let error = error {
-            result.error = error
-        } else if let response = result.response {
-            if let error = self.validate(response: response) {
-                result.error = error
-            } else {
-                //TODO: use response encoding, if present
-                let encoding: String.Encoding = .utf8
-                
-                do {
-                    result.value = try parser.parse(responseData: data, encoding: encoding)
-                } catch {
-                    result.error = error
-                }
-            }
-        }
-        
-        return result
+        return Result<P.OutputType>(response: response, data: data, error: error, parser: parser, validator: self)
     }
     
-    open func validate(response: HTTPURLResponse) -> APIError? {
-        let code = response.statusCode
-        
-        if !(200..<300).contains(code) {
-            return APIError.unacceptableStatus(code: code, description: HTTPURLResponse.localizedString(forStatusCode: code))
-        }
-        
-        return nil
-    }
-}
-
-open class API {
-    public let baseURL: URL
-    public var debugAll = false
-    
-    public init(baseURL: URL) {
-        self.baseURL = baseURL
-    }
-    
-    public func request<E: Endpoint>(for endpoint: E, with data: E.RequestType?=nil) -> URLRequest {
-        var url = baseURL
-        
-        if let path = endpoint.path {
-            guard let urlWithPath = URL(string: path, relativeTo: baseURL) else {
-                fatalError("invalid path \(path)")
-            }
-            url = urlWithPath
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = endpoint.method.rawValue
-        
-        if let data = data ?? endpoint as? E.RequestType {
-            request = data.encode(request: request)
-        }
-        
-        return request
-    }
-    
-    public func transform<P: ResponseParser>(response: URLResponse?, for request: URLRequest, with data: Data?, error: Error?, debug: Bool, parser: P.Type) -> Result<P.OutputType> {
-        var result = Result<P.OutputType>(response: response as? HTTPURLResponse)
-        
-        if debug || debugAll {
-            if let data = data, let string = String(data: data, encoding: .utf8) {
-                debugPrint("response string for \(request) with status: \(result.response?.statusCode):\n\(string)")
-            } else {
-                debugPrint("no response string for \(request). error: \(result.error). status: \(result.response?.statusCode)")
-            }
-        }
-        
-        if let error = error {
-            result.error = error
-        } else if let response = result.response {
-            if let error = self.validate(response: response) {
-                result.error = error
-            } else {
-                //TODO: use response encoding, if present
-                let encoding: String.Encoding = .utf8
-                
-                do {
-                    result.value = try parser.parse(responseData: data, encoding: encoding)
-                } catch {
-                    result.error = error
-                }
-            }
-        }
-        
-        return result
-    }
-    
-    open func validate(response: HTTPURLResponse) -> Error? {
-        let code = response.statusCode
-        
-        if !(200..<300).contains(code) {
-            var message = response.allHeaderFields["X-Error-Message"] as? String
-            message = message?.removingPercentEncoding
-            
-            if message == nil {
-                message = HTTPURLResponse.localizedString(forStatusCode: code)
-            }
-            
-            return APIError.unacceptableStatus(code: code, description: message!)
-        }
-
-        return nil
-    }
-    
-    @discardableResult
-    public func call<E: Endpoint, P: ResponseParser>(endpoint: E, with data: E.RequestType?=nil, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask where E.ResponseType == P {
-        let request = self.request(for: endpoint, with: data)
-        
-        return start(request: request, for: endpoint, session: session, debug: debug, completion: completion)
-    }
-    
-    @discardableResult
-    public func start<E: Endpoint, P: ResponseParser>(request: URLRequest, for endpoint: E, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask where E.ResponseType == P {
-        return start(request: request, responseType: P.self, session: session, debug: debug, completion: completion)
-    }
-    
-    @discardableResult
-    public func start<P: ResponseParser>(request: URLRequest, responseType: P.Type, session: URLSession=URLSession.shared, debug: Bool=false, completion: @escaping (Result<P.OutputType>)->()) -> URLSessionDataTask {
-        let task = session.dataTask(with: request) { data, response, error in
-            let result = self.transform(response: response, for: request, with: data, error: error, debug: debug, parser: responseType)
-            
-            completion(result)
-        }
-        task.resume()
-        
-        return task
+    public func validate(response: HTTPURLResponse) -> Error? {
+        return statusCodeValidator.validate(response: response)
     }
 }

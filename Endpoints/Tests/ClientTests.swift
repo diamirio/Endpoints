@@ -40,12 +40,12 @@ class ClientTests: ClientTestCase {
         test(request: request) { result in
             self.assert(result: result, isSuccess: false, status: 400)
             
-            if let error = result.error as? APIError {
+            if let error = result.error as? StatusCodeError {
                 switch error {
-                case .unacceptableStatus:
-                    print("got expected error: \(error)")
+                case .unacceptable(400):
+                    print("code is ok")
                 default:
-                    XCTFail("wrong error type \(error)")
+                    XCTFail("wrong error: \(error)")
                 }
             } else {
                 XCTFail("wrong error: \(result.error)")
