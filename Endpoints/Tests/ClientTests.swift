@@ -73,6 +73,24 @@ class ClientTests: ClientTestCase {
         }
     }
     
+    func testWrapperRequest() {
+        var validateCalled = false
+        let endpoint = DynamicRequest<String>(.get, "get") { result in
+            validateCalled = true
+        }
+        let data = DynamicRequest<Data>(.post, "ignored", query: [ "inputParam" : "inputParamValue" ])
+        let wrapper = WrapperRequest(endpoint: endpoint, requestEncoder: data)
+        
+        test(request: wrapper) { result in
+            self.assert(result: result)
+            
+            XCTAssertTrue(validateCalled)
+            if let string = result.value {
+                XCTAssertTrue(string.contains("inputParamValue"))
+            }
+        }
+    }
+    
     func testGetJSONDictionary() {
         let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         

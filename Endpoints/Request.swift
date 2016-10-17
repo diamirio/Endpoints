@@ -132,9 +132,39 @@ extension Request {
     }
 }
 
+public struct WrapperRequest<E: Endpoint, R: RequestEncoder>: Request {
+    public typealias ResponseType = E.ResponseType
+    
+    public let endpoint: E
+    public let requestEncoder: R
+
+    public init(endpoint: E, requestEncoder: R) {
+        self.endpoint = endpoint
+        self.requestEncoder = requestEncoder
+    }
+    
+    public var path: String? {
+        return endpoint.path
+    }
+    
+    public var method: HTTPMethod {
+        return endpoint.method
+    }
+    
+    public func encode(request: URLRequest) -> URLRequest {
+        return requestEncoder.encode(request: request)
+    }
+    
+    public func validate(result: SessionTaskResult) throws {
+        try endpoint.validate(result: result)
+    }
+}
+
 public struct DynamicRequest<Response: ResponseParser>: Request {
     public typealias RequestType = DynamicRequest
     public typealias ResponseType = Response
+    
+    public typealias ValidationBlock = (SessionTaskResult) throws ->()
     
     //Endpoint
     public var method: HTTPMethod
@@ -146,16 +176,20 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
     public var header: Parameters?
     public var body: Data?
     
-    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil) {
+    public var validate: ValidationBlock?
+    
+    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil, validate: ValidationBlock?=nil) {
         self.method = method
         self.path = path
         
         self.query = query
         self.header = header
         self.body = body
+        
+        self.validate = validate
     }
     
-    public init<E: Endpoint, R: RequestData>(endpoint: E, data: R) {
-        self.init(endpoint.method, endpoint.path, query: data.query, header: data.header, body: data.body)
+    public func validate(result: SessionTaskResult) throws {
+        try validate?(result)
     }
 }

@@ -31,7 +31,7 @@
 		78A5F1091DB1596600108A45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FA1DB1579B00108A45 /* Assets.xcassets */; };
 		78A5F10A1DB1596900108A45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */; };
 		78A5F10B1DB1596E00108A45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FD1DB1579B00108A45 /* Main.storyboard */; };
-		78A5F10C1DB1598E00108A45 /* BinAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinAPITests.swift */; };
+		78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinClientTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,7 +170,7 @@
 		78A5F0FE1DB1579B00108A45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		78A5F0FF1DB1579B00108A45 /* BinClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClient.swift; sourceTree = "<group>"; };
 		78A5F1001DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		78A5F1021DB1579B00108A45 /* BinAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinAPITests.swift; sourceTree = "<group>"; };
+		78A5F1021DB1579B00108A45 /* BinClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
 		78A5F1031DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78A5F1041DB1579B00108A45 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -334,7 +334,7 @@
 		78A5F1011DB1579B00108A45 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				78A5F1021DB1579B00108A45 /* BinAPITests.swift */,
+				78A5F1021DB1579B00108A45 /* BinClientTests.swift */,
 				78A5F1031DB1579B00108A45 /* Info.plist */,
 			);
 			path = Tests;
@@ -697,7 +697,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78A5F10C1DB1598E00108A45 /* BinAPITests.swift in Sources */,
+				78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */,
 				78A4AFB51DB3FB8300B119C4 /* ClientTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
