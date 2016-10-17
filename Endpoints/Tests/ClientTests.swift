@@ -139,7 +139,6 @@ class ClientTests: ClientTestCase<BaseClient> {
     }
     
     struct GetOutput: Request {
-        typealias RequestType = GetOutput
         typealias ResponseType = [String: Any]
         
         let value: String
@@ -179,7 +178,6 @@ class ClientTests: ClientTestCase<BaseClient> {
     }
     
     struct CustomizedURLRequest: Request {
-        typealias RequestType = CustomizedURLRequest
         typealias ResponseType = [String: Any]
 
         var path: String? { return "headers" }

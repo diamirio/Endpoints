@@ -129,7 +129,7 @@ open class BaseClient: Client, ResponseValidator {
         }
     }
     
-    open func validate<R: Request>(result: SessionTaskResult, for request: R) throws {
+    public func validate<R: Request>(result: SessionTaskResult, for request: R) throws {
         try validate(result: result) //global validation
         try request.validate(result: result) //request-specific validation
     }

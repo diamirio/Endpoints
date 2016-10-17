@@ -62,7 +62,6 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
     }
     
     struct PostJSONRequest: Request {
-        typealias RequestType = PostJSONRequest
         typealias ResponseType = String
         
         var method: HTTPMethod { return .post }
@@ -90,7 +89,6 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
     
     struct ConvenientPostJSONRequest: MappableRequest {
         typealias MappableType = RequestObject
-        typealias RequestType = ConvenientPostJSONRequest
         typealias ResponseType = String
         
         var mappable: RequestObject

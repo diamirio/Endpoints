@@ -36,7 +36,6 @@ extension BinRequest {
 
 extension BinClient {
     struct GetOutput: Request {
-        typealias RequestType = GetOutput
         typealias ResponseType = OutputValue
         
         let value: String

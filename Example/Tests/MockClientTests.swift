@@ -27,7 +27,7 @@ class MockClient: BinClient {
         var result = SessionTaskResult(response: nil, data: Data(), error: nil)
         
         if let serverMessage = request as? ServerMessageRequest {
-            result.response = HTTPURLResponse(url: url, statusCode: 299, httpVersion: nil, headerFields: [ "X-Error-Message" : serverMessage.message])
+            result.response = HTTPURLResponse(url: url, statusCode: 300, httpVersion: nil, headerFields: [ "X-Error-Message" : serverMessage.message])
         }
         
         return result
@@ -51,7 +51,7 @@ class MockClientTests: ClientTestCase<MockClient> {
     func testErrorMessageValidation() {
         let msg = "error message"
         test(request: ServerMessageRequest(message: msg)) { result in
-            self.assert(result: result, isSuccess: false, status: 400)
+            self.assert(result: result, isSuccess: false, status: 299)
         }
     }
 }
