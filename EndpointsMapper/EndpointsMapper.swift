@@ -33,7 +33,7 @@ public extension MappableRequest {
 public protocol MappableResponse: Mappable, ResponseParser {}
 
 public extension MappableResponse {
-    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Self? {
+    public static func parse(responseData: Data, encoding: String.Encoding) throws -> Self {
         guard let dict = try parseJSON(responseData: responseData) as? [String: Any] else {
             throw ParsingError.invalidData(description: "JSON structure is not a Dictionary")
         }

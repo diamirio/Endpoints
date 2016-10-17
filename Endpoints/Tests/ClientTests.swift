@@ -197,7 +197,6 @@ class ClientTests: ClientTestCase {
     }
     
     struct ValidatedRequest: Request {
-        typealias RequestType = ValidatedRequest
         typealias ResponseType = [String: Any]
         
         var path: String? { return "response-headers" }

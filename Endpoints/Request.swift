@@ -25,6 +25,12 @@ public protocol RequestEncoder {
     func encode(request: URLRequest) -> URLRequest
 }
 
+public struct NoOpRequestEncoder: RequestEncoder {
+    public func encode(request: URLRequest) -> URLRequest {
+        return request
+    }
+}
+
 public protocol RequestData: RequestEncoder {
     var dynamicPath: String? { get }
     var query: Parameters? { get }
@@ -100,13 +106,15 @@ extension Endpoint {
     }
 }
 
-public protocol Request: Endpoint, RequestData {}
+public protocol Request: Endpoint, RequestData {
+    //setting the RequestType to self seems to be ignored by the compiler. should probably work with Swift 4
+    //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
+    //so typealias RequestType = Self doesn't work
+    //Workaround: Set default to NoOp
+    associatedtype RequestType: RequestEncoder = NoOpRequestEncoder
+}
 
 extension Request {
-    //FIXME: this seems to be ignored by the compiler. should probable work with Swift 4
-    //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
-    typealias RequestType = Self
-    
     func encode(withBaseURL baseURL: URL) -> URLRequest {
         var url = baseURL
         
