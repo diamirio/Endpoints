@@ -10,7 +10,7 @@ import XCTest
 import Endpoints
 @testable import Example
 
-class BinClientTests: ClientTestCase {
+class BinClientTests: ClientTestCase<BinClient> {
     let input = "inout"
     
     override func setUp() {

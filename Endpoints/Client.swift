@@ -9,11 +9,11 @@
 import Foundation
 
 public struct SessionTaskResult {
-    var response: URLResponse?
-    var data: Data?
-    var error: Error?
+    public var response: URLResponse?
+    public var data: Data?
+    public var error: Error?
     
-    var httpResponse: HTTPURLResponse? {
+    public var httpResponse: HTTPURLResponse? {
         return response as? HTTPURLResponse
     }
 }
@@ -33,14 +33,14 @@ public struct Result<Value> {
 }
 
 public enum StatusCodeError: Error {
-    case unacceptable(code: Int)
+    case unacceptable(code: Int, reason: String?)
 }
 
 extension StatusCodeError {
     public var localizedDescription: String {
         switch  self {
-        case .unacceptable(let code):
-            return HTTPURLResponse.localizedString(forStatusCode: code)
+        case .unacceptable(let code, let reason):
+            return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
         }
     }
 }
@@ -56,22 +56,22 @@ public class StatusCodeValidator: ResponseValidator {
     
     public func validate(result: SessionTaskResult) throws {
         if let code = result.httpResponse?.statusCode, !isAcceptableStatus(code: code) {
-            throw StatusCodeError.unacceptable(code: code)
+            throw StatusCodeError.unacceptable(code: code, reason: nil)
         }
     }
 }
 
-protocol Client {
+public protocol Client {
     func encode<R: Request>(request: R) -> URLRequest
     func parse<R: Request>(sessionTaskResult result: SessionTaskResult, for request: R) throws -> R.ResponseType.OutputType
 }
 
-extension Client {
-    var session: URLSession {
+public extension Client {
+    public var session: URLSession {
         return URLSession.shared
     }
     
-    func transform<R: Request>(sessionResult: SessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
+    public func transform<R: Request>(sessionResult: SessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
         var result = Result<R.ResponseType.OutputType>(response: sessionResult.httpResponse)
         
         do {
@@ -84,7 +84,7 @@ extension Client {
     }
     
     @discardableResult
-    func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+    public func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = encode(request: request)
         
         let task = session.dataTask(with: urlRequest) { data, response, error in
@@ -111,11 +111,11 @@ open class BaseClient: Client, ResponseValidator {
         self.session = session
     }
     
-    func encode<R: Request>(request: R) -> URLRequest {
+    open func encode<R: Request>(request: R) -> URLRequest {
         return request.encode(withBaseURL: baseURL)
     }
     
-    func parse<R: Request>(sessionTaskResult result: SessionTaskResult, for request: R) throws -> R.ResponseType.OutputType {
+    public func parse<R: Request>(sessionTaskResult result: SessionTaskResult, for request: R) throws -> R.ResponseType.OutputType {
         if let error = result.error {
             throw error
         }
@@ -129,12 +129,12 @@ open class BaseClient: Client, ResponseValidator {
         }
     }
     
-    public func validate<R: Request>(result: SessionTaskResult, for request: R) throws {
+    open func validate<R: Request>(result: SessionTaskResult, for request: R) throws {
         try validate(result: result) //global validation
         try request.validate(result: result) //request-specific validation
     }
     
-    public func validate(result: SessionTaskResult) throws {
+    open func validate(result: SessionTaskResult) throws {
         try statusCodeValidator.validate(result: result)
     }
 }

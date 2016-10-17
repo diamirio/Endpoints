@@ -10,8 +10,8 @@ import Foundation
 import XCTest
 @testable import Endpoints
 
-class ClientTestCase: XCTestCase {
-    var client: Client!
+class ClientTestCase<C: Client>: XCTestCase {
+    var client: C!
     
     func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
         let exp = expectation(description: "")

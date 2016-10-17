@@ -9,7 +9,7 @@
 import XCTest
 @testable import Endpoints
 
-class ClientTests: ClientTestCase {
+class ClientTests: ClientTestCase<BaseClient> {
     override func setUp() {
         client = BaseClient(baseURL: URL(string: "http://httpbin.org")!)
     }
@@ -39,7 +39,7 @@ class ClientTests: ClientTestCase {
             
             if let error = result.error as? StatusCodeError {
                 switch error {
-                case .unacceptable(400):
+                case .unacceptable(400, _):
                     print("code is ok")
                 default:
                     XCTFail("wrong error: \(error)")
@@ -221,7 +221,7 @@ class ClientTests: ClientTestCase {
         var mime: String
         
         func validate(result: SessionTaskResult) throws {
-            throw StatusCodeError.unacceptable(code: 0)
+            throw StatusCodeError.unacceptable(code: 0, reason: nil)
         }
     }
     

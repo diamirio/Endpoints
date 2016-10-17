@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781A61C31DB5407900CE3EC9 /* MockClientTests.swift */; };
 		7867367C1DAFAD370082828B /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
 		7867367D1DAFAD370082828B /* Endpoints.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78685CB61DAFBDF500B72F18 /* EndpointsMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */; };
@@ -144,6 +145,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		781A61C31DB5407900CE3EC9 /* MockClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockClientTests.swift; sourceTree = "<group>"; };
 		78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CB51DAFBDF500B72F18 /* EndpointsMapperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsMapperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CD51DB0B0A400B72F18 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				78A5F1021DB1579B00108A45 /* BinClientTests.swift */,
+				781A61C31DB5407900CE3EC9 /* MockClientTests.swift */,
 				78A5F1031DB1579B00108A45 /* Info.plist */,
 			);
 			path = Tests;
@@ -697,6 +700,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */,
 				78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */,
 				78A4AFB51DB3FB8300B119C4 /* ClientTestCase.swift in Sources */,
 			);

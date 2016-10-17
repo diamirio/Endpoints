@@ -11,7 +11,7 @@ import ObjectMapper
 import Endpoints
 @testable import EndpointsMapper
 
-class EndpointMapperTests: ClientTestCase {
+class EndpointMapperTests: ClientTestCase<BaseClient> {
     override func setUp() {
         client = BaseClient(baseURL: URL(string: "https://httpbin.org")!)
     }
