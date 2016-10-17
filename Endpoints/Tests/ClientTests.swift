@@ -103,7 +103,7 @@ class ClientTests: ClientTestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! DynamicRequest<[String]>.ResponseType.parse(responseData: arrayData, encoding: .utf8)!
+        let parsedObject = try! DynamicRequest<[String]>.ResponseType.parse(responseData: arrayData, encoding: .utf8)
         
         XCTAssertEqual(inputArray, parsedObject)
     }
@@ -160,6 +160,65 @@ class ClientTests: ClientTestCase {
                     }
                 }
             }
+        }
+    }
+    
+    struct CustomizedURLRequest: Request {
+        typealias RequestType = CustomizedURLRequest
+        typealias ResponseType = [String: Any]
+
+        var path: String? { return "headers" }
+        var method: HTTPMethod { return .get }
+        
+        var mime: String
+        
+        func encode(request: URLRequest) -> URLRequest {
+            var req = request
+            
+            req.setValue("invalid", forHTTPHeaderField: "Accept")
+            
+            return req
+        }
+    }
+    
+    func testCustomizedURLRequest() {
+        let mime = "invalid"
+        let req = CustomizedURLRequest(mime: mime)
+        
+        test(request: req) { result in
+            self.assert(result: result)
+            
+            if let headers = result.value?["headers"] as? [String: String] {
+                XCTAssertEqual(headers["Accept"], mime)
+            } else {
+                XCTFail("no headers")
+            }
+        }
+    }
+    
+    struct ValidatedRequest: Request {
+        typealias RequestType = ValidatedRequest
+        typealias ResponseType = [String: Any]
+        
+        var path: String? { return "response-headers" }
+        var method: HTTPMethod { return .get }
+        var query: Parameters? { return [ "Mime": mime ] }
+        
+        var mime: String
+        
+        func validate(result: SessionTaskResult) throws {
+            throw StatusCodeError.unacceptable(code: 0)
+        }
+    }
+    
+    func testValidatedRequest() {
+        let mime = "application/json"
+        let req = ValidatedRequest(mime: mime)
+        
+        test(request: req) { result in
+            self.assert(result: result, isSuccess: false)
+            
+            XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
         }
     }
 }

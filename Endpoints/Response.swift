@@ -9,34 +9,31 @@
 import Foundation
 
 public enum ParsingError: Error {
+    case missingData
     case invalidData(description: String)
 }
 
 public protocol ResponseParser {
     associatedtype OutputType = Self
     
-    static func parse(responseData: Data?, encoding: String.Encoding) throws -> OutputType?
+    static func parse(responseData: Data, encoding: String.Encoding) throws -> OutputType
 }
 
 extension ResponseParser {
-    public static func parseJSON(responseData: Data?) throws -> Any {
-        return try JSONSerialization.jsonObject(with: responseData ?? Data(), options: .allowFragments)
+    public static func parseJSON(responseData: Data) throws -> Any {
+        return try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
     }
 }
 
 extension Data: ResponseParser {
-    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Data? {
+    public static func parse(responseData: Data, encoding: String.Encoding) throws -> Data {
         return responseData
     }
 }
 
 extension String: ResponseParser {
-    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> String? {
-        guard let data = responseData else {
-            return nil
-        }
-        
-        if let string = String(data: data, encoding: encoding) {
+    public static func parse(responseData: Data, encoding: String.Encoding) throws -> String {
+        if let string = String(data: responseData, encoding: encoding) {
             return string
         } else {
             throw ParsingError.invalidData(description: "String could not be parsed with encoding: \(encoding)")
@@ -45,7 +42,7 @@ extension String: ResponseParser {
 }
 
 extension Dictionary: ResponseParser {
-    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Dictionary? {
+    public static func parse(responseData: Data, encoding: String.Encoding) throws -> Dictionary {
         guard let dict = try parseJSON(responseData: responseData) as? Dictionary else {
             throw ParsingError.invalidData(description: "JSON structure is not an Object")
         }
@@ -55,7 +52,7 @@ extension Dictionary: ResponseParser {
 }
 
 extension Array: ResponseParser {
-    public static func parse(responseData: Data?, encoding: String.Encoding) throws -> Array? {
+    public static func parse(responseData: Data, encoding: String.Encoding) throws -> Array {
         guard let array = try parseJSON(responseData: responseData) as? Array else {
             throw ParsingError.invalidData(description: "JSON structure is not an Array")
         }

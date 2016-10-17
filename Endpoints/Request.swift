@@ -85,7 +85,7 @@ public extension RequestData {
     }
 }
 
-public protocol Endpoint {
+public protocol Endpoint: ResponseValidator {
     //TODO: Let Endpoint optionally constrain API Type
     associatedtype RequestType: RequestEncoder
     associatedtype ResponseType: ResponseParser
@@ -94,13 +94,19 @@ public protocol Endpoint {
     var path: String? { get }
 }
 
-public protocol Request: Endpoint, RequestData {
+extension Endpoint {
+    public func validate(result: SessionTaskResult) throws {
+        //no validation by default, override to implement endpoint specific validation
+    }
+}
+
+public protocol Request: Endpoint, RequestData {}
+
+extension Request {
     //FIXME: this seems to be ignored by the compiler. should probable work with Swift 4
     //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
     typealias RequestType = Self
-}
-
-extension Request {
+    
     func encode(withBaseURL baseURL: URL) -> URLRequest {
         var url = baseURL
         
