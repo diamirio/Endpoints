@@ -45,6 +45,10 @@ public extension RequestData {
     var body: Data? { return nil }
     
     public func encode(request: URLRequest) -> URLRequest {
+        return encodeData(request: request)
+    }
+    
+    public func encodeData(request: URLRequest) -> URLRequest {
         guard var url = request.url else {
             fatalError("cannot encode request without url")
         }
@@ -132,13 +136,13 @@ extension Request {
     }
 }
 
-public struct WrapperRequest<E: Endpoint, R: RequestEncoder>: Request {
+public struct EndpointRequest<E: Endpoint, R: RequestEncoder>: Request {
     public typealias ResponseType = E.ResponseType
     
     public let endpoint: E
-    public let requestEncoder: R
+    public let requestEncoder: R?
 
-    public init(endpoint: E, requestEncoder: R) {
+    public init(endpoint: E, requestEncoder: R?=nil) {
         self.endpoint = endpoint
         self.requestEncoder = requestEncoder
     }
@@ -152,7 +156,7 @@ public struct WrapperRequest<E: Endpoint, R: RequestEncoder>: Request {
     }
     
     public func encode(request: URLRequest) -> URLRequest {
-        return requestEncoder.encode(request: request)
+        return requestEncoder?.encode(request: request) ?? request
     }
     
     public func validate(result: SessionTaskResult) throws {
@@ -164,6 +168,7 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
     public typealias RequestType = DynamicRequest
     public typealias ResponseType = Response
     
+    public typealias EncodingBlock = (URLRequest)->(URLRequest)
     public typealias ValidationBlock = (SessionTaskResult) throws ->()
     
     //Endpoint
@@ -176,9 +181,10 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
     public var header: Parameters?
     public var body: Data?
     
+    public var encode: EncodingBlock?
     public var validate: ValidationBlock?
     
-    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil, validate: ValidationBlock?=nil) {
+    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
         self.method = method
         self.path = path
         
@@ -187,6 +193,17 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
         self.body = body
         
         self.validate = validate
+        self.encode = encode
+    }
+    
+    public func encode(request: URLRequest) -> URLRequest {
+        var req = encodeData(request: request)
+        
+        if let encode = encode {
+            req = encode(req)
+        }
+        
+        return req
     }
     
     public func validate(result: SessionTaskResult) throws {

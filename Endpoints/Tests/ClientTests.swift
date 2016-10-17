@@ -15,23 +15,20 @@ class ClientTests: ClientTestCase {
     }
     
     func testTimeoutError() {
-        let request = DynamicRequest<Data>(.get, "delay/1")
+        let request = DynamicRequest<Data>(.get, "delay/1", encode: { urlReq in
+            var req = urlReq
+            req.timeoutInterval = 0.5
+            
+            return req
+        })
         
-        let exp = expectation(description: "")
-        var req = client.encode(request: request)
-        req.timeoutInterval = 0.5
-        
-        client.start(urlRequest: req, responseParser: Data.self) { result in
+        test(request: request) { result in
             self.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
             
             let error = result.error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)
-            
-            exp.fulfill()
         }
-        
-        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testStatusError() {
@@ -75,11 +72,11 @@ class ClientTests: ClientTestCase {
     
     func testWrapperRequest() {
         var validateCalled = false
-        let endpoint = DynamicRequest<String>(.get, "get") { result in
+        let endpoint = DynamicRequest<String>(.get, "get", encode: nil) { result in
             validateCalled = true
         }
         let data = DynamicRequest<Data>(.post, "ignored", query: [ "inputParam" : "inputParamValue" ])
-        let wrapper = WrapperRequest(endpoint: endpoint, requestEncoder: data)
+        let wrapper = EndpointRequest(endpoint: endpoint, requestEncoder: data)
         
         test(request: wrapper) { result in
             self.assert(result: result)
