@@ -96,7 +96,6 @@ public extension RequestData {
 }
 
 public protocol Endpoint: ResponseValidator {
-    //TODO: Let Endpoint optionally constrain API Type
     associatedtype RequestType: RequestEncoder
     associatedtype ResponseType: ResponseParser
     
@@ -105,7 +104,7 @@ public protocol Endpoint: ResponseValidator {
 }
 
 extension Endpoint {
-    public func validate(result: SessionTaskResult) throws {
+    public func validate(result: URLSessionTaskResult) throws {
         //no validation by default, override to implement endpoint specific validation
     }
 }
@@ -159,7 +158,7 @@ public struct EndpointRequest<E: Endpoint, R: RequestEncoder>: Request {
         return requestEncoder?.encode(request: request) ?? request
     }
     
-    public func validate(result: SessionTaskResult) throws {
+    public func validate(result: URLSessionTaskResult) throws {
         try endpoint.validate(result: result)
     }
 }
@@ -169,7 +168,7 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
     public typealias ResponseType = Response
     
     public typealias EncodingBlock = (URLRequest)->(URLRequest)
-    public typealias ValidationBlock = (SessionTaskResult) throws ->()
+    public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
     
     //Endpoint
     public var method: HTTPMethod
@@ -206,7 +205,7 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
         return req
     }
     
-    public func validate(result: SessionTaskResult) throws {
+    public func validate(result: URLSessionTaskResult) throws {
         try validate?(result)
     }
 }

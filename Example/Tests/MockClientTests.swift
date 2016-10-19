@@ -10,24 +10,12 @@ import XCTest
 @testable import Endpoints
 @testable import Example
 
-class MockClient: BinClient {
-    func start<R : Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
-        let sessionResult = resultFor(request: request)
-        let result = transform(sessionResult: sessionResult, for: request)
-        
-        DispatchQueue.main.async {
-            completion(result)
-        }
-        
-        return URLSession.shared.dataTask(with: encode(request: request))
-    }
-    
-    func resultFor<R: Request>(request: R) -> SessionTaskResult {
-        let url = self.encode(request: request).url!
-        var result = SessionTaskResult(response: nil, data: Data(), error: nil)
+class BinResultProvider: FakeResultProvider {
+    func resultFor<R: Request>(request: R) -> URLSessionTaskResult {
+        var result = URLSessionTaskResult(response: nil, data: Data(), error: nil)
         
         if let serverMessage = request as? ServerMessageRequest {
-            result.response = HTTPURLResponse(url: url, statusCode: 300, httpVersion: nil, headerFields: [ "X-Error-Message" : serverMessage.message])
+            result.response = FakeHTTPURLResponse(status: 300, header: [ "X-Error-Message" : serverMessage.message])
         }
         
         return result
@@ -43,15 +31,19 @@ struct ServerMessageRequest: Request {
     var message: String
 }
 
-class MockClientTests: ClientTestCase<MockClient> {
+class MockClientTests: XCTestCase {
+    var tester: ClientTester<BinClient>!
+    
     override func setUp() {
-        client = MockClient()
+        let client = BinClient()
+        let session = FakeSession(with: client, resultProvider: BinResultProvider())
+        tester = ClientTester(test: self, session: session)
     }
     
     func testErrorMessageValidation() {
         let msg = "error message"
-        test(request: ServerMessageRequest(message: msg)) { result in
-            self.assert(result: result, isSuccess: false, status: 299)
+        tester.test(request: ServerMessageRequest(message: msg)) { result in
+            self.tester.assert(result: result, isSuccess: false, status: 300)
         }
     }
 }

@@ -14,7 +14,7 @@ class BinClient: BaseClient {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
     
-    override func validate(result: SessionTaskResult) throws {
+    override func validate(result: URLSessionTaskResult) throws {
         do {
             try statusCodeValidator.validate(result: result)
         } catch StatusCodeError.unacceptable(let code, let reason) {

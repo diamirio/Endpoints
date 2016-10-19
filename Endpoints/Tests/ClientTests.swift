@@ -9,9 +9,11 @@
 import XCTest
 @testable import Endpoints
 
-class ClientTests: ClientTestCase<BaseClient> {
+class ClientTests: XCTestCase {
+    var tester: ClientTester<BaseClient>!
+    
     override func setUp() {
-        client = BaseClient(baseURL: URL(string: "http://httpbin.org")!)
+        tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "http://httpbin.org")!))
     }
     
     func testTimeoutError() {
@@ -22,8 +24,8 @@ class ClientTests: ClientTestCase<BaseClient> {
             return req
         })
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: false)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
             
             let error = result.error as! URLError
@@ -34,8 +36,8 @@ class ClientTests: ClientTestCase<BaseClient> {
     func testStatusError() {
         let request = DynamicRequest<Data>(.get, "status/400")
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: false, status: 400)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: false, status: 400)
             
             if let error = result.error as? StatusCodeError {
                 switch error {
@@ -53,16 +55,16 @@ class ClientTests: ClientTestCase<BaseClient> {
     func testGetData() {
         let request = DynamicRequest<Data>(.get, "get")
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: true, status: 200)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
         }
     }
     
     func testGetString() {
         let request = DynamicRequest<String>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: true, status: 200)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
             
             if let string = result.value {
                 XCTAssertTrue(string.contains("inputParamValue"))
@@ -78,8 +80,8 @@ class ClientTests: ClientTestCase<BaseClient> {
         let data = DynamicRequest<Data>(.post, "ignored", query: [ "inputParam" : "inputParamValue" ])
         let wrapper = EndpointRequest(endpoint: endpoint, requestEncoder: data)
         
-        test(request: wrapper) { result in
-            self.assert(result: result)
+        tester.test(request: wrapper) { result in
+            self.tester.assert(result: result)
             
             XCTAssertTrue(validateCalled)
             if let string = result.value {
@@ -91,8 +93,8 @@ class ClientTests: ClientTestCase<BaseClient> {
     func testGetJSONDictionary() {
         let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: true, status: 200)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
             
             if let jsonDict = result.value {
                 let args = jsonDict["args"]
@@ -126,8 +128,8 @@ class ClientTests: ClientTestCase<BaseClient> {
     func testFailJSONParsing() {
         let request = DynamicRequest<[String: Any]>(.get, "xml")
         
-        test(request: request) { result in
-            self.assert(result: result, isSuccess: false, status: 200)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: false, status: 200)
             
             if let error = result.error as? CocoaError {
                 XCTAssertTrue(error.isPropertyListError)
@@ -154,8 +156,8 @@ class ClientTests: ClientTestCase<BaseClient> {
     func testTypedRequest() {
         let value = "value"
         
-        test(request: GetOutput(value: value)) { result in
-            self.assert(result: result)
+        tester.test(request: GetOutput(value: value)) { result in
+            self.tester.assert(result: result)
             
             if let jsonDict = result.value {
                 let args = jsonDict["args"]
@@ -198,8 +200,8 @@ class ClientTests: ClientTestCase<BaseClient> {
         let mime = "invalid"
         let req = CustomizedURLRequest(mime: mime)
         
-        test(request: req) { result in
-            self.assert(result: result)
+        tester.test(request: req) { result in
+            self.tester.assert(result: result)
             
             if let headers = result.value?["headers"] as? [String: String] {
                 XCTAssertEqual(headers["Accept"], mime)
@@ -218,7 +220,7 @@ class ClientTests: ClientTestCase<BaseClient> {
         
         var mime: String
         
-        func validate(result: SessionTaskResult) throws {
+        func validate(result: URLSessionTaskResult) throws {
             throw StatusCodeError.unacceptable(code: 0, reason: nil)
         }
     }
@@ -227,8 +229,8 @@ class ClientTests: ClientTestCase<BaseClient> {
         let mime = "application/json"
         let req = ValidatedRequest(mime: mime)
         
-        test(request: req) { result in
-            self.assert(result: result, isSuccess: false)
+        tester.test(request: req) { result in
+            self.tester.assert(result: result, isSuccess: false)
             
             XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
         }

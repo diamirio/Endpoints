@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781A61C31DB5407900CE3EC9 /* MockClientTests.swift */; };
+		785661381DB76AFA00CA89B5 /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785661371DB76AFA00CA89B5 /* Testing.swift */; };
 		7867367C1DAFAD370082828B /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
 		7867367D1DAFAD370082828B /* Endpoints.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		78685CB61DAFBDF500B72F18 /* EndpointsMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */; };
@@ -18,9 +19,9 @@
 		78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CDF1DB0B0A400B72F18 /* Request.swift */; };
 		78685CEC1DB0B0A400B72F18 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Response.swift */; };
 		787AECC61DABDEC8001A49BB /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
-		78A4AFB31DB3F77800B119C4 /* ClientTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTestCase.swift */; };
-		78A4AFB41DB3FB8200B119C4 /* ClientTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTestCase.swift */; };
-		78A4AFB51DB3FB8300B119C4 /* ClientTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTestCase.swift */; };
+		78A4AFB31DB3F77800B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
+		78A4AFB41DB3FB8200B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
+		78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		78A5F0831DB0D01A00108A45 /* EndpointsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0821DB0D01A00108A45 /* EndpointsMapper.swift */; };
 		78A5F0A41DB0D98C00108A45 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */; };
 		78A5F0F01DB1573900108A45 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0EC1DB1573800108A45 /* ClientTests.swift */; };
@@ -146,6 +147,7 @@
 
 /* Begin PBXFileReference section */
 		781A61C31DB5407900CE3EC9 /* MockClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockClientTests.swift; sourceTree = "<group>"; };
+		785661371DB76AFA00CA89B5 /* Testing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Testing.swift; sourceTree = "<group>"; };
 		78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CB51DAFBDF500B72F18 /* EndpointsMapperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsMapperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78685CD51DB0B0A400B72F18 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
@@ -157,7 +159,7 @@
 		787AECC51DABDEC8001A49BB /* EndpointsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECDC1DABE56A001A49BB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECEF1DABE56A001A49BB /* ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		78A4AFB21DB3F77800B119C4 /* ClientTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTestCase.swift; sourceTree = "<group>"; };
+		78A4AFB21DB3F77800B119C4 /* ClientTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTester.swift; sourceTree = "<group>"; };
 		78A5F0821DB0D01A00108A45 /* EndpointsMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointsMapper.swift; sourceTree = "<group>"; };
 		78A5F08A1DB0D92000108A45 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = ../Carthage/Checkouts/ObjectMapper/ObjectMapper.xcodeproj; sourceTree = "<group>"; };
 		78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				78685CDF1DB0B0A400B72F18 /* Request.swift */,
 				78685CE01DB0B0A400B72F18 /* Response.swift */,
 				78685CD51DB0B0A400B72F18 /* Client.swift */,
+				785661371DB76AFA00CA89B5 /* Testing.swift */,
 				78685CD91DB0B0A400B72F18 /* Info.plist */,
 			);
 			path = Endpoints;
@@ -301,7 +304,7 @@
 		78A5F0EA1DB1573800108A45 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				78A4AFB21DB3F77800B119C4 /* ClientTestCase.swift */,
+				78A4AFB21DB3F77800B119C4 /* ClientTester.swift */,
 				78A5F0EC1DB1573800108A45 /* ClientTests.swift */,
 				78A5F0EE1DB1573800108A45 /* RequestTests.swift */,
 				78A5F0ED1DB1573800108A45 /* Info.plist */,
@@ -662,7 +665,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A5F0F61DB1576000108A45 /* EndpointsMapperTests.swift in Sources */,
-				78A4AFB41DB3FB8200B119C4 /* ClientTestCase.swift in Sources */,
+				78A4AFB41DB3FB8200B119C4 /* ClientTester.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,6 +675,7 @@
 			files = (
 				78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */,
 				78685CEC1DB0B0A400B72F18 /* Response.swift in Sources */,
+				785661381DB76AFA00CA89B5 /* Testing.swift in Sources */,
 				78685CE11DB0B0A400B72F18 /* Client.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,7 +685,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				78A5F0F21DB1573900108A45 /* RequestTests.swift in Sources */,
-				78A4AFB31DB3F77800B119C4 /* ClientTestCase.swift in Sources */,
+				78A4AFB31DB3F77800B119C4 /* ClientTester.swift in Sources */,
 				78A5F0F01DB1573900108A45 /* ClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -702,7 +706,7 @@
 			files = (
 				781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */,
 				78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */,
-				78A4AFB51DB3FB8300B119C4 /* ClientTestCase.swift in Sources */,
+				78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SessionTaskResult {
+public struct URLSessionTaskResult {
     public var response: URLResponse?
     public var data: Data?
     public var error: Error?
@@ -46,7 +46,7 @@ extension StatusCodeError {
 }
 
 public protocol ResponseValidator {
-    func validate(result: SessionTaskResult) throws
+    func validate(result: URLSessionTaskResult) throws
 }
 
 public class StatusCodeValidator: ResponseValidator {
@@ -54,7 +54,7 @@ public class StatusCodeValidator: ResponseValidator {
         return (200..<300).contains(code)
     }
     
-    public func validate(result: SessionTaskResult) throws {
+    public func validate(result: URLSessionTaskResult) throws {
         if let code = result.httpResponse?.statusCode, !isAcceptableStatus(code: code) {
             throw StatusCodeError.unacceptable(code: code, reason: nil)
         }
@@ -63,32 +63,37 @@ public class StatusCodeValidator: ResponseValidator {
 
 public protocol Client {
     func encode<R: Request>(request: R) -> URLRequest
-    func parse<R: Request>(sessionTaskResult result: SessionTaskResult, for request: R) throws -> R.ResponseType.OutputType
+    func parse<R: Request>(sessionTaskResult result: URLSessionTaskResult, for request: R) throws -> R.ResponseType.OutputType
 }
 
-public extension Client {
-    public var session: URLSession {
-        return URLSession.shared
-    }
+public class Session<C: Client> {
+    public var debug = false
     
-    public func transform<R: Request>(sessionResult: SessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
-        var result = Result<R.ResponseType.OutputType>(response: sessionResult.httpResponse)
-        
-        do {
-            result.value = try self.parse(sessionTaskResult: sessionResult, for: request)
-        } catch {
-            result.error = error
-        }
-        
-        return result
+    public var urlSession: URLSession
+    public let client: C
+    
+    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
+        self.client = client
+        self.urlSession = urlSession
     }
     
     @discardableResult
     public func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
-        let urlRequest = encode(request: request)
+        let urlRequest = client.encode(request: request)
         
-        let task = session.dataTask(with: urlRequest) { data, response, error in
-            let sessionResult = SessionTaskResult(response: response, data: data, error: error)
+        let task = urlSession.dataTask(with: urlRequest) { data, response, error in
+            let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
+            
+            if self.debug {
+                let status = sessionResult.httpResponse?.statusCode
+                if let data = data, let string = String(data: data, encoding: String.Encoding.utf8) {
+                    let str = string as NSString
+                    print("response string for \(urlRequest) with status: \(status):\n\(str)")
+                } else {
+                    print("no response string for \(urlRequest). error: \(error). status: \(status)")
+                }
+            }
+            
             let result = self.transform(sessionResult: sessionResult, for: request)
             
             completion(result)
@@ -97,25 +102,33 @@ public extension Client {
         
         return task
     }
+    
+    public final func transform<R: Request>(sessionResult: URLSessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
+        var result = Result<R.ResponseType.OutputType>(response: sessionResult.httpResponse)
+        
+        do {
+            result.value = try client.parse(sessionTaskResult: sessionResult, for: request)
+        } catch {
+            result.error = error
+        }
+        
+        return result
+    }
 }
 
 open class BaseClient: Client, ResponseValidator {
     public let baseURL: URL
-    public let session: URLSession
-    public lazy var statusCodeValidator = StatusCodeValidator()
-    //TODO: implement debugging
-    public var debug = false
+    public private(set) lazy var statusCodeValidator = StatusCodeValidator()
     
-    public init(baseURL: URL, session: URLSession=URLSession.shared) {
+    public init(baseURL: URL) {
         self.baseURL = baseURL
-        self.session = session
     }
     
     open func encode<R: Request>(request: R) -> URLRequest {
         return request.encode(withBaseURL: baseURL)
     }
     
-    public func parse<R: Request>(sessionTaskResult result: SessionTaskResult, for request: R) throws -> R.ResponseType.OutputType {
+    public func parse<R: Request>(sessionTaskResult result: URLSessionTaskResult, for request: R) throws -> R.ResponseType.OutputType {
         if let error = result.error {
             throw error
         }
@@ -129,12 +142,12 @@ open class BaseClient: Client, ResponseValidator {
         }
     }
     
-    public func validate<R: Request>(result: SessionTaskResult, for request: R) throws {
+    public func validate<R: Request>(result: URLSessionTaskResult, for request: R) throws {
         try validate(result: result) //global validation
         try request.validate(result: result) //request-specific validation
     }
     
-    open func validate(result: SessionTaskResult) throws {
+    open func validate(result: URLSessionTaskResult) throws {
         try statusCodeValidator.validate(result: result)
     }
 }

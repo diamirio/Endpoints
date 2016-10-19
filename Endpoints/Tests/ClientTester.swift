@@ -8,19 +8,29 @@
 
 import Foundation
 import XCTest
-@testable import Endpoints
+import Endpoints
 
-class ClientTestCase<C: Client>: XCTestCase {
-    var client: C!
+class ClientTester<C: Client> {
+    var session: Session<C>
+    let test: XCTestCase
+    
+    convenience init(test: XCTestCase, client: C) {
+        self.init(test: test, session: Session(with: client))
+    }
+    
+    init(test: XCTestCase, session: Session<C>) {
+        self.test = test
+        self.session = session
+    }
     
     func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
-        let exp = expectation(description: "")
-        client.start(request: request) { result in
+        let exp = test.expectation(description: "")
+        session.start(request: request) { result in
             validateResult?(result)
             
             exp.fulfill()
         }
-        waitForExpectations(timeout: 10, handler: nil)
+        test.waitForExpectations(timeout: 30, handler: nil)
     }
     
     func assert<P: ResponseParser>(result: Result<P>, isSuccess: Bool=true, status code: Int?=nil) {

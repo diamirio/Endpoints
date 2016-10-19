@@ -11,9 +11,11 @@ import ObjectMapper
 import Endpoints
 @testable import EndpointsMapper
 
-class EndpointMapperTests: ClientTestCase<BaseClient> {
+class EndpointMapperTests: XCTestCase {
+    var tester: ClientTester<BaseClient>!
+    
     override func setUp() {
-        client = BaseClient(baseURL: URL(string: "https://httpbin.org")!)
+        tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "https://httpbin.org")!))
     }
     
     struct ResponseObject: MappableResponse {
@@ -29,8 +31,8 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
         let value = "value"
         let request = DynamicRequest<ResponseObject>(.get, "get", query: [ "input": value ])
         
-        test(request: request) { result in
-            self.assert(result: result)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result)
             
             XCTAssertEqual(result.value?.value, value)
         }
@@ -52,8 +54,8 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
         
         let request = DynamicRequest<String>(.post, "post", body: jsonBody.toData())
         
-        test(request: request) { result in
-            self.assert(result: result)
+        tester.test(request: request) { result in
+            self.tester.assert(result: result)
             
             if let string = result.value {
                 XCTAssertTrue(string.contains(jsonBody.value))
@@ -78,8 +80,8 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(request: PostJSONRequest(object: jsonBody)) { result in
-            self.assert(result: result)
+        tester.test(request: PostJSONRequest(object: jsonBody)) { result in
+            self.tester.assert(result: result)
             
             if let string = result.value {
                 XCTAssertTrue(string.contains(jsonBody.value))
@@ -99,8 +101,8 @@ class EndpointMapperTests: ClientTestCase<BaseClient> {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        test(request: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
-            self.assert(result: result)
+        tester.test(request: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
+            self.tester.assert(result: result)
             
             if let string = result.value {
                 XCTAssertTrue(string.contains(jsonBody.value))
