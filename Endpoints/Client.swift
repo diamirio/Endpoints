@@ -96,7 +96,9 @@ public class Session<C: Client> {
             
             let result = self.transform(sessionResult: sessionResult, for: request)
             
-            completion(result)
+            DispatchQueue.main.async {
+                completion(result)
+            }
         }
         task.resume()
         

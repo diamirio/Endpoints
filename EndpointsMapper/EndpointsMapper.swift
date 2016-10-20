@@ -25,6 +25,15 @@ public protocol MappableRequest: Request {
 public extension MappableRequest {
     var method: HTTPMethod { return .post }
     
+    var contentTypeHeader: Parameters {
+        //TODO: think about how to better abstract this
+        return [ "Content-Type" : "application/json" ]
+    }
+    
+    var header: Parameters? {
+        return contentTypeHeader
+    }
+    
     var body: Data? {
         return mappable.toData()
     }
