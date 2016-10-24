@@ -72,24 +72,6 @@ class ClientTests: XCTestCase {
         }
     }
     
-    func testWrapperRequest() {
-        var validateCalled = false
-        let endpoint = DynamicRequest<String>(.get, "get", encode: nil) { result in
-            validateCalled = true
-        }
-        let data = DynamicRequest<Data>(.post, "ignored", query: [ "inputParam" : "inputParamValue" ])
-        let wrapper = EndpointRequest(endpoint: endpoint, requestEncoder: data)
-        
-        tester.test(request: wrapper) { result in
-            self.tester.assert(result: result)
-            
-            XCTAssertTrue(validateCalled)
-            if let string = result.value {
-                XCTAssertTrue(string.contains("inputParamValue"))
-            }
-        }
-    }
-    
     func testGetJSONDictionary() {
         let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
@@ -187,10 +169,10 @@ class ClientTests: XCTestCase {
         
         var mime: String
         
-        func encode(request: URLRequest) -> URLRequest {
-            var req = request
+        func encode(withBaseURL baseURL: URL) -> URLRequest {
+            var req = encodeData(withBaseURL: baseURL)
             
-            req.setValue("invalid", forHTTPHeaderField: "Accept")
+            req.setValue(mime, forHTTPHeaderField: "Accept")
             
             return req
         }

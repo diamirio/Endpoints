@@ -21,15 +21,11 @@ class RequestTests: XCTestCase {
         
         req = testRequestEncoding(baseUrl: base, path: "/get", queryParams: queryParams)
         XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
-        
-        req = testRequestEncoding(baseUrl: base, dynamicPath: "get")
-        XCTAssertEqual(req.url?.absoluteString, "\(base)/get")
     }
     
-    func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil, dynamicPath: String?=nil ) -> URLRequest {
+    func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
         let client = BaseClient(baseURL: URL(string: baseUrl)!)
-        var request = DynamicRequest<Data>(.get, path, query: queryParams)
-        request.dynamicPath = dynamicPath
+        let request = DynamicRequest<Data>(.get, path, query: queryParams)
         
         let urlRequest = client.encode(request: request)
         

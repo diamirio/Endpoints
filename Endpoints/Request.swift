@@ -22,41 +22,34 @@ public enum HTTPMethod: String {
 }
 
 public protocol RequestEncoder {
-    func encode(request: URLRequest) -> URLRequest
+    func encode(withBaseURL baseURL: URL) -> URLRequest
 }
 
-public struct NoOpRequestEncoder: RequestEncoder {
-    public func encode(request: URLRequest) -> URLRequest {
-        return request
-    }
-}
-
-public protocol RequestData: RequestEncoder {
-    var dynamicPath: String? { get }
+public protocol Request: RequestEncoder, ResponseValidator {
+    associatedtype ResponseType: ResponseParser
+    
+    var method: HTTPMethod { get }
+    var path: String? { get }
     var query: Parameters? { get }
     var header: Parameters? { get }
     var body: Data? { get }
 }
 
-public extension RequestData {
+public extension Request {
     var dynamicPath: String? { return nil }
     var query: Parameters? { return nil }
     var header: Parameters? { return nil }
     var body: Data? { return nil }
     
-    public func encode(request: URLRequest) -> URLRequest {
-        return encodeData(request: request)
+    public func encode(withBaseURL baseURL: URL) -> URLRequest {
+        return encodeData(withBaseURL: baseURL)
     }
     
-    public func encodeData(request: URLRequest) -> URLRequest {
-        guard var url = request.url else {
-            fatalError("cannot encode request without url")
-        }
+    func encodeData(withBaseURL baseURL: URL) -> URLRequest {
+        var url = baseURL
         
-        var encoded = request
-        
-        if let dynamicPath = dynamicPath {
-            url = url.appendingPathComponent(dynamicPath)
+        if let path = path {
+            url.appendPathComponent(path)
         }
         
         if let queryItems = createQueryItems() {
@@ -72,11 +65,13 @@ public extension RequestData {
             url = queryUrl
         }
         
-        encoded.url = url
-        encoded.httpBody = body
-        encoded.allHTTPHeaderFields = header
+        var urlRequest = URLRequest(url: url)
         
-        return encoded
+        urlRequest.url = url
+        urlRequest.httpBody = body
+        urlRequest.allHTTPHeaderFields = header
+        
+        return urlRequest
     }
     
     private func createQueryItems() -> [URLQueryItem]? {
@@ -93,89 +88,20 @@ public extension RequestData {
         
         return items
     }
-}
-
-public protocol Endpoint: ResponseValidator {
-    associatedtype RequestType: RequestEncoder
-    associatedtype ResponseType: ResponseParser
-    
-    var method: HTTPMethod { get }
-    var path: String? { get }
-}
-
-extension Endpoint {
-    public func validate(result: URLSessionTaskResult) throws {
-        //no validation by default, override to implement endpoint specific validation
-    }
-}
-
-public protocol Request: Endpoint, RequestData {
-    //setting the RequestType to self seems to be ignored by the compiler. should probably work with Swift 4
-    //https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md
-    //so typealias RequestType = Self doesn't work
-    //Workaround: Set default to NoOp
-    associatedtype RequestType: RequestEncoder = NoOpRequestEncoder
-}
-
-extension Request {
-    func encode(withBaseURL baseURL: URL) -> URLRequest {
-        var url = baseURL
-        
-        if let path = path {
-            guard let urlWithPath = URL(string: path, relativeTo: url) else {
-                fatalError("invalid path \(path)")
-            }
-            url = urlWithPath
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = method.rawValue
-        
-        return self.encode(request: urlRequest)
-    }
-}
-
-public struct EndpointRequest<E: Endpoint, R: RequestEncoder>: Request {
-    public typealias ResponseType = E.ResponseType
-    
-    public let endpoint: E
-    public let requestEncoder: R?
-
-    public init(endpoint: E, requestEncoder: R?=nil) {
-        self.endpoint = endpoint
-        self.requestEncoder = requestEncoder
-    }
-    
-    public var path: String? {
-        return endpoint.path
-    }
-    
-    public var method: HTTPMethod {
-        return endpoint.method
-    }
-    
-    public func encode(request: URLRequest) -> URLRequest {
-        return requestEncoder?.encode(request: request) ?? request
-    }
     
     public func validate(result: URLSessionTaskResult) throws {
-        try endpoint.validate(result: result)
+        //no validation by default
     }
 }
 
 public struct DynamicRequest<Response: ResponseParser>: Request {
-    public typealias RequestType = DynamicRequest
     public typealias ResponseType = Response
     
     public typealias EncodingBlock = (URLRequest)->(URLRequest)
     public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
     
-    //Endpoint
     public var method: HTTPMethod
     public var path: String?
-    
-    //RequestData
-    public var dynamicPath: String? //not required here, can use path instead
     public var query: Parameters?
     public var header: Parameters?
     public var body: Data?
@@ -195,8 +121,8 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
         self.encode = encode
     }
     
-    public func encode(request: URLRequest) -> URLRequest {
-        var req = encodeData(request: request)
+    public func encode(withBaseURL baseURL: URL) -> URLRequest {
+        var req = encodeData(withBaseURL: baseURL)
         
         if let encode = encode {
             req = encode(req)
