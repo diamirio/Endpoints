@@ -31,10 +31,8 @@ class EndpointMapperTests: XCTestCase {
         let value = "value"
         let request = DynamicRequest<ResponseObject>(.get, "get", query: [ "input": value ])
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result)
-            
-            XCTAssertEqual(result.value?.value, value)
+        tester.expectSuccess(request) { result in
+            XCTAssertEqual(result.value, value)
         }
     }
     
@@ -54,15 +52,11 @@ class EndpointMapperTests: XCTestCase {
         
         let request = DynamicRequest<String>(.post, "post", body: jsonBody.toData())
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains(jsonBody.value))
-            }
+        tester.expectSuccess(request) { string in
+            XCTAssertTrue(string.contains(jsonBody.value))
         }
     }
-    
+
     struct PostJSONRequest: Request {
         typealias ResponseType = String
         
@@ -80,12 +74,8 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        tester.test(request: PostJSONRequest(object: jsonBody)) { result in
-            self.tester.assert(result: result)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains(jsonBody.value))
-            }
+        tester.expectSuccess(PostJSONRequest(object: jsonBody)) { string in
+            XCTAssertTrue(string.contains(jsonBody.value))
         }
     }
     
@@ -101,12 +91,8 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        tester.test(request: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
-            self.tester.assert(result: result)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains(jsonBody.value))
-            }
+        tester.expectSuccess(ConvenientPostJSONRequest(mappable: jsonBody)) { string in
+            XCTAssertTrue(string.contains(jsonBody.value))
         }
     }
 }

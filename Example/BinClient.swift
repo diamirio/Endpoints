@@ -26,13 +26,7 @@ class BinClient: BaseClient {
 }
 
 protocol BinRequest: Request {}
-
-extension BinRequest {
-//    func start(completion: ((Result<ResponseType.OutputType>)->())?) {
-//        BinAPI().start(endpoint: self) { result in
-//        }
-//    }
-}
+extension BinRequest { }
 
 extension BinClient {
     struct GetOutput: Request {

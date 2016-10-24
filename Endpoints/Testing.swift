@@ -21,15 +21,34 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func start<R : Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
-        let sessionResult = resultProvider.resultFor(request: request)
-        let result = transform(sessionResult: sessionResult, for: request)
+    public override func start<R : Request>(request: R) -> Task<R.ResponseType.OutputType> {
+        let result = resultProvider.resultFor(request: request)
         
-        DispatchQueue.main.async {
-            completion(result)
+        let task = Task<R.ResponseType.OutputType>()
+        task.urlSessionDataTask = FakeURLSessionDataTask(response: result.response)
+        
+        do {
+            let value = try client.parse(sessionTaskResult: result, for: request)
+            
+            self.complete { task.onSuccessBlock?(value) }
+        } catch {
+            self.complete { task.onErrorBlock?(error) }
         }
         
-        return URLSessionDataTask()
+        self.complete { task.whenDoneBlock?() }
+        
+        return task
+    }
+}
+
+public class FakeURLSessionDataTask: URLSessionDataTask {
+    public override var response: URLResponse? {
+        return fakeResponse
+    }
+    
+    let fakeResponse: URLResponse?
+    init(response: URLResponse?) {
+        self.fakeResponse = response
     }
 }
 

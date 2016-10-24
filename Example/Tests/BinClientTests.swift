@@ -20,10 +20,9 @@ class BinClientTests: XCTestCase {
     }
     
     func testGetOutputRequest() {
-        tester.test(request: BinClient.GetOutput(value: input)) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            
-            XCTAssertEqual(self.input, result.value?.value)
+        let t = tester.expectSuccess(BinClient.GetOutput(value: input)) { value in
+            XCTAssertEqual(self.input, value.value)
         }
+        XCTAssertEqual(t.statusCode, 200)
     }
 }

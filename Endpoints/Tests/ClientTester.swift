@@ -23,31 +23,33 @@ class ClientTester<C: Client> {
         self.session = session
     }
     
-    func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
+    private func start<R: Request>(request: R) -> Task<R.ResponseType.OutputType> {
         let exp = test.expectation(description: "")
-        session.start(request: request) { result in
-            validateResult?(result)
-            
+        
+        return session.start(request: request).whenDone {
             exp.fulfill()
         }
-        test.waitForExpectations(timeout: 30, handler: nil)
     }
     
-    func assert<P: ResponseParser>(result: Result<P>, isSuccess: Bool=true, status code: Int?=nil) {
-        if isSuccess {
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-            XCTAssertTrue(result.isSuccess)
-            XCTAssertFalse(result.isError)
-        } else {
-            XCTAssertNotNil(result.error)
-            XCTAssertNil(result.value)
-            XCTAssertFalse(result.isSuccess)
-            XCTAssertTrue(result.isError)
-        }
+    @discardableResult
+    func expectSuccess<R: Request>(_ request: R, onSuccess: @escaping (R.ResponseType.OutputType)->()) -> Task<R.ResponseType.OutputType> {
+        let t = start(request: request).onError { error in
+            XCTFail("unexpected error: \(error.localizedDescription)")
+        }.onSuccess(block: onSuccess)
         
-        if let code = code {
-            XCTAssertEqual(result.response?.statusCode, code)
-        }
+        test.waitForExpectations(timeout: 10, handler: nil)
+        
+        return t
+    }
+    
+    @discardableResult
+    func expectError<R: Request>(_ request: R, onError: @escaping (Error)->()) -> Task<R.ResponseType.OutputType> {
+        let t = start(request: request).onSuccess { value in
+            XCTFail("unexpected success with value: \(value)")
+        }.onError(block: onError)
+        
+        test.waitForExpectations(timeout: 10, handler: nil)
+        
+        return t
     }
 }

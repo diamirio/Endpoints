@@ -24,22 +24,21 @@ class ClientTests: XCTestCase {
             return req
         })
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: false)
-            XCTAssertNil(result.response?.statusCode)
-            
-            let error = result.error as! URLError
+        let t = tester.expectError(request) { error in
+            let error = error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)
         }
+        
+        XCTAssertNotNil(t.urlSessionDataTask)
+        XCTAssertNil(t.httpResponse)
+        XCTAssertNil(t.statusCode)
     }
     
     func testStatusError() {
         let request = DynamicRequest<Data>(.get, "status/400")
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 400)
-            
-            if let error = result.error as? StatusCodeError {
+        tester.expectError(request) { error in
+            if let error = error as? StatusCodeError {
                 switch error {
                 case .unacceptable(400, _):
                     print("code is ok")
@@ -47,57 +46,49 @@ class ClientTests: XCTestCase {
                     XCTFail("wrong error: \(error)")
                 }
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(error)")
             }
         }
     }
-    
+
     func testGetData() {
         let request = DynamicRequest<Data>(.get, "get")
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+        tester.expectSuccess(request) { value in
+            XCTAssertFalse(value.isEmpty)
         }
     }
-    
+
     func testGetString() {
         let request = DynamicRequest<String>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
-        
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains("inputParamValue"))
-            }
+
+        tester.expectSuccess(request) { value in
+            XCTAssertTrue(value.contains("inputParamValue"))
         }
     }
-    
+
     func testGetJSONDictionary() {
         let request = DynamicRequest<[String: Any]>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+        tester.expectSuccess(request) { jsonDict in
+            let args = jsonDict["args"]
+            XCTAssertNotNil(args)
             
-            if let jsonDict = result.value {
-                let args = jsonDict["args"]
-                XCTAssertNotNil(args)
+            if let args = args {
+                XCTAssertTrue(args is Dictionary<String, String>)
                 
-                if let args = args {
-                    XCTAssertTrue(args is Dictionary<String, String>)
+                if let args = args as? Dictionary<String, String> {
+                    let param = args["inputParam"]
+                    XCTAssertNotNil(param)
                     
-                    if let args = args as? Dictionary<String, String> {
-                        let param = args["inputParam"]
-                        XCTAssertNotNil(param)
-                        
-                        if let param = param {
-                            XCTAssertEqual(param, "inputParamValue")
-                        }
+                    if let param = param {
+                        XCTAssertEqual(param, "inputParamValue")
                     }
                 }
             }
         }
     }
-    
+
     func testParseJSONArray() {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
@@ -106,22 +97,20 @@ class ClientTests: XCTestCase {
         
         XCTAssertEqual(inputArray, parsedObject)
     }
-    
+
     func testFailJSONParsing() {
         let request = DynamicRequest<[String: Any]>(.get, "xml")
         
-        tester.test(request: request) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 200)
-            
-            if let error = result.error as? CocoaError {
+        tester.expectError(request) { error in
+            if let error = error as? CocoaError {
                 XCTAssertTrue(error.isPropertyListError)
                 XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(error)")
             }
         }
     }
-    
+
     struct GetOutput: Request {
         typealias ResponseType = [String: Any]
         
@@ -138,29 +127,25 @@ class ClientTests: XCTestCase {
     func testTypedRequest() {
         let value = "value"
         
-        tester.test(request: GetOutput(value: value)) { result in
-            self.tester.assert(result: result)
+        tester.expectSuccess(GetOutput(value: value)) { jsonDict in
+            let args = jsonDict["args"]
+            XCTAssertNotNil(args)
             
-            if let jsonDict = result.value {
-                let args = jsonDict["args"]
-                XCTAssertNotNil(args)
+            if let args = args {
+                XCTAssertTrue(args is Dictionary<String, String>)
                 
-                if let args = args {
-                    XCTAssertTrue(args is Dictionary<String, String>)
+                if let args = args as? Dictionary<String, String> {
+                    let param = args["param"]
+                    XCTAssertNotNil(param)
                     
-                    if let args = args as? Dictionary<String, String> {
-                        let param = args["param"]
-                        XCTAssertNotNil(param)
-                        
-                        if let param = param {
-                            XCTAssertEqual(param, value)
-                        }
+                    if let param = param {
+                        XCTAssertEqual(param, value)
                     }
                 }
             }
         }
     }
-    
+
     struct CustomizedURLRequest: Request {
         typealias ResponseType = [String: Any]
 
@@ -182,22 +167,20 @@ class ClientTests: XCTestCase {
         let mime = "invalid"
         let req = CustomizedURLRequest(mime: mime)
         
-        tester.test(request: req) { result in
-            self.tester.assert(result: result)
-            
-            if let headers = result.value?["headers"] as? [String: String] {
+        tester.expectSuccess(req) { value in
+            if let headers = value["headers"] as? [String: String] {
                 XCTAssertEqual(headers["Accept"], mime)
             } else {
                 XCTFail("no headers")
             }
         }
     }
-    
+
     struct ValidatedRequest: Request {
         typealias ResponseType = [String: Any]
         
-        var path: String? { return "response-headers" }
         var method: HTTPMethod { return .get }
+        var path: String? { return "response-headers" }
         var query: Parameters? { return [ "Mime": mime ] }
         
         var mime: String
@@ -211,10 +194,7 @@ class ClientTests: XCTestCase {
         let mime = "application/json"
         let req = ValidatedRequest(mime: mime)
         
-        tester.test(request: req) { result in
-            self.tester.assert(result: result, isSuccess: false)
-            
-            XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
-        }
+        let t = tester.expectError(req) { error in }
+        XCTAssertEqual(t.httpResponse?.allHeaderFields["Mime"] as? String, mime)
     }
 }
