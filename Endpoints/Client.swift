@@ -22,9 +22,9 @@ public enum StatusCodeError: Error {
     case unacceptable(code: Int, reason: String?)
 }
 
-extension StatusCodeError {
-    public var localizedDescription: String {
-        switch  self {
+extension StatusCodeError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
         case .unacceptable(let code, let reason):
             return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
         }

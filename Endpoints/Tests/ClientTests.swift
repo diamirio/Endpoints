@@ -25,6 +25,8 @@ class ClientTests: XCTestCase {
         })
         
         let t = tester.expectError(request) { error in
+            XCTAssertEqual(error.localizedDescription, "The request timed out.")
+            
             let error = error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)
         }
@@ -38,6 +40,7 @@ class ClientTests: XCTestCase {
         let request = DynamicRequest<Data>(.get, "status/400")
         
         tester.expectError(request) { error in
+            XCTAssertEqual(error.localizedDescription, "bad request")
             if let error = error as? StatusCodeError {
                 switch error {
                 case .unacceptable(400, _):

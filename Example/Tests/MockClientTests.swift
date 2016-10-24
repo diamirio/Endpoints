@@ -58,9 +58,6 @@ class MockClientTests: XCTestCase {
             default:
                 XCTFail("wrong error: \(error)")
             }
-            if let statusCodeError = error as? StatusCodeError {
-                XCTAssertEqual(statusCodeError.localizedDescription, msg)
-            }
             XCTAssertEqual(error.localizedDescription, msg)
         }
     }

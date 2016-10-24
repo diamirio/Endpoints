@@ -8,20 +8,6 @@
 
 import Foundation
 
-public struct Result<Value> {
-    public internal(set) var value: Value?
-    public internal(set) var error: Error?
-    
-    public let response: HTTPURLResponse?
-    
-    public var isSuccess: Bool { return !isError }
-    public var isError: Bool { return error != nil }
-    
-    init(response: HTTPURLResponse?) {
-        self.response = response
-    }
-}
-
 public class Task<Value> {
     public typealias WhenDoneBlock = ()->()
     public typealias SuccessBlock = (Value)->()
