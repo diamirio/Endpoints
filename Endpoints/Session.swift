@@ -54,8 +54,7 @@ public class Session<C: Client> {
             if self.debug {
                 let status = sessionResult.httpResponse?.statusCode
                 if let data = data, let string = String(data: data, encoding: String.Encoding.utf8) {
-                    let str = string as NSString
-                    print("response string for \(urlRequest) with status: \(status):\n\(str)")
+                    print("response string for \(urlRequest) with status: \(status):\n\(string)")
                 } else {
                     print("no response string for \(urlRequest). error: \(error). status: \(status)")
                 }
