@@ -8,47 +8,17 @@
 
 import Foundation
 
-public class Task<Value> {
-    public typealias WhenDoneBlock = ()->()
-    public typealias SuccessBlock = (Value)->()
-    public typealias ErrorBlock = (Error)->()
+public struct Result<Value> {
+    public internal(set) var value: Value?
+    public internal(set) var error: Error?
     
-    public internal(set) var urlSessionDataTask: URLSessionDataTask?
+    public let response: HTTPURLResponse?
     
-    internal private(set) var whenDoneBlock: WhenDoneBlock?
-    internal private(set) var onSuccessBlock: SuccessBlock?
-    internal private(set) var onErrorBlock: ErrorBlock?
+    public var isSuccess: Bool { return !isError }
+    public var isError: Bool { return error != nil }
     
-    public var httpResponse: HTTPURLResponse? {
-        return urlSessionDataTask?.response as? HTTPURLResponse
-    }
-    
-    public var statusCode: Int? {
-        return httpResponse?.statusCode
-    }
-    
-    @discardableResult
-    public func whenDone(block: @escaping WhenDoneBlock) -> Self {
-        assert(urlSessionDataTask != nil)
-        self.whenDoneBlock = block
-        
-        return self
-    }
-    
-    @discardableResult
-    public func onSuccess(block: @escaping SuccessBlock) -> Self {
-        assert(urlSessionDataTask != nil)
-        self.onSuccessBlock = block
-        
-        return self
-    }
-    
-    @discardableResult
-    public func onError(block: @escaping ErrorBlock) -> Self {
-        assert(urlSessionDataTask != nil)
-        self.onErrorBlock = block
-        
-        return self
+    init(response: HTTPURLResponse?) {
+        self.response = response
     }
 }
 
@@ -56,20 +26,18 @@ public class Session<C: Client> {
     public var debug = false
     
     public var urlSession: URLSession
-    public var completionQueue: DispatchQueue
     public let client: C
     
-    public init(with client: C, using urlSession: URLSession=URLSession.shared, completionQueue: DispatchQueue=DispatchQueue.main) {
+    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
         self.client = client
         self.urlSession = urlSession
-        self.completionQueue = completionQueue
     }
     
-    public func start<R: Request>(request: R) -> Task<R.ResponseType.OutputType> {
+    @discardableResult
+    public func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = client.encode(request: request)
-        let task = Task<R.ResponseType.OutputType>()
         
-        task.urlSessionDataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
+        let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
             
             if self.debug {
@@ -81,23 +49,27 @@ public class Session<C: Client> {
                     print("no response string for \(urlRequest). error: \(error). status: \(status)")
                 }
             }
-
-            do {
-                let value = try self.client.parse(sessionTaskResult: sessionResult, for: request)
-                
-                self.complete { task.onSuccessBlock?(value) }
-            } catch {
-                self.complete { task.onErrorBlock?(error) }
-            }
             
-            self.complete { task.whenDoneBlock?() }
+            let result = self.transform(sessionResult: sessionResult, for: request)
+            
+            DispatchQueue.main.async {
+                completion(result)
+            }
         }
-        task.urlSessionDataTask!.resume()
+        task.resume()
         
         return task
     }
     
-    func complete(_ block: @escaping ()->()) {
-        self.completionQueue.async(execute: block)
+    public final func transform<R: Request>(sessionResult: URLSessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
+        var result = Result<R.ResponseType.OutputType>(response: sessionResult.httpResponse)
+        
+        do {
+            result.value = try client.parse(sessionTaskResult: sessionResult, for: request)
+        } catch {
+            result.error = error
+        }
+        
+        return result
     }
 }

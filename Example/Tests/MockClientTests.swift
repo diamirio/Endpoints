@@ -12,15 +12,14 @@ import XCTest
 
 class BinResultProvider: FakeResultProvider {
     func resultFor<R: Request>(request: R) -> URLSessionTaskResult {
-        if let fake = request as? FakeRequest {
-            return fake.fakeResult()
+        var result = URLSessionTaskResult(response: nil, data: Data(), error: nil)
+        
+        if let serverMessage = request as? ServerMessageRequest {
+            result.response = FakeHTTPURLResponse(status: 300, header: [ "X-Error-Message" : serverMessage.message])
         }
-        fatalError()
+        
+        return result
     }
-}
-
-protocol FakeRequest {
-    func fakeResult() -> URLSessionTaskResult
 }
 
 struct ServerMessageRequest: Request {
@@ -30,13 +29,6 @@ struct ServerMessageRequest: Request {
     var path: String? { return "get" }
     
     var message: String
-}
-
-extension ServerMessageRequest: FakeRequest {
-    func fakeResult() -> URLSessionTaskResult {
-        let resp = FakeHTTPURLResponse(status: 300, header: [ "X-Error-Message" : message])
-        return URLSessionTaskResult(response: resp, data: Data(), error: nil)
-    }
 }
 
 class MockClientTests: XCTestCase {
@@ -50,15 +42,8 @@ class MockClientTests: XCTestCase {
     
     func testErrorMessageValidation() {
         let msg = "error message"
-        tester.expectError(ServerMessageRequest(message: msg)) { error in
-            switch error {
-            case StatusCodeError.unacceptable(300, let reason):
-                XCTAssertEqual(reason, msg)
-                break
-            default:
-                XCTFail("wrong error: \(error)")
-            }
-            XCTAssertEqual(error.localizedDescription, msg)
+        tester.test(request: ServerMessageRequest(message: msg)) { result in
+            self.tester.assert(result: result, isSuccess: false, status: 300)
         }
     }
 }
