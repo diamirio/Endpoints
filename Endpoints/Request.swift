@@ -67,6 +67,7 @@ public extension Request {
         
         var urlRequest = URLRequest(url: url)
         
+        urlRequest.httpMethod = method.rawValue
         urlRequest.url = url
         urlRequest.httpBody = body
         urlRequest.allHTTPHeaderFields = header

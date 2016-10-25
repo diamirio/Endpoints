@@ -28,6 +28,8 @@ class ClientTests: XCTestCase {
             self.tester.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
             
+            XCTAssertEqual(result.error?.localizedDescription, "The request timed out.")
+
             let error = result.error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)
         }
@@ -38,6 +40,7 @@ class ClientTests: XCTestCase {
         
         tester.test(request: request) { result in
             self.tester.assert(result: result, isSuccess: false, status: 400)
+            XCTAssertEqual(result.error?.localizedDescription, "bad request")
             
             if let error = result.error as? StatusCodeError {
                 switch error {

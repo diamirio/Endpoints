@@ -21,6 +21,7 @@ class ClientTester<C: Client> {
     init(test: XCTestCase, session: Session<C>) {
         self.test = test
         self.session = session
+        session.debug = true
     }
     
     func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
@@ -37,13 +38,9 @@ class ClientTester<C: Client> {
         if isSuccess {
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)
-            XCTAssertTrue(result.isSuccess)
-            XCTAssertFalse(result.isError)
         } else {
             XCTAssertNotNil(result.error)
             XCTAssertNil(result.value)
-            XCTAssertFalse(result.isSuccess)
-            XCTAssertTrue(result.isError)
         }
         
         if let code = code {

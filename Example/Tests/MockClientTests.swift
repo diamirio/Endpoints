@@ -44,6 +44,8 @@ class MockClientTests: XCTestCase {
         let msg = "error message"
         tester.test(request: ServerMessageRequest(message: msg)) { result in
             self.tester.assert(result: result, isSuccess: false, status: 300)
+            
+            XCTAssertEqual(result.error?.localizedDescription, msg)
         }
     }
 }

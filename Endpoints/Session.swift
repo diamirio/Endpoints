@@ -9,16 +9,27 @@
 import Foundation
 
 public struct Result<Value> {
-    public internal(set) var value: Value?
-    public internal(set) var error: Error?
+    public var value: Value?
+    public var error: Error?
     
     public let response: HTTPURLResponse?
     
-    public var isSuccess: Bool { return !isError }
-    public var isError: Bool { return error != nil }
-    
-    init(response: HTTPURLResponse?) {
+    public init(response: HTTPURLResponse?) {
         self.response = response
+    }
+    
+    public func onSuccess(block: (Value)->()) -> Result {
+        if let value = value {
+            block(value)
+        }
+        return self
+    }
+    
+    public func onError(block: (Error)->()) -> Result {
+        if let error = error {
+            block(error)
+        }
+        return self
     }
 }
 
