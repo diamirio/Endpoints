@@ -71,7 +71,7 @@ class EndpointMapperTests: XCTestCase {
         
         var object: RequestObject
         
-        var body: Data? {
+        var body: Body? {
             return object.toData()
         }
     }

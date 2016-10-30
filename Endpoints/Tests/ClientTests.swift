@@ -63,6 +63,95 @@ class ClientTests: XCTestCase {
         }
     }
     
+    func testPostRawString() {
+        let body = "body"
+        let request = DynamicRequest<[String: Any]>(.post, "post", header: [ "Content-Type": "raw" ], body: body)
+        
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+            result.onSuccess { value in
+                XCTAssertEqual(value["data"] as? String, body)
+                
+                if let headers = value["headers"] as? [String: String] {
+                    XCTAssertEqual(headers["Content-Type"], "raw")
+                } else {
+                    XCTFail("headers not found")
+                }
+            }
+        }
+    }
+    
+    func testPostString() {
+        //foundation urlrequest defaults to form encoding
+        let body = "key=value"
+        let request = DynamicRequest<[String: Any]>(.post, "post", body: body)
+        
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+            result.onSuccess { value in
+                if let form = value["form"] as? [String: String] {
+                    XCTAssertEqual(form["key"], "value")
+                } else {
+                    XCTFail("form not found")
+                }
+                
+                if let headers = value["headers"] as? [String: String] {
+                    XCTAssertEqual(headers["Content-Type"], "application/x-www-form-urlencoded")
+                } else {
+                    XCTFail("headers not found")
+                }
+            }
+        }
+    }
+    
+    func testPostFormEncodedBody() {
+        let params = [ "key": "value" ]
+        let body = FormEncodedBody(parameters: params)
+        let request = DynamicRequest<[String: Any]>(.post, "post", body: body)
+        
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+            
+            result.onSuccess { value in
+                if let form = value["form"] as? [String: String] {
+                    XCTAssertEqual(form, params)
+                } else {
+                    XCTFail("form not found")
+                }
+                
+                if let headers = value["headers"] as? [String: String] {
+                    XCTAssertEqual(headers["Content-Type"], "application/x-www-form-urlencoded")
+                } else {
+                    XCTFail("headers not found")
+                }
+            }
+        }
+    }
+    
+    func testPostJSONBody() {
+        let params = [ "key": "value" ]
+        let body = try! JSONEncodedBody(jsonObject: params)
+        let request = DynamicRequest<[String: Any]>(.post, "post", body: body)
+        
+        tester.test(request: request) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+            
+            result.onSuccess { value in
+                if let form = value["json"] as? [String: String] {
+                    XCTAssertEqual(form, params)
+                } else {
+                    XCTFail("form not found")
+                }
+                
+                if let headers = value["headers"] as? [String: String] {
+                    XCTAssertEqual(headers["Content-Type"], "application/json")
+                } else {
+                    XCTFail("headers not found")
+                }
+            }
+        }
+    }
+    
     func testGetString() {
         let request = DynamicRequest<String>(.get, "get", query: [ "inputParam" : "inputParamValue" ])
         

@@ -21,6 +21,65 @@ public enum HTTPMethod: String {
     case connect = "CONNECT"
 }
 
+public protocol Body {
+    var header: Parameters? { get }
+    var requestData: Data { get }
+}
+
+extension Body {
+    public var header: Parameters? { return nil }
+}
+
+extension Data: Body {
+    public var requestData: Data { return self }
+}
+
+extension String: Body {
+    public var requestData: Data {
+        guard let data = data(using: .utf8) else {
+            fatalError("cannot convert string to data: \(self)")
+        }
+        return data
+    }
+}
+
+public struct FormEncodedBody: Body {
+    public var parameters: Parameters
+    
+    public init(parameters: Parameters) {
+        self.parameters = parameters
+    }
+    
+    public var header: Parameters? {
+        return [ "Content-Type" : "application/x-www-form-urlencoded" ]
+    }
+    
+    public var requestData: Data {
+        return parameters.map { key, value in
+            return "\(encode(key))=\(encode(value))"
+        }.joined(separator: "&").data(using: .utf8)!
+    }
+    
+    func encode(_ string: String) -> String {
+        guard let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+            fatalError("failed to encode param string: \(string)")
+        }
+        return encoded
+    }
+}
+
+public struct JSONEncodedBody: Body {
+    public let requestData: Data
+    
+    public init(jsonObject: Any) throws {
+        requestData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+    }
+    
+    public var header: Parameters? {
+        return [ "Content-Type" : "application/json" ]
+    }
+}
+
 public protocol RequestEncoder {
     func encode(withBaseURL baseURL: URL) -> URLRequest
 }
@@ -32,14 +91,13 @@ public protocol Request: RequestEncoder, ResponseValidator {
     var path: String? { get }
     var query: Parameters? { get }
     var header: Parameters? { get }
-    var body: Data? { get }
+    var body: Body? { get }
 }
 
 public extension Request {
-    var dynamicPath: String? { return nil }
     var query: Parameters? { return nil }
-    var header: Parameters? { return nil }
-    var body: Data? { return nil }
+    var header: Parameters? { return body?.header }
+    var body: Body? { return nil }
     
     public func encode(withBaseURL baseURL: URL) -> URLRequest {
         return encodeData(withBaseURL: baseURL)
@@ -69,8 +127,11 @@ public extension Request {
         
         urlRequest.httpMethod = method.rawValue
         urlRequest.url = url
-        urlRequest.httpBody = body
-        urlRequest.allHTTPHeaderFields = header
+        urlRequest.httpBody = body?.requestData
+        
+        body?.header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
+        //request header trumps body header
+        header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
         
         return urlRequest
     }
@@ -105,12 +166,12 @@ public struct DynamicRequest<Response: ResponseParser>: Request {
     public var path: String?
     public var query: Parameters?
     public var header: Parameters?
-    public var body: Data?
+    public var body: Body?
     
     public var encode: EncodingBlock?
     public var validate: ValidationBlock?
     
-    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Data?=nil, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
+    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
         self.method = method
         self.path = path
         

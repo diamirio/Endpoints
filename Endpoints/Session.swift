@@ -18,6 +18,7 @@ public struct Result<Value> {
         self.response = response
     }
     
+    @discardableResult
     public func onSuccess(block: (Value)->()) -> Result {
         if let value = value {
             block(value)
@@ -25,6 +26,7 @@ public struct Result<Value> {
         return self
     }
     
+    @discardableResult
     public func onError(block: (Error)->()) -> Result {
         if let error = error {
             block(error)

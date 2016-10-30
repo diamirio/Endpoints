@@ -22,7 +22,10 @@ class RequestTests: XCTestCase {
         req = testRequestEncoding(baseUrl: base, path: "/get", queryParams: queryParams)
         XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
     }
-    
+
+}
+
+extension RequestTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
         let client = BaseClient(baseURL: URL(string: baseUrl)!)
         let request = DynamicRequest<Data>(.get, path, query: queryParams)
@@ -37,7 +40,7 @@ class RequestTests: XCTestCase {
             XCTAssertEqual(httpResponse.statusCode, 200)
             
             exp.fulfill()
-        }.resume()
+            }.resume()
         
         waitForExpectations(timeout: 10, handler: nil)
         
