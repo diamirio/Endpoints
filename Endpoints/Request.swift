@@ -110,7 +110,7 @@ public extension Request {
             url.appendPathComponent(path)
         }
         
-        if let queryItems = createQueryItems() {
+        if let queryItems = queryItems {
             guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
                 fatalError("failed to parse url components for \(url)")
             }
@@ -130,25 +130,17 @@ public extension Request {
         urlRequest.httpBody = body?.requestData
         
         body?.header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
-        //request header trumps body header
-        header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
+        header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) } //request header trumps body header
         
         return urlRequest
     }
     
-    private func createQueryItems() -> [URLQueryItem]? {
+    var queryItems: [URLQueryItem]? {
         guard let params = query else {
             return nil
         }
         
-        var items = [URLQueryItem]()
-        for param in params {
-            let queryItem = URLQueryItem(name: param.key, value: param.value)
-            
-            items.append(queryItem)
-        }
-        
-        return items
+        return params.map { URLQueryItem(name: $0, value: $1) }
     }
     
     public func validate(result: URLSessionTaskResult) throws {
