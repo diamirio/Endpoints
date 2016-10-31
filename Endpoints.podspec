@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://gitlab.tailored-apps.com/ios/endpoints.git' }
 
   s.ios.deployment_target = '8.0'
+  s.tvos.deployment_target = '9.0'
 
   s.subspec 'Core' do |sp|
     sp.source_files = 'Endpoints/*.swift'
