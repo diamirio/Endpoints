@@ -10,32 +10,10 @@ import Foundation
 import ObjectMapper
 import Endpoints
 
-public extension Mappable {
-    func toData() -> Data? {
-        return try? JSONSerialization.data(withJSONObject: toJSON(), options: .prettyPrinted)
-    }
-}
-
-public protocol MappableRequest: Request {
-    associatedtype MappableType: Mappable
-    
-    var mappable: MappableType { get }
-}
-
-public extension MappableRequest {
-    var method: HTTPMethod { return .post }
-    
-    var contentTypeHeader: Parameters {
-        //TODO: think about how to better abstract this
-        return [ "Content-Type" : "application/json" ]
-    }
-    
-    var header: Parameters? {
-        return contentTypeHeader
-    }
-    
-    var body: Data? {
-        return mappable.toData()
+extension JSONEncodedBody {
+    init<M: BaseMappable>(mappable: M) throws {
+        let json = Mapper<M>().toJSON(mappable)
+        try self.init(jsonObject: json)
     }
 }
 

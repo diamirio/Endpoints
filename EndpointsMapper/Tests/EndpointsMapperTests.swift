@@ -52,7 +52,7 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        let request = DynamicRequest<String>(.post, "post", body: jsonBody.toData())
+        let request = DynamicRequest<String>(.post, "post", body: try! JSONEncodedBody(mappable: jsonBody))
         
         tester.test(request: request) { result in
             self.tester.assert(result: result)
@@ -72,7 +72,7 @@ class EndpointMapperTests: XCTestCase {
         var object: RequestObject
         
         var body: Body? {
-            return object.toData()
+            return try! JSONEncodedBody(mappable: object)
         }
     }
     
@@ -81,27 +81,6 @@ class EndpointMapperTests: XCTestCase {
         jsonBody.value = "zapzarap"
         
         tester.test(request: PostJSONRequest(object: jsonBody)) { result in
-            self.tester.assert(result: result)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains(jsonBody.value))
-            }
-        }
-    }
-    
-    struct ConvenientPostJSONRequest: MappableRequest {
-        typealias MappableType = RequestObject
-        typealias ResponseType = String
-        
-        var mappable: RequestObject
-        var path: String? { return "post" }
-    }
-    
-    func testPostJSONDataTypedConvenient() {
-        var jsonBody = RequestObject()
-        jsonBody.value = "zapzarap"
-        
-        tester.test(request: ConvenientPostJSONRequest(mappable: jsonBody)) { result in
             self.tester.assert(result: result)
             
             if let string = result.value {
