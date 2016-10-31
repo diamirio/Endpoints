@@ -1,11 +1,3 @@
-//
-//  Request.swift
-//  Endpoint
-//
-//  Created by Peter W on 13/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
 public typealias Parameters = [String: String]
@@ -80,30 +72,27 @@ public struct JSONEncodedBody: Body {
     }
 }
 
-public protocol RequestEncoder {
+public protocol URLRequestEncodable {
     func encode(withBaseURL baseURL: URL) -> URLRequest
 }
 
-public protocol Request: RequestEncoder, ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+public struct Request: URLRequestEncodable {
+    public var method: HTTPMethod
+    public var path: String?
+    public var query: Parameters?
+    public var header: Parameters?
+    public var body: Body?
     
-    var method: HTTPMethod { get }
-    var path: String? { get }
-    var query: Parameters? { get }
-    var header: Parameters? { get }
-    var body: Body? { get }
-}
-
-public extension Request {
-    var query: Parameters? { return nil }
-    var header: Parameters? { return body?.header }
-    var body: Body? { return nil }
-    
-    public func encode(withBaseURL baseURL: URL) -> URLRequest {
-        return encodeData(withBaseURL: baseURL)
+    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil) {
+        self.method = method
+        self.path = path
+        
+        self.query = query
+        self.header = header
+        self.body = body
     }
     
-    func encodeData(withBaseURL baseURL: URL) -> URLRequest {
+    public func encode(withBaseURL baseURL: URL) -> URLRequest {
         var url = baseURL
         
         if let path = path {
@@ -141,51 +130,5 @@ public extension Request {
         }
         
         return params.map { URLQueryItem(name: $0, value: $1) }
-    }
-    
-    public func validate(result: URLSessionTaskResult) throws {
-        //no validation by default
-    }
-}
-
-public struct DynamicRequest<Response: ResponseParser>: Request {
-    public typealias ResponseType = Response
-    
-    public typealias EncodingBlock = (URLRequest)->(URLRequest)
-    public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
-    
-    public var method: HTTPMethod
-    public var path: String?
-    public var query: Parameters?
-    public var header: Parameters?
-    public var body: Body?
-    
-    public var encode: EncodingBlock?
-    public var validate: ValidationBlock?
-    
-    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
-        self.method = method
-        self.path = path
-        
-        self.query = query
-        self.header = header
-        self.body = body
-        
-        self.validate = validate
-        self.encode = encode
-    }
-    
-    public func encode(withBaseURL baseURL: URL) -> URLRequest {
-        var req = encodeData(withBaseURL: baseURL)
-        
-        if let encode = encode {
-            req = encode(req)
-        }
-        
-        return req
-    }
-    
-    public func validate(result: URLSessionTaskResult) throws {
-        try validate?(result)
     }
 }

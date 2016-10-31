@@ -1,20 +1,46 @@
-//
-//  API.swift
-//  Endpoint
-//
-//  Created by Peter W on 10/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
-public struct URLSessionTaskResult {
-    public var response: URLResponse?
-    public var data: Data?
-    public var error: Error?
+public protocol Call: URLRequestEncodable, ResponseValidator {
+    associatedtype ResponseType: ResponseParser
     
-    public var httpResponse: HTTPURLResponse? {
-        return response as? HTTPURLResponse
+    var request: Request { get }
+}
+
+public extension Call {
+    public func encode(withBaseURL baseURL: URL) -> URLRequest {
+        return request.encode(withBaseURL: baseURL)
+    }
+    
+    func validate(result: URLSessionTaskResult) throws {
+        //no validation by default
+    }
+}
+
+public struct DynamicCall<Response: ResponseParser>: Call {
+    public typealias ResponseType = Response
+    
+    public typealias EncodingBlock = (URLRequest)->(URLRequest)
+    public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
+    
+    public var request: Request
+    
+    public var encode: EncodingBlock?
+    public var validate: ValidationBlock?
+    
+    public init(_ request: Request, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
+        self.request = request
+        
+        self.validate = validate
+        self.encode = encode
+    }
+    
+    public func encode(withBaseURL baseURL: URL) -> URLRequest {
+        let urlRequest = request.encode(withBaseURL: baseURL)
+        return encode?(urlRequest) ?? urlRequest
+    }
+    
+    public func validate(result: URLSessionTaskResult) throws {
+        try validate?(result)
     }
 }
 
@@ -48,8 +74,18 @@ public class StatusCodeValidator: ResponseValidator {
 }
 
 public protocol Client {
-    func encode<R: Request>(request: R) -> URLRequest
-    func parse<R: Request>(sessionTaskResult result: URLSessionTaskResult, for request: R) throws -> R.ResponseType.OutputType
+    func encode<C: Call>(call: C) -> URLRequest
+    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType
+}
+
+public struct URLSessionTaskResult {
+    public var response: URLResponse?
+    public var data: Data?
+    public var error: Error?
+    
+    public var httpResponse: HTTPURLResponse? {
+        return response as? HTTPURLResponse
+    }
 }
 
 open class BaseClient: Client, ResponseValidator {
@@ -60,27 +96,27 @@ open class BaseClient: Client, ResponseValidator {
         self.baseURL = baseURL
     }
     
-    open func encode<R: Request>(request: R) -> URLRequest {
-        return request.encode(withBaseURL: baseURL)
+    open func encode<C: Call>(call: C) -> URLRequest {
+        return call.encode(withBaseURL: baseURL)
     }
     
-    public func parse<R: Request>(sessionTaskResult result: URLSessionTaskResult, for request: R) throws -> R.ResponseType.OutputType {
+    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
         if let error = result.error {
             throw error
         }
         
-        try validate(result: result, for: request)
+        try validate(result: result, for: call)
         
         if let data = result.data {
-            return try R.ResponseType.self.parse(responseData: data, encoding: .utf8) //TODO: use response encoding, if present
+            return try C.ResponseType.self.parse(responseData: data, encoding: .utf8) //TODO: use response encoding, if present
         } else {
             throw ParsingError.missingData
         }
     }
     
-    public func validate<R: Request>(result: URLSessionTaskResult, for request: R) throws {
+    public func validate<C: Call>(result: URLSessionTaskResult, for call: C) throws {
         try validate(result: result) //global validation
-        try request.validate(result: result) //request-specific validation
+        try call.validate(result: result) //request-specific validation
     }
     
     open func validate(result: URLSessionTaskResult) throws {

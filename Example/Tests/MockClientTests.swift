@@ -1,20 +1,12 @@
-//
-//  EndpointExampleTests.swift
-//  EndpointExampleTests
-//
-//  Created by Peter W on 10/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import XCTest
 @testable import Endpoints
 @testable import Example
 
 class BinResultProvider: FakeResultProvider {
-    func resultFor<R: Request>(request: R) -> URLSessionTaskResult {
+    func resultFor<C: Call>(call: C) -> URLSessionTaskResult {
         var result = URLSessionTaskResult(response: nil, data: Data(), error: nil)
         
-        if let serverMessage = request as? ServerMessageRequest {
+        if let serverMessage = call as? ServerMessageRequest {
             result.response = FakeHTTPURLResponse(status: 300, header: [ "X-Error-Message" : serverMessage.message])
         }
         
@@ -22,13 +14,14 @@ class BinResultProvider: FakeResultProvider {
     }
 }
 
-struct ServerMessageRequest: Request {
+struct ServerMessageRequest: Call {
     typealias ResponseType = Data
-
-    var method: HTTPMethod { return .get }
-    var path: String? { return "get" }
     
     var message: String
+    
+    var request: Request {
+        return Request(.get, "get")
+    }
 }
 
 class MockClientTests: XCTestCase {
@@ -42,7 +35,7 @@ class MockClientTests: XCTestCase {
     
     func testErrorMessageValidation() {
         let msg = "error message"
-        tester.test(request: ServerMessageRequest(message: msg)) { result in
+        tester.test(call: ServerMessageRequest(message: msg)) { result in
             self.tester.assert(result: result, isSuccess: false, status: 300)
             
             XCTAssertEqual(result.error?.localizedDescription, msg)

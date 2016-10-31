@@ -1,11 +1,3 @@
-//
-//  APITestCase.swift
-//  Endpoints
-//
-//  Created by Peter W on 14/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 import XCTest
 import Endpoints
@@ -24,9 +16,9 @@ class ClientTester<C: Client> {
         session.debug = true
     }
     
-    func test<R: Request>(request: R, validateResult: ((Result<R.ResponseType.OutputType>)->())?=nil) {
+    func test<C: Call>(call: C, validateResult: ((Result<C.ResponseType.OutputType>)->())?=nil) {
         let exp = test.expectation(description: "")
-        session.start(request: request) { result in
+        session.start(call: call) { result in
             validateResult?(result)
             
             exp.fulfill()

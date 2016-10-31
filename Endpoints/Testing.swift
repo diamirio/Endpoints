@@ -1,15 +1,7 @@
-//
-//  Testing.swift
-//  Endpoints
-//
-//  Created by Peter W on 19/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
 public protocol FakeResultProvider {
-    func resultFor<R: Request>(request: R) -> URLSessionTaskResult
+    func resultFor<C: Call>(call: C) -> URLSessionTaskResult
 }
 
 public class FakeSession<C: Client>: Session<C> {
@@ -21,9 +13,9 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func start<R : Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
-        let sessionResult = resultProvider.resultFor(request: request)
-        let result = transform(sessionResult: sessionResult, for: request)
+    override public func start<C : Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
+        let sessionResult = resultProvider.resultFor(call: call)
+        let result = transform(sessionResult: sessionResult, for: call)
         
         DispatchQueue.main.async {
             completion(result)

@@ -1,11 +1,3 @@
-//
-//  RequestTests.swift
-//  Endpoints
-//
-//  Created by Peter W on 14/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import XCTest
 @testable import Endpoints
 
@@ -27,10 +19,9 @@ class RequestTests: XCTestCase {
 
 extension RequestTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
-        let client = BaseClient(baseURL: URL(string: baseUrl)!)
-        let request = DynamicRequest<Data>(.get, path, query: queryParams)
+        let request = Request(.get, path, query: queryParams)
         
-        let urlRequest = client.encode(request: request)
+        let urlRequest = request.encode(withBaseURL: URL(string: baseUrl)!)
         
         let exp = expectation(description: "")
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
@@ -40,7 +31,7 @@ extension RequestTests {
             XCTAssertEqual(httpResponse.statusCode, 200)
             
             exp.fulfill()
-            }.resume()
+        }.resume()
         
         waitForExpectations(timeout: 10, handler: nil)
         

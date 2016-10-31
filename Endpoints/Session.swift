@@ -1,11 +1,3 @@
-//
-//  Session.swift
-//  Endpoints
-//
-//  Created by Peter W on 24/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
 public struct Result<Value> {
@@ -47,8 +39,8 @@ public class Session<C: Client> {
     }
     
     @discardableResult
-    public func start<R: Request>(request: R, completion: @escaping (Result<R.ResponseType.OutputType>)->()) -> URLSessionDataTask {
-        let urlRequest = client.encode(request: request)
+    public func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+        let urlRequest = client.encode(call: call)
         
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
@@ -62,7 +54,7 @@ public class Session<C: Client> {
                 }
             }
             
-            let result = self.transform(sessionResult: sessionResult, for: request)
+            let result = self.transform(sessionResult: sessionResult, for: call)
             
             DispatchQueue.main.async {
                 completion(result)
@@ -73,8 +65,8 @@ public class Session<C: Client> {
         return task
     }
     
-    public final func transform<R: Request>(sessionResult: URLSessionTaskResult, for request: R) -> Result<R.ResponseType.OutputType> {
-        var result = Result<R.ResponseType.OutputType>(response: sessionResult.httpResponse)
+    func transform<C: Call>(sessionResult: URLSessionTaskResult, for request: C) -> Result<C.ResponseType.OutputType> {
+        var result = Result<C.ResponseType.OutputType>(response: sessionResult.httpResponse)
         
         do {
             result.value = try client.parse(sessionTaskResult: sessionResult, for: request)

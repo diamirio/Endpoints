@@ -1,11 +1,3 @@
-//
-//  BinAPI.swift
-//  Endpoint
-//
-//  Created by Peter W on 13/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 import Endpoints
 
@@ -25,27 +17,21 @@ class BinClient: BaseClient {
     }
 }
 
-protocol BinRequest: Request {}
-
-extension BinRequest {
-//    func start(completion: ((Result<ResponseType.OutputType>)->())?) {
-//        BinAPI().start(endpoint: self) { result in
-//        }
-//    }
-}
+protocol BinCall: Call {}
 
 extension BinClient {
-    struct GetOutput: Request {
+    struct GetOutput: BinCall {
         typealias ResponseType = OutputValue
         
         let value: String
         
-        var path: String? { return "get" }
-        var method: HTTPMethod { return .get }
-        
-        var query: Parameters? {
-            return [ "value" : value ]
+        var request: Request {
+            return Request(.get, "get", query: [ "value": value ])
         }
+    }
+    
+    static func getOutput(value: String) -> DynamicCall<OutputValue> {
+        return DynamicCall<OutputValue>(Request(.get, "get", query: [ "value": value]))
     }
 }
 

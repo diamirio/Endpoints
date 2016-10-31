@@ -1,11 +1,3 @@
-//
-//  EndpointMapperTests.swift
-//  EndpointMapperTests
-//
-//  Created by Peter W on 13/10/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import XCTest
 import ObjectMapper
 import Endpoints
@@ -29,9 +21,9 @@ class EndpointMapperTests: XCTestCase {
     
     func testResponseParsing() {
         let value = "value"
-        let request = DynamicRequest<ResponseObject>(.get, "get", query: [ "input": value ])
+        let c = DynamicCall<ResponseObject>(Request(.get, "get", query: [ "input": value ]))
         
-        tester.test(request: request) { result in
+        tester.test(call: c) { result in
             self.tester.assert(result: result)
             
             XCTAssertEqual(result.value?.value, value)
@@ -52,9 +44,9 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        let request = DynamicRequest<String>(.post, "post", body: try! JSONEncodedBody(mappable: jsonBody))
+        let c = DynamicCall<String>(Request(.post, "post", body: try! JSONEncodedBody(mappable: jsonBody)))
         
-        tester.test(request: request) { result in
+        tester.test(call: c) { result in
             self.tester.assert(result: result)
             
             if let string = result.value {
@@ -63,16 +55,12 @@ class EndpointMapperTests: XCTestCase {
         }
     }
     
-    struct PostJSONRequest: Request {
+    struct PostJSONRequest: Call {
         typealias ResponseType = String
-        
-        var method: HTTPMethod { return .post }
-        var path: String? { return "post" }
-        
         var object: RequestObject
         
-        var body: Body? {
-            return try! JSONEncodedBody(mappable: object)
+        var request: Request {
+            return Request(.post, "post", body: try! JSONEncodedBody(mappable: object))
         }
     }
     
@@ -80,7 +68,7 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        tester.test(request: PostJSONRequest(object: jsonBody)) { result in
+        tester.test(call: PostJSONRequest(object: jsonBody)) { result in
             self.tester.assert(result: result)
             
             if let string = result.value {
