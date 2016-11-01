@@ -66,10 +66,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         activeTask?.cancel()
         activeTask = session.start(call: call) { result in
             result.onError { error in
-                if let urlError = error as? URLError, urlError.code == .cancelled {
-                    return
-                }
-                
                 UIAlertView(title: "ouch", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
             }.onSuccess { value in
                 self.data.append(contentsOf: value.images)
@@ -85,6 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         data.removeAll()
         call.page = 0
+        tableView.reloadData()
         
         loadNextPage()
     }

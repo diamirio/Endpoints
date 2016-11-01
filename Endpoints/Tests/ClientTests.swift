@@ -8,6 +8,27 @@ class ClientTests: XCTestCase {
         tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "http://httpbin.org")!))
     }
     
+    func testCancellation() {
+        let c = DynamicCall<Data>(Request(.get, "get"))
+        
+        let exp = expectation(description: "")
+        let task = tester.session.start(call: c) { result in
+            XCTAssertTrue(result.wasCancelled)
+            XCTAssertNotNil(result.error)
+            XCTAssertNotNil(result.urlError)
+            
+            result.onError { error in
+                XCTFail("was cancelled. this is not considered an error. should not be called.")
+            }.onSuccess { value in
+                XCTFail("was cancelled. should not be called.")
+            }
+            exp.fulfill()
+        }
+        
+        task.cancel()
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+    
     func testTimeoutError() {
         let c = DynamicCall<Data>(Request(.get, "delay/1"), encode: { urlReq in
             var req = urlReq

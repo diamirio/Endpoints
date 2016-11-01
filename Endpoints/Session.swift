@@ -6,6 +6,14 @@ public struct Result<Value> {
     
     public let response: HTTPURLResponse?
     
+    public var urlError: URLError? {
+        return error as? URLError
+    }
+    
+    public var wasCancelled: Bool {
+        return urlError?.code == .cancelled
+    }
+    
     public init(response: HTTPURLResponse?) {
         self.response = response
     }
@@ -20,7 +28,7 @@ public struct Result<Value> {
     
     @discardableResult
     public func onError(block: (Error)->()) -> Result {
-        if let error = error {
+        if !wasCancelled, let error = error {
             block(error)
         }
         return self
