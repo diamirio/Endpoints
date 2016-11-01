@@ -212,6 +212,20 @@ class ClientTests: XCTestCase {
         XCTAssertEqual(inputArray, parsedObject)
     }
     
+    func testFailStringParsing() {
+        let input = "😜 test"
+        let data = input.data(using: .utf8)!
+        
+        do {
+            let parsed = try String.parse(responseData: data, encoding: .japaneseEUC)
+            XCTAssertEqual(parsed, input)
+            XCTFail("this should actually fail")
+        } catch {
+            XCTAssertTrue(error is ParsingError)
+            XCTAssertEqual(error.localizedDescription, "String could not be parsed with encoding 3")
+        }
+    }
+    
     func testFailJSONParsing() {
         let c = DynamicCall<[String: Any]>(Request(.get, "xml"))
         

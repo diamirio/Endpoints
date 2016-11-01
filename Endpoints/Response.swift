@@ -1,8 +1,17 @@
 import Foundation
 
-public enum ParsingError: Error {
+public enum ParsingError: LocalizedError {
     case missingData
     case invalidData(description: String)
+ 
+    public var errorDescription: String? {
+        switch self {
+        case .missingData:
+            return "no data"
+        case .invalidData(let desc):
+            return desc
+        }
+    }
 }
 
 public protocol ResponseParser {
@@ -28,7 +37,7 @@ extension String: ResponseParser {
         if let string = String(data: responseData, encoding: encoding) {
             return string
         } else {
-            throw ParsingError.invalidData(description: "String could not be parsed with encoding: \(encoding)")
+            throw ParsingError.invalidData(description: "String could not be parsed with encoding \(encoding.rawValue)")
         }
     }
 }
