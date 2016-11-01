@@ -25,7 +25,7 @@ extension BinClient {
         
         let value: String
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.get, "get", query: [ "value": value ])
         }
     }
@@ -39,7 +39,7 @@ struct OutputValue: DataParser {
     let value: String
     
     static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
-        let dict = try Dictionary<String, Any>.parse(data: responseData, encoding: encoding)
+        let dict = try Dictionary<String, Any>.parse(data: data, encoding: encoding)
         guard let args = dict["args"] as? [String: String], let value = args["value"] else {
             throw ParsingError.invalidData(description: "value not found")
         }

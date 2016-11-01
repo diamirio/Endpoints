@@ -59,7 +59,7 @@ class EndpointMapperTests: XCTestCase {
         typealias ResponseType = String
         var object: RequestObject
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.post, "post", body: try! JSONEncodedBody(mappable: object))
         }
     }
@@ -75,5 +75,23 @@ class EndpointMapperTests: XCTestCase {
                 XCTAssertTrue(string.contains(jsonBody.value))
             }
         }
+    }
+    
+    struct ArrayElement: Mappable {
+        var x = ""
+        
+        init?(map: Map) {}
+        mutating func mapping(map: Map){
+            x <- map["x"]
+        }
+    }
+    
+    func testParseMappedArray() {
+        let json = [ [ "x": "a" ], [ "x": "z"]]
+        let jsonData = try! JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+        let parsed = try! MappableArray<ArrayElement>.parse(data: jsonData, encoding: .utf8)
+        
+        XCTAssertEqual(parsed.count, 2)
+        XCTAssertEqual(parsed.first!.x, "a")
     }
 }

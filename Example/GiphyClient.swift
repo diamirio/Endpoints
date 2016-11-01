@@ -34,7 +34,7 @@ extension GiphyClient {
         var pageSize: Int
         var page = 0
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.get, "gifs/search",
                            query: [ "q": query,
                                     "limit": "\(pageSize)",
@@ -76,6 +76,6 @@ protocol UnboxableParser: Unboxable, DataParser {}
 
 extension UnboxableParser {
     static func parse(data: Data, encoding: String.Encoding) throws -> Self {
-        return try unbox(data: responseData)
+        return try unbox(data: data)
     }
 }

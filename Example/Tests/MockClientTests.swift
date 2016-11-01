@@ -19,7 +19,7 @@ struct ServerMessageRequest: Call {
     
     var message: String
     
-    var request: Request {
+    var request: URLRequestEncodable {
         return Request(.get, "get")
     }
 }

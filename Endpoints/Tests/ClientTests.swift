@@ -246,7 +246,7 @@ class ClientTests: XCTestCase {
         
         let value: String
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.get, "get", query: ["param" : value])
         }
     }
@@ -282,7 +282,7 @@ class ClientTests: XCTestCase {
 
         var mime: String
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.get, "headers")
         }
         
@@ -315,7 +315,7 @@ class ClientTests: XCTestCase {
         
         var mime: String
         
-        var request: Request {
+        var request: URLRequestEncodable {
             return Request(.get, "response-headers", query: [ "Mime": mime ])
         }
         

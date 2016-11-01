@@ -3,7 +3,7 @@ import Foundation
 public protocol Call: URLRequestEncodable, ResponseValidator {
     associatedtype ResponseType: DataParser
     
-    var request: Request { get }
+    var request: URLRequestEncodable { get }
 }
 
 public extension Call {
@@ -22,7 +22,7 @@ public struct DynamicCall<Response: DataParser>: Call {
     public typealias EncodingBlock = (URLRequest)->(URLRequest)
     public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
     
-    public var request: Request
+    public var request: URLRequestEncodable
     
     public var encode: EncodingBlock?
     public var validate: ValidationBlock?
