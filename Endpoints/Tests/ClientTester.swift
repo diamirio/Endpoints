@@ -26,7 +26,7 @@ class ClientTester<C: Client> {
         test.waitForExpectations(timeout: 30, handler: nil)
     }
     
-    func assert<P: ResponseParser>(result: Result<P>, isSuccess: Bool=true, status code: Int?=nil) {
+    func assert<P: DataParser>(result: Result<P>, isSuccess: Bool=true, status code: Int?=nil) {
         if isSuccess {
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)

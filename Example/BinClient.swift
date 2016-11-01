@@ -35,11 +35,11 @@ extension BinClient {
     }
 }
 
-struct OutputValue: ResponseParser {
+struct OutputValue: DataParser {
     let value: String
     
-    static func parse(responseData: Data, encoding: String.Encoding) throws -> OutputValue {
-        let dict = try Dictionary<String, Any>.parse(responseData: responseData, encoding: encoding)
+    static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
+        let dict = try Dictionary<String, Any>.parse(data: responseData, encoding: encoding)
         guard let args = dict["args"] as? [String: String], let value = args["value"] else {
             throw ParsingError.invalidData(description: "value not found")
         }

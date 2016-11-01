@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol Call: URLRequestEncodable, ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+    associatedtype ResponseType: DataParser
     
     var request: Request { get }
 }
@@ -16,7 +16,7 @@ public extension Call {
     }
 }
 
-public struct DynamicCall<Response: ResponseParser>: Call {
+public struct DynamicCall<Response: DataParser>: Call {
     public typealias ResponseType = Response
     
     public typealias EncodingBlock = (URLRequest)->(URLRequest)
@@ -108,7 +108,7 @@ open class BaseClient: Client, ResponseValidator {
         try validate(result: result, for: call)
         
         if let data = result.data {
-            return try C.ResponseType.self.parse(responseData: data, encoding: .utf8) //TODO: use response encoding, if present
+            return try C.ResponseType.self.parse(data: data, encoding: .utf8) //TODO: use response encoding, if present
         } else {
             throw ParsingError.missingData
         }

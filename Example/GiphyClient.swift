@@ -72,10 +72,10 @@ struct GiphyListResponse: UnboxableParser {
     }
 }
 
-protocol UnboxableParser: Unboxable, ResponseParser {}
+protocol UnboxableParser: Unboxable, DataParser {}
 
 extension UnboxableParser {
-    static func parse(responseData: Data, encoding: String.Encoding) throws -> Self {
+    static func parse(data: Data, encoding: String.Encoding) throws -> Self {
         return try unbox(data: responseData)
     }
 }

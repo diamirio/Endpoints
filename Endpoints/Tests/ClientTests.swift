@@ -207,7 +207,7 @@ class ClientTests: XCTestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! DynamicCall<[String]>.ResponseType.parse(responseData: arrayData, encoding: .utf8)
+        let parsedObject = try! DynamicCall<[String]>.ResponseType.parse(data: arrayData, encoding: .utf8)
         
         XCTAssertEqual(inputArray, parsedObject)
     }
@@ -217,7 +217,7 @@ class ClientTests: XCTestCase {
         let data = input.data(using: .utf8)!
         
         do {
-            let parsed = try String.parse(responseData: data, encoding: .japaneseEUC)
+            let parsed = try String.parse(data: data, encoding: .japaneseEUC)
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
         } catch {

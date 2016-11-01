@@ -9,11 +9,11 @@ extension JSONEncodedBody {
     }
 }
 
-public protocol MappableResponse: Mappable, ResponseParser {}
+public protocol MappableResponse: Mappable, DataParser {}
 
 public extension MappableResponse {
-    public static func parse(responseData: Data, encoding: String.Encoding) throws -> Self {
-        guard let dict = try parseJSON(responseData: responseData) as? [String: Any] else {
+    public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
+        guard let dict = try parseJSON(data: data) as? [String: Any] else {
             throw ParsingError.invalidData(description: "JSON structure is not a Dictionary")
         }
         
