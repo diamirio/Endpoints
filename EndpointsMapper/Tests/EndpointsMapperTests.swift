@@ -10,7 +10,7 @@ class EndpointMapperTests: XCTestCase {
         tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "https://httpbin.org")!))
     }
     
-    struct ResponseObject: MappableResponse {
+    struct ResponseObject: MappableParser {
         var value = ""
         
         init?(map: Map) {}

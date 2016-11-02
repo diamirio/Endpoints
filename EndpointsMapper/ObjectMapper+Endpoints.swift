@@ -9,9 +9,9 @@ extension JSONEncodedBody {
     }
 }
 
-public protocol MappableResponse: Mappable, DataParser {}
+public protocol MappableParser: Mappable, DataParser {}
 
-public extension MappableResponse {
+public extension MappableParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
         let dict = try [String: Any].parse(data: data, encoding: encoding)
         

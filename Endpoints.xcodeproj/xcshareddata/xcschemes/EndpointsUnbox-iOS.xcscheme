@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-               BuildableName = "Example.app"
-               BlueprintName = "Example"
+               BlueprintIdentifier = "7833CC2D1DC9E2E000132034"
+               BuildableName = "EndpointsUnbox.framework"
+               BlueprintName = "EndpointsUnbox-iOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,16 +32,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "787AECEE1DABE56A001A49BB"
-               BuildableName = "ExampleTests.xctest"
-               BlueprintName = "ExampleTests"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "7833CC351DC9E2E100132034"
                BuildableName = "EndpointsUnboxTests.xctest"
                BlueprintName = "EndpointsUnboxTests"
@@ -52,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "7833CC2D1DC9E2E000132034"
+            BuildableName = "EndpointsUnbox.framework"
+            BlueprintName = "EndpointsUnbox-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -71,16 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "7833CC2D1DC9E2E000132034"
+            BuildableName = "EndpointsUnbox.framework"
+            BlueprintName = "EndpointsUnbox-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "787AECDB1DABE56A001A49BB"
-            BuildableName = "Example.app"
-            BlueprintName = "Example"
+            BlueprintIdentifier = "7833CC2D1DC9E2E000132034"
+            BuildableName = "EndpointsUnbox.framework"
+            BlueprintName = "EndpointsUnbox-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

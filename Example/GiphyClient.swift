@@ -1,6 +1,7 @@
 import Foundation
-import Endpoints
 import Unbox
+import Endpoints
+import EndpointsUnbox
 import CoreGraphics
 
 class GiphyClient: BaseClient {
@@ -69,13 +70,5 @@ struct GiphyListResponse: UnboxableParser {
     
     init(unboxer: Unboxer) throws {
         images = try unboxer.unbox(key: "data")
-    }
-}
-
-protocol UnboxableParser: Unboxable, DataParser {}
-
-extension UnboxableParser {
-    static func parse(data: Data, encoding: String.Encoding) throws -> Self {
-        return try unbox(data: data)
     }
 }

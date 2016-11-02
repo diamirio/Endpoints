@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
                BuildableName = "EndpointsMapper.framework"
-               BlueprintName = "EndpointsMapper"
+               BlueprintName = "EndpointsMapper-iOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,7 +45,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
             BuildableName = "EndpointsMapper.framework"
-            BlueprintName = "EndpointsMapper"
+            BlueprintName = "EndpointsMapper-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,7 +67,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
             BuildableName = "EndpointsMapper.framework"
-            BlueprintName = "EndpointsMapper"
+            BlueprintName = "EndpointsMapper-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78685CAC1DAFBDF500B72F18"
             BuildableName = "EndpointsMapper.framework"
-            BlueprintName = "EndpointsMapper"
+            BlueprintName = "EndpointsMapper-iOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

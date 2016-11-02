@@ -19,29 +19,4 @@ class GiphyClientTests: XCTestCase {
             }
         }
     }
-    
-    struct UnboxTest: Unboxable {
-        let x: String
-        
-        init(unboxer: Unboxer) throws {
-            x = try unboxer.unbox(key: "x")
-        }
-    }
-
-    func testUnboxableArrayParsing() {
-        let json = [ [ "x": "a" ], [ "x": "z"]]
-        let jsonData = try! JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-        let parsed = try! UnboxableArray<UnboxTest>.parse(data: jsonData, encoding: .utf8)
-        
-        XCTAssertEqual(parsed.count, 2)
-        XCTAssertEqual(parsed.first!.x, "a")
-    }
-}
-
-class UnboxableArray<Element: Unboxable>: DataParser {
-    typealias OutputType = [Element]
-    
-    static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
-        return try unbox(data: data)
-    }
 }
