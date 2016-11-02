@@ -18,6 +18,12 @@ Pod::Spec.new do |s|
   s.subspec 'Mapper' do |sp|
     sp.source_files = 'EndpointsMapper/*.swift'
     sp.dependency 'Endpoints/Core'
-    sp.dependency 'ObjectMapper', '~> 2.1'
+    sp.dependency 'ObjectMapper', '~> 2.2'
+  end
+
+  s.subspec 'Unbox' do |sp|
+    sp.source_files = 'EndpointsUnbox/*.swift'
+    sp.dependency 'Endpoints/Core'
+    sp.dependency 'Unbox', '~> 2.2'
   end
 end
