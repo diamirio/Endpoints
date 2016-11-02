@@ -275,9 +275,7 @@
 		7833CC521DC9E33700132034 /* EndpointsUnboxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointsUnboxTests.swift; sourceTree = "<group>"; };
 		7833CC531DC9E33700132034 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7833CC6F1DC9F10E00132034 /* EndpointsMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7833CC701DC9F10E00132034 /* EndpointsMapper-iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "EndpointsMapper-iOS copy-Info.plist"; path = "/Users/peterweishapl/Projects/endpoints/EndpointsMapper-iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		7833CC871DC9FC0A00132034 /* EndpointsUnbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsUnbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7833CC881DC9FC0B00132034 /* EndpointsUnbox-iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "EndpointsUnbox-iOS copy-Info.plist"; path = "/Users/peterweishapl/Projects/endpoints/EndpointsUnbox-iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		7849F3C51DBE15A8004F0376 /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		785661371DB76AFA00CA89B5 /* Testing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Testing.swift; sourceTree = "<group>"; };
 		78685CAD1DAFBDF500B72F18 /* EndpointsMapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EndpointsMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,8 +441,6 @@
 				78A5F0F81DB1579B00108A45 /* Example */,
 				787AECBD1DABDEC7001A49BB /* Products */,
 				78A5F0A21DB0D98C00108A45 /* Frameworks */,
-				7833CC701DC9F10E00132034 /* EndpointsMapper-iOS copy-Info.plist */,
-				7833CC881DC9FC0B00132034 /* EndpointsUnbox-iOS copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1317,7 +1313,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos",
 				);
-				INFOPLIST_FILE = "EndpointsMapper-iOS copy-Info.plist";
+				INFOPLIST_FILE = EndpointsMapper/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapper";
@@ -1340,7 +1336,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos",
 				);
-				INFOPLIST_FILE = "EndpointsMapper-iOS copy-Info.plist";
+				INFOPLIST_FILE = EndpointsMapper/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapper";
@@ -1358,7 +1354,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "EndpointsUnbox-iOS copy-Info.plist";
+				INFOPLIST_FILE = EndpointsUnbox/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnbox";
@@ -1377,7 +1373,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "EndpointsUnbox-iOS copy-Info.plist";
+				INFOPLIST_FILE = EndpointsUnbox/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnbox";
