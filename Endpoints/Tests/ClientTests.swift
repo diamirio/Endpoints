@@ -30,12 +30,7 @@ class ClientTests: XCTestCase {
     }
     
     func testTimeoutError() {
-        let c = DynamicCall<Data>(Request(.get, "delay/1"), encode: { urlReq in
-            var req = urlReq
-            req.timeoutInterval = 0.5
-            
-            return req
-        })
+        let c = DynamicCall<Data>(Request(.get, "delay/1"), encode: { $0.timeoutInterval = 0.5 })
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -273,39 +268,6 @@ class ClientTests: XCTestCase {
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    struct CustomizedURLRequest: Call {
-        typealias ResponseType = [String: Any]
-
-        var mime: String
-        
-        var request: URLRequestEncodable {
-            return Request(.get, "headers")
-        }
-        
-        func encode(withBaseURL baseURL: URL) -> URLRequest {
-            var req = request.encode(withBaseURL: baseURL)
-            
-            req.setValue(mime, forHTTPHeaderField: "Accept")
-            
-            return req
-        }
-    }
-    
-    func testCustomizedURLRequest() {
-        let mime = "invalid"
-        let c = CustomizedURLRequest(mime: mime)
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            
-            if let headers = result.value?["headers"] as? [String: String] {
-                XCTAssertEqual(headers["Accept"], mime)
-            } else {
-                XCTFail("no headers")
             }
         }
     }

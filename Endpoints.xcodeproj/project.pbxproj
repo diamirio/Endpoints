@@ -40,6 +40,7 @@
 		78A5F10A1DB1596900108A45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */; };
 		78A5F10B1DB1596E00108A45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FD1DB1579B00108A45 /* Main.storyboard */; };
 		78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinClientTests.swift */; };
+		78D589D91DCE52340087E33B /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D589D81DCE52340087E33B /* Convenience.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +309,7 @@
 		78A5F1021DB1579B00108A45 /* BinClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
 		78A5F1031DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78A5F1041DB1579B00108A45 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		78D589D81DCE52340087E33B /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -415,6 +417,7 @@
 				78685CE01DB0B0A400B72F18 /* Parsing.swift */,
 				78685CD51DB0B0A400B72F18 /* Client.swift */,
 				7849F3C51DBE15A8004F0376 /* Session.swift */,
+				78D589D81DCE52340087E33B /* Convenience.swift */,
 				785661371DB76AFA00CA89B5 /* Testing.swift */,
 				78685CD91DB0B0A400B72F18 /* Info.plist */,
 			);
@@ -597,8 +600,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				7833CC5D1DC9E9AF00132034 /* PBXTargetDependency */,
 				7833CC571DC9E45800132034 /* PBXTargetDependency */,
+				7833CC5D1DC9E9AF00132034 /* PBXTargetDependency */,
 			);
 			name = "EndpointsUnbox-iOS";
 			productName = EndpointsUnbox;
@@ -798,7 +801,6 @@
 					};
 					78685CAC1DAFBDF500B72F18 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = U37QH9QGB8;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -809,7 +811,6 @@
 					};
 					787AECBB1DABDEC7001A49BB = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = U37QH9QGB8;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -1101,6 +1102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7849F3C61DBE15A8004F0376 /* Session.swift in Sources */,
+				78D589D91DCE52340087E33B /* Convenience.swift in Sources */,
 				78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */,
 				78685CEC1DB0B0A400B72F18 /* Parsing.swift in Sources */,
 				785661381DB76AFA00CA89B5 /* Testing.swift in Sources */,
@@ -1279,9 +1281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointsUnbox/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnboxTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1292,9 +1292,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointsUnbox/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnboxTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1305,7 +1303,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1329,7 +1326,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1352,7 +1348,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1372,7 +1367,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1434,7 +1428,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointsMapper/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapperTests";
@@ -1446,7 +1439,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = EndpointsMapper/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapperTests";
@@ -1594,7 +1586,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Endpoints/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsTests";
@@ -1606,7 +1597,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Endpoints/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsTests";

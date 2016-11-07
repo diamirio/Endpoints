@@ -29,6 +29,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7833CC611DC9F10E00132034"
+            BuildableName = "EndpointsMapper.framework"
+            BlueprintName = "EndpointsMapper-tvOS"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

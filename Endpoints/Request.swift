@@ -1,6 +1,7 @@
 import Foundation
 
 public typealias Parameters = [String: String]
+
 public enum HTTPMethod: String {
     case get     = "GET"
     case post    = "POST"
@@ -72,63 +73,58 @@ public struct JSONEncodedBody: Body {
     }
 }
 
+
 public protocol URLRequestEncodable {
-    func encode(withBaseURL baseURL: URL) -> URLRequest
+    var urlRequest: URLRequest { get }
 }
 
 public struct Request: URLRequestEncodable {
     public var method: HTTPMethod
-    public var path: String?
-    public var query: Parameters?
+    public var url: URL
     public var header: Parameters?
     public var body: Body?
     
     public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil) {
         self.method = method
-        self.path = path
-        
-        self.query = query
         self.header = header
         self.body = body
+        
+        self.url = URL(path: path, query: query)
     }
     
-    public func encode(withBaseURL baseURL: URL) -> URLRequest {
-        var url = baseURL
-        
-        if let path = path {
-            url.appendPathComponent(path)
-        }
-        
-        if let queryItems = queryItems {
-            guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-                fatalError("failed to parse url components for \(url)")
-            }
-            
-            urlComponents.queryItems = queryItems
-            
-            guard let queryUrl = urlComponents.url else {
-                fatalError("invalid query")
-            }
-            url = queryUrl
-        }
-        
+    public var urlRequest: URLRequest {
         var urlRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = method.rawValue
-        urlRequest.url = url
         urlRequest.httpBody = body?.requestData
         
-        body?.header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) }
-        header?.forEach { urlRequest.setValue($1, forHTTPHeaderField: $0) } //request header trumps body header
+        urlRequest.apply(header: body?.header)
+        urlRequest.apply(header: header) //request header trumps body header
         
         return urlRequest
     }
+}
+
+public extension URLRequest {
+    mutating func apply(header: Parameters?) {
+        header?.forEach { setValue($1, forHTTPHeaderField: $0) }
+    }
+}
+
+public extension URL {
+    var isRelative: Bool {
+        return scheme == nil
+    }
     
-    var queryItems: [URLQueryItem]? {
-        guard let params = query else {
-            return nil
+    //creates a relative url
+    init(path: String?, query: Parameters?) {
+        var components = URLComponents()
+        components.path = path ?? ""
+        
+        if let query = query {
+            components.queryItems = query.map { URLQueryItem(name: $0, value: $1) }
         }
         
-        return params.map { URLQueryItem(name: $0, value: $1) }
+        self.init(string: components.url!.relativeString)!
     }
 }

@@ -13,7 +13,7 @@ class GiphyClient: BaseClient {
     
     override func encode<C: Call>(call: C) -> URLRequest {
         var req = super.encode(call: call)
-        var comps = URLComponents(url: req.url!, resolvingAgainstBaseURL: false)
+        var comps = URLComponents(url: req.url!.absoluteURL, resolvingAgainstBaseURL: false)
         var query = comps?.queryItems ?? [URLQueryItem]()
         query.append(URLQueryItem(name: "api_key", value: apiKey))
         comps?.queryItems = query

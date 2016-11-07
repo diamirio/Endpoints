@@ -29,6 +29,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "7833CC7A1DC9FC0A00132034"
+            BuildableName = "EndpointsUnbox.framework"
+            BlueprintName = "EndpointsUnbox-tvOS"
+            ReferencedContainer = "container:Endpoints.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

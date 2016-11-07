@@ -1,9 +1,9 @@
 import XCTest
 @testable import Endpoints
 
-class RequestTests: XCTestCase {
-    func testRequestEncoding() {
-        let base = "https://httpbin.org"
+class RequestTests: XCTestCase {    
+    func testRelativeRequestEncoding() {
+        let base = "https://httpbin.org/"
         let queryParams = [ "q": "Äin €uro", "a": "test" ]
         let encodedQueryString = "q=%C3%84in%20%E2%82%ACuro&a=test"
         let expectedUrlString = "https://httpbin.org/get?\(encodedQueryString)"
@@ -11,17 +11,33 @@ class RequestTests: XCTestCase {
         var req = testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams)
         XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
         
-        req = testRequestEncoding(baseUrl: base, path: "/get", queryParams: queryParams)
+        req = testRequestEncoding(baseUrl: base + "get", queryParams: queryParams)
         XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
     }
-
+    
+    func testHATEOASRequest() {
+        let absoluteURL = URL(string: "https://httpbin.org/get?x=z")!
+        let body = try! JSONEncodedBody(jsonObject: [ "x": "y" ])
+        
+        var req = Request(.get, "post", query: ["x": "y"], header: [ "x": "y" ], body: body)
+        req.url = absoluteURL
+        let c = DynamicCall<Data>(req)
+        
+        let urlReq = BaseClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
+        
+        XCTAssertEqual(urlReq.url, absoluteURL)
+        XCTAssertEqual(urlReq.httpBody, body.requestData)
+        XCTAssertEqual(urlReq.allHTTPHeaderFields?["Content-Type"], "application/json")
+        XCTAssertEqual(urlReq.allHTTPHeaderFields?["x"], "y")
+    }
 }
 
 extension RequestTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
         let request = Request(.get, path, query: queryParams)
-        
-        let urlRequest = request.encode(withBaseURL: URL(string: baseUrl)!)
+        let call = DynamicCall<Data>(request)
+        let client = BaseClient(baseURL: URL(string: baseUrl)!)
+        let urlRequest = client.encode(call: call)
         
         let exp = expectation(description: "")
         URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in

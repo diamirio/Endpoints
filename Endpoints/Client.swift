@@ -7,41 +7,11 @@ public protocol Call: URLRequestEncodable, ResponseValidator {
 }
 
 public extension Call {
-    public func encode(withBaseURL baseURL: URL) -> URLRequest {
-        return request.encode(withBaseURL: baseURL)
+    public var urlRequest: URLRequest {
+        return request.urlRequest
     }
     
-    func validate(result: URLSessionTaskResult) throws {
-        //no validation by default
-    }
-}
-
-public struct DynamicCall<Response: DataParser>: Call {
-    public typealias ResponseType = Response
-    
-    public typealias EncodingBlock = (URLRequest)->(URLRequest)
-    public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
-    
-    public var request: URLRequestEncodable
-    
-    public var encode: EncodingBlock?
-    public var validate: ValidationBlock?
-    
-    public init(_ request: Request, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
-        self.request = request
-        
-        self.validate = validate
-        self.encode = encode
-    }
-    
-    public func encode(withBaseURL baseURL: URL) -> URLRequest {
-        let urlRequest = request.encode(withBaseURL: baseURL)
-        return encode?(urlRequest) ?? urlRequest
-    }
-    
-    public func validate(result: URLSessionTaskResult) throws {
-        try validate?(result)
-    }
+    func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
 }
 
 public enum StatusCodeError: Error {
@@ -97,7 +67,13 @@ open class BaseClient: Client, ResponseValidator {
     }
     
     open func encode<C: Call>(call: C) -> URLRequest {
-        return call.encode(withBaseURL: baseURL)
+        var urlRequest = call.urlRequest
+        
+        if let url = urlRequest.url, url.isRelative {
+            urlRequest.url = URL(string: url.relativeString, relativeTo: baseURL)
+        }
+        
+        return urlRequest
     }
     
     public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
