@@ -73,7 +73,6 @@ public struct JSONEncodedBody: Body {
     }
 }
 
-
 public protocol URLRequestEncodable {
     var urlRequest: URLRequest { get }
 }

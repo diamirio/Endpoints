@@ -296,4 +296,22 @@ class ClientTests: XCTestCase {
             XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
         }
     }
+    
+    func testBasicAuth() {
+        let auth = BasicAuthorization(user: "a", password: "a")
+        let c = DynamicCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result, isSuccess: true)
+        }
+    }
+    
+    func testBasicAuthFail() {
+        let auth = BasicAuthorization(user: "a", password: "b")
+        let c = DynamicCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result, isSuccess: false)
+        }
+    }
 }

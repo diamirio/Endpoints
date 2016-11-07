@@ -8,6 +8,28 @@
 
 import Foundation
 
+public struct BasicAuthorization {
+    let user: String
+    let password: String
+    
+    public var key: String {
+        return "Authorization"
+    }
+    
+    public var value: String {
+        var value = "\(user):\(password)"
+        let data = value.data(using: .utf8)!
+        
+        value = data.base64EncodedString(options: .endLineWithLineFeed)
+        
+        return "Basic \(value)"
+    }
+    
+    public var header: Parameters {
+        return [ key: value ]
+    }
+}
+
 public struct DynamicCall<Response: DataParser>: Call {
     public typealias ResponseType = Response
     
