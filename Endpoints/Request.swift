@@ -84,11 +84,15 @@ public struct Request: URLRequestEncodable {
     public var body: Body?
     
     public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil) {
+        self.init(method, url: URL(path: path, query: query), header: header, body: body)
+    }
+    
+    public init(_ method: HTTPMethod, url: URL, header: Parameters?=nil, body: Body?=nil) {
         self.method = method
         self.header = header
         self.body = body
         
-        self.url = URL(path: path, query: query)
+        self.url = url
     }
     
     public var urlRequest: URLRequest {
