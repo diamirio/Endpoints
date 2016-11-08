@@ -12,6 +12,11 @@ public struct BasicAuthorization {
     let user: String
     let password: String
     
+    public init(user: String, password: String) {
+        self.user = user
+        self.password = password
+    }
+    
     public var key: String {
         return "Authorization"
     }
