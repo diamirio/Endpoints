@@ -316,18 +316,22 @@ class ClientTests: XCTestCase {
     }
 
     func testSimpleURLCall() {
-        let c = DynamicCall<Data>(URL(string: "https://httpbin.org/get?q=a")!)
+        let url = URL(string: "https://httpbin.org/get?q=a")!
+        let c = DynamicCall<Data>(url)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
+            XCTAssertEqual(result.response?.url, url)
         }
     }
     
     func testSimpleURLRequestCall() {
-        let c = DynamicCall<Data>(URLRequest(url: URL(string: "https://httpbin.org/get?q=a")!))
+        let url = URL(string: "https://httpbin.org/get?q=a")!
+        let c = DynamicCall<Data>(URLRequest(url: url))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
+            XCTAssertEqual(result.response?.url, url)
         }
     }
 }
