@@ -334,4 +334,14 @@ class ClientTests: XCTestCase {
             XCTAssertEqual(result.response?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
         }
     }
+    
+    func testRedirect() {
+        let req = Request(.get, "/relative-redirect/2", header: ["x": "y"])
+        let c = DynamicCall<Data>(req)
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result)
+            XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
+        }
+    }
 }

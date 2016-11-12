@@ -30,8 +30,11 @@ public class Session<C: Client> {
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
             
             if self.debug {
-                guard let realRequest = tsk?.currentRequest else {
+                guard let tsk = tsk, let originalRequest = tsk.originalRequest, let realRequest = tsk.currentRequest else {
                     fatalError("unexpectedly lost task/request reference")
+                }
+                if originalRequest != realRequest {
+                    print("\(originalRequest.cURLRepresentation)\n-> redirected to ->")
                 }
                 print("\(realRequest.cURLRepresentation)\n\(sessionResult)")
             }
