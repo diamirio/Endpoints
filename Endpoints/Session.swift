@@ -29,6 +29,7 @@ public class Session<C: Client> {
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
             
+            #if DEBUG
             if self.debug {
                 guard let tsk = tsk, let originalRequest = tsk.originalRequest, let realRequest = tsk.currentRequest else {
                     fatalError("unexpectedly lost task/request reference")
@@ -38,6 +39,7 @@ public class Session<C: Client> {
                 }
                 print("\(realRequest.cURLRepresentation)\n\(sessionResult)")
             }
+            #endif
             
             let result = self.transform(sessionResult: sessionResult, for: call)
             
