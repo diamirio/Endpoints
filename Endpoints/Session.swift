@@ -25,11 +25,15 @@ public class Session<C: Client> {
     @discardableResult
     public func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = client.encode(call: call)
+        weak var tsk: URLSessionDataTask?
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
             
             if self.debug {
-                print("\(urlRequest.cURLRepresentation)\n\(sessionResult)")
+                guard let realRequest = tsk?.currentRequest else {
+                    fatalError("unexpectedly lost task/request reference")
+                }
+                print("\(realRequest.cURLRepresentation)\n\(sessionResult)")
             }
             
             let result = self.transform(sessionResult: sessionResult, for: call)
@@ -39,6 +43,7 @@ public class Session<C: Client> {
             }
         }
         task.resume()
+        tsk = task //keep a weak reference for debug output
         
         return task
     }
