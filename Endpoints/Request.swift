@@ -131,3 +131,15 @@ public extension URL {
         self.init(string: components.url!.relativeString)!
     }
 }
+
+extension URL: URLRequestEncodable {
+    public var urlRequest: URLRequest {
+        return URLRequest(url: self)
+    }
+}
+
+extension URLRequest: URLRequestEncodable {
+    public var urlRequest: URLRequest {
+        return self
+    }
+}

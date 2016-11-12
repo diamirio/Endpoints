@@ -314,4 +314,20 @@ class ClientTests: XCTestCase {
             self.tester.assert(result: result, isSuccess: false)
         }
     }
+
+    func testSimpleURLCall() {
+        let c = DynamicCall<Data>(URL(string: "https://httpbin.org/get?q=a")!)
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result)
+        }
+    }
+    
+    func testSimpleURLRequestCall() {
+        let c = DynamicCall<Data>(URLRequest(url: URL(string: "https://httpbin.org/get?q=a")!))
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result)
+        }
+    }
 }
