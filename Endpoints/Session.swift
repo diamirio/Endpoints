@@ -25,17 +25,11 @@ public class Session<C: Client> {
     @discardableResult
     public func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = client.encode(call: call)
-        
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
             
             if self.debug {
-                let status = sessionResult.httpResponse?.statusCode
-                if let data = data, let string = String(data: data, encoding: String.Encoding.utf8) {
-                    print("response string for \(urlRequest) with status: \(status):\n\(string)")
-                } else {
-                    print("no response string for \(urlRequest). error: \(error). status: \(status)")
-                }
+                print("\(urlRequest.cURLRepresentation)\n\(sessionResult)")
             }
             
             let result = self.transform(sessionResult: sessionResult, for: call)

@@ -3,9 +3,9 @@ import XCTest
 
 class ClientTests: XCTestCase {
     var tester: ClientTester<BaseClient>!
-    
+    let baseURL = URL(string: "http://httpbin.org")!
     override func setUp() {
-        tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "http://httpbin.org")!))
+        tester = ClientTester(test: self, client: BaseClient(baseURL: baseURL))
     }
     
     func testCancellation() {
@@ -315,7 +315,7 @@ class ClientTests: XCTestCase {
         }
     }
 
-    func testSimpleURLCall() {
+    func testSimpleAbsoluteURLCall() {
         let url = URL(string: "https://httpbin.org/get?q=a")!
         let c = DynamicCall<Data>(url)
         
@@ -325,13 +325,13 @@ class ClientTests: XCTestCase {
         }
     }
     
-    func testSimpleURLRequestCall() {
-        let url = URL(string: "https://httpbin.org/get?q=a")!
+    func testSimpleRelativeURLRequestCall() {
+        let url = URL(string: "get?q=a")!
         let c = DynamicCall<Data>(URLRequest(url: url))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, url)
+            XCTAssertEqual(result.response?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
         }
     }
 }

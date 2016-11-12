@@ -73,8 +73,14 @@ public struct JSONEncodedBody: Body {
     }
 }
 
-public protocol URLRequestEncodable {
+public protocol URLRequestEncodable: CustomDebugStringConvertible {
     var urlRequest: URLRequest { get }
+}
+
+extension URLRequestEncodable {
+    public var debugDescription: String {
+        return cURLRepresentation
+    }
 }
 
 public struct Request: URLRequestEncodable {
@@ -129,17 +135,5 @@ public extension URL {
         }
         
         self.init(string: components.url!.relativeString)!
-    }
-}
-
-extension URL: URLRequestEncodable {
-    public var urlRequest: URLRequest {
-        return URLRequest(url: self)
-    }
-}
-
-extension URLRequest: URLRequestEncodable {
-    public var urlRequest: URLRequest {
-        return self
     }
 }

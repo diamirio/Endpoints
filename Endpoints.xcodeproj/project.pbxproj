@@ -40,6 +40,7 @@
 		78A5F10A1DB1596900108A45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */; };
 		78A5F10B1DB1596E00108A45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FD1DB1579B00108A45 /* Main.storyboard */; };
 		78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinClientTests.swift */; };
+		78B782ED1DD73A45009F0B7D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B782EC1DD73A45009F0B7D /* Debugging.swift */; };
 		78D589D91DCE52340087E33B /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D589D81DCE52340087E33B /* Convenience.swift */; };
 /* End PBXBuildFile section */
 
@@ -309,6 +310,7 @@
 		78A5F1021DB1579B00108A45 /* BinClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
 		78A5F1031DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78A5F1041DB1579B00108A45 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		78B782EC1DD73A45009F0B7D /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
 		78D589D81DCE52340087E33B /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -419,6 +421,7 @@
 				7849F3C51DBE15A8004F0376 /* Session.swift */,
 				78D589D81DCE52340087E33B /* Convenience.swift */,
 				785661371DB76AFA00CA89B5 /* Testing.swift */,
+				78B782EC1DD73A45009F0B7D /* Debugging.swift */,
 				78685CD91DB0B0A400B72F18 /* Info.plist */,
 			);
 			path = Endpoints;
@@ -1102,6 +1105,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7849F3C61DBE15A8004F0376 /* Session.swift in Sources */,
+				78B782ED1DD73A45009F0B7D /* Debugging.swift in Sources */,
 				78D589D91DCE52340087E33B /* Convenience.swift in Sources */,
 				78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */,
 				78685CEC1DB0B0A400B72F18 /* Parsing.swift in Sources */,
