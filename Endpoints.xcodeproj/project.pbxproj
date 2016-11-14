@@ -41,6 +41,13 @@
 		78A5F10B1DB1596E00108A45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FD1DB1579B00108A45 /* Main.storyboard */; };
 		78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinClientTests.swift */; };
 		78B782ED1DD73A45009F0B7D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B782EC1DD73A45009F0B7D /* Debugging.swift */; };
+		78B7834B1DD9FFB0009F0B7D /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849F3C51DBE15A8004F0376 /* Session.swift */; };
+		78B7834C1DD9FFB0009F0B7D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B782EC1DD73A45009F0B7D /* Debugging.swift */; };
+		78B7834D1DD9FFB0009F0B7D /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D589D81DCE52340087E33B /* Convenience.swift */; };
+		78B7834E1DD9FFB0009F0B7D /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CDF1DB0B0A400B72F18 /* Request.swift */; };
+		78B7834F1DD9FFB0009F0B7D /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Parsing.swift */; };
+		78B783501DD9FFB0009F0B7D /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785661371DB76AFA00CA89B5 /* Testing.swift */; };
+		78B783511DD9FFB0009F0B7D /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CD51DB0B0A400B72F18 /* Client.swift */; };
 		78D589D91DCE52340087E33B /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D589D81DCE52340087E33B /* Convenience.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,26 +87,12 @@
 			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
 			remoteInfo = Endpoints;
 		};
-		7833CC651DC9F10E00132034 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
-			remoteInfo = Endpoint;
-		};
 		7833CC751DC9F19800132034 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78A5F08A1DB0D92000108A45 /* ObjectMapper.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 6A05B7A51BE274BE00F19B53;
 			remoteInfo = "ObjectMapper-tvOS";
-		};
-		7833CC7C1DC9FC0A00132034 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
-			remoteInfo = Endpoints;
 		};
 		7833CC891DC9FC4300132034 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -248,6 +241,20 @@
 			remoteGlobalIDString = 6A05B7AF1BE274BE00F19B53;
 			remoteInfo = "ObjectMapper-tvOSTests";
 		};
+		78B7835A1DD9FFF4009F0B7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78B783491DD9FFB0009F0B7D;
+			remoteInfo = "Endpoints-tvOS";
+		};
+		78B783601DDA00FD009F0B7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 78B783491DD9FFB0009F0B7D;
+			remoteInfo = "Endpoints-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -311,6 +318,7 @@
 		78A5F1031DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78A5F1041DB1579B00108A45 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		78B782EC1DD73A45009F0B7D /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
+		78B783581DD9FFB0009F0B7D /* Endpoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D589D81DCE52340087E33B /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -382,6 +390,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		787AECEC1DABE56A001A49BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		78B783521DD9FFB0009F0B7D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -463,6 +478,7 @@
 				7833CC361DC9E2E100132034 /* EndpointsUnboxTests.xctest */,
 				7833CC6F1DC9F10E00132034 /* EndpointsMapper.framework */,
 				7833CC871DC9FC0A00132034 /* EndpointsUnbox.framework */,
+				78B783581DD9FFB0009F0B7D /* Endpoints.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -588,6 +604,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		78B783531DD9FFB0009F0B7D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -641,8 +664,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				78B7835B1DD9FFF4009F0B7D /* PBXTargetDependency */,
 				7833CC761DC9F19800132034 /* PBXTargetDependency */,
-				7833CC641DC9F10E00132034 /* PBXTargetDependency */,
 			);
 			name = "EndpointsMapper-tvOS";
 			productName = EndpointMapper;
@@ -661,8 +684,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				78B783611DDA00FD009F0B7D /* PBXTargetDependency */,
 				7833CC8A1DC9FC4300132034 /* PBXTargetDependency */,
-				7833CC7B1DC9FC0A00132034 /* PBXTargetDependency */,
 			);
 			name = "EndpointsUnbox-tvOS";
 			productName = EndpointsUnbox;
@@ -707,9 +730,9 @@
 			productReference = 78685CB51DAFBDF500B72F18 /* EndpointsMapperTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		787AECBB1DABDEC7001A49BB /* Endpoints */ = {
+		787AECBB1DABDEC7001A49BB /* Endpoints-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 787AECD01DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "Endpoints" */;
+			buildConfigurationList = 787AECD01DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "Endpoints-iOS" */;
 			buildPhases = (
 				787AECB71DABDEC7001A49BB /* Sources */,
 				787AECB81DABDEC7001A49BB /* Frameworks */,
@@ -720,7 +743,7 @@
 			);
 			dependencies = (
 			);
-			name = Endpoints;
+			name = "Endpoints-iOS";
 			productName = Endpoint;
 			productReference = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */;
 			productType = "com.apple.product-type.framework";
@@ -781,6 +804,24 @@
 			productName = EndpointExampleTests;
 			productReference = 787AECEF1DABE56A001A49BB /* ExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		78B783491DD9FFB0009F0B7D /* Endpoints-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78B783551DD9FFB0009F0B7D /* Build configuration list for PBXNativeTarget "Endpoints-tvOS" */;
+			buildPhases = (
+				78B7834A1DD9FFB0009F0B7D /* Sources */,
+				78B783521DD9FFB0009F0B7D /* Frameworks */,
+				78B783531DD9FFB0009F0B7D /* Headers */,
+				78B783541DD9FFB0009F0B7D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Endpoints-tvOS";
+			productName = Endpoint;
+			productReference = 78B783581DD9FFB0009F0B7D /* Endpoints.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -858,7 +899,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				787AECBB1DABDEC7001A49BB /* Endpoints */,
+				787AECBB1DABDEC7001A49BB /* Endpoints-iOS */,
+				78B783491DD9FFB0009F0B7D /* Endpoints-tvOS */,
 				787AECC41DABDEC8001A49BB /* EndpointsTests */,
 				78685CAC1DAFBDF500B72F18 /* EndpointsMapper-iOS */,
 				7833CC611DC9F10E00132034 /* EndpointsMapper-tvOS */,
@@ -1047,6 +1089,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		78B783541DD9FFB0009F0B7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1146,6 +1195,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		78B7834A1DD9FFB0009F0B7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				78B7834B1DD9FFB0009F0B7D /* Session.swift in Sources */,
+				78B7834C1DD9FFB0009F0B7D /* Debugging.swift in Sources */,
+				78B7834D1DD9FFB0009F0B7D /* Convenience.swift in Sources */,
+				78B7834E1DD9FFB0009F0B7D /* Request.swift in Sources */,
+				78B7834F1DD9FFB0009F0B7D /* Parsing.swift in Sources */,
+				78B783501DD9FFB0009F0B7D /* Testing.swift in Sources */,
+				78B783511DD9FFB0009F0B7D /* Client.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1171,23 +1234,13 @@
 		};
 		7833CC5D1DC9E9AF00132034 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
 			targetProxy = 7833CC5C1DC9E9AF00132034 /* PBXContainerItemProxy */;
-		};
-		7833CC641DC9F10E00132034 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
-			targetProxy = 7833CC651DC9F10E00132034 /* PBXContainerItemProxy */;
 		};
 		7833CC761DC9F19800132034 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "ObjectMapper-tvOS";
 			targetProxy = 7833CC751DC9F19800132034 /* PBXContainerItemProxy */;
-		};
-		7833CC7B1DC9FC0A00132034 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
-			targetProxy = 7833CC7C1DC9FC0A00132034 /* PBXContainerItemProxy */;
 		};
 		7833CC8A1DC9FC4300132034 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1196,7 +1249,7 @@
 		};
 		7867367B1DAFA6CE0082828B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
 			targetProxy = 7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */;
 		};
 		78685CB81DAFBDF500B72F18 /* PBXTargetDependency */ = {
@@ -1211,18 +1264,28 @@
 		};
 		78685CCC1DAFBE0C00B72F18 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
 			targetProxy = 78685CCB1DAFBE0C00B72F18 /* PBXContainerItemProxy */;
 		};
 		787AECC81DABDEC8001A49BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 787AECBB1DABDEC7001A49BB /* Endpoints */;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
 			targetProxy = 787AECC71DABDEC8001A49BB /* PBXContainerItemProxy */;
 		};
 		787AECF11DABE56A001A49BB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 787AECDB1DABE56A001A49BB /* Example */;
 			targetProxy = 787AECF01DABE56A001A49BB /* PBXContainerItemProxy */;
+		};
+		78B7835B1DD9FFF4009F0B7D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78B783491DD9FFB0009F0B7D /* Endpoints-tvOS */;
+			targetProxy = 78B7835A1DD9FFF4009F0B7D /* PBXContainerItemProxy */;
+		};
+		78B783611DDA00FD009F0B7D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 78B783491DD9FFB0009F0B7D /* Endpoints-tvOS */;
+			targetProxy = 78B783601DDA00FD009F0B7D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1561,9 +1624,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.Endpoints";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Endpoints;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator watchos watchsimulator macosx";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -1580,9 +1642,8 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.Endpoints";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Endpoints;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator watchos watchsimulator macosx";
 			};
 			name = Release;
 		};
@@ -1662,6 +1723,43 @@
 			};
 			name = Release;
 		};
+		78B783561DD9FFB0009F0B7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Endpoints/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.Endpoints";
+				PRODUCT_NAME = Endpoints;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		78B783571DD9FFB0009F0B7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Endpoints/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.Endpoints";
+				PRODUCT_NAME = Endpoints;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1728,7 +1826,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		787AECD01DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "Endpoints" */ = {
+		787AECD01DABDEC8001A49BB /* Build configuration list for PBXNativeTarget "Endpoints-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				787AECD11DABDEC8001A49BB /* Debug */,
@@ -1760,6 +1858,15 @@
 			buildConfigurations = (
 				787AECFA1DABE56A001A49BB /* Debug */,
 				787AECFB1DABE56A001A49BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		78B783551DD9FFB0009F0B7D /* Build configuration list for PBXNativeTarget "Endpoints-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78B783561DD9FFB0009F0B7D /* Debug */,
+				78B783571DD9FFB0009F0B7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
