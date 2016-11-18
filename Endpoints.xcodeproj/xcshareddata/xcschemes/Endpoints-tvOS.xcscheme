@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-               BuildableName = "Endpoints-tvOS.framework"
+               BuildableName = "Endpoints.framework"
                BlueprintName = "Endpoints-tvOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints-tvOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-tvOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints-tvOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-tvOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
@@ -73,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints-tvOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-tvOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
