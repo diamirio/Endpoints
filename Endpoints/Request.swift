@@ -14,7 +14,7 @@ public enum HTTPMethod: String {
     case connect = "CONNECT"
 }
 
-/// A type that represents an HTTP Body.
+/// A type representing an HTTP Body.
 ///
 /// A `Body` is used by `Request` to create an `URLRequest`.
 ///
@@ -51,7 +51,7 @@ extension String: Body {
     }
 }
 
-/// A `Body` that represents a form encoded HTTP request body.
+/// A type representing a form encoded HTTP request body.
 public struct FormEncodedBody: Body {
     
     /// The parameters dictionary to be encoded.
@@ -85,7 +85,7 @@ public struct FormEncodedBody: Body {
     }
 }
 
-/// A `Body` that represents a JSON encoded HTTP request body.
+/// A type representing a JSON encoded HTTP request body.
 public struct JSONEncodedBody: Body {
     public let requestData: Data
     
@@ -122,7 +122,7 @@ extension URLRequestEncodable {
 
 /// A type that encapsulates all data necessary to construct an `URLRequest`
 /// suitable for a typical REST-API call.
-/// 
+///
 /// You can (and should) use this instead of a plain `URLRequest`, because it's
 /// usually much more convenient and easier to read.
 public struct Request: URLRequestEncodable {
