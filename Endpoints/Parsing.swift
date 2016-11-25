@@ -1,7 +1,16 @@
 import Foundation
 
+/// Describes an error that occured during parsing `Data`.
 public enum ParsingError: LocalizedError {
+    
+    /// `Data` is missing.
+    ///
+    /// Thrown by `BaseClient.parse` when the response data is `nil`.
     case missingData
+    
+    /// `Data` is in an invalid format.
+    ///
+    /// Thrown by `DataParser` implementations.
     case invalidData(description: String)
  
     public var errorDescription: String? {
@@ -14,13 +23,29 @@ public enum ParsingError: LocalizedError {
     }
 }
 
+/// A type that can convert a `Data` object into a specified `OutputType`.
+///
+/// Adopted by `Data`, `String`, `Dictionary` and `Array`.
+///
+/// Used by `Call` to define the expected response type for its associated
+/// request.
 public protocol DataParser {
+    
+    /// The type that can be produced by `self`.
+    ///
+    /// Defaults to `self`.
     associatedtype OutputType = Self
     
+    /// Converts a `Data` object with a specified encoding to `OutputType`.
+    ///
+    /// - throws: `ParsingError` if `data` is not in the expected format.
     static func parse(data: Data, encoding: String.Encoding) throws -> OutputType
 }
 
 extension DataParser {
+    
+    /// Convenience helper for `DataParser` implementations that need to parse
+    /// JSON data.
     public static func parseJSON(data: Data) throws -> Any {
         return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
     }
