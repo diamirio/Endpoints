@@ -1,11 +1,11 @@
 import UIKit
 import Endpoints
 
-class GiphyCell: UITableViewCell {
+private class GiphyCell: UITableViewCell {
     static let Id = "GiphyCell"
 }
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GiphyViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.delegate = self

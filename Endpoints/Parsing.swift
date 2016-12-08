@@ -42,7 +42,7 @@ public protocol DataParser {
     static func parse(data: Data, encoding: String.Encoding) throws -> OutputType
 }
 
-extension DataParser {
+public extension DataParser {
     
     /// Convenience helper for `DataParser` implementations that need to parse
     /// JSON data.
@@ -51,12 +51,13 @@ extension DataParser {
     }
 }
 
-/// A `DataParser` that can also include metadata from `response`.
+/// A `DataParser` and can parse metadata from `response` and add
+/// it to the parsed output.
 public protocol ResponseParser: DataParser {
     static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType
 }
 
-extension ResponseParser {
+public extension ResponseParser {
     
     /// Uses `DataParser.parse(data:encoding)` to parse the response using
     /// 'response.stringEncoding'.
@@ -101,7 +102,7 @@ extension Array: ResponseParser {
     }
 }
 
-extension HTTPURLResponse {
+public extension HTTPURLResponse {
     
     /// Returns the `textEncodingName`s corresponding `String.Encoding`
     /// or `utf8`, if this is not possible.

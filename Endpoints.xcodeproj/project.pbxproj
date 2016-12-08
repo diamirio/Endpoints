@@ -28,6 +28,8 @@
 		78685CEB1DB0B0A400B72F18 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CDF1DB0B0A400B72F18 /* Request.swift */; };
 		78685CEC1DB0B0A400B72F18 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Parsing.swift */; };
 		787AECC61DABDEC8001A49BB /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
+		789C0F7E1DE8A4EC008CDEB6 /* GithubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F7D1DE8A4EC008CDEB6 /* GithubClient.swift */; };
+		789C0F8B1DE8A862008CDEB6 /* GithubClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F891DE8A814008CDEB6 /* GithubClientTests.swift */; };
 		78A4AFB31DB3F77800B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		78A4AFB41DB3FB8200B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
@@ -35,7 +37,7 @@
 		78A5F0F61DB1576000108A45 /* EndpointsMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0F41DB1576000108A45 /* EndpointsMapperTests.swift */; };
 		78A5F1061DB1594F00108A45 /* BinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0FF1DB1579B00108A45 /* BinClient.swift */; };
 		78A5F1071DB1595D00108A45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0F91DB1579B00108A45 /* AppDelegate.swift */; };
-		78A5F1081DB1596000108A45 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1041DB1579B00108A45 /* ViewController.swift */; };
+		78A5F1081DB1596000108A45 /* GiphyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1041DB1579B00108A45 /* GiphyViewController.swift */; };
 		78A5F1091DB1596600108A45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FA1DB1579B00108A45 /* Assets.xcassets */; };
 		78A5F10A1DB1596900108A45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */; };
 		78A5F10B1DB1596E00108A45 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FD1DB1579B00108A45 /* Main.storyboard */; };
@@ -49,6 +51,8 @@
 		78B783501DD9FFB0009F0B7D /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785661371DB76AFA00CA89B5 /* Testing.swift */; };
 		78B783511DD9FFB0009F0B7D /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CD51DB0B0A400B72F18 /* Client.swift */; };
 		78D589D91DCE52340087E33B /* Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D589D81DCE52340087E33B /* Convenience.swift */; };
+		78FE03A71DF9DB5200D2A14B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE03A61DF9DB5200D2A14B /* SearchViewController.swift */; };
+		78FE03A91DF9E03A00D2A14B /* GithubSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FE03A81DF9E03A00D2A14B /* GithubSearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +303,8 @@
 		787AECDC1DABE56A001A49BB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECEF1DABE56A001A49BB /* ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		789043181DC7F89500961728 /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = Carthage/Checkouts/unbox/Unbox.xcodeproj; sourceTree = SOURCE_ROOT; };
+		789C0F7D1DE8A4EC008CDEB6 /* GithubClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClient.swift; sourceTree = "<group>"; };
+		789C0F891DE8A814008CDEB6 /* GithubClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClientTests.swift; sourceTree = "<group>"; };
 		78A4AFB21DB3F77800B119C4 /* ClientTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientTester.swift; sourceTree = "<group>"; };
 		78A5F0821DB0D01A00108A45 /* ObjectMapper+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ObjectMapper+Endpoints.swift"; sourceTree = "<group>"; };
 		78A5F08A1DB0D92000108A45 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = ../Carthage/Checkouts/ObjectMapper/ObjectMapper.xcodeproj; sourceTree = "<group>"; };
@@ -316,10 +322,12 @@
 		78A5F1001DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78A5F1021DB1579B00108A45 /* BinClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
 		78A5F1031DB1579B00108A45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		78A5F1041DB1579B00108A45 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		78A5F1041DB1579B00108A45 /* GiphyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyViewController.swift; sourceTree = "<group>"; };
 		78B782EC1DD73A45009F0B7D /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
 		78B783581DD9FFB0009F0B7D /* Endpoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D589D81DCE52340087E33B /* Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Convenience.swift; sourceTree = "<group>"; };
+		78FE03A61DF9DB5200D2A14B /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		78FE03A81DF9E03A00D2A14B /* GithubSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubSearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -545,8 +553,11 @@
 				78A5F1011DB1579B00108A45 /* Tests */,
 				78A5F0FF1DB1579B00108A45 /* BinClient.swift */,
 				7806BC5F1DC7A00100D7B180 /* GiphyClient.swift */,
+				789C0F7D1DE8A4EC008CDEB6 /* GithubClient.swift */,
 				78A5F0F91DB1579B00108A45 /* AppDelegate.swift */,
-				78A5F1041DB1579B00108A45 /* ViewController.swift */,
+				78FE03A61DF9DB5200D2A14B /* SearchViewController.swift */,
+				78FE03A81DF9E03A00D2A14B /* GithubSearchViewController.swift */,
+				78A5F1041DB1579B00108A45 /* GiphyViewController.swift */,
 				78A5F0FA1DB1579B00108A45 /* Assets.xcassets */,
 				78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */,
 				78A5F0FD1DB1579B00108A45 /* Main.storyboard */,
@@ -560,6 +571,7 @@
 			children = (
 				78A5F1021DB1579B00108A45 /* BinClientTests.swift */,
 				7806BC621DC7A0A100D7B180 /* GiphyClientTests.swift */,
+				789C0F891DE8A814008CDEB6 /* GithubClientTests.swift */,
 				781A61C31DB5407900CE3EC9 /* MockClientTests.swift */,
 				78A5F1031DB1579B00108A45 /* Info.plist */,
 			);
@@ -1180,8 +1192,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78FE03A91DF9E03A00D2A14B /* GithubSearchViewController.swift in Sources */,
+				78FE03A71DF9DB5200D2A14B /* SearchViewController.swift in Sources */,
 				7806BC601DC7A00100D7B180 /* GiphyClient.swift in Sources */,
-				78A5F1081DB1596000108A45 /* ViewController.swift in Sources */,
+				78A5F1081DB1596000108A45 /* GiphyViewController.swift in Sources */,
+				789C0F7E1DE8A4EC008CDEB6 /* GithubClient.swift in Sources */,
 				78A5F1071DB1595D00108A45 /* AppDelegate.swift in Sources */,
 				78A5F1061DB1594F00108A45 /* BinClient.swift in Sources */,
 			);
@@ -1193,6 +1208,7 @@
 			files = (
 				7806BC641DC7A0A100D7B180 /* GiphyClientTests.swift in Sources */,
 				781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */,
+				789C0F8B1DE8A862008CDEB6 /* GithubClientTests.swift in Sources */,
 				78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */,
 				78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */,
 			);
