@@ -51,13 +51,27 @@ extension DataParser {
     }
 }
 
-extension Data: DataParser {
+/// A `DataParser` that can also include metadata from `response`.
+public protocol ResponseParser: DataParser {
+    static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType
+}
+
+extension ResponseParser {
+    
+    /// Uses `DataParser.parse(data:encoding)` to parse the response using
+    /// 'response.stringEncoding'.
+    public static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
+        return try self.parse(data: data, encoding: response.stringEncoding)
+    }
+}
+
+extension Data: ResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Data {
         return data
     }
 }
 
-extension String: DataParser {
+extension String: ResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> String {
         if let string = String(data: data, encoding: encoding) {
             return string
@@ -67,7 +81,7 @@ extension String: DataParser {
     }
 }
 
-extension Dictionary: DataParser {
+extension Dictionary: ResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Dictionary {
         guard let dict = try parseJSON(data: data) as? Dictionary else {
             throw ParsingError.invalidData(description: "JSON structure is not an Object")
@@ -77,12 +91,28 @@ extension Dictionary: DataParser {
     }
 }
 
-extension Array: DataParser {
+extension Array: ResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Array {
         guard let array = try parseJSON(data: data) as? Array else {
             throw ParsingError.invalidData(description: "JSON structure is not an Array")
         }
         
         return array
+    }
+}
+
+extension HTTPURLResponse {
+    
+    /// Returns the `textEncodingName`s corresponding `String.Encoding`
+    /// or `utf8`, if this is not possible.
+    var stringEncoding: String.Encoding {
+        var encoding = String.Encoding.utf8
+        
+        if let textEncodingName = textEncodingName {
+            let cfStringEncoding = CFStringConvertIANACharSetNameToEncoding(textEncodingName as CFString)
+            encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(cfStringEncoding))
+        }
+        
+        return encoding
     }
 }

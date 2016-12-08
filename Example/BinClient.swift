@@ -35,7 +35,7 @@ extension BinClient {
     }
 }
 
-struct OutputValue: DataParser {
+struct OutputValue: ResponseParser {
     let value: String
     
     static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {

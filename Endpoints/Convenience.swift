@@ -47,7 +47,7 @@ public struct BasicAuthorization {
     }
 }
 
-public struct DynamicCall<Response: DataParser>: Call {
+public struct DynamicCall<Response: ResponseParser>: Call {
     public typealias ResponseType = Response
     
     public typealias EncodingBlock = (inout URLRequest)->()

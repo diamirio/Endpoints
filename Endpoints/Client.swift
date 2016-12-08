@@ -43,7 +43,7 @@ import Foundation
 /// 
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: URLRequestEncodable, ResponseValidator {
-    associatedtype ResponseType: DataParser
+    associatedtype ResponseType: ResponseParser
     
     var request: URLRequestEncodable { get }
 }
@@ -190,9 +190,9 @@ open class BaseClient: Client, ResponseValidator {
     /// Uses `call`s `validate` method to perform call-specific validation
     /// and rethrows the resulting error, if any.
     ///
-    /// Throws 'ParsingError.missingData` if `result.data` is `nil`.
+    /// Throws 'ParsingError.missingData` if `result.data` or `result.httpResponse` is `nil`.
     ///
-    /// Finally tries to parse the `result.data` using `Call.ResponseType`
+    /// Finally tries to parse the response using `Call.ResponseType`
     /// and returns the parsed object or rethrows the resulting error.
     public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
         if let error = result.error {
@@ -202,8 +202,8 @@ open class BaseClient: Client, ResponseValidator {
         try validate(result: result) //global validation
         try call.validate(result: result) //request-specific validation
         
-        if let data = result.data {
-            return try C.ResponseType.self.parse(data: data, encoding: .utf8) //TODO: use response encoding, if present
+        if let data = result.data, let response = result.httpResponse {
+            return try C.ResponseType.self.parse(response: response, data: data)
         } else {
             throw ParsingError.missingData
         }

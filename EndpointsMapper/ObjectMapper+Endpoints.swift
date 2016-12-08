@@ -9,7 +9,7 @@ extension JSONEncodedBody {
     }
 }
 
-public protocol MappableParser: Mappable, DataParser {}
+public protocol MappableParser: Mappable, ResponseParser {}
 
 public extension MappableParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
@@ -23,7 +23,7 @@ public extension MappableParser {
     }
 }
 
-public class MappableArray<Element: Mappable>: DataParser {
+public class MappableArray<Element: Mappable>: ResponseParser {
     public typealias OutputType = [Element]
     
     //not to be initialized
