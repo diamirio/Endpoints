@@ -13,6 +13,9 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |sp|
     sp.source_files = 'Endpoints/*.swift'
+    sp.pod_target_xcconfig = {
+  		'OTHER_SWIFT_FLAGS[config=Debug]' => '-DDEBUG'
+	}
   end
 
   s.subspec 'Mapper' do |sp|
