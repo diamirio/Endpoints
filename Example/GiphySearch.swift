@@ -1,0 +1,33 @@
+import UIKit
+import Endpoints
+
+extension GiphyImage: Item {
+    var text: String {
+        return name
+    }
+}
+
+extension GiphyListResponse: ItemsResponse {
+    var items: [Item] {
+        return images
+    }
+}
+
+class GiphySearch: PagableSearch {
+    typealias CallType = GiphyClient.Search
+    
+    func prepareCallForFirstPage(withQuery query: String) -> CallType {
+        return GiphyClient.Search(query: query, pageSize: 5, page: 0)
+    }
+    
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
+        var nextCall = lastCall
+        nextCall.page += 1
+        
+        return nextCall
+    }
+}
+
+private class GiphyCell: UITableViewCell {
+    static let Id = "GiphyCell"
+}

@@ -13,7 +13,7 @@ class GithubClientTests: XCTestCase {
     }
     
     func testSearchRepositories() {
-        let search = GithubClient.SearchRepositories(query: "swift", sort: .stars)
+        let search = GithubClient.SearchRepositories(endpoint: .query("swift", sort: .stars))
         
         tester.test(call: search) { result in
             self.tester.assert(result: result)

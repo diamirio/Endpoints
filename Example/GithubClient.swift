@@ -48,12 +48,12 @@ extension GithubClient {
 
 struct Repository: Unboxable {
     let name: String
-    let description: String
+    let description: String?
     let url: URL
     
     init(unboxer: Unboxer) throws {
         name = try unboxer.unbox(key: "name")
-        description = try unboxer.unbox(key: "description")
+        description = unboxer.unbox(key: "description")
         url = try unboxer.unbox(key: "html_url")
     }
 }

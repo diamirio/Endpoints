@@ -5,36 +5,23 @@ import Endpoints
 protocol Item {
     var text: String { get }
 }
-/*
+
 protocol ItemsResponse {
     var items: [Item] { get }
-}*/
-
-protocol B {
-    
 }
 
 protocol PagableSearch {
-    //associatedtype CallType: Y
+    associatedtype CallType: Call
     
-    //var nextCall: CallType? { get }
-    
-    //func prepareCallForFirstPage(withQuery query: String)
-    //func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType)
-}
-
-class X<S: PagableSearch> {
-    init() {
-        
-    }
-    var s: S?
+    func prepareCallForFirstPage(withQuery query: String) -> CallType
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType?
 }
 
 class ItemCell: UITableViewCell {
     static let Id = "ItemCell"
 }
 
-class SearchViewController<C: Client>: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SearchViewController<C: Client, S: PagableSearch>: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate where S.CallType.ResponseType.OutputType: ItemsResponse {
     
     lazy var tableView: UITableView = {
         let tv = UITableView()
@@ -47,18 +34,16 @@ class SearchViewController<C: Client>: UIViewController, UITableViewDelegate, UI
     lazy var searchBar: UISearchBar = {
         let sv = UISearchBar()
         sv.placeholder = "Search"
-        
+        sv.delegate = self
         return sv
     }()
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        reset()
+    }
     
-    lazy var nextButton: UIBarButtonItem = {
-        let b = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(loadNextPage))
-        
-        return b
-    }()
-    
-    lazy var resetButton: UIBarButtonItem = {
-        let b = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reset))
+    lazy var goButton: UIBarButtonItem = {
+        let b = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(reset))
         
         return b
     }()
@@ -66,9 +51,8 @@ class SearchViewController<C: Client>: UIViewController, UITableViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = resetButton
         navigationItem.titleView = searchBar
-        navigationItem.rightBarButtonItem = nextButton
+        navigationItem.rightBarButtonItem = goButton
         
         tableView.frame = view.bounds
         tableView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
@@ -87,14 +71,28 @@ class SearchViewController<C: Client>: UIViewController, UITableViewDelegate, UI
         return cell
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y + scrollView.bounds.height + 44) > scrollView.contentSize.height && loading == false && nextCall != nil {
+            loadNextPage()
+        }
+    }
+    
     var data = [Item]()
     let session: Session<C>
-    //var searchable: S
-    var activeTask: URLSessionDataTask?
+    let search: S
+    var nextCall: S.CallType?
+    weak var activeTask: URLSessionDataTask?
     
-    init(client: C) {
+    var loading = false {
+        didSet {
+            goButton.isEnabled = !loading
+            UIApplication.shared.isNetworkActivityIndicatorVisible = loading
+        }
+    }
+    
+    init(client: C, search: S) {
         self.session = Session(with: client)
-        //self.searchable = searchable
+        self.search = search
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -109,27 +107,31 @@ class SearchViewController<C: Client>: UIViewController, UITableViewDelegate, UI
             return
         }
         
-//        guard let call = searchable.nextCall else {
-//            UIAlertView(title: "done", message: "nothing more to load", delegate: nil, cancelButtonTitle: "OK").show()
-//            return
-//        }
-//        
-//        activeTask = session.start(call: call) { result in
-//            result.onError { error in
-//                UIAlertView(title: "ouch", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
-//            }.onSuccess { value in
-//                //self.data.append(contentsOf: value.items)
-//                self.tableView.reloadData()
-//                
-//                //self.searchable.prepareCallForNextPage(forResponse: value, fromLastCall: call)
-//            }
-//        }
+        guard let call = nextCall else {
+            UIAlertView(title: "done", message: "nothing more to load", delegate: nil, cancelButtonTitle: "OK").show()
+            return
+        }
+        
+        loading = true
+        activeTask = session.start(call: call) { result in
+            self.loading = false
+            
+            result.onError { error in
+                print("error: \(error)")
+                UIAlertView(title: "ouch", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
+            }.onSuccess { value in
+                self.data.append(contentsOf: value.items)
+                self.tableView.reloadData()
+                
+                self.nextCall = self.search.prepareCallForNextPage(forResponse: value, fromLastCall: call)
+            }
+        }
     }
     
     func reset() {
         activeTask?.cancel()
         
-        //searchable.prepareCallForFirstPage(withQuery: searchBar.text ?? "")
+        nextCall = search.prepareCallForFirstPage(withQuery: searchBar.text ?? "")
         
         data.removeAll()
         tableView.reloadData()
