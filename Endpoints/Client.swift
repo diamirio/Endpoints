@@ -42,17 +42,13 @@ import Foundation
 /// request before using its `ResponseType` to parse it.
 /// 
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
-public protocol Call: URLRequestEncodable, ResponseValidator {
+public protocol Call: ResponseValidator {
     associatedtype ResponseType: ResponseParser
     
     var request: URLRequestEncodable { get }
 }
 
-public extension Call {
-    public var urlRequest: URLRequest {
-        return request.urlRequest
-    }
-    
+public extension Call {    
     func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
 }
 
@@ -173,7 +169,7 @@ open class BaseClient: Client, ResponseValidator {
     /// encoded by this client.
     /// Use `Call.urlRequest` for call-specific encoding.
     open func encode<C: Call>(call: C) -> URLRequest {
-        var urlRequest = call.urlRequest
+        var urlRequest = call.request.urlRequest
         
         if let url = urlRequest.url, url.isRelative {
             urlRequest.url = URL(string: url.relativeString, relativeTo: baseURL)

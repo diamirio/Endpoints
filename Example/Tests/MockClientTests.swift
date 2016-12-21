@@ -1,6 +1,5 @@
 import XCTest
 @testable import Endpoints
-@testable import Example
 
 class BinResultProvider: FakeResultProvider {
     func resultFor<C: Call>(call: C) -> URLSessionTaskResult {

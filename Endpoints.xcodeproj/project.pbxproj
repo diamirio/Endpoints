@@ -10,8 +10,6 @@
 		7806BC5C1DC77D7C00D7B180 /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0EE1DB1573800108A45 /* RequestTests.swift */; };
 		7806BC5E1DC77EED00D7B180 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0EC1DB1573800108A45 /* ClientTests.swift */; };
 		7806BC601DC7A00100D7B180 /* GiphyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7806BC5F1DC7A00100D7B180 /* GiphyClient.swift */; };
-		7806BC641DC7A0A100D7B180 /* GiphyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7806BC621DC7A0A100D7B180 /* GiphyClientTests.swift */; };
-		781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781A61C31DB5407900CE3EC9 /* MockClientTests.swift */; };
 		7833CC371DC9E2E100132034 /* EndpointsUnbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7833CC2E1DC9E2E000132034 /* EndpointsUnbox.framework */; };
 		7833CC441DC9E2E100132034 /* EndpointsUnbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7833CC2E1DC9E2E000132034 /* EndpointsUnbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7833CC501DC9E32500132034 /* Unbox+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7833CC4D1DC9E32500132034 /* Unbox+Endpoints.swift */; };
@@ -19,6 +17,11 @@
 		7833CC591DC9E5B600132034 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		7833CC671DC9F10E00132034 /* ObjectMapper+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0821DB0D01A00108A45 /* ObjectMapper+Endpoints.swift */; };
 		7833CC801DC9FC0A00132034 /* Unbox+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7833CC4D1DC9E32500132034 /* Unbox+Endpoints.swift */; };
+		7838E46C1E0AC82900DE3094 /* GiphyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7806BC621DC7A0A100D7B180 /* GiphyClientTests.swift */; };
+		7838E46D1E0AC82900DE3094 /* GithubClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F891DE8A814008CDEB6 /* GithubClientTests.swift */; };
+		7838E4711E0AC91A00DE3094 /* BinClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F0FF1DB1579B00108A45 /* BinClient.swift */; };
+		7838E4721E0AC91A00DE3094 /* GiphyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7806BC5F1DC7A00100D7B180 /* GiphyClient.swift */; };
+		7838E4731E0AC91A00DE3094 /* GithubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F7D1DE8A4EC008CDEB6 /* GithubClient.swift */; };
 		7849F3C61DBE15A8004F0376 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849F3C51DBE15A8004F0376 /* Session.swift */; };
 		785661381DB76AFA00CA89B5 /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785661371DB76AFA00CA89B5 /* Testing.swift */; };
 		7867367D1DAFAD370082828B /* Endpoints.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -29,7 +32,6 @@
 		78685CEC1DB0B0A400B72F18 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78685CE01DB0B0A400B72F18 /* Parsing.swift */; };
 		787AECC61DABDEC8001A49BB /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
 		789C0F7E1DE8A4EC008CDEB6 /* GithubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F7D1DE8A4EC008CDEB6 /* GithubClient.swift */; };
-		789C0F8B1DE8A862008CDEB6 /* GithubClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789C0F891DE8A814008CDEB6 /* GithubClientTests.swift */; };
 		78A4AFB31DB3F77800B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		78A4AFB41DB3FB8200B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
 		78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4AFB21DB3F77800B119C4 /* ClientTester.swift */; };
@@ -40,7 +42,6 @@
 		78A5F1081DB1596000108A45 /* GiphySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1041DB1579B00108A45 /* GiphySearch.swift */; };
 		78A5F1091DB1596600108A45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FA1DB1579B00108A45 /* Assets.xcassets */; };
 		78A5F10A1DB1596900108A45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78A5F0FB1DB1579B00108A45 /* LaunchScreen.storyboard */; };
-		78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A5F1021DB1579B00108A45 /* BinClientTests.swift */; };
 		78B782ED1DD73A45009F0B7D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B782EC1DD73A45009F0B7D /* Debugging.swift */; };
 		78B7834B1DD9FFB0009F0B7D /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7849F3C51DBE15A8004F0376 /* Session.swift */; };
 		78B7834C1DD9FFB0009F0B7D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B782EC1DD73A45009F0B7D /* Debugging.swift */; };
@@ -104,6 +105,13 @@
 			remoteGlobalIDString = 52D6D9EF1BEFFFBE002C0205;
 			remoteInfo = "Unbox-tvOS";
 		};
+		7838E46F1E0AC90600DE3094 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
+			remoteInfo = "Endpoints-iOS";
+		};
 		7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
@@ -138,13 +146,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
 			remoteInfo = Endpoint;
-		};
-		787AECF01DABE56A001A49BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 787AECDB1DABE56A001A49BB;
-			remoteInfo = EndpointExample;
 		};
 		789043291DC7F89500961728 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -815,7 +816,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				787AECF11DABE56A001A49BB /* PBXTargetDependency */,
+				7838E4701E0AC90600DE3094 /* PBXTargetDependency */,
 			);
 			name = ExampleTests;
 			productName = EndpointExampleTests;
@@ -889,7 +890,6 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = U37QH9QGB8;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 787AECDB1DABE56A001A49BB;
 					};
 					78B783491DD9FFB0009F0B7D = {
 						ProvisioningStyle = Automatic;
@@ -1210,11 +1210,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7806BC641DC7A0A100D7B180 /* GiphyClientTests.swift in Sources */,
-				781A61C41DB5407900CE3EC9 /* MockClientTests.swift in Sources */,
-				789C0F8B1DE8A862008CDEB6 /* GithubClientTests.swift in Sources */,
-				78A5F10C1DB1598E00108A45 /* BinClientTests.swift in Sources */,
+				7838E46D1E0AC82900DE3094 /* GithubClientTests.swift in Sources */,
+				7838E46C1E0AC82900DE3094 /* GiphyClientTests.swift in Sources */,
+				7838E4711E0AC91A00DE3094 /* BinClient.swift in Sources */,
+				7838E4731E0AC91A00DE3094 /* GithubClient.swift in Sources */,
 				78A4AFB51DB3FB8300B119C4 /* ClientTester.swift in Sources */,
+				7838E4721E0AC91A00DE3094 /* GiphyClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1270,6 +1271,11 @@
 			name = "Unbox-tvOS";
 			targetProxy = 7833CC891DC9FC4300132034 /* PBXContainerItemProxy */;
 		};
+		7838E4701E0AC90600DE3094 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
+			targetProxy = 7838E46F1E0AC90600DE3094 /* PBXContainerItemProxy */;
+		};
 		7867367B1DAFA6CE0082828B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
@@ -1294,11 +1300,6 @@
 			isa = PBXTargetDependency;
 			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
 			targetProxy = 787AECC71DABDEC8001A49BB /* PBXContainerItemProxy */;
-		};
-		787AECF11DABE56A001A49BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 787AECDB1DABE56A001A49BB /* Example */;
-			targetProxy = 787AECF01DABE56A001A49BB /* PBXContainerItemProxy */;
 		};
 		78B7835B1DD9FFF4009F0B7D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1363,6 +1364,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = EndpointsUnbox/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnboxTests";
@@ -1374,6 +1376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = EndpointsUnbox/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsUnboxTests";
@@ -1518,6 +1521,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = EndpointsMapper/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapperTests";
@@ -1529,6 +1533,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = EndpointsMapper/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsMapperTests";
@@ -1676,6 +1681,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = Endpoints/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsTests";
@@ -1687,6 +1693,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				INFOPLIST_FILE = Endpoints/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsTests";
@@ -1728,13 +1735,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Example/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
 		};
@@ -1742,13 +1748,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Example/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Release;
 		};

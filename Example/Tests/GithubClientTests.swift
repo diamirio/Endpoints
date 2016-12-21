@@ -1,7 +1,6 @@
 import XCTest
 import Endpoints
 import Unbox
-@testable import Example
 
 class GithubClientTests: XCTestCase {
     var tester: ClientTester<GithubClient>!

@@ -30,7 +30,10 @@ class ClientTests: XCTestCase {
     }
     
     func testTimeoutError() {
-        let c = DynamicCall<Data>(Request(.get, "delay/1"), encode: { $0.timeoutInterval = 0.5 })
+        var urlReq = Request(.get, "delay/1").urlRequest
+        urlReq.timeoutInterval = 0.5
+        
+        let c = DynamicCall<Data>(urlReq)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)

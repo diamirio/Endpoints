@@ -55,21 +55,12 @@ public struct DynamicCall<Response: ResponseParser>: Call {
     
     public var request: URLRequestEncodable
     
-    public var encode: EncodingBlock?
     public var validate: ValidationBlock?
     
-    public var urlRequest: URLRequest {
-        var urlRequest = request.urlRequest
-        encode?(&urlRequest)
-        
-        return urlRequest
-    }
-    
-    public init(_ request: URLRequestEncodable, encode: EncodingBlock?=nil, validate: ValidationBlock?=nil) {
+    public init(_ request: URLRequestEncodable, validate: ValidationBlock?=nil) {
         self.request = request
         
         self.validate = validate
-        self.encode = encode
     }
     
     public func validate(result: URLSessionTaskResult) throws {

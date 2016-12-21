@@ -29,3 +29,24 @@ class GithubRepoSearch: PagableSearch {
         return GithubClient.SearchRepositories(endpoint: .url(nextPage))
     }
 }
+
+class GithubSearchViewController: SearchViewController<GithubClient, GithubRepoSearch> {
+    lazy var sortButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(sortTapped))
+        return btn
+    }()
+    
+    func sortTapped() {
+        
+    }
+    
+    init() {
+        super.init(client: GithubClient(), search: GithubRepoSearch())
+        
+        toolbarItems = [ sortButton ]
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
