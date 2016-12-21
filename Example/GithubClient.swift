@@ -3,7 +3,7 @@ import Endpoints
 import Unbox
 import EndpointsUnbox
 
-class GithubClient: BaseClient {
+class GithubClient: AnyClient {
     var user: BasicAuthorization?
     
     init() {

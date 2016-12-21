@@ -1,11 +1,3 @@
-//
-//  Convenience.swift
-//  Endpoints
-//
-//  Created by Peter W on 05/11/2016.
-//  Copyright © 2016 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
 extension URL: URLRequestEncodable {
@@ -47,10 +39,9 @@ public struct BasicAuthorization {
     }
 }
 
-public struct DynamicCall<Response: ResponseParser>: Call {
+public struct AnyCall<Response: ResponseParser>: Call {
     public typealias ResponseType = Response
     
-    public typealias EncodingBlock = (inout URLRequest)->()
     public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
     
     public var request: URLRequestEncodable

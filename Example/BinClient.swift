@@ -1,7 +1,7 @@
 import Foundation
 import Endpoints
 
-class BinClient: BaseClient {
+class BinClient: AnyClient {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
@@ -30,8 +30,8 @@ extension BinClient {
         }
     }
     
-    static func getOutput(value: String) -> DynamicCall<OutputValue> {
-        return DynamicCall<OutputValue>(Request(.get, "get", query: [ "value": value]))
+    static func getOutput(value: String) -> AnyCall<OutputValue> {
+        return AnyCall<OutputValue>(Request(.get, "get", query: [ "value": value]))
     }
 }
 

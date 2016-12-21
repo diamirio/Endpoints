@@ -25,10 +25,10 @@ import Foundation
 /// let login = Login(user: "user", pwd: "pwd")
 /// ````
 ///
-/// Alternatively, you can dynamically create `Call`s using `DynamicCall`:
+/// Alternatively, you can dynamically create `Call`s using `AnyCall`:
 /// ````
 /// let loginData = ["user": user, "pwd": pwd]
-/// let login = DynamicCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
+/// let login = AnyCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
 /// ````
 ///
 /// `Call` adopts `URLRequestEncodable` and can thus be converted into 
@@ -38,7 +38,7 @@ import Foundation
 ///
 /// `ResponseValidator` is also adopted, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type. 
-/// `BaseClient` will use this method to validate the response of the calls
+/// `AnyClient` will use this method to validate the response of the calls
 /// request before using its `ResponseType` to parse it.
 /// 
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
@@ -100,7 +100,7 @@ public class StatusCodeValidator: ResponseValidator {
 }
 
 /// A type responsible for encoding and parsing all calls for a given Web API.
-/// A basic implementation is provided by `BaseClient`.
+/// A basic implementation is provided by `AnyClient`.
 public protocol Client {
     
     /// Converts a `Call` created for this client's Web API
@@ -136,7 +136,7 @@ public struct URLSessionTaskResult {
 /// All `Calls` made for a specific Web API should be encoded and parsed using
 /// a dedicated `Client` type. 
 ///
-/// You typically create a subclass of `BaseClient` for each Web API you want
+/// You typically create a subclass of `AnyClient` for each Web API you want
 /// to access from your App.
 ///
 /// Override `encode` to supply additional parameters to requests
@@ -147,7 +147,7 @@ public struct URLSessionTaskResult {
 ///
 /// Use a `Session` configured with a `Client` to start `Call`s using a
 /// `URLSession`.
-open class BaseClient: Client, ResponseValidator {
+open class AnyClient: Client, ResponseValidator {
     
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL

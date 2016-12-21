@@ -4,10 +4,10 @@ import Endpoints
 @testable import EndpointsUnbox
 
 class EndpointUnboxTests: XCTestCase {
-    var tester: ClientTester<BaseClient>!
+    var tester: ClientTester<AnyClient>!
     
     override func setUp() {
-        tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "https://httpbin.org")!))
+        tester = ClientTester(test: self, client: AnyClient(baseURL: URL(string: "https://httpbin.org")!))
     }
     
     struct UnboxTest: UnboxableParser {

@@ -21,9 +21,9 @@ class RequestTests: XCTestCase {
         
         var req = Request(.get, "post", query: ["x": "y"], header: [ "x": "y" ], body: body)
         req.url = absoluteURL
-        let c = DynamicCall<Data>(req)
+        let c = AnyCall<Data>(req)
         
-        let urlReq = BaseClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
+        let urlReq = AnyClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
         
         XCTAssertEqual(urlReq.url, absoluteURL)
         XCTAssertEqual(urlReq.httpBody, body.requestData)
@@ -35,8 +35,8 @@ class RequestTests: XCTestCase {
 extension RequestTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
         let request = Request(.get, path, query: queryParams)
-        let call = DynamicCall<Data>(request)
-        let client = BaseClient(baseURL: URL(string: baseUrl)!)
+        let call = AnyCall<Data>(request)
+        let client = AnyClient(baseURL: URL(string: baseUrl)!)
         let urlRequest = client.encode(call: call)
         
         let exp = expectation(description: "")

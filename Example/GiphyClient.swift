@@ -4,7 +4,7 @@ import Endpoints
 import EndpointsUnbox
 import CoreGraphics
 
-class GiphyClient: BaseClient {
+class GiphyClient: AnyClient {
     var apiKey = "dc6zaTOxFJmzC"
     
     init() {

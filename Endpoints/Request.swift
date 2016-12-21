@@ -173,7 +173,7 @@ public extension URL {
     
     /// `true` if `self` has no scheme.
     ///
-    /// - note: Used by `BaseClient.encode` to determine if a `URLRequest` should be
+    /// - note: Used by `AnyClient.encode` to determine if a `URLRequest` should be
     /// encoded using `self` alone (when `false`) or in combination with
     /// its `baseURL` (when `true`).
     var isRelative: Bool {

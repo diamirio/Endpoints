@@ -2,14 +2,14 @@ import XCTest
 @testable import Endpoints
 
 class ClientTests: XCTestCase {
-    var tester: ClientTester<BaseClient>!
+    var tester: ClientTester<AnyClient>!
     let baseURL = URL(string: "http://httpbin.org")!
     override func setUp() {
-        tester = ClientTester(test: self, client: BaseClient(baseURL: baseURL))
+        tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
     
     func testCancellation() {
-        let c = DynamicCall<Data>(Request(.get, "get"))
+        let c = AnyCall<Data>(Request(.get, "get"))
         
         let exp = expectation(description: "")
         let task = tester.session.start(call: c) { result in
@@ -33,7 +33,7 @@ class ClientTests: XCTestCase {
         var urlReq = Request(.get, "delay/1").urlRequest
         urlReq.timeoutInterval = 0.5
         
-        let c = DynamicCall<Data>(urlReq)
+        let c = AnyCall<Data>(urlReq)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -47,7 +47,7 @@ class ClientTests: XCTestCase {
     }
     
     func testStatusError() {
-        let c = DynamicCall<Data>(Request(.get, "status/400"))
+        let c = AnyCall<Data>(Request(.get, "status/400"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false, status: 400)
@@ -67,7 +67,7 @@ class ClientTests: XCTestCase {
     }
     
     func testGetData() {
-        let c = DynamicCall<Data>(Request(.get, "get"))
+        let c = AnyCall<Data>(Request(.get, "get"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -76,7 +76,7 @@ class ClientTests: XCTestCase {
     
     func testPostRawString() {
         let body = "body"
-        let c = DynamicCall<[String: Any]>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
+        let c = AnyCall<[String: Any]>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -95,7 +95,7 @@ class ClientTests: XCTestCase {
     func testPostString() {
         //foundation urlrequest defaults to form encoding
         let body = "key=value"
-        let c = DynamicCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -118,7 +118,7 @@ class ClientTests: XCTestCase {
     func testPostFormEncodedBody() {
         let params = [ "key": "value" ]
         let body = FormEncodedBody(parameters: params)
-        let c = DynamicCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -142,7 +142,7 @@ class ClientTests: XCTestCase {
     func testPostJSONBody() {
         let params = [ "key": "value" ]
         let body = try! JSONEncodedBody(jsonObject: params)
-        let c = DynamicCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -164,7 +164,7 @@ class ClientTests: XCTestCase {
     }
     
     func testGetString() {
-        let c = DynamicCall<String>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
+        let c = AnyCall<String>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -176,7 +176,7 @@ class ClientTests: XCTestCase {
     }
     
     func testGetJSONDictionary() {
-        let c = DynamicCall<[String: Any]>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
+        let c = AnyCall<[String: Any]>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -205,7 +205,7 @@ class ClientTests: XCTestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! DynamicCall<[String]>.ResponseType.parse(data: arrayData, encoding: .utf8)
+        let parsedObject = try! AnyCall<[String]>.ResponseType.parse(data: arrayData, encoding: .utf8)
         
         XCTAssertEqual(inputArray, parsedObject)
     }
@@ -225,7 +225,7 @@ class ClientTests: XCTestCase {
     }
     
     func testFailJSONParsing() {
-        let c = DynamicCall<[String: Any]>(Request(.get, "xml"))
+        let c = AnyCall<[String: Any]>(Request(.get, "xml"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false, status: 200)
@@ -302,7 +302,7 @@ class ClientTests: XCTestCase {
     
     func testBasicAuth() {
         let auth = BasicAuthorization(user: "a", password: "a")
-        let c = DynamicCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true)
@@ -311,7 +311,7 @@ class ClientTests: XCTestCase {
     
     func testBasicAuthFail() {
         let auth = BasicAuthorization(user: "a", password: "b")
-        let c = DynamicCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -320,7 +320,7 @@ class ClientTests: XCTestCase {
 
     func testSimpleAbsoluteURLCall() {
         let url = URL(string: "https://httpbin.org/get?q=a")!
-        let c = DynamicCall<Data>(url)
+        let c = AnyCall<Data>(url)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
@@ -330,7 +330,7 @@ class ClientTests: XCTestCase {
     
     func testSimpleRelativeURLRequestCall() {
         let url = URL(string: "get?q=a")!
-        let c = DynamicCall<Data>(URLRequest(url: url))
+        let c = AnyCall<Data>(URLRequest(url: url))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
@@ -340,7 +340,7 @@ class ClientTests: XCTestCase {
     
     func testRedirect() {
         let req = Request(.get, "/relative-redirect/2", header: ["x": "y"])
-        let c = DynamicCall<Data>(req)
+        let c = AnyCall<Data>(req)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)

@@ -4,10 +4,10 @@ import Endpoints
 @testable import EndpointsMapper
 
 class EndpointMapperTests: XCTestCase {
-    var tester: ClientTester<BaseClient>!
+    var tester: ClientTester<AnyClient>!
     
     override func setUp() {
-        tester = ClientTester(test: self, client: BaseClient(baseURL: URL(string: "https://httpbin.org")!))
+        tester = ClientTester(test: self, client: AnyClient(baseURL: URL(string: "https://httpbin.org")!))
     }
     
     struct ResponseObject: MappableParser {
@@ -21,7 +21,7 @@ class EndpointMapperTests: XCTestCase {
     
     func testResponseParsing() {
         let value = "value"
-        let c = DynamicCall<ResponseObject>(Request(.get, "get", query: [ "input": value ]))
+        let c = AnyCall<ResponseObject>(Request(.get, "get", query: [ "input": value ]))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
@@ -44,7 +44,7 @@ class EndpointMapperTests: XCTestCase {
         var jsonBody = RequestObject()
         jsonBody.value = "zapzarap"
         
-        let c = DynamicCall<String>(Request(.post, "post", body: try! JSONEncodedBody(mappable: jsonBody)))
+        let c = AnyCall<String>(Request(.post, "post", body: try! JSONEncodedBody(mappable: jsonBody)))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
