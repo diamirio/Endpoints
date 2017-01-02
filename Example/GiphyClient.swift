@@ -4,23 +4,37 @@ import Endpoints
 import EndpointsUnbox
 import CoreGraphics
 
-class GiphyClient: AnyClient {
+class GiphyClient: Client {
+    private let anyClient = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
+    
     var apiKey = "dc6zaTOxFJmzC"
     
-    init() {
-        super.init(baseURL: URL(string: "https://api.giphy.com/v1/")!)
-    }
-    
-    override func encode<C: Call>(call: C) -> URLRequest {
-        var req = super.encode(call: call)
-        var comps = URLComponents(url: req.url!.absoluteURL, resolvingAgainstBaseURL: false)
-        var query = comps?.queryItems ?? [URLQueryItem]()
-        query.append(URLQueryItem(name: "api_key", value: apiKey))
-        comps?.queryItems = query
+    func encode<C: Call>(call: C) -> URLRequest {
+        var req = anyClient.encode(call: call)
         
-        req.url = comps?.url
+        req.append(query: ["api_key": apiKey])
         
         return req
+    }
+    
+    func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+        return try anyClient.parse(sessionTaskResult: result, for: call)
+    }
+}
+
+extension URLRequest {
+    mutating func append(query: Parameters) {
+        guard let absoluteURL = url?.absoluteURL, var comps = URLComponents(url: absoluteURL, resolvingAgainstBaseURL: false) else {
+            return
+        }
+        
+        var queryItems = comps.queryItems ?? [URLQueryItem]()
+        for q in query {
+            queryItems.append(URLQueryItem(name: q.key, value: q.value))
+        }
+        comps.queryItems = queryItems
+        
+        url = comps.url
     }
 }
 
