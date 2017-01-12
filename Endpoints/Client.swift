@@ -128,6 +128,12 @@ public struct URLSessionTaskResult {
     public var response: URLResponse?
     public var data: Data?
     public var error: Error?
+
+    public init(response: URLResponse?=nil, data: Data?=nil, error: Error?=nil) {
+       self.response = response
+       self.data = data
+       self.error = error
+   }
     
     /// Returns `response` cast to `HTTPURLResponse`.
     public var httpResponse: HTTPURLResponse? {

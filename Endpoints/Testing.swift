@@ -7,7 +7,7 @@ public protocol FakeResultProvider {
 public class FakeSession<C: Client>: Session<C> {
     var resultProvider: FakeResultProvider
     
-    init(with client: C, resultProvider: FakeResultProvider) {
+    public init(with client: C, resultProvider: FakeResultProvider) {
         self.resultProvider = resultProvider
         
         super.init(with: client)
