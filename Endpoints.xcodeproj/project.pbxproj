@@ -50,118 +50,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		78106CD71E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D97C1BEFF229002C0205;
-			remoteInfo = "Unbox-iOS";
-		};
-		78106CD91E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6DA0F1BF000BD002C0205;
-			remoteInfo = "Unbox-OSX";
-		};
-		78106CDB1E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9E21BEFFF6E002C0205;
-			remoteInfo = "Unbox-watchOS";
-		};
-		78106CDD1E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9F01BEFFFBE002C0205;
-			remoteInfo = "Unbox-tvOS";
-		};
-		78106CDF1E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9861BEFF229002C0205;
-			remoteInfo = "Unbox-iOS Tests";
-		};
-		78106CE11E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DD75027A1C68FCFC006590AF;
-			remoteInfo = "Unbox-OSX Tests";
-		};
-		78106CE31E292EB90087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DD75028D1C690C7A006590AF;
-			remoteInfo = "Unbox-tvOS Tests";
-		};
-		78106CEF1E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6AAC8F7619F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOS";
-		};
-		78106CF11E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD1602FF1AC023D5000CD69A;
-			remoteInfo = "ObjectMapper-Mac";
-		};
-		78106CF31E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A2AD03D1B2C78540097E150;
-			remoteInfo = "ObjectMapper-watchOS";
-		};
-		78106CF51E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A05B7A61BE274BE00F19B53;
-			remoteInfo = "ObjectMapper-tvOS";
-		};
-		78106CF71E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6AAC8F8119F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOSTests";
-		};
-		78106CF91E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD1603091AC023D6000CD69A;
-			remoteInfo = "ObjectMapper-MacTests";
-		};
-		78106CFB1E292EC00087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A05B7AF1BE274BE00F19B53;
-			remoteInfo = "ObjectMapper-tvOSTests";
-		};
-		78106CFD1E292ECA0087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6AAC8F7519F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOS";
-		};
-		78106CFF1E292ECD0087F06C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 52D6D97B1BEFF229002C0205;
-			remoteInfo = "Unbox-iOS";
-		};
 		7867367A1DAFA6CE0082828B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 787AECB31DABDEC7001A49BB /* Project object */;
@@ -182,20 +70,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 789A6B941E293AEB003DEBA9;
 			remoteInfo = ExampleCore;
-		};
-		789A6BB81E293B18003DEBA9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6AAC8F7519F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOS";
-		};
-		789A6BBA1E293B18003DEBA9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 52D6D97B1BEFF229002C0205;
-			remoteInfo = "Unbox-iOS";
 		};
 		789A6BBC1E293B22003DEBA9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -263,8 +137,6 @@
 		78106CC71E292DA50087F06C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78106CCA1E292E340087F06C /* FakeClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeClientTests.swift; sourceTree = "<group>"; };
 		78106CCC1E292E720087F06C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		78106CCD1E292EB90087F06C /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = "Packages/Unbox-2.3.0/Unbox.xcodeproj"; sourceTree = "<group>"; };
-		78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = "Packages/ObjectMapper-2.2.2/ObjectMapper.xcodeproj"; sourceTree = "<group>"; };
 		78106D011E292F8D0087F06C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		787AECBC1DABDEC7001A49BB /* Endpoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECC51DABDEC8001A49BB /* EndpointsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -408,34 +280,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		78106CCE1E292EB90087F06C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				78106CD81E292EB90087F06C /* Unbox.framework */,
-				78106CDA1E292EB90087F06C /* Unbox.framework */,
-				78106CDC1E292EB90087F06C /* Unbox.framework */,
-				78106CDE1E292EB90087F06C /* Unbox.framework */,
-				78106CE01E292EB90087F06C /* Unbox-iOS Tests.xctest */,
-				78106CE21E292EB90087F06C /* Unbox-OSX Tests.xctest */,
-				78106CE41E292EB90087F06C /* Unbox-tvOS Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		78106CE61E292EC00087F06C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				78106CF01E292EC00087F06C /* ObjectMapper.framework */,
-				78106CF21E292EC00087F06C /* ObjectMapper.framework */,
-				78106CF41E292EC00087F06C /* ObjectMapper.framework */,
-				78106CF61E292EC00087F06C /* ObjectMapper.framework */,
-				78106CF81E292EC00087F06C /* ObjectMapper-iOSTests.xctest */,
-				78106CFA1E292EC00087F06C /* ObjectMapper-MacTests.xctest */,
-				78106CFC1E292EC00087F06C /* ObjectMapper-tvOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		787AECB21DABDEC7001A49BB = {
 			isa = PBXGroup;
 			children = (
@@ -496,8 +340,6 @@
 		78A5F0F81DB1579B00108A45 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */,
-				78106CCD1E292EB90087F06C /* Unbox.xcodeproj */,
 				78106CC41E292DA50087F06C /* Resources */,
 				78106C781E2926890087F06C /* Sources */,
 				78106C871E2926890087F06C /* Tests */,
@@ -583,8 +425,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				78106D001E292ECD0087F06C /* PBXTargetDependency */,
-				78106CFE1E292ECA0087F06C /* PBXTargetDependency */,
 				7867367B1DAFA6CE0082828B /* PBXTargetDependency */,
 				789A6BA91E293AEC003DEBA9 /* PBXTargetDependency */,
 			);
@@ -624,8 +464,6 @@
 			);
 			dependencies = (
 				789A6BC11E293C93003DEBA9 /* PBXTargetDependency */,
-				789A6BB91E293B18003DEBA9 /* PBXTargetDependency */,
-				789A6BBB1E293B18003DEBA9 /* PBXTargetDependency */,
 			);
 			name = ExampleCore;
 			productName = ExampleCore;
@@ -702,16 +540,6 @@
 			mainGroup = 787AECB21DABDEC7001A49BB;
 			productRefGroup = 787AECBD1DABDEC7001A49BB /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 78106CE61E292EC00087F06C /* Products */;
-					ProjectRef = 78106CE51E292EC00087F06C /* ObjectMapper.xcodeproj */;
-				},
-				{
-					ProductGroup = 78106CCE1E292EB90087F06C /* Products */;
-					ProjectRef = 78106CCD1E292EB90087F06C /* Unbox.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				787AECBB1DABDEC7001A49BB /* Endpoints-iOS */,
@@ -723,107 +551,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		78106CD81E292EB90087F06C /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78106CD71E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CDA1E292EB90087F06C /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78106CD91E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CDC1E292EB90087F06C /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78106CDB1E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CDE1E292EB90087F06C /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78106CDD1E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CE01E292EB90087F06C /* Unbox-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-iOS Tests.xctest";
-			remoteRef = 78106CDF1E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CE21E292EB90087F06C /* Unbox-OSX Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-OSX Tests.xctest";
-			remoteRef = 78106CE11E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CE41E292EB90087F06C /* Unbox-tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-tvOS Tests.xctest";
-			remoteRef = 78106CE31E292EB90087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CF01E292EC00087F06C /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78106CEF1E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CF21E292EC00087F06C /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78106CF11E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CF41E292EC00087F06C /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78106CF31E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CF61E292EC00087F06C /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78106CF51E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CF81E292EC00087F06C /* ObjectMapper-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-iOSTests.xctest";
-			remoteRef = 78106CF71E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CFA1E292EC00087F06C /* ObjectMapper-MacTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-MacTests.xctest";
-			remoteRef = 78106CF91E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78106CFC1E292EC00087F06C /* ObjectMapper-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-tvOSTests.xctest";
-			remoteRef = 78106CFB1E292EC00087F06C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		787AECBA1DABDEC7001A49BB /* Resources */ = {
@@ -951,16 +678,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		78106CFE1E292ECA0087F06C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ObjectMapper-iOS";
-			targetProxy = 78106CFD1E292ECA0087F06C /* PBXContainerItemProxy */;
-		};
-		78106D001E292ECD0087F06C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Unbox-iOS";
-			targetProxy = 78106CFF1E292ECD0087F06C /* PBXContainerItemProxy */;
-		};
 		7867367B1DAFA6CE0082828B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 787AECBB1DABDEC7001A49BB /* Endpoints-iOS */;
@@ -975,16 +692,6 @@
 			isa = PBXTargetDependency;
 			target = 789A6B941E293AEB003DEBA9 /* ExampleCore */;
 			targetProxy = 789A6BA81E293AEC003DEBA9 /* PBXContainerItemProxy */;
-		};
-		789A6BB91E293B18003DEBA9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ObjectMapper-iOS";
-			targetProxy = 789A6BB81E293B18003DEBA9 /* PBXContainerItemProxy */;
-		};
-		789A6BBB1E293B18003DEBA9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Unbox-iOS";
-			targetProxy = 789A6BBA1E293B18003DEBA9 /* PBXContainerItemProxy */;
 		};
 		789A6BBD1E293B22003DEBA9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

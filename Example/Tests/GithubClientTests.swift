@@ -1,6 +1,7 @@
 import XCTest
 import Endpoints
 import Unbox
+@testable import ExampleCore
 
 class GithubClientTests: XCTestCase {
     var tester: ClientTester<GithubClient>!
