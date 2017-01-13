@@ -1,5 +1,6 @@
 import XCTest
 import Endpoints
+@testable import ExampleCore
 
 class BinClientTests: XCTestCase {
     let input = "inout"

@@ -1,6 +1,7 @@
 import XCTest
 import Endpoints
 import Unbox
+@testable import ExampleCore
 
 class GiphyClientTests: XCTestCase {
     var tester: ClientTester<GiphyClient>!
