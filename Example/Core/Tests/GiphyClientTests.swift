@@ -50,7 +50,8 @@ class GiphyClientTests: XCTestCase {
             self.tester.assert(result: result, isSuccess: false)
             
             result.onError { error in
-                print("error: \(error)")
+                print("error: \(error.localizedDescription)")
+                XCTAssertEqual(error.localizedDescription, "unauthorized")
             }
         }
     }

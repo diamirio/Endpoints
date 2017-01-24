@@ -25,4 +25,18 @@ class GithubClientTests: XCTestCase {
             }
         }
     }
+    
+    func testErrorHandling() {
+        let search = GithubClient.SearchRepositories(endpoint: .query("", sort: .stars))
+        
+        tester.test(call: search) { result in
+            self.tester.assert(result: result, isSuccess: false)
+            
+            result.onError { error in
+                print("error: \(error.localizedDescription)")
+                XCTAssertTrue(error is GithubError)
+                XCTAssertEqual(error.localizedDescription, "Validation Failed\n> q missing")
+            }
+        }
+    }
 }

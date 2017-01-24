@@ -15,7 +15,7 @@ class StartViewController: UITableViewController {
         var vc: UIViewController {
             switch self {
             case .github:
-                return SearchViewController(client: GithubClient(), search: GithubRepoSearch())
+                return GithubRepoSearchViewController()
             case .giphy:
                 return SearchViewController(client: GiphyClient(), search: GiphySearch())
             }

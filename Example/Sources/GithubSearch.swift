@@ -17,9 +17,11 @@ extension RepositoriesResponse: ItemsResponse {
 
 class GithubRepoSearch: PagableSearch {
     typealias CallType = GithubClient.SearchRepositories
+    
+    var sort: GithubClient.SearchRepositories.Sort = .stars
 
     func prepareCallForFirstPage(withQuery query: String) -> CallType {
-        return GithubClient.SearchRepositories(endpoint: .query(query, sort: .stars))
+        return GithubClient.SearchRepositories(endpoint: .query(query, sort: sort))
     }
     
     func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
@@ -31,14 +33,36 @@ class GithubRepoSearch: PagableSearch {
     }
 }
 
-class GithubSearchViewController: SearchViewController<GithubClient, GithubRepoSearch> {
+class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubRepoSearch> {
     lazy var sortButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(sortTapped))
         return btn
     }()
     
     func sortTapped() {
+        let sheet = UIAlertController(title: "Sort", message: nil, preferredStyle: .actionSheet)
+        let sorts: [GithubClient.SearchRepositories.Sort] = [ .stars, .forks, .updated ]
         
+        for sort in sorts {
+            sheet.addAction(UIAlertAction(title: sort.rawValue, style: .default) { action in
+                self.search.sort = sort
+                self.updateView()
+                self.reset()
+            })
+        }
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(sheet, animated: true, completion: nil)
+    }
+    
+    func updateView() {
+        sortButton.title = "Sort: \(search.sort.rawValue)"
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        updateView()
     }
     
     init() {

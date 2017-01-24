@@ -88,6 +88,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
     
     init(client: C, search: S) {
         self.session = Session(with: client)
+        self.session.debug = true
         self.search = search
         
         super.init(nibName: nil, bundle: nil)

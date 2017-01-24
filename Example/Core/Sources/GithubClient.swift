@@ -20,6 +20,20 @@ public class GithubClient: AnyClient {
         }
         return request
     }
+    
+    public override func validate(result: URLSessionTaskResult) throws {
+        do {
+            try super.validate(result: result)
+        } catch {
+            if let data = result.data, let githubError: GithubError = try? unbox(data: data) {
+                //propagate error details received server
+                throw githubError
+            } else {
+                //rethrow
+                throw error
+            }
+        }
+    }
 }
 
 // MARK: -
@@ -106,6 +120,36 @@ public enum LinkRelation: String {
 public struct Link {
     var url: URL
     var rel: LinkRelation
+}
+
+public struct GithubError: Unboxable, LocalizedError {
+    public var message: String
+    public var details: [GithubErrorDetails]?
+    
+    public init(unboxer: Unboxer) throws {
+        self.message = try unboxer.unbox(key: "message")
+        self.details = unboxer.unbox(key: "errors")
+    }
+    
+    public var errorDescription: String? {
+        var desc = message
+        
+        for detail in details ?? [] {
+            desc.append("\n> \(detail.field) \(detail.code)")
+        }
+        
+        return desc
+    }
+}
+
+public struct GithubErrorDetails: Unboxable {
+    public var field: String
+    public var code: String
+    
+    public init(unboxer: Unboxer) throws {
+        self.field = try unboxer.unbox(key: "field")
+        self.code = try unboxer.unbox(key: "code")
+    }
 }
 
 public extension HTTPURLResponse {

@@ -9,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow()
         let startVC = StartViewController()
         let navVC = UINavigationController(rootViewController: startVC)
+        navVC.isToolbarHidden = false
         window.rootViewController = navVC
         window.makeKeyAndVisible()
         
