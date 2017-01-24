@@ -30,7 +30,6 @@
 		78106CC81E292DA50087F06C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78106CC51E292DA50087F06C /* Assets.xcassets */; };
 		78106CC91E292DA50087F06C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78106CC61E292DA50087F06C /* LaunchScreen.storyboard */; };
 		785ED47F1E378ADB007477F4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 785ED4771E378ADB007477F4 /* Info.plist */; };
-		785ED4C61E378E96007477F4 /* ExampleCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4C51E378E96007477F4 /* ExampleCoreTests.swift */; };
 		785ED4C81E378E96007477F4 /* ExampleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A6B951E293AEC003DEBA9 /* ExampleCore.framework */; };
 		785ED4CE1E378EA3007477F4 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4841E378BE1007477F4 /* BinClientTests.swift */; };
 		785ED4CF1E378EA3007477F4 /* FakeClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4851E378BE1007477F4 /* FakeClientTests.swift */; };
@@ -245,8 +244,6 @@
 		785ED48B1E378E39007477F4 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = "Packages/ObjectMapper-2.2.2/ObjectMapper.xcodeproj"; sourceTree = "<group>"; };
 		785ED4A31E378E40007477F4 /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = "Packages/Unbox-2.3.0/Unbox.xcodeproj"; sourceTree = "<group>"; };
 		785ED4C31E378E95007477F4 /* ExampleCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		785ED4C51E378E96007477F4 /* ExampleCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleCoreTests.swift; sourceTree = "<group>"; };
-		785ED4C71E378E96007477F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		785ED4D61E378F91007477F4 /* BinClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinClient.swift; sourceTree = "<group>"; };
 		785ED4D71E378F91007477F4 /* GiphyClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiphyClient.swift; sourceTree = "<group>"; };
 		785ED4D81E378F91007477F4 /* GithubClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClient.swift; sourceTree = "<group>"; };
@@ -410,15 +407,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		785ED4C41E378E96007477F4 /* ExampleCoreTests */ = {
-			isa = PBXGroup;
-			children = (
-				785ED4C51E378E96007477F4 /* ExampleCoreTests.swift */,
-				785ED4C71E378E96007477F4 /* Info.plist */,
-			);
-			path = ExampleCoreTests;
-			sourceTree = "<group>";
-		};
 		785ED4D51E378F91007477F4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,7 +430,6 @@
 				78106CA01E2928A80087F06C /* Info.plist */,
 				78106CA21E2928A80087F06C /* README.md */,
 				78106CC31E292A3C0087F06C /* .swift-version */,
-				785ED4C41E378E96007477F4 /* ExampleCoreTests */,
 				787AECBD1DABDEC7001A49BB /* Products */,
 				78A5F0A21DB0D98C00108A45 /* Frameworks */,
 			);
@@ -855,7 +842,6 @@
 				785ED4D21E378EA3007477F4 /* ObjectMapperTests.swift in Sources */,
 				785ED4CF1E378EA3007477F4 /* FakeClientTests.swift in Sources */,
 				785ED4D31E378EA3007477F4 /* UnboxTests.swift in Sources */,
-				785ED4C61E378E96007477F4 /* ExampleCoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,7 +992,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = ExampleCoreTests/Info.plist;
+				INFOPLIST_FILE = Example/Core/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1051,7 +1037,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = ExampleCoreTests/Info.plist;
+				INFOPLIST_FILE = Example/Core/Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
