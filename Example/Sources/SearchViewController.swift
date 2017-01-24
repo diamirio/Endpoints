@@ -1,9 +1,11 @@
 import Foundation
 import UIKit
 import Endpoints
+import SafariServices
 
 protocol Item {
     var text: String { get }
+    var url: URL { get }
 }
 
 protocol ItemsResponse {
@@ -18,18 +20,9 @@ protocol PagableSearch {
 }
 
 class ItemCell: UITableViewCell {
-    static let Id = "ItemCell"
 }
 
-class SearchViewController<C: Client, S: PagableSearch>: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate where S.CallType.ResponseType.OutputType: ItemsResponse {
-    
-    lazy var tableView: UITableView = {
-        let tv = UITableView()
-        tv.delegate = self
-        tv.dataSource = self
-        
-        return tv
-    }()
+class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, UISearchBarDelegate where S.CallType.ResponseType.OutputType: ItemsResponse {
     
     lazy var searchBar: UISearchBar = {
         let sv = UISearchBar()
@@ -53,25 +46,28 @@ class SearchViewController<C: Client, S: PagableSearch>: UIViewController, UITab
         
         navigationItem.titleView = searchBar
         navigationItem.rightBarButtonItem = goButton
-        
-        tableView.frame = view.bounds
-        tableView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
-        view.addSubview(tableView)
-        
+
         tableView.register(ItemCell.self, forCellReuseIdentifier: ItemCell.Id)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.Id) as! ItemCell
         cell.textLabel!.text = data[indexPath.row].text
         return cell
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let item = data[indexPath.row]
+        
+        let vc = SFSafariViewController(url: item.url)
+        present(vc, animated: true, completion: nil)
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if (scrollView.contentOffset.y + scrollView.bounds.height + 44) > scrollView.contentSize.height && loading == false && nextCall != nil {
             loadNextPage()
         }

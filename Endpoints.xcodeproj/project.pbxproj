@@ -43,6 +43,7 @@
 		785ED4DD1E378F91007477F4 /* GithubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4D81E378F91007477F4 /* GithubClient.swift */; };
 		785ED4DE1E378F91007477F4 /* ObjectMapper+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4D91E378F91007477F4 /* ObjectMapper+Endpoints.swift */; };
 		785ED4DF1E378F91007477F4 /* Unbox+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4DA1E378F91007477F4 /* Unbox+Endpoints.swift */; };
+		785ED4E11E37A560007477F4 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4E01E37A560007477F4 /* StartViewController.swift */; };
 		7867367D1DAFAD370082828B /* Endpoints.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		787AECC61DABDEC8001A49BB /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
 		789A6BAA1E293AEC003DEBA9 /* ExampleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A6B951E293AEC003DEBA9 /* ExampleCore.framework */; };
@@ -249,6 +250,7 @@
 		785ED4D81E378F91007477F4 /* GithubClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClient.swift; sourceTree = "<group>"; };
 		785ED4D91E378F91007477F4 /* ObjectMapper+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ObjectMapper+Endpoints.swift"; sourceTree = "<group>"; };
 		785ED4DA1E378F91007477F4 /* Unbox+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Unbox+Endpoints.swift"; sourceTree = "<group>"; };
+		785ED4E01E37A560007477F4 /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		787AECBC1DABDEC7001A49BB /* Endpoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECC51DABDEC8001A49BB /* EndpointsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EndpointsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		787AECDC1DABE56A001A49BB /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				78106C791E2926890087F06C /* AppDelegate.swift */,
+				785ED4E01E37A560007477F4 /* StartViewController.swift */,
 				78106C821E2926890087F06C /* GithubSearch.swift */,
 				789A6BBE1E293BB4003DEBA9 /* GiphySearch.swift */,
 				78106C861E2926890087F06C /* SearchViewController.swift */,
@@ -873,6 +876,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				785ED4E11E37A560007477F4 /* StartViewController.swift in Sources */,
 				78106C921E2926C50087F06C /* AppDelegate.swift in Sources */,
 				78106C8F1E2926AD0087F06C /* GithubSearch.swift in Sources */,
 				78106C951E2926CD0087F06C /* SearchViewController.swift in Sources */,
@@ -1152,6 +1156,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1168,6 +1173,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = U37QH9QGB8;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -32,7 +32,3 @@ class GiphySearch: PagableSearch {
         return nextCall
     }
 }
-
-private class GiphyCell: UITableViewCell {
-    static let Id = "GiphyCell"
-}

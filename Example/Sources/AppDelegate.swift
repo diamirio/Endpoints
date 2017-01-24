@@ -7,9 +7,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow()
-        //let searchVC = SearchViewController(client: GithubClient(), search: GithubRepoSearch())
-        let searchVC = SearchViewController(client: GiphyClient(), search: GiphySearch())
-        let navVC = UINavigationController(rootViewController: searchVC)
+        let startVC = StartViewController()
+        let navVC = UINavigationController(rootViewController: startVC)
         window.rootViewController = navVC
         window.makeKeyAndVisible()
         
