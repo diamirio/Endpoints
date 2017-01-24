@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Endpoints
+import ExampleCore
 
 extension Repository: Item {
     var text: String {

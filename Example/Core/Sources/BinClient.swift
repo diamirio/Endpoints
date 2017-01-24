@@ -1,12 +1,15 @@
 import Foundation
 import Endpoints
 
-class BinClient: AnyClient {
+// MARK: -
+// MARK: Client
+
+public class BinClient: AnyClient {
     init() {
         super.init(baseURL: URL(string: "https://httpbin.org")!)
     }
     
-    override func validate(result: URLSessionTaskResult) throws {
+    override public func validate(result: URLSessionTaskResult) throws {
         do {
             try statusCodeValidator.validate(result: result)
         } catch StatusCodeError.unacceptable(let code, let reason) {
@@ -17,15 +20,18 @@ class BinClient: AnyClient {
     }
 }
 
+// MARK: -
+// MARK: Requests
+
 protocol BinCall: Call {}
 
-extension BinClient {
-    struct GetOutput: BinCall {
-        typealias ResponseType = OutputValue
+public extension BinClient {
+    public struct GetOutput: BinCall {
+        public typealias ResponseType = OutputValue
         
-        let value: String
+        public var value: String
         
-        var request: URLRequestEncodable {
+        public var request: URLRequestEncodable {
             return Request(.get, "get", query: [ "value": value ])
         }
     }
@@ -35,10 +41,13 @@ extension BinClient {
     }
 }
 
-struct OutputValue: ResponseParser {
-    let value: String
+// MARK: -
+// MARK: Responses
+
+public struct OutputValue: ResponseParser {
+    public var value: String
     
-    static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
+    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
         let dict = try Dictionary<String, Any>.parse(data: data, encoding: encoding)
         guard let args = dict["args"] as? [String: String], let value = args["value"] else {
             throw ParsingError.invalidData(description: "value not found")

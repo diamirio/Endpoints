@@ -1,5 +1,6 @@
 import UIKit
 import Endpoints
+import ExampleCore
 
 extension GiphyImage: Item {
     var text: String {

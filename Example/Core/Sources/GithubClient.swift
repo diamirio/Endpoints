@@ -2,14 +2,17 @@ import Foundation
 import Endpoints
 import Unbox
 
-class GithubClient: AnyClient {
-    var user: BasicAuthorization?
+// MARK: -
+// MARK: Client
+
+public class GithubClient: AnyClient {
+    public var user: BasicAuthorization?
     
-    init() {
+    public init() {
         super.init(baseURL: URL(string: "https://api.github.com/")!)
     }
     
-    override func encode<C : Call>(call: C) -> URLRequest {
+    override public func encode<C : Call>(call: C) -> URLRequest {
         var request = super.encode(call: call)
         
         if let user = user {
@@ -19,22 +22,29 @@ class GithubClient: AnyClient {
     }
 }
 
-extension GithubClient {
-    struct SearchRepositories: Call {
-        enum Sort: String {
+// MARK: -
+// MARK: Requests
+
+public extension GithubClient {
+    public struct SearchRepositories: Call {
+        public enum Sort: String {
             case stars, forks, updated
         }
         
-        enum Endpoint {
+        public enum Endpoint {
             case query(String, sort: Sort)
             case url(URL)
         }
         
-        typealias ResponseType = RepositoriesResponse
+        public typealias ResponseType = RepositoriesResponse
         
-        var endpoint: Endpoint
+        public var endpoint: Endpoint
         
-        var request: URLRequestEncodable {
+        public init(endpoint: Endpoint) {
+            self.endpoint = endpoint
+        }
+        
+        public var request: URLRequestEncodable {
             switch endpoint {
             case .query(let query, let sort):
                 return Request(.get, "search/repositories", query: ["q": query, "sort": sort.rawValue])
@@ -45,24 +55,27 @@ extension GithubClient {
     }
 }
 
-struct Repository: Unboxable {
-    let name: String
-    let description: String?
-    let url: URL
+// MARK: -
+// MARK: Responses
+
+public struct Repository: Unboxable {
+    public let name: String
+    public let description: String?
+    public let url: URL
     
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         name = try unboxer.unbox(key: "name")
         description = unboxer.unbox(key: "description")
         url = try unboxer.unbox(key: "html_url")
     }
 }
 
-protocol Pagable {
+public protocol Pagable {
     var nextPage: URL? { get set }
 }
 
-extension ResponseParser where OutputType: Pagable {
-    static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
+public extension ResponseParser where OutputType: Pagable {
+    public static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
         var output = try self.parse(data: data, encoding: response.stringEncoding)
         
         for link in response.parseLinks() {
@@ -75,28 +88,28 @@ extension ResponseParser where OutputType: Pagable {
     }
 }
 
-struct RepositoriesResponse: UnboxableParser, Pagable {
-    let totalCount: Int
-    let repositories: [Repository]
-    var nextPage: URL?
+public struct RepositoriesResponse: UnboxableParser, Pagable {
+    public let totalCount: Int
+    public let repositories: [Repository]
+    public var nextPage: URL?
     
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         totalCount = try unboxer.unbox(key: "total_count")
         repositories = try unboxer.unbox(key: "items")
     }
 }
 
-enum LinkRelation: String {
+public enum LinkRelation: String {
     case next
 }
 
-struct Link {
+public struct Link {
     var url: URL
     var rel: LinkRelation
 }
 
-extension HTTPURLResponse {
-    func parseLinks() -> [Link] {
+public extension HTTPURLResponse {
+    public func parseLinks() -> [Link] {
         guard let linkHeader = self.allHeaderFields["Link"] as? String else {
             return [Link]()
         }

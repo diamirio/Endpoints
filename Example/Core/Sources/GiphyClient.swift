@@ -3,12 +3,17 @@ import Unbox
 import Endpoints
 import CoreGraphics
 
-class GiphyClient: Client {
+// MARK: -
+// MARK: Client
+
+public class GiphyClient: Client {
     private let anyClient = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
     
-    var apiKey = "dc6zaTOxFJmzC"
+    public var apiKey = "dc6zaTOxFJmzC"
     
-    func encode<C: Call>(call: C) -> URLRequest {
+    public init() {}
+    
+    public func encode<C: Call>(call: C) -> URLRequest {
         var req = anyClient.encode(call: call)
         
         req.append(query: ["api_key": apiKey])
@@ -16,7 +21,7 @@ class GiphyClient: Client {
         return req
     }
     
-    func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
         return try anyClient.parse(sessionTaskResult: result, for: call)
     }
 }
@@ -37,18 +42,27 @@ extension URLRequest {
     }
 }
 
-protocol GiphyCall: Call {
+// MARK: -
+// MARK: Requests
+
+public protocol GiphyCall: Call {
 }
 
-extension GiphyClient {
-    struct Search: GiphyCall {
-        typealias ResponseType = GiphyListResponse
+public extension GiphyClient {
+    public struct Search: GiphyCall {
+        public typealias ResponseType = GiphyListResponse
         
-        var query: String
-        var pageSize: Int
-        var page = 0
+        public var query: String
+        public var pageSize: Int
+        public var page: Int
         
-        var request: URLRequestEncodable {
+        public init(query: String, pageSize: Int=10, page: Int=0) {
+            self.query = query
+            self.pageSize = pageSize
+            self.page = page
+        }
+        
+        public var request: URLRequestEncodable {
             return Request(.get, "gifs/search",
                            query: [ "q": query,
                                     "limit": "\(pageSize)",
@@ -57,12 +71,15 @@ extension GiphyClient {
     }
 }
 
-struct GiphyImage: Unboxable {
-    var name: String
-    var url: URL
-    var size: CGSize
+// MARK: -
+// MARK: Responses
+
+public struct GiphyImage: Unboxable {
+    public var name: String
+    public var url: URL
+    public var size: CGSize
     
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         name = try unboxer.unbox(keyPath: "slug")
         
         let images = unboxer.dictionary["images"] as! UnboxableDictionary
@@ -78,10 +95,10 @@ struct GiphyImage: Unboxable {
     }
 }
 
-struct GiphyListResponse: UnboxableParser {
-    var images: [GiphyImage]
+public struct GiphyListResponse: UnboxableParser {
+    public var images: [GiphyImage]
     
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         images = try unboxer.unbox(key: "data")
     }
 }

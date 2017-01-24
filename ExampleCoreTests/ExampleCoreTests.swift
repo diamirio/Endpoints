@@ -2,12 +2,11 @@
 //  ExampleCoreTests.swift
 //  ExampleCoreTests
 //
-//  Created by Peter W on 13/01/2017.
+//  Created by Peter W on 24/01/2017.
 //  Copyright © 2017 Tailored Apps. All rights reserved.
 //
 
 import XCTest
-@testable import ExampleCore
 
 class ExampleCoreTests: XCTestCase {
     
