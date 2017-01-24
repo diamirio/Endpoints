@@ -22,6 +22,10 @@ class GiphySearch: PagableSearch {
     }
     
     func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
+        guard !response.pagination.isLastPage else {
+            return nil
+        }
+        
         var nextCall = lastCall
         nextCall.page += 1
         

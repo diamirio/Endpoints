@@ -74,6 +74,32 @@ public extension GiphyClient {
 // MARK: -
 // MARK: Responses
 
+public struct GiphyListResponse: UnboxableParser {
+    public var images: [GiphyImage]
+    public var pagination: GiphyPagination
+    
+    public init(unboxer: Unboxer) throws {
+        images = try unboxer.unbox(key: "data")
+        pagination = try unboxer.unbox(key: "pagination")
+    }
+}
+
+public struct GiphyPagination: Unboxable {
+    public var count: Int
+    public var totalCount: Int
+    public var offset: Int
+    
+    public var isLastPage: Bool {
+        return offset + count >= totalCount
+    }
+    
+    public init(unboxer: Unboxer) throws {
+        count = try unboxer.unbox(key: "count")
+        totalCount = try unboxer.unbox(key: "total_count")
+        offset = try unboxer.unbox(key: "offset")
+    }
+}
+
 public struct GiphyImage: Unboxable {
     public var name: String
     public var url: URL
@@ -92,13 +118,5 @@ public struct GiphyImage: Unboxable {
         let height: Int = try unboxer.unbox(key: "height")
         
         size = CGSize(width: width, height: height)
-    }
-}
-
-public struct GiphyListResponse: UnboxableParser {
-    public var images: [GiphyImage]
-    
-    public init(unboxer: Unboxer) throws {
-        images = try unboxer.unbox(key: "data")
     }
 }

@@ -11,11 +11,34 @@ class GiphyClientTests: XCTestCase {
     }
     
     func testSearch() {
-        tester.test(call: GiphyClient.Search(query: "cat", pageSize: 10, page: 0)) { result in
+        var search = GiphyClient.Search(query: "cat", pageSize: 10, page: 1)
+        var totalCount: Int?
+        
+        tester.test(call: search) { result in
             self.tester.assert(result: result)
             
             result.onSuccess { value in
                 XCTAssertEqual(value.images.count, 10)
+                XCTAssertEqual(value.pagination.count, 10)
+                XCTAssertEqual(value.pagination.offset, 10)
+                XCTAssertFalse(value.pagination.isLastPage)
+                
+                totalCount = value.pagination.totalCount
+            }
+        }
+        
+        guard let total = totalCount else {
+            //first call failed
+            return
+        }
+        
+        search.page = Int(floor(Double(total) / 10.0))
+        
+        tester.test(call: search) { result in
+            self.tester.assert(result: result)
+            
+            result.onSuccess { value in
+                XCTAssertTrue(value.pagination.isLastPage)
             }
         }
     }
