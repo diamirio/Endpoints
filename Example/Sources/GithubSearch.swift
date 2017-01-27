@@ -55,6 +55,11 @@ class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubR
         return btn
     }()
     
+    lazy var loginButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(loginTapped))
+        return btn
+    }()
+    
     func sortTapped() {
         let sheet = UIAlertController(title: "Sort", message: nil, preferredStyle: .actionSheet)
         let sorts: [GithubClient.SearchRepositories.Sort] = [ .stars, .forks, .updated ]
@@ -71,8 +76,40 @@ class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubR
         present(sheet, animated: true, completion: nil)
     }
     
+    func loginTapped() {
+        if let _ = session.client.user {
+            session.client.user = nil //logout
+        } else {
+            let alert = UIAlertController(title: "Login", message: nil, preferredStyle: .alert)
+            alert.addTextField { txt in
+                txt.placeholder = "username"
+                txt.text = "iteracticman"
+            }
+            alert.addTextField { txt in
+                txt.placeholder = "password"
+                txt.isSecureTextEntry = true
+            }
+            alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+                guard let user = alert.textFields?.first?.text, let pwd = alert.textFields?.last?.text else {
+                    return
+                }
+                
+                self.session.client.user = BasicAuthorization(user: user, password: pwd)
+                self.reset()
+                self.updateView()
+            })
+            
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
     func updateView() {
         sortButton.title = "Sort: \(search.sort.rawValue)"
+        if let auth = session.client.user {
+            loginButton.title = "Logout \(auth.user)"
+        } else {
+            loginButton.title = "Login"
+        }
     }
     
     override func viewDidLoad() {
@@ -84,7 +121,7 @@ class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubR
     init() {
         super.init(client: GithubClient(), search: GithubRepoSearch())
         
-        toolbarItems = [ sortButton ]
+        toolbarItems = [ sortButton, UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) ,loginButton ]
     }
     
     required init?(coder aDecoder: NSCoder) {

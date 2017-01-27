@@ -13,8 +13,8 @@ extension URLRequest: URLRequestEncodable {
 }
 
 public struct BasicAuthorization {
-    let user: String
-    let password: String
+    public let user: String
+    public let password: String
     
     public init(user: String, password: String) {
         self.user = user

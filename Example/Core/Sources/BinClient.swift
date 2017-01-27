@@ -20,7 +20,7 @@ public class BinClient: AnyClient {
     }
 }
 
-// MARK: -
+// MARK: 
 // MARK: Requests
 
 protocol BinCall: Call {}

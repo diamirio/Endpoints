@@ -15,8 +15,9 @@ public class GithubClient: AnyClient {
     override public func encode<C : Call>(call: C) -> URLRequest {
         var request = super.encode(call: call)
         
+        request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         if let user = user {
-            request.setValue(user.key, forHTTPHeaderField: user.value)
+            request.setValue(user.value, forHTTPHeaderField: user.key)
         }
         return request
     }
