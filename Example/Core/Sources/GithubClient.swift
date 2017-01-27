@@ -40,6 +40,14 @@ public class GithubClient: AnyClient {
 // MARK: Requests
 
 public extension GithubClient {
+    public static func searchReposUntyped(query: String) -> AnyCall<RepositoriesResponse> {
+        return searchReposUntyped(url: Request(.get, "search/repositories", query: ["q": query]))
+    }
+    
+    public static func searchReposUntyped(url: URLRequestEncodable) -> AnyCall<RepositoriesResponse> {
+        return AnyCall<RepositoriesResponse>(url)
+    }
+    
     public struct SearchRepositories: Call {
         public enum Sort: String {
             case stars, forks, updated

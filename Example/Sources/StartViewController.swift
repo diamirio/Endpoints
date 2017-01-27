@@ -10,19 +10,21 @@ extension UITableViewCell {
 
 class StartViewController: UITableViewController {
     enum MenuItem: String {
-        case github, giphy
+        case githubUntyped, github, giphy
         
         var vc: UIViewController {
             switch self {
-            case .github:
-                return GithubRepoSearchViewController()
             case .giphy:
                 return SearchViewController(client: GiphyClient(), search: GiphySearch())
+            case .githubUntyped:
+                return SearchViewController(client: GithubClient(), search: GithubRepoSearchUntyped())
+            case .github:
+                return GithubRepoSearchViewController()
             }
         }
     }
     
-    lazy var items: [MenuItem] = [ .giphy, .github ]
+    lazy var items: [MenuItem] = [ .giphy, .githubUntyped, .github ]
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count

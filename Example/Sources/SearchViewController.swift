@@ -100,12 +100,12 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
     
     func loadNextPage() {
         guard activeTask == nil else {
-            UIAlertView(title: "busy", message: "loading items...", delegate: nil, cancelButtonTitle: "OK").show()
+            showAlert(title: "busy", message: "loading items...")
             return
         }
         
         guard let call = nextCall else {
-            UIAlertView(title: "done", message: "nothing more to load", delegate: nil, cancelButtonTitle: "OK").show()
+            showAlert(title: "done", message: "nothing more to load")
             return
         }
         
@@ -115,7 +115,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
             
             result.onError { error in
                 print("error: \(error)")
-                UIAlertView(title: "ouch", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK").show()
+                self.showAlert(title: "ouch", message: error.localizedDescription)
             }.onSuccess { value in
                 self.data.append(contentsOf: value.items)
                 self.tableView.reloadData()

@@ -15,6 +15,22 @@ extension RepositoriesResponse: ItemsResponse {
     }
 }
 
+class GithubRepoSearchUntyped: PagableSearch {
+    typealias CallType = AnyCall<RepositoriesResponse>
+    
+    func prepareCallForFirstPage(withQuery query: String) -> CallType {
+        return GithubClient.searchReposUntyped(query: query)
+    }
+    
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
+        guard let nextPage = response.nextPage else {
+            return nil
+        }
+        
+        return GithubClient.searchReposUntyped(url: nextPage)
+    }
+}
+
 class GithubRepoSearch: PagableSearch {
     typealias CallType = GithubClient.SearchRepositories
     

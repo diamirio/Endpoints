@@ -29,7 +29,6 @@
 		78106CC01E2928F00087F06C /* RequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78106CAF1E2928A80087F06C /* RequestTests.swift */; };
 		78106CC81E292DA50087F06C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78106CC51E292DA50087F06C /* Assets.xcassets */; };
 		78106CC91E292DA50087F06C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78106CC61E292DA50087F06C /* LaunchScreen.storyboard */; };
-		785ED47F1E378ADB007477F4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 785ED4771E378ADB007477F4 /* Info.plist */; };
 		785ED4C81E378E96007477F4 /* ExampleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 789A6B951E293AEC003DEBA9 /* ExampleCore.framework */; };
 		785ED4CE1E378EA3007477F4 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4841E378BE1007477F4 /* BinClientTests.swift */; };
 		785ED4CF1E378EA3007477F4 /* FakeClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785ED4851E378BE1007477F4 /* FakeClientTests.swift */; };
@@ -820,7 +819,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				785ED47F1E378ADB007477F4 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1334,6 +1332,7 @@
 				785ED4CD1E378E96007477F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		787AECB61DABDEC7001A49BB /* Build configuration list for PBXProject "Endpoints" */ = {
 			isa = XCConfigurationList;
