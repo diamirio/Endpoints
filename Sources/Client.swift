@@ -31,12 +31,7 @@ import Foundation
 /// let login = AnyCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
 /// ````
 ///
-/// `Call` adopts `URLRequestEncodable` and can thus be converted into 
-/// an `URLRequest`. By default, `Call` simply encodes the 
-/// `URLRequestEncodable` returned by `request`. You can override 
-/// `urlRequest` to further customize the encoded `URLRequest`.
-///
-/// `ResponseValidator` is also adopted, so you can override `validate` if
+/// Adopts `ResponseValidator`, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type. 
 /// `AnyClient` will use this method to validate the response of the calls
 /// request before using its `ResponseType` to parse it.
@@ -48,7 +43,9 @@ public protocol Call: ResponseValidator {
     var request: URLRequestEncodable { get }
 }
 
-public extension Call {    
+public extension Call {
+    
+    /// No-Op. Override to perform call-specific validation
     func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
 }
 
