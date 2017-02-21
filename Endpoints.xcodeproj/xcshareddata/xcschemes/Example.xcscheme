@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "787AECC41DABDEC8001A49BB"
-               BuildableName = "EndpointsTests.xctest"
-               BlueprintName = "EndpointsTests"
+               BuildableName = "EndpointsTests-iOS.xctest"
+               BlueprintName = "EndpointsTests-iOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -57,8 +57,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "787AECC41DABDEC8001A49BB"
-               BuildableName = "EndpointsTests.xctest"
-               BlueprintName = "EndpointsTests"
+               BuildableName = "EndpointsTests-iOS.xctest"
+               BlueprintName = "EndpointsTests-iOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </TestableReference>
