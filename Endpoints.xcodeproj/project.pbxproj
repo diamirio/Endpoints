@@ -232,6 +232,7 @@
 		78106CC51E292DA50087F06C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78106CC71E292DA50087F06C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78106CCC1E292E720087F06C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		782F2D771E5ADA4C002C95D6 /* ExamplePlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ExamplePlayground.playground; sourceTree = "<group>"; };
 		785ED4771E378ADB007477F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		785ED4821E378BB9007477F4 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		785ED4841E378BE1007477F4 /* BinClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
@@ -461,6 +462,7 @@
 		78A5F0F81DB1579B00108A45 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				782F2D771E5ADA4C002C95D6 /* ExamplePlayground.playground */,
 				78106C781E2926890087F06C /* Sources */,
 				785ED4711E378ADB007477F4 /* Core */,
 				78106CC41E292DA50087F06C /* Resources */,

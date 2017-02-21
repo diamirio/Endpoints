@@ -32,18 +32,18 @@ extension URLRequestEncodable {
 
 extension URLSessionTaskResult: CustomDebugStringConvertible {
     public var debugDescription: String {
-        guard let status = httpResponse?.statusCode else {
+        guard let resp = httpResponse else {
             let msg = error?.localizedDescription ?? "<no error>"
             return "no response. error: \(msg)"
         }
         
-        var s = "\(status)\n"
+        var s = "\(resp.statusCode)\n"
         
         httpResponse?.allHeaderFields.forEach {
             s.append("-\($0): \($1)\n")
         }
         
-        if let data = data, let string = String(data: data, encoding: .utf8) {
+        if let data = data, let string = String(data: data, encoding: resp.stringEncoding) {
             if string.isEmpty {
                 s.append("<empty>")
             } else {
