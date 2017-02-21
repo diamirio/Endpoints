@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-               BuildableName = "Endpoints.framework"
-               BlueprintName = "Endpoints-tvOS"
+               BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
+               BuildableName = "Endpoints-macOS.framework"
+               BlueprintName = "Endpoints-macOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
+               BlueprintIdentifier = "788C03E71E5C9AB9003ABC67"
+               BuildableName = "EndpointsTests-macOS.xctest"
+               BlueprintName = "EndpointsTests-macOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,9 +46,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
+               BlueprintIdentifier = "788C03E71E5C9AB9003ABC67"
+               BuildableName = "EndpointsTests-macOS.xctest"
+               BlueprintName = "EndpointsTests-macOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -56,9 +56,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
+            BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
+            BuildableName = "Endpoints-macOS.framework"
+            BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +78,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
+            BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
+            BuildableName = "Endpoints-macOS.framework"
+            BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +96,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
+            BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
+            BuildableName = "Endpoints-macOS.framework"
+            BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
