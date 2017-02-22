@@ -20,20 +20,6 @@
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03C51E5C988F003ABC67"
-               BuildableName = "EndpointsTests-watchOS.xctest"
-               BlueprintName = "EndpointsTests-watchOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03C51E5C988F003ABC67"
-               BuildableName = "EndpointsTests-watchOS.xctest"
-               BlueprintName = "EndpointsTests-watchOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
