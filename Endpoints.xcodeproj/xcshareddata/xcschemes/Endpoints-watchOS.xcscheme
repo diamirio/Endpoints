@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "788C03B41E5C9840003ABC67"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-watchOS"
-            ReferencedContainer = "container:Endpoints.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
