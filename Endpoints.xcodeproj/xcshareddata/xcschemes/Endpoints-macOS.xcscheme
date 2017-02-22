@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
-               BuildableName = "Endpoints-macOS.framework"
+               BuildableName = "Endpoints.framework"
                BlueprintName = "Endpoints-macOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
-            BuildableName = "Endpoints-macOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
@@ -79,7 +79,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
-            BuildableName = "Endpoints-macOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
@@ -97,7 +97,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "788C03D61E5C9AAA003ABC67"
-            BuildableName = "Endpoints-macOS.framework"
+            BuildableName = "Endpoints.framework"
             BlueprintName = "Endpoints-macOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
