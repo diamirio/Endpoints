@@ -33,6 +33,104 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		78A052661E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6AAC8F7619F03C2900E7A677;
+			remoteInfo = "ObjectMapper-iOS";
+		};
+		78A052681E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD1602FF1AC023D5000CD69A;
+			remoteInfo = "ObjectMapper-Mac";
+		};
+		78A0526A1E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A2AD03D1B2C78540097E150;
+			remoteInfo = "ObjectMapper-watchOS";
+		};
+		78A0526C1E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A05B7A61BE274BE00F19B53;
+			remoteInfo = "ObjectMapper-tvOS";
+		};
+		78A0526E1E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6AAC8F8119F03C2900E7A677;
+			remoteInfo = "ObjectMapper-iOSTests";
+		};
+		78A052701E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD1603091AC023D6000CD69A;
+			remoteInfo = "ObjectMapper-MacTests";
+		};
+		78A052721E5E2A27005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A05B7AF1BE274BE00F19B53;
+			remoteInfo = "ObjectMapper-tvOSTests";
+		};
+		78A0528D1E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52D6D97C1BEFF229002C0205;
+			remoteInfo = "Unbox-iOS";
+		};
+		78A0528F1E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52D6DA0F1BF000BD002C0205;
+			remoteInfo = "Unbox-OSX";
+		};
+		78A052911E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52D6D9E21BEFFF6E002C0205;
+			remoteInfo = "Unbox-watchOS";
+		};
+		78A052931E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52D6D9F01BEFFFBE002C0205;
+			remoteInfo = "Unbox-tvOS";
+		};
+		78A052951E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 52D6D9861BEFF229002C0205;
+			remoteInfo = "Unbox-iOS Tests";
+		};
+		78A052971E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD75027A1C68FCFC006590AF;
+			remoteInfo = "Unbox-OSX Tests";
+		};
+		78A052991E5E2A4A005803BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD75028D1C690C7A006590AF;
+			remoteInfo = "Unbox-tvOS Tests";
+		};
 		78E09BFB1E5DC030003DB909 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78E09AC31E5DBED9003DB909 /* Project object */;
@@ -103,118 +201,6 @@
 			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
 			remoteInfo = "Endpoints-iOS";
 		};
-		78E09CA41E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6AAC8F7619F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOS";
-		};
-		78E09CA61E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD1602FF1AC023D5000CD69A;
-			remoteInfo = "ObjectMapper-Mac";
-		};
-		78E09CA81E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A2AD03D1B2C78540097E150;
-			remoteInfo = "ObjectMapper-watchOS";
-		};
-		78E09CAA1E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A05B7A61BE274BE00F19B53;
-			remoteInfo = "ObjectMapper-tvOS";
-		};
-		78E09CAC1E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6AAC8F8119F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOSTests";
-		};
-		78E09CAE1E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CD1603091AC023D6000CD69A;
-			remoteInfo = "ObjectMapper-MacTests";
-		};
-		78E09CB01E5DC227003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6A05B7AF1BE274BE00F19B53;
-			remoteInfo = "ObjectMapper-tvOSTests";
-		};
-		78E09CB21E5DC22B003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6AAC8F7519F03C2900E7A677;
-			remoteInfo = "ObjectMapper-iOS";
-		};
-		78E09CBE1E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D97C1BEFF229002C0205;
-			remoteInfo = "Unbox-iOS";
-		};
-		78E09CC01E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6DA0F1BF000BD002C0205;
-			remoteInfo = "Unbox-OSX";
-		};
-		78E09CC21E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9E21BEFFF6E002C0205;
-			remoteInfo = "Unbox-watchOS";
-		};
-		78E09CC41E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9F01BEFFFBE002C0205;
-			remoteInfo = "Unbox-tvOS";
-		};
-		78E09CC61E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 52D6D9861BEFF229002C0205;
-			remoteInfo = "Unbox-iOS Tests";
-		};
-		78E09CC81E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DD75027A1C68FCFC006590AF;
-			remoteInfo = "Unbox-OSX Tests";
-		};
-		78E09CCA1E5DC232003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DD75028D1C690C7A006590AF;
-			remoteInfo = "Unbox-tvOS Tests";
-		};
-		78E09CCC1E5DC236003DB909 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 52D6D97B1BEFF229002C0205;
-			remoteInfo = "Unbox-iOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -232,6 +218,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		78A052831E5E2A4A005803BF /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = "Packages/Unbox-2.3.1/Unbox.xcodeproj"; sourceTree = "<group>"; };
 		78E09ACB1E5DBED9003DB909 /* EndpointsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EndpointsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E09B011E5DBFC4003DB909 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78E09B021E5DBFC4003DB909 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -260,8 +247,7 @@
 		78E09BF61E5DC02F003DB909 /* ExampleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExampleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E09C3C1E5DC09D003DB909 /* ExampleCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E09C751E5DC20E003DB909 /* Endpoints.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Endpoints.xcodeproj; path = ../../Endpoints.xcodeproj; sourceTree = "<group>"; };
-		78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = "Packages/ObjectMapper-2.2.2/ObjectMapper.xcodeproj"; sourceTree = "<group>"; };
-		78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = "Packages/Unbox-2.3.0/Unbox.xcodeproj"; sourceTree = "<group>"; };
+		78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ObjectMapper.xcodeproj; path = "Packages/ObjectMapper-2.2.3/ObjectMapper.xcodeproj"; sourceTree = "<group>"; };
 		78E09CE81E5DC436003DB909 /* ClientTester.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ClientTester.swift; path = ../../../Tests/ClientTester.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -292,6 +278,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78A0525D1E5E2A27005803BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78A052671E5E2A27005803BF /* ObjectMapper.framework */,
+				78A052691E5E2A27005803BF /* ObjectMapper.framework */,
+				78A0526B1E5E2A27005803BF /* ObjectMapper.framework */,
+				78A0526D1E5E2A27005803BF /* ObjectMapper.framework */,
+				78A0526F1E5E2A27005803BF /* ObjectMapper-iOSTests.xctest */,
+				78A052711E5E2A27005803BF /* ObjectMapper-MacTests.xctest */,
+				78A052731E5E2A27005803BF /* ObjectMapper-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		78A052841E5E2A4A005803BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78A0528E1E5E2A4A005803BF /* Unbox.framework */,
+				78A052901E5E2A4A005803BF /* Unbox.framework */,
+				78A052921E5E2A4A005803BF /* Unbox.framework */,
+				78A052941E5E2A4A005803BF /* Unbox.framework */,
+				78A052961E5E2A4A005803BF /* Unbox-iOS Tests.xctest */,
+				78A052981E5E2A4A005803BF /* Unbox-OSX Tests.xctest */,
+				78A0529A1E5E2A4A005803BF /* Unbox-tvOS Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78E09AC21E5DBED9003DB909 = {
 			isa = PBXGroup;
 			children = (
@@ -322,7 +336,7 @@
 				78E09B5A1E5DBFC4003DB909 /* Tests */,
 				78E09B011E5DBFC4003DB909 /* Info.plist */,
 				78E09B021E5DBFC4003DB909 /* Package.swift */,
-				78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */,
+				78A052831E5E2A4A005803BF /* Unbox.xcodeproj */,
 				78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */,
 				78E09C751E5DC20E003DB909 /* Endpoints.xcodeproj */,
 			);
@@ -391,34 +405,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		78E09C9B1E5DC227003DB909 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				78E09CA51E5DC227003DB909 /* ObjectMapper.framework */,
-				78E09CA71E5DC227003DB909 /* ObjectMapper.framework */,
-				78E09CA91E5DC227003DB909 /* ObjectMapper.framework */,
-				78E09CAB1E5DC227003DB909 /* ObjectMapper.framework */,
-				78E09CAD1E5DC227003DB909 /* ObjectMapper-iOSTests.xctest */,
-				78E09CAF1E5DC227003DB909 /* ObjectMapper-MacTests.xctest */,
-				78E09CB11E5DC227003DB909 /* ObjectMapper-tvOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		78E09CB51E5DC232003DB909 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				78E09CBF1E5DC232003DB909 /* Unbox.framework */,
-				78E09CC11E5DC232003DB909 /* Unbox.framework */,
-				78E09CC31E5DC232003DB909 /* Unbox.framework */,
-				78E09CC51E5DC232003DB909 /* Unbox.framework */,
-				78E09CC71E5DC232003DB909 /* Unbox-iOS Tests.xctest */,
-				78E09CC91E5DC232003DB909 /* Unbox-OSX Tests.xctest */,
-				78E09CCB1E5DC232003DB909 /* Unbox-tvOS Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -463,8 +449,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				78E09CCD1E5DC236003DB909 /* PBXTargetDependency */,
-				78E09CB31E5DC22B003DB909 /* PBXTargetDependency */,
 				78E09C991E5DC21B003DB909 /* PBXTargetDependency */,
 			);
 			name = ExampleCore;
@@ -535,12 +519,12 @@
 					ProjectRef = 78E09C751E5DC20E003DB909 /* Endpoints.xcodeproj */;
 				},
 				{
-					ProductGroup = 78E09C9B1E5DC227003DB909 /* Products */;
+					ProductGroup = 78A0525D1E5E2A27005803BF /* Products */;
 					ProjectRef = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
 				},
 				{
-					ProductGroup = 78E09CB51E5DC232003DB909 /* Products */;
-					ProjectRef = 78E09CB41E5DC232003DB909 /* Unbox.xcodeproj */;
+					ProductGroup = 78A052841E5E2A4A005803BF /* Products */;
+					ProjectRef = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -553,6 +537,104 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		78A052671E5E2A27005803BF /* ObjectMapper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectMapper.framework;
+			remoteRef = 78A052661E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052691E5E2A27005803BF /* ObjectMapper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectMapper.framework;
+			remoteRef = 78A052681E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A0526B1E5E2A27005803BF /* ObjectMapper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectMapper.framework;
+			remoteRef = 78A0526A1E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A0526D1E5E2A27005803BF /* ObjectMapper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ObjectMapper.framework;
+			remoteRef = 78A0526C1E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A0526F1E5E2A27005803BF /* ObjectMapper-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ObjectMapper-iOSTests.xctest";
+			remoteRef = 78A0526E1E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052711E5E2A27005803BF /* ObjectMapper-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ObjectMapper-MacTests.xctest";
+			remoteRef = 78A052701E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052731E5E2A27005803BF /* ObjectMapper-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ObjectMapper-tvOSTests.xctest";
+			remoteRef = 78A052721E5E2A27005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A0528E1E5E2A4A005803BF /* Unbox.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Unbox.framework;
+			remoteRef = 78A0528D1E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052901E5E2A4A005803BF /* Unbox.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Unbox.framework;
+			remoteRef = 78A0528F1E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052921E5E2A4A005803BF /* Unbox.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Unbox.framework;
+			remoteRef = 78A052911E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052941E5E2A4A005803BF /* Unbox.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Unbox.framework;
+			remoteRef = 78A052931E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052961E5E2A4A005803BF /* Unbox-iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Unbox-iOS Tests.xctest";
+			remoteRef = 78A052951E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A052981E5E2A4A005803BF /* Unbox-OSX Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Unbox-OSX Tests.xctest";
+			remoteRef = 78A052971E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78A0529A1E5E2A4A005803BF /* Unbox-tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Unbox-tvOS Tests.xctest";
+			remoteRef = 78A052991E5E2A4A005803BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78E09C851E5DC20E003DB909 /* Endpoints.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -600,104 +682,6 @@
 			fileType = wrapper.cfbundle;
 			path = "EndpointsTests-macOS.xctest";
 			remoteRef = 78E09C901E5DC20E003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CA51E5DC227003DB909 /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78E09CA41E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CA71E5DC227003DB909 /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78E09CA61E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CA91E5DC227003DB909 /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78E09CA81E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CAB1E5DC227003DB909 /* ObjectMapper.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ObjectMapper.framework;
-			remoteRef = 78E09CAA1E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CAD1E5DC227003DB909 /* ObjectMapper-iOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-iOSTests.xctest";
-			remoteRef = 78E09CAC1E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CAF1E5DC227003DB909 /* ObjectMapper-MacTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-MacTests.xctest";
-			remoteRef = 78E09CAE1E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CB11E5DC227003DB909 /* ObjectMapper-tvOSTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-tvOSTests.xctest";
-			remoteRef = 78E09CB01E5DC227003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CBF1E5DC232003DB909 /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78E09CBE1E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CC11E5DC232003DB909 /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78E09CC01E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CC31E5DC232003DB909 /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78E09CC21E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CC51E5DC232003DB909 /* Unbox.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Unbox.framework;
-			remoteRef = 78E09CC41E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CC71E5DC232003DB909 /* Unbox-iOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-iOS Tests.xctest";
-			remoteRef = 78E09CC61E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CC91E5DC232003DB909 /* Unbox-OSX Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-OSX Tests.xctest";
-			remoteRef = 78E09CC81E5DC232003DB909 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78E09CCB1E5DC232003DB909 /* Unbox-tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Unbox-tvOS Tests.xctest";
-			remoteRef = 78E09CCA1E5DC232003DB909 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -785,16 +769,6 @@
 			isa = PBXTargetDependency;
 			name = "Endpoints-iOS";
 			targetProxy = 78E09C981E5DC21B003DB909 /* PBXContainerItemProxy */;
-		};
-		78E09CB31E5DC22B003DB909 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ObjectMapper-iOS";
-			targetProxy = 78E09CB21E5DC22B003DB909 /* PBXContainerItemProxy */;
-		};
-		78E09CCD1E5DC236003DB909 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Unbox-iOS";
-			targetProxy = 78E09CCC1E5DC236003DB909 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
