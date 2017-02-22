@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage = "https://www.tailored-apps.com"
   s.author = { "Peter Weishapl" => "pw@tailored-apps.com" }
   s.source = {
-      :git => 'git@gitlab.tailored-apps.com:ios/endpoints.git',
+      :git => "https://github.com/tailoredmedia/Endpoints.git",
       :tag => s.version
   }
 
