@@ -14,24 +14,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-               BuildableName = "Endpoints.framework"
-               BlueprintName = "Endpoints-tvOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
+               BlueprintIdentifier = "78E09ACA1E5DBED9003DB909"
+               BuildableName = "EndpointsExample.app"
+               BlueprintName = "EndpointsExample"
+               ReferencedContainer = "container:EndpointsExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
+               BlueprintIdentifier = "78E09C3B1E5DC09D003DB909"
+               BuildableName = "ExampleCoreTests.xctest"
+               BlueprintName = "ExampleCoreTests"
+               ReferencedContainer = "container:EndpointsExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
+               BlueprintIdentifier = "78E09C3B1E5DC09D003DB909"
+               BuildableName = "ExampleCoreTests.xctest"
+               BlueprintName = "ExampleCoreTests"
+               ReferencedContainer = "container:EndpointsExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
-            ReferencedContainer = "container:Endpoints.xcodeproj">
+            BlueprintIdentifier = "78E09ACA1E5DBED9003DB909"
+            BuildableName = "EndpointsExample.app"
+            BlueprintName = "EndpointsExample"
+            ReferencedContainer = "container:EndpointsExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -75,15 +75,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
-            ReferencedContainer = "container:Endpoints.xcodeproj">
+            BlueprintIdentifier = "78E09ACA1E5DBED9003DB909"
+            BuildableName = "EndpointsExample.app"
+            BlueprintName = "EndpointsExample"
+            ReferencedContainer = "container:EndpointsExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -93,15 +94,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
-            ReferencedContainer = "container:Endpoints.xcodeproj">
+            BlueprintIdentifier = "78E09ACA1E5DBED9003DB909"
+            BuildableName = "EndpointsExample.app"
+            BlueprintName = "EndpointsExample"
+            ReferencedContainer = "container:EndpointsExample.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

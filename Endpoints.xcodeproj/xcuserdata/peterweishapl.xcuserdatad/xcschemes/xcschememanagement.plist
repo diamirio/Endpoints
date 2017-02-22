@@ -9,35 +9,20 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Endpoints-macOS.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>Endpoints-tvOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>EndpointsMapper-iOS.xcscheme_^#shared#^_</key>
+		<key>Endpoints-watchOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
-		</dict>
-		<key>EndpointsMapper-tvOS.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
-		<key>EndpointsUnbox-iOS.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>EndpointsUnbox-tvOS.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-		<key>Example.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -58,6 +43,11 @@
 			<true/>
 		</dict>
 		<key>7833CC7A1DC9FC0A00132034</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>785ED4C21E378E95007477F4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -88,6 +78,41 @@
 			<true/>
 		</dict>
 		<key>787AECEE1DABE56A001A49BB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>788C03A51E5C96F9003ABC67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>788C03B41E5C9840003ABC67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>788C03C51E5C988F003ABC67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>788C03D61E5C9AAA003ABC67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>788C03E71E5C9AB9003ABC67</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>789A6B941E293AEB003DEBA9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>789A6B9C1E293AEC003DEBA9</key>
 		<dict>
 			<key>primary</key>
 			<true/>

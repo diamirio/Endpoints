@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
+               BlueprintIdentifier = "788C03B41E5C9840003ABC67"
                BuildableName = "Endpoints.framework"
-               BlueprintName = "Endpoints-tvOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
+               BlueprintName = "Endpoints-watchOS"
                ReferencedContainer = "container:Endpoints.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "788C03A51E5C96F9003ABC67"
-               BuildableName = "EndpointsTests-tvOS.xctest"
-               BlueprintName = "EndpointsTests-tvOS"
-               ReferencedContainer = "container:Endpoints.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
-            BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
-            ReferencedContainer = "container:Endpoints.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -78,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
+            BlueprintIdentifier = "788C03B41E5C9840003ABC67"
             BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
+            BlueprintName = "Endpoints-watchOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "78B783491DD9FFB0009F0B7D"
+            BlueprintIdentifier = "788C03B41E5C9840003ABC67"
             BuildableName = "Endpoints.framework"
-            BlueprintName = "Endpoints-tvOS"
+            BlueprintName = "Endpoints-watchOS"
             ReferencedContainer = "container:Endpoints.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
