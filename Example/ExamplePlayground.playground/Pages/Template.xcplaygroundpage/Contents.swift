@@ -16,3 +16,5 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 //debug
 
 //session.start
+
+PlaygroundPage.current.finishExecution()

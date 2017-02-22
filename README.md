@@ -1,14 +1,14 @@
-# Enpoints
+# Endpoints
 
 ## Installation
 
 **CocoaPods:**
 
-TBD
+pod "Endpoints", :git => "https://github.com/tailoredmedia/Endpoints.git", :branch => "master"
 
 **Carthage:**
 
-TBD
+git "https://github.com/tailoredmedia/Endpoints.git" "master"
 
 **Swift Package Manager:**
 
