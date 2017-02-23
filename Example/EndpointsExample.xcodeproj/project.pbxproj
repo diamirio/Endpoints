@@ -235,7 +235,6 @@
 		78E09B611E5DBFC4003DB909 /* UnboxTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnboxTests.swift; sourceTree = "<group>"; };
 		78E09B621E5DBFC4003DB909 /* ExamplePlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = ExamplePlayground.playground; sourceTree = "<group>"; };
 		78E09B631E5DBFC4003DB909 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		78E09B641E5DBFC4003DB909 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		78E09B661E5DBFC4003DB909 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78E09B681E5DBFC4003DB909 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78E09B6A1E5DBFC4003DB909 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -314,7 +313,6 @@
 				78E09B651E5DBFC4003DB909 /* Resources */,
 				78E09ACC1E5DBED9003DB909 /* Products */,
 				78E09B631E5DBFC4003DB909 /* Info.plist */,
-				78E09B641E5DBFC4003DB909 /* Package.swift */,
 			);
 			sourceTree = "<group>";
 		};
