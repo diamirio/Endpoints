@@ -4,15 +4,21 @@
 
 **CocoaPods:**
 
-pod "Endpoints", :git => "https://github.com/tailoredmedia/Endpoints.git", :branch => "master"
+```
+pod "Endpoints", "~> 0.3"
+```
 
 **Carthage:**
 
-git "https://github.com/tailoredmedia/Endpoints.git" "master"
+```
+github "tailoredmedia/Endpoints.git" ~> 0.3
+```
 
 **Swift Package Manager:**
 
-TBD
+```
+.Package(url: "https://github.com/tailoredmedia/Endpoints.git", majorVersion: 0, minor: 3),
+```
 
 ## Platform support
 

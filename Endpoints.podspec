@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "Endpoints"
-  s.version = "1.0"
+  s.version = "0.3"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary = "Endpoints"
   s.homepage = "https://www.tailored-apps.com"
