@@ -51,7 +51,7 @@ class GiphyClientTests: XCTestCase {
             
             result.onError { error in
                 print("error: \(error.localizedDescription)")
-                XCTAssertEqual(error.localizedDescription, "unauthorized")
+                XCTAssertEqual(error.localizedDescription, "invalid_api_key")
             }
         }
     }

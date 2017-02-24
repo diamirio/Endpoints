@@ -16,13 +16,32 @@ public class GiphyClient: Client {
     public func encode<C: Call>(call: C) -> URLRequest {
         var req = anyClient.encode(call: call)
         
+        // Append the API key to every request
         req.append(query: ["api_key": apiKey])
         
         return req
     }
     
     public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
-        return try anyClient.parse(sessionTaskResult: result, for: call)
+        do {
+            // use `AnyClient` to parse the response
+            // if this fails, try to read error details from response body
+            return try anyClient.parse(sessionTaskResult: result, for: call)
+        } catch {
+            // see if the backend sent detailed error information
+            guard
+                let response = result.httpResponse,
+                let data = result.data,
+                let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
+                let meta = errorDict?["meta"] as? [String: Any],
+                let errorCode = meta["error_code"] as? String else {
+                // no error info from backend -> rethrow default error
+                throw error
+            }
+            
+            //propagate error that contains errorCode as reason from backend
+            throw StatusCodeError.unacceptable(code: response.statusCode, reason: errorCode)
+        }
     }
 }
 
