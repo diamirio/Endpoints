@@ -2,7 +2,7 @@
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
-It requires Swift 3, makes heavy use of generics (and generalised existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
+It requires Swift 3, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
 
 ## Usage
 
@@ -50,7 +50,7 @@ session.start(call: call) { result in
 }
 ```
 
-### Type-Safe Calls
+### Dedicated Calls
 
 `AnyCall` is the default implementation of the `Call` protocol, which you can use as-is. But if you want to make your networking layer really type-safe you'll want to create a dedicated `Call` type for each operation of your Web-API:
 
@@ -94,11 +94,11 @@ class GiphyClient: Client {
     
     public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
         do {
-            // use `AnyClient` to parse the response
-            // if this fails, try to read error details from response body
+            // Use `AnyClient` to parse the response
+            // If this fails, try to read error details from response body
             return try anyClient.parse(sessionTaskResult: result, for: call)
         } catch {
-            // see if the backend sent detailed error information
+            // See if the backend sent detailed error information
             guard
                 let response = result.httpResponse,
                 let data = result.data,
@@ -109,20 +109,123 @@ class GiphyClient: Client {
                 throw error
             }
             
-            //propagate error that contains errorCode as reason from backend
+            // Propagate error that contains errorCode as reason from backend
             throw StatusCodeError.unacceptable(code: response.statusCode, reason: errorCode)
         }
     }
 }
 ```
 
-### Custom Response Types
+### Dedicated Response Types
 
-TBD
+You usually want your networking layer to provide a dedicated response type for every supported call. In our example this could look  like this:
+
+```swift
+struct RandomImage {
+		var url: URL
+		...
+}
+
+struct GetRandomImage: Call {
+		typealias ResponseType = RandomImage
+		...
+}
+```
+
+In order for this to work, `RandomImage` must adopt the `ResponseParser` protocol:
+
+```swift
+extension RandomImage: ResponseParser {
+		static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
+        let dict = try [String: Any].parse(data: data, encoding: encoding)
+        
+        guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
+            throw throw ParsingError.invalidData(description: "invalid response. url not found")
+        }
+        
+        return RandomImage(url: URL(string: url)!)
+    }
+}
+```
+
+This can of course be made a lot easier by using a JSON parsing library (like [Unbox](https://github.com/JohnSundell/Unbox)) and  a few lines of integration code:
+
+```swift
+protocol UnboxableParser: Unboxable, ResponseParser {}
+
+extension UnboxableParser {
+    static func parse(data: Data, encoding: String.Encoding) throws -> Self {
+        return try unbox(data: data)
+    }
+}
+```
+
+Now we can write:
+
+```swift
+struct RandomImage: UnboxableParser {
+    var url: URL
+    
+    init(unboxer: Unboxer) throws {
+        url = try unboxer.unbox(keyPath: "data.image_url")
+    }
+}
+```
+
+### Type-Safety
+
+With all the parts in place, users of your networking layer can now perform type-safe requests and get a type-safe response with a few lines of code:
+
+```swift
+let client = GiphyClient()
+let call = GetRandomImage(tag: "cat")
+let session = Session(with: client)
+
+session.start(call: call) { result in
+    result.onSuccess { value in
+        print("image url: \(value.url)")
+    }.onError { error in
+        print("error: \(error)")
+    }
+}
+```
 
 ### Convenience
 
-TBD
+There are multiple ways to make performing a call more convenient. You could write a dedicated `GiphyCall` that creates the correct `Client` and `Session` for your users:
+
+```swift
+protocol GiphyCall: Call {}
+
+extension GiphyCall {
+    func start(completion: @escaping (Result<ResponseType.OutputType>)->()) {
+        let client = GiphyClient()
+        let session = Session(with: client)
+        
+        session.start(call: self, completion: completion)
+    }
+}
+```
+
+When `GiphyCall` is adopted by `GetRandomImage` instead of `Call`, performing a request is much simpler:
+
+```swift
+GetRandomImage(tag: "cat").start { result in ... }
+```
+
+To make it easer to find supported calls, you could namespace your calls using an extension of your `Client`:
+
+```swift
+extension GiphyClient {
+    struct GetRandomImage: GiphyCall { ... }
+}
+```
+
+Xcode can now help developers find the right `Call` instance:
+
+```swift
+GiphyClient.GetRandomImage(tag: "cat").start { result in ... }
+```
 
 ## Installation
 

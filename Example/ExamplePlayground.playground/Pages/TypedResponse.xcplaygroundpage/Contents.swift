@@ -12,7 +12,7 @@ struct RandomImage: ResponseParser {
         let dict = try [String: Any].parse(data: data, encoding: encoding)
         
         guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-            throw ParsingError.missingData
+            throw ParsingError.invalidData(description: "invalid response. url not found")
         }
         
         return RandomImage(url: URL(string: url)!)
