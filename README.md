@@ -122,13 +122,13 @@ You usually want your networking layer to provide a dedicated response type for 
 
 ```swift
 struct RandomImage {
-		var url: URL
-		...
+    var url: URL
+    ...
 }
 
 struct GetRandomImage: Call {
-		typealias ResponseType = RandomImage
-		...
+    typealias ResponseType = RandomImage
+    ...
 }
 ```
 
@@ -136,7 +136,7 @@ In order for this to work, `RandomImage` must adopt the `ResponseParser` protoco
 
 ```swift
 extension RandomImage: ResponseParser {
-		static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
+    static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
         let dict = try [String: Any].parse(data: data, encoding: encoding)
         
         guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
