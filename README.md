@@ -2,7 +2,7 @@
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
-It requires Swift 3, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
+It requires Swift 3, makes heavy use of generics (and generalised existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
 
 ## Usage
 
@@ -32,6 +32,54 @@ session.start(call: call) { result in
     }
 }
 ```
+
+### Response Parsing
+
+A call is supposed to know exactly what response to expect from its request. It delegates the parsing of the response to a `ResponseParser`.
+
+Some built-in types already adopt the `ResponseParser` protocol (using protocol extensions), so you can for example turn any response into a JSON array or dictionary:
+
+```swift
+// Replace `Data` with any implementation `ResponseParser`
+let call = AnyCall<[String: Any]>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
+...
+session.start(call: call) { result in
+    result.onSuccess { value in
+        //value is now a JSON dictionary 🎉
+    }
+}
+```
+
+### Type-Safe Calls
+
+`AnyCall` is the default implementation of the `Call` protocol, which you can use as-is. But if you want to make your networking layer really type-safe you'll want to create a dedicated `Call` type for each operation of your Web-API:
+
+```swift
+struct GetRandomImage: Call {
+		typealias ResponseType = [String: Any]
+    
+    var tag: String
+    
+    var request: URLRequestEncodable {
+        return Request(.get, "gifs/random", query: [ "tag": tag, "api_key": "dc6zaTOxFJmzC" ])
+    }
+}
+
+// `GetRandomImage` is much safer and easier to use than `AnyCall`
+let call = GetRandomImage(tag: "cat")
+```
+
+### Dedicated Clients
+
+TBD
+
+### Custom Response Types
+
+TBD
+
+### Convenience
+
+TBD
 
 ## Installation
 

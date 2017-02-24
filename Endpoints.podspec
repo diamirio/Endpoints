@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version = "0.3.0"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary = "Endpoints"
-  s.homepage = "https://www.tailored-apps.com"
+  s.homepage = "https://github.com/tailoredmedia/Endpoints"
   s.author = { "Peter Weishapl" => "pw@tailored-apps.com" }
   s.source = {
       :git => "https://github.com/tailoredmedia/Endpoints.git",
