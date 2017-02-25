@@ -56,7 +56,7 @@ session.start(call: call) { result in
 
 ```swift
 struct GetRandomImage: Call {
-		typealias ResponseType = [String: Any]
+    typealias ResponseType = [String: Any]
     
     var tag: String
     
