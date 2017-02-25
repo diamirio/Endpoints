@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/tailoredmedia/Endpoints.svg?branch=master)](https://travis-ci.org/tailoredmedia/Endpoints)
+	[![codecov](https://codecov.io/gh/tailoredmedia/Endpoints/branch/master/graph/badge.svg)](https://codecov.io/gh/tailoredmedia/Endpoints)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Endpoints.svg)](https://cocoapods.org/pods/Endpoints)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
 
 # Endpoints
