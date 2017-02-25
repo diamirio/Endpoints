@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/tailoredmedia/Endpoints.svg?branch=master)](https://travis-ci.org/tailoredmedia/Endpoints)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Endpoints.svg)](https://cocoapods.org/pods/Endpoints)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
+
 # Endpoints
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
