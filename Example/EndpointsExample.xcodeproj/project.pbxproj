@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		78376D271E64156500C74C26 /* PromiseSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78376D261E64156500C74C26 /* PromiseSession.swift */; };
+		78376D671E64192400C74C26 /* PromiseKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78376D661E64192400C74C26 /* PromiseKitTests.swift */; };
 		78E09BC01E5DBFC4003DB909 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78E09B661E5DBFC4003DB909 /* Assets.xcassets */; };
 		78E09BC11E5DBFC4003DB909 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78E09B671E5DBFC4003DB909 /* LaunchScreen.storyboard */; };
 		78E09BC21E5DBFC4003DB909 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B6A1E5DBFC4003DB909 /* AppDelegate.swift */; };
@@ -32,6 +34,62 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		78376D4E1E6415AF00C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 52D6D97B1BEFF229002C0205;
+			remoteInfo = "Unbox-iOS";
+		};
+		78376D501E6415B100C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AAC8F7519F03C2900E7A677;
+			remoteInfo = "ObjectMapper-iOS";
+		};
+		78376D5A1E6415C200C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 63B0AC571D595E1B00FA21D9;
+			remoteInfo = PromiseKit;
+		};
+		78376D5C1E6415C200C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 631751A81D59766500A9DDDC;
+			remoteInfo = "PMKA+Tests";
+		};
+		78376D5E1E6415C200C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6314113C1D59795700E24B9E;
+			remoteInfo = PMKBridgeTests;
+		};
+		78376D601E6415C200C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 630019221D596292003B4E30;
+			remoteInfo = PMKCoreTests;
+		};
+		78376D621E6415C200C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6314112F1D5978D700E24B9E;
+			remoteInfo = PMKDispatchTests;
+		};
+		78376D641E6415C900C74C26 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 63B0AC561D595E1B00FA21D9;
+			remoteInfo = PromiseKit;
+		};
 		78A052661E5E2A27005803BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
@@ -217,6 +275,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		78376D261E64156500C74C26 /* PromiseSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseSession.swift; sourceTree = "<group>"; };
+		78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PromiseKit.xcodeproj; path = "Packages/PromiseKit-4.1.7/PromiseKit.xcodeproj"; sourceTree = "<group>"; };
+		78376D661E64192400C74C26 /* PromiseKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseKitTests.swift; sourceTree = "<group>"; };
 		78A052831E5E2A4A005803BF /* Unbox.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Unbox.xcodeproj; path = "Packages/Unbox-2.3.1/Unbox.xcodeproj"; sourceTree = "<group>"; };
 		78E09ACB1E5DBED9003DB909 /* EndpointsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EndpointsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E09B011E5DBFC4003DB909 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -276,6 +337,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78376D531E6415C200C74C26 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78376D5B1E6415C200C74C26 /* PromiseKit.framework */,
+				78376D5D1E6415C200C74C26 /* PMKA+Tests.xctest */,
+				78376D5F1E6415C200C74C26 /* PMKBridgeTests.xctest */,
+				78376D611E6415C200C74C26 /* PMKCoreTests.xctest */,
+				78376D631E6415C200C74C26 /* PMKDispatchTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78A0525D1E5E2A27005803BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +406,7 @@
 				78E09B5A1E5DBFC4003DB909 /* Tests */,
 				78E09B011E5DBFC4003DB909 /* Info.plist */,
 				78E09B021E5DBFC4003DB909 /* Package.swift */,
+				78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */,
 				78A052831E5E2A4A005803BF /* Unbox.xcodeproj */,
 				78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */,
 				78E09C751E5DC20E003DB909 /* Endpoints.xcodeproj */,
@@ -348,6 +422,7 @@
 				78E09B571E5DBFC4003DB909 /* GithubClient.swift */,
 				78E09B581E5DBFC4003DB909 /* ObjectMapper+Endpoints.swift */,
 				78E09B591E5DBFC4003DB909 /* Unbox+Endpoints.swift */,
+				78376D261E64156500C74C26 /* PromiseSession.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -362,6 +437,7 @@
 				78E09B5E1E5DBFC4003DB909 /* GithubClientTests.swift */,
 				78E09B601E5DBFC4003DB909 /* ObjectMapperTests.swift */,
 				78E09B611E5DBFC4003DB909 /* UnboxTests.swift */,
+				78376D661E64192400C74C26 /* PromiseKitTests.swift */,
 				78E09B5F1E5DBFC4003DB909 /* Info.plist */,
 			);
 			path = Tests;
@@ -446,6 +522,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				78376D651E6415C900C74C26 /* PBXTargetDependency */,
+				78376D511E6415B100C74C26 /* PBXTargetDependency */,
+				78376D4F1E6415AF00C74C26 /* PBXTargetDependency */,
 				78E09C991E5DC21B003DB909 /* PBXTargetDependency */,
 			);
 			name = ExampleCore;
@@ -520,6 +599,10 @@
 					ProjectRef = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
 				},
 				{
+					ProductGroup = 78376D531E6415C200C74C26 /* Products */;
+					ProjectRef = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+				},
+				{
 					ProductGroup = 78A052841E5E2A4A005803BF /* Products */;
 					ProjectRef = 78A052831E5E2A4A005803BF /* Unbox.xcodeproj */;
 				},
@@ -534,6 +617,41 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		78376D5B1E6415C200C74C26 /* PromiseKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PromiseKit.framework;
+			remoteRef = 78376D5A1E6415C200C74C26 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78376D5D1E6415C200C74C26 /* PMKA+Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "PMKA+Tests.xctest";
+			remoteRef = 78376D5C1E6415C200C74C26 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78376D5F1E6415C200C74C26 /* PMKBridgeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PMKBridgeTests.xctest;
+			remoteRef = 78376D5E1E6415C200C74C26 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78376D611E6415C200C74C26 /* PMKCoreTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PMKCoreTests.xctest;
+			remoteRef = 78376D601E6415C200C74C26 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		78376D631E6415C200C74C26 /* PMKDispatchTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PMKDispatchTests.xctest;
+			remoteRef = 78376D621E6415C200C74C26 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78A052671E5E2A27005803BF /* ObjectMapper.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -730,6 +848,7 @@
 				78E09C341E5DC07B003DB909 /* GiphyClient.swift in Sources */,
 				78E09C361E5DC07B003DB909 /* ObjectMapper+Endpoints.swift in Sources */,
 				78E09C371E5DC07B003DB909 /* Unbox+Endpoints.swift in Sources */,
+				78376D271E64156500C74C26 /* PromiseSession.swift in Sources */,
 				78E09C331E5DC07B003DB909 /* BinClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -740,6 +859,7 @@
 			files = (
 				78E09C491E5DC0A8003DB909 /* GiphyClientTests.swift in Sources */,
 				78E09C471E5DC0A8003DB909 /* BinClientTests.swift in Sources */,
+				78376D671E64192400C74C26 /* PromiseKitTests.swift in Sources */,
 				78E09C4A1E5DC0A8003DB909 /* GithubClientTests.swift in Sources */,
 				78E09C4C1E5DC0A8003DB909 /* ObjectMapperTests.swift in Sources */,
 				78E09C481E5DC0A8003DB909 /* FakeClientTests.swift in Sources */,
@@ -751,6 +871,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		78376D4F1E6415AF00C74C26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Unbox-iOS";
+			targetProxy = 78376D4E1E6415AF00C74C26 /* PBXContainerItemProxy */;
+		};
+		78376D511E6415B100C74C26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ObjectMapper-iOS";
+			targetProxy = 78376D501E6415B100C74C26 /* PBXContainerItemProxy */;
+		};
+		78376D651E6415C900C74C26 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PromiseKit;
+			targetProxy = 78376D641E6415C900C74C26 /* PBXContainerItemProxy */;
+		};
 		78E09BFC1E5DC030003DB909 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 78E09BF51E5DC02F003DB909 /* ExampleCore */;
