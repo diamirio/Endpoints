@@ -30,6 +30,13 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(urlReq.allHTTPHeaderFields?["Content-Type"], "application/json")
         XCTAssertEqual(urlReq.allHTTPHeaderFields?["x"], "y")
     }
+    
+    func testEmptyBodyCurlRepresentation() {
+        let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"])
+        let curl = r.cURLRepresentation(prettyPrinted: false)
+
+        XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"\" \"https://httpbin.org/get?x=z\"", "-d should always be added for correct Content-Length header")
+    }
 }
 
 extension RequestTests {

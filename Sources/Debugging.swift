@@ -2,6 +2,10 @@ import Foundation
 
 extension URLRequestEncodable {
     var cURLRepresentation: String {
+        return cURLRepresentation(prettyPrinted: true)
+    }
+    
+    func cURLRepresentation(prettyPrinted: Bool) -> String {
         let r = urlRequest
         var curl = ["$ curl -i"]
         
@@ -13,12 +17,14 @@ extension URLRequestEncodable {
             curl.append("-H \"\($0): \($1)\"")
         }
         
+        var body = "" //always add -d parameter, so curl appends Content-Length header
         if let bodyData = r.httpBody, var bodyString = String(data: bodyData, encoding: .utf8) {
             bodyString = bodyString.replacingOccurrences(of: "\\\"", with: "\\\\\"")
             bodyString = bodyString.replacingOccurrences(of: "\"", with: "\\\"")
             
-            curl.append("-d \"\(bodyString)\"")
+            body = bodyString
         }
+        curl.append("-d \"\(body)\"")
         
         if let urlString = r.url?.absoluteString {
             curl.append("\"\(urlString)\"")
@@ -26,7 +32,7 @@ extension URLRequestEncodable {
             curl.append("\"no absolute url - \(String(describing: r.url))\"")
         }
         
-        return curl.joined(separator: " \\\n\t")
+        return curl.joined(separator: prettyPrinted ? "\\\n\t" : " ")
     }
 }
 
