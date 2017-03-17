@@ -198,8 +198,8 @@ open class AnyClient: Client, ResponseValidator {
             throw error
         }
         
-        try validate(result: result) //global validation
         try call.validate(result: result) //request-specific validation
+        try validate(result: result) //global validation
         
         if let data = result.data, let response = result.httpResponse {
             return try C.ResponseType.self.parse(response: response, data: data)
