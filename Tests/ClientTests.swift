@@ -275,7 +275,7 @@ class ClientTests: XCTestCase {
         }
     }
     
-    struct ValidatedRequest: Call {
+    struct ValidatingCall: Call {
         typealias ResponseType = [String: Any]
         
         var mime: String
@@ -289,12 +289,54 @@ class ClientTests: XCTestCase {
         }
     }
     
-    func testValidatedRequest() {
-        let mime = "application/json"
-        let c = ValidatedRequest(mime: mime)
+    class ValidatingClient: AnyClient {
+        override func validate(result: URLSessionTaskResult) throws {
+            throw StatusCodeError.unacceptable(code: 1, reason: nil)
+        }
+    }
+    
+    func testClientValidation() {
+        // check if call validation comes before client validation
+        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
+        let tester = ClientTester(test: self, client: client)
+        
+        let c = AnyCall<Data>(Request(.get, "get"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
+            
+            guard let error = result.error as? StatusCodeError else {
+                XCTFail("error expected")
+                return
+            }
+            
+            switch error {
+            case .unacceptable(let code, _):
+                XCTAssertEqual(code, 1, "client should throw error")
+            }
+        }
+    }
+    
+    func testValidatingRequest() {
+        // check if call validation comes before client validation
+        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
+        let tester = ClientTester(test: self, client: client)
+        
+        let mime = "application/json"
+        let c = ValidatingCall(mime: mime)
+        
+        tester.test(call: c) { result in
+            self.tester.assert(result: result, isSuccess: false)
+            
+            guard let error = result.error as? StatusCodeError else {
+                XCTFail("error expected")
+                return
+            }
+            
+            switch error {
+            case .unacceptable(let code, _):
+                XCTAssertEqual(code, 0, "request should throw error, not client")
+            }
             
             XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
         }
