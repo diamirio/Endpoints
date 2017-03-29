@@ -34,7 +34,10 @@ class RequestTests: XCTestCase {
     func testEmptyBodyCurlRepresentation() {
         let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"])
         let curl = r.cURLRepresentation(prettyPrinted: false)
-
+        
+        print(curl)
+        print(r.cURLRepresentation(prettyPrinted: true))
+        
         XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"\" \"https://httpbin.org/get?x=z\"", "-d should always be added for correct Content-Length header")
     }
 }

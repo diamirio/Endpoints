@@ -32,7 +32,7 @@ extension URLRequestEncodable {
             curl.append("\"no absolute url - \(String(describing: r.url))\"")
         }
         
-        return curl.joined(separator: prettyPrinted ? "\\\n\t" : " ")
+        return curl.joined(separator: prettyPrinted ? " \\\n\t" : " ")
     }
 }
 
