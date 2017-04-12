@@ -239,19 +239,19 @@ GiphyClient.GetRandomImage(tag: "cat").start { result in ... }
 **CocoaPods:**
 
 ```
-pod "Endpoints", "~> 0.3"
+pod "Endpoints"
 ```
 
 **Carthage:**
 
 ```
-github "tailoredmedia/Endpoints.git" ~> 0.3
+github "tailoredmedia/Endpoints.git"
 ```
 
 **Swift Package Manager:**
 
 ```
-.Package(url: "https://github.com/tailoredmedia/Endpoints.git", majorVersion: 0, minor: 3),
+.Package(url: "https://github.com/tailoredmedia/Endpoints.git", majorVersion: 0)
 ```
 
 ## Example
