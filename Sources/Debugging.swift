@@ -5,7 +5,7 @@ extension URLRequestEncodable {
         return cURLRepresentation(prettyPrinted: true)
     }
     
-    func cURLRepresentation(prettyPrinted: Bool) -> String {
+    func cURLRepresentation(prettyPrinted: Bool, bodyEncoding: String.Encoding = .utf8) -> String {
         let r = urlRequest
         var curl = ["$ curl -i"]
         
@@ -18,11 +18,15 @@ extension URLRequestEncodable {
         }
         
         var body = "" //always add -d parameter, so curl appends Content-Length header
-        if let bodyData = r.httpBody, var bodyString = String(data: bodyData, encoding: .utf8) {
-            bodyString = bodyString.replacingOccurrences(of: "\\\"", with: "\\\\\"")
-            bodyString = bodyString.replacingOccurrences(of: "\"", with: "\\\"")
+        if let bodyData = r.httpBody {
+            if var bodyString = String(data: bodyData, encoding: bodyEncoding) {
+                bodyString = bodyString.replacingOccurrences(of: "\\\"", with: "\\\\\"")
+                bodyString = bodyString.replacingOccurrences(of: "\"", with: "\\\"")
             
-            body = bodyString
+                body = bodyString
+            } else {
+                body = "<binary data (\(bodyData)) not convertible to \(bodyEncoding)>"
+            }
         }
         curl.append("-d \"\(body)\"")
         

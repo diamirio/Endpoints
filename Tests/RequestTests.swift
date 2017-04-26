@@ -31,6 +31,16 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(urlReq.allHTTPHeaderFields?["x"], "y")
     }
     
+    func testEmptyCurlRepresentation() {
+        let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"], body: "BODY".data(using: .utf8))
+        let curl = r.cURLRepresentation(prettyPrinted: false)
+        
+        print(curl)
+        print(r.cURLRepresentation(prettyPrinted: true))
+        
+        XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"BODY\" \"https://httpbin.org/get?x=z\"")
+    }
+    
     func testEmptyBodyCurlRepresentation() {
         let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"])
         let curl = r.cURLRepresentation(prettyPrinted: false)
@@ -39,6 +49,18 @@ class RequestTests: XCTestCase {
         print(r.cURLRepresentation(prettyPrinted: true))
         
         XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"\" \"https://httpbin.org/get?x=z\"", "-d should always be added for correct Content-Length header")
+    }
+    
+    func testBinaryDataCurlRepresentation() {
+        let url = Bundle(for: RequestTests.self).url(forResource: "binary", withExtension: "jpg")!
+        let body = try! Data(contentsOf: url)
+        let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"], body: body)
+        let curl = r.cURLRepresentation(prettyPrinted: false, bodyEncoding: .utf8)
+        
+        print(curl)
+        print(r.cURLRepresentation(prettyPrinted: true))
+        
+        XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"<binary data (420 bytes) not convertible to Unicode (UTF-8)>\" \"https://httpbin.org/get?x=z\"", "binary data")
     }
 }
 

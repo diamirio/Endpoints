@@ -47,6 +47,9 @@
 		788C03EC1E5C9AB9003ABC67 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78106CAD1E2928A80087F06C /* ClientTests.swift */; };
 		788C03ED1E5C9AB9003ABC67 /* ClientTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78106CAC1E2928A80087F06C /* ClientTester.swift */; };
 		788C03EF1E5C9AB9003ABC67 /* Endpoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 787AECBC1DABDEC7001A49BB /* Endpoints.framework */; };
+		78C2BA5C1EB0826000A94C99 /* binary.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 78C2BA5B1EB0826000A94C99 /* binary.jpg */; };
+		78C2BA5D1EB0826000A94C99 /* binary.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 78C2BA5B1EB0826000A94C99 /* binary.jpg */; };
+		78C2BA5E1EB0826000A94C99 /* binary.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 78C2BA5B1EB0826000A94C99 /* binary.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,7 @@
 		788C03F61E5CA2F0003ABC67 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		78A5F0A31DB0D98C00108A45 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "Carthage/Checkouts/ObjectMapper/build/Debug-iphoneos/ObjectMapper.framework"; sourceTree = "<group>"; };
 		78B783581DD9FFB0009F0B7D /* Endpoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Endpoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78C2BA5B1EB0826000A94C99 /* binary.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = binary.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +178,7 @@
 		78106CAB1E2928A80087F06C /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				78C2BA5B1EB0826000A94C99 /* binary.jpg */,
 				78106CAC1E2928A80087F06C /* ClientTester.swift */,
 				78106CAD1E2928A80087F06C /* ClientTests.swift */,
 				78106CAF1E2928A80087F06C /* RequestTests.swift */,
@@ -441,6 +446,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78C2BA5C1EB0826000A94C99 /* binary.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +454,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78C2BA5D1EB0826000A94C99 /* binary.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +476,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78C2BA5E1EB0826000A94C99 /* binary.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
