@@ -39,7 +39,7 @@ public struct BasicAuthorization {
     }
 }
 
-public struct AnyCall<Response: ResponseParser>: Call {
+public struct AnyCall<Response: CallResponseParser>: Call {
     public typealias ResponseType = Response
     
     public typealias ValidationBlock = (URLSessionTaskResult) throws ->()

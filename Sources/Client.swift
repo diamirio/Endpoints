@@ -38,7 +38,7 @@ import Foundation
 /// 
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+    associatedtype ResponseType: CallResponseParser
     
     var request: URLRequestEncodable { get }
 }

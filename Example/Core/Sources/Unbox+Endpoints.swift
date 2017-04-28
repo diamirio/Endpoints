@@ -2,7 +2,7 @@ import Foundation
 import Unbox
 import Endpoints
 
-public protocol UnboxableParser: Unboxable, ResponseParser {}
+public protocol UnboxableParser: Unboxable, CallResponseParser {}
 
 public extension UnboxableParser {
     static func parse(data: Data, encoding: String.Encoding) throws -> Self {
@@ -10,7 +10,7 @@ public extension UnboxableParser {
     }
 }
 
-public class UnboxableArray<Element: Unboxable>: ResponseParser {
+public class UnboxableArray<Element: Unboxable>: CallResponseParser {
     public typealias OutputType = [Element]
     
     public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {

@@ -66,13 +66,25 @@ public extension ResponseParser {
     }
 }
 
-extension Data: ResponseParser {
+public protocol CallResponseParser: ResponseParser {
+    associatedtype CallType = Call
+    
+    static func parse(response: HTTPURLResponse, for call: CallType, with data: Data) throws -> OutputType
+}
+
+extension CallResponseParser {
+    public static func parse(response: HTTPURLResponse, for call: CallType, with data: Data) throws -> OutputType {
+        return try self.parse(response: response, data: data)
+    }
+}
+
+extension Data: CallResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Data {
         return data
     }
 }
 
-extension String: ResponseParser {
+extension String: CallResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> String {
         if let string = String(data: data, encoding: encoding) {
             return string
@@ -82,7 +94,7 @@ extension String: ResponseParser {
     }
 }
 
-extension Dictionary: ResponseParser {
+extension Dictionary: CallResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Dictionary {
         guard let dict = try parseJSON(data: data) as? Dictionary else {
             throw ParsingError.invalidData(description: "JSON structure is not an Object")
@@ -92,7 +104,7 @@ extension Dictionary: ResponseParser {
     }
 }
 
-extension Array: ResponseParser {
+extension Array: CallResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Array {
         guard let array = try parseJSON(data: data) as? Array else {
             throw ParsingError.invalidData(description: "JSON structure is not an Array")

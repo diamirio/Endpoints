@@ -44,7 +44,7 @@ public extension BinClient {
 // MARK: -
 // MARK: Responses
 
-public struct OutputValue: ResponseParser {
+public struct OutputValue: CallResponseParser {
     public var value: String
     
     public static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
