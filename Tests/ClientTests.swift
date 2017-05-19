@@ -258,6 +258,9 @@ class ClientTests: XCTestCase {
     }
 
     func testParseWithJSONDecodable() {
+        // TODO: Test date parsing
+        // TODO: Implement/Test request encoding
+        // TODO: Test plist parsing
         let value = "JSON!"
         tester.test(call: GetJSONDecodable(value: value)) { result in
             self.tester.assert(result: result)

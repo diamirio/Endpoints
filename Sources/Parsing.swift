@@ -66,10 +66,42 @@ public extension ResponseParser {
     }
 }
 
-/// A JSON response that can be decoded using `JSONDecoder`.
-/// Making a type conform to this protocol allows you to use it
-/// as `Call.ResponseType`.
-protocol JSONDecodable: ResponseParser, Decodable {}
+/// Because the swift default decoders (`JSONDecoder` and `PropertyListDecoder`
+/// use a private nested type for this) do not themselves conform to the 
+/// `Decoder` protocol, we must provide our own protocol to be able to 
+/// generically use these implementations without being tied to a particular decoding.
+public protocol DecodingDecoder {
+    func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T
+}
+
+extension JSONDecoder: DecodingDecoder {}
+extension PropertyListDecoder: DecodingDecoder {}
+
+/// A response parser that uses a `Decoder` (or rather our own, unfortunately 
+/// necessary, abstraction thereof: `DecodingDecoder`) to turn (response) data
+/// into an object.
+public protocol DecodableResponseParser: ResponseParser, Decodable {
+    static var decoder: DecodingDecoder { get }
+}
+
+extension DecodableResponseParser {
+    public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
+        return try decoder.decode(self, from: data)
+    }
+}
+
+/// A convenience 'DecodableResponseParser' that uses an
+/// instance of `JSONDecoder` (provided by a protocol extension).
+///
+/// Override the static `DecodableResponseParser.decoder` to use a
+/// specifically configure instance of `JSONDecoder`.
+protocol JSONDecodable: DecodableResponseParser {}
+
+extension JSONDecodable {
+    static var decoder: DecodingDecoder {
+        return JSONDecoder()
+    }
+}
 
 extension JSONDecodable {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
