@@ -14,7 +14,7 @@ extension URLRequestEncodable {
         }
         
         r.allHTTPHeaderFields?.forEach {
-            curl.append("-H \"\($0): \($1)\"")
+            curl.append("-H \"\($0.key): \($0.value)\"")
         }
         
         var body = "" //always add -d parameter, so curl appends Content-Length header
@@ -50,7 +50,7 @@ extension URLSessionTaskResult: CustomDebugStringConvertible {
         var s = "\(resp.statusCode)\n"
         
         httpResponse?.allHeaderFields.forEach {
-            s.append("-\($0): \($1)\n")
+            s.append("-\($0.key): \($0.value)\n")
         }
         
         if let data = data, let string = String(data: data, encoding: resp.stringEncoding) {

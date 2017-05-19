@@ -71,9 +71,7 @@ public struct FormEncodedBody: Body {
     
     /// Returns the encapsulated parameters dictionary as form encoded `Data`.
     public var requestData: Data {
-        return parameters.map { key, value in
-            return "\(encode(key))=\(encode(value))"
-        }.joined(separator: "&").data(using: .utf8)!
+        return parameters.map { "\(encode($0.key))=\(encode($0.value))"}.joined(separator: "&").data(using: .utf8)!
     }
     
     /// add percent encoding to a string suitable for a form encoded request.
@@ -165,7 +163,7 @@ public extension URLRequest {
     /// - note: If a value was previously set for the given header
     /// field, that value is replaced.
     mutating func apply(header: Parameters?) {
-        header?.forEach { setValue($1, forHTTPHeaderField: $0) }
+        header?.forEach { setValue($0.value, forHTTPHeaderField: $0.key) }
     }
 }
 
@@ -186,7 +184,7 @@ public extension URL {
         components.path = path ?? ""
         
         if let query = query {
-            components.queryItems = query.map { URLQueryItem(name: $0, value: $1) }
+            components.queryItems = query.map { URLQueryItem(name: $0.key, value: $0.value) }
         }
         
         self.init(string: components.url!.relativeString)!
