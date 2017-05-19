@@ -66,6 +66,17 @@ public extension ResponseParser {
     }
 }
 
+/// A JSON response that can be decoded using `JSONDecoder`.
+/// Making a type conform to this protocol allows you to use it
+/// as `Call.ResponseType`.
+protocol JSONDecodable: ResponseParser, Decodable {}
+
+extension JSONDecodable {
+    public static func parse(data: Data, encoding: String.Encoding) throws -> Self {
+        return try JSONDecoder().decode(self, from: data)
+    }
+}
+
 extension Data: ResponseParser {
     public static func parse(data: Data, encoding: String.Encoding) throws -> Data {
         return data

@@ -238,6 +238,35 @@ class ClientTests: XCTestCase {
             }
         }
     }
+
+    struct HTTPBinGetResponse: JSONDecodable {
+        var args: Args
+    }
+
+    struct Args: Decodable {
+        var param: String
+    }
+
+    struct GetJSONDecodable: Call {
+        typealias ResponseType = HTTPBinGetResponse
+
+        let value: String
+
+        var request: URLRequestEncodable {
+            return Request(.get, "get", query: ["param" : value])
+        }
+    }
+
+    func testParseWithJSONDecodable() {
+        let value = "JSON!"
+        tester.test(call: GetJSONDecodable(value: value)) { result in
+            self.tester.assert(result: result)
+
+            result.onSuccess { decodable in
+                XCTAssertEqual(decodable.args.param, value)
+            }
+        }
+    }
     
     struct GetOutput: Call {
         typealias ResponseType = [String: Any]
