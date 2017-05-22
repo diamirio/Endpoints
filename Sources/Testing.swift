@@ -13,15 +13,15 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func start<C : Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
+    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
         let sessionResult = resultProvider.resultFor(call: call)
         let result = transform(sessionResult: sessionResult, for: call)
         
-        DispatchQueue.main.async {
-            completion(result)
+        return FakeURLSessionDataTask {
+            DispatchQueue.main.async {
+                completion(result)
+            }
         }
-        
-        return URLSessionDataTask()
     }
 }
 
@@ -32,5 +32,17 @@ public class FakeHTTPURLResponse: HTTPURLResponse {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+public class FakeURLSessionDataTask: URLSessionDataTask {
+    let completion: ()->()
+
+    init(completion: @escaping ()->()) {
+        self.completion = completion
+    }
+
+    public override func resume() {
+        completion()
     }
 }

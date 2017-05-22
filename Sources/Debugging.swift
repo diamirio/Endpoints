@@ -1,6 +1,6 @@
 import Foundation
 
-extension URLRequestEncodable {
+public extension URLRequestEncodable {
     var cURLRepresentation: String {
         return cURLRepresentation(prettyPrinted: true)
     }
@@ -63,5 +63,21 @@ extension URLSessionTaskResult: CustomDebugStringConvertible {
             s.append("<no data>")
         }
         return s
+    }
+}
+
+public extension URLSessionTask {
+    var requestDescription: String {
+        guard let originalRequest = originalRequest, let realRequest = currentRequest else {
+            return "<task not started yet>"
+        }
+
+        var string = ""
+        if originalRequest != realRequest {
+            string = "\(originalRequest.cURLRepresentation)\n-> redirected to ->"
+        }
+        string += "\(realRequest.cURLRepresentation)"
+
+        return string
     }
 }

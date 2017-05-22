@@ -84,3 +84,12 @@ extension Result {
         return self
     }
 }
+
+public extension Session {
+    @discardableResult
+    func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+        let tsk = dataTask(for: call, completion: completion)
+        tsk.resume()
+        return tsk
+    }
+}

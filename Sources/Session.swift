@@ -21,35 +21,27 @@ public class Session<C: Client> {
         self.client = client
         self.urlSession = urlSession
     }
-    
-    @discardableResult
-    public func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+
+    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
         let urlRequest = client.encode(call: call)
         weak var tsk: URLSessionDataTask?
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
-            
+
             #if DEBUG
-            if self.debug {
-                guard let tsk = tsk, let originalRequest = tsk.originalRequest, let realRequest = tsk.currentRequest else {
-                    fatalError("unexpectedly lost task/request reference")
+                if let tsk = tsk, self.debug {
+                    print("\(tsk.requestDescription)\n\(sessionResult)")
                 }
-                if originalRequest != realRequest {
-                    print("\(originalRequest.cURLRepresentation)\n-> redirected to ->")
-                }
-                print("\(realRequest.cURLRepresentation)\n\(sessionResult)")
-            }
             #endif
-            
+
             let result = self.transform(sessionResult: sessionResult, for: call)
-            
+
             DispatchQueue.main.async {
                 completion(result)
             }
         }
-        task.resume()
         tsk = task //keep a weak reference for debug output
-        
+
         return task
     }
     

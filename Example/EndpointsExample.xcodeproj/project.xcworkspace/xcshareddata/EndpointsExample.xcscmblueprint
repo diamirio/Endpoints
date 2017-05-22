@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3269D73D421C4C99111253C84ADDF16DA1CF3353",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127" : 9223372036854775807,
+    "3269D73D421C4C99111253C84ADDF16DA1CF3353" : 9223372036854775807,
+    "F5B4EC300E7199406BA2B2AA6070092FA65DDD89" : 9223372036854775807,
+    "7AF96DB6EA6158C0309065EFFC712F3F9D7E1CC3" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C4F87FA0-D31B-4604-8F8F-116C0412FF19",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127" : "endpoints\/Example\/Core\/ObjectMapper\/",
+    "3269D73D421C4C99111253C84ADDF16DA1CF3353" : "endpoints\/",
+    "F5B4EC300E7199406BA2B2AA6070092FA65DDD89" : "endpoints\/Example\/Core\/PromiseKit\/",
+    "7AF96DB6EA6158C0309065EFFC712F3F9D7E1CC3" : "endpoints\/Example\/Core\/Unbox\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "EndpointsExample",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/EndpointsExample.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/tailoredmedia\/Endpoints.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3269D73D421C4C99111253C84ADDF16DA1CF3353"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Hearst-DD\/ObjectMapper",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/JohnSundell\/Unbox",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "7AF96DB6EA6158C0309065EFFC712F3F9D7E1CC3"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/mxcl\/PromiseKit",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F5B4EC300E7199406BA2B2AA6070092FA65DDD89"
+    }
+  ]
+}

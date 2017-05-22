@@ -1,0 +1,9 @@
+[submodule "Example/Core/Unbox"]
+	path = Example/Core/Unbox
+	url = https://github.com/JohnSundell/Unbox
+[submodule "Example/Core/ObjectMapper"]
+	path = Example/Core/ObjectMapper
+	url = https://github.com/Hearst-DD/ObjectMapper
+[submodule "Example/Core/PromiseKit"]
+	path = Example/Core/PromiseKit
+	url = https://github.com/mxcl/PromiseKit

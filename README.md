@@ -256,8 +256,8 @@ github "tailoredmedia/Endpoints.git"
 
 ## Example
 
-To compile examples you need to download some dependencies using the Swift Package Manager.
-Just open Terminal at `Endpoints/Example/Core` and type `swift package fetch`.
+To compile examples you need to fetch some git submodules.
+Just open Terminal at `git submodule update --init --recursive`.
 
 ## Requirements
 
