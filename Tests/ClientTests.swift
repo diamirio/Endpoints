@@ -23,7 +23,7 @@ class ClientTests: XCTestCase {
                 XCTFail("was cancelled. should not be called.")
             }
             exp.fulfill()
-        }
+        }.urlSessionTask
         
         task.cancel()
         waitForExpectations(timeout: 1, handler: nil)

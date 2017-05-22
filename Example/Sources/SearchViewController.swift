@@ -122,7 +122,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
                 
                 self.nextCall = self.search.prepareCallForNextPage(forResponse: value, fromLastCall: call)
             }
-        }
+        }.urlSessionTask
     }
     
     func reset() {

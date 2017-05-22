@@ -22,38 +22,62 @@ public class Session<C: Client> {
         self.urlSession = urlSession
     }
 
-    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
-        let urlRequest = client.encode(call: call)
-        weak var tsk: URLSessionDataTask?
-        let task = urlSession.dataTask(with: urlRequest) { data, response, error in
-            let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
-
-            #if DEBUG
-                if let tsk = tsk, self.debug {
-                    print("\(tsk.requestDescription)\n\(sessionResult)")
-                }
-            #endif
-
-            let result = self.transform(sessionResult: sessionResult, for: call)
-
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
-        tsk = task //keep a weak reference for debug output
-
-        return task
+    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> SessionTask<C> {
+        return SessionTask(client: client, call: call, urlSession: urlSession, debug: debug, completion: completion)
     }
-    
-    func transform<C: Call>(sessionResult: URLSessionTaskResult, for call: C) -> Result<C.ResponseType.OutputType> {
+}
+
+public class SessionTask<C: Call> {
+    public typealias ValueType = C.ResponseType.OutputType
+    public typealias CompletionBlock = (Result<ValueType>)->()
+
+    public var debug: Bool
+
+    public let urlSession: URLSession
+    public let client: Client
+    public let call: C
+
+    public private(set) lazy var urlSessionTask: URLSessionDataTask = {
+        let request = self.client.encode(call: self.call)
+        return self.urlSession.dataTask(with: request,
+                                        completionHandler: self.completionHandler)
+    }()
+
+    public let completion: CompletionBlock
+
+    public init(client: Client, call: C, urlSession: URLSession = URLSession.shared, debug: Bool=false, completion: @escaping CompletionBlock) {
+        self.urlSession = urlSession
+        self.client = client
+        self.call = call
+        self.debug = debug
+        self.completion = completion
+    }
+
+    private func completionHandler(data: Data?, response: URLResponse?, error: Error?) {
+        let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
+
+        #if DEBUG
+            if self.debug {
+                print("\(urlSessionTask.requestDescription)\n\(sessionResult)")
+            }
+        #endif
+
+        let result = transform(sessionResult: sessionResult)
+
+        DispatchQueue.main.async {
+            self.completion(result)
+        }
+    }
+
+    public func transform(sessionResult: URLSessionTaskResult) -> Result<ValueType> {
         var result = Result<C.ResponseType.OutputType>(response: sessionResult.httpResponse)
-        
+
         do {
             result.value = try client.parse(sessionTaskResult: sessionResult, for: call)
         } catch {
             result.error = error
         }
-        
+
         return result
     }
 }

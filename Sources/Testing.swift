@@ -13,15 +13,29 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
+    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> SessionTask<C> {
         let sessionResult = resultProvider.resultFor(call: call)
-        let result = transform(sessionResult: sessionResult, for: call)
-        
+
+        return FakeSessionTask(result: sessionResult, client: client, call: call, completion: completion)
+    }
+}
+
+public class FakeSessionTask<C: Call>: SessionTask<C> {
+    let result: URLSessionTaskResult
+
+    public override var urlSessionTask: URLSessionDataTask {
         return FakeURLSessionDataTask {
+            let res = self.transform(sessionResult: self.result)
+
             DispatchQueue.main.async {
-                completion(result)
+                self.completion(res)
             }
         }
+    }
+
+    public init(result: URLSessionTaskResult, client: Client, call: C, completion: @escaping CompletionBlock) {
+        self.result = result
+        super.init(client: client, call: call, completion: completion)
     }
 }
 
