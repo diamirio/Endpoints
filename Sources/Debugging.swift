@@ -74,7 +74,7 @@ public extension URLSessionTask {
 
         var string = ""
         if originalRequest != realRequest {
-            string = "\(originalRequest.cURLRepresentation)\n-> redirected to ->"
+            string = "\(originalRequest.cURLRepresentation)\n-> redirected to ->\n"
         }
         string += "\(realRequest.cURLRepresentation)"
 

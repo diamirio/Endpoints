@@ -256,8 +256,7 @@ github "tailoredmedia/Endpoints.git"
 
 ## Example
 
-To compile examples you need to fetch some git submodules.
-Just open Terminal at `git submodule update --init --recursive`.
+To compile examples you need to fetch some git submodules using `git submodule update --init --recursive`.
 
 ## Requirements
 
