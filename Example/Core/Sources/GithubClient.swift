@@ -93,8 +93,21 @@ public struct Repository: Unboxable {
     }
 }
 
-public protocol Pagable {
+public protocol Pagable: ResponseDecodable {
     var nextPage: URL? { get set }
+    static func dataDecoder() -> AnyResponseDecoder<Self>
+}
+
+extension Pagable {
+    public static func responseDecoder() -> AnyResponseDecoder<Self> {
+        return PagableResponseDecoder(wrap: dataDecoder()).untyped()
+    }
+}
+
+extension Pagable where Self: Unboxable {
+    public static func dataDecoder() -> AnyResponseDecoder<Self> {
+        return UnboxableDecoder<Self>().untyped()
+    }
 }
 
 public extension ResponseParser where OutputType: Pagable {
@@ -113,7 +126,7 @@ public extension ResponseParser where OutputType: Pagable {
 
 public extension ResponseDecodable where Self: Pagable {
     static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return PagableResponseDecoder(wrap: self.responseDecoder()).untyped()
+        return PagableResponseDecoder(wrap: responseDecoder()).untyped()
     }
 }
 
@@ -137,7 +150,7 @@ class PagableResponseDecoder<D: ResponseDecoder, P: Pagable>: ResponseDecoder wh
     }
 }
 
-public struct RepositoriesResponse: UnboxableResponseDecodable, Pagable {
+public struct RepositoriesResponse: Unboxable, Pagable {
     public let totalCount: Int
     public let repositories: [Repository]
     public var nextPage: URL?
