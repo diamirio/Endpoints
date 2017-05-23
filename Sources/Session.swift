@@ -22,13 +22,13 @@ public class Session<C: Client> {
         self.urlSession = urlSession
     }
 
-    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> SessionTask<C> {
+    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType>)->()) -> SessionTask<C> {
         return SessionTask(client: client, call: call, urlSession: urlSession, debug: debug, completion: completion)
     }
 }
 
 public class SessionTask<C: Call> {
-    public typealias ValueType = C.ResponseType.OutputType
+    public typealias ValueType = C.ResponseType
     public typealias CompletionBlock = (Result<ValueType>)->()
 
     public var debug: Bool
@@ -70,7 +70,7 @@ public class SessionTask<C: Call> {
     }
 
     public func transform(sessionResult: URLSessionTaskResult) -> Result<ValueType> {
-        var result = Result<C.ResponseType.OutputType>(response: sessionResult.httpResponse)
+        var result = Result<C.ResponseType>(response: sessionResult.httpResponse)
 
         do {
             result.value = try client.parse(sessionTaskResult: sessionResult, for: call)

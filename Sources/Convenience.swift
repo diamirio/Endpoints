@@ -39,7 +39,7 @@ public struct BasicAuthorization {
     }
 }
 
-public struct AnyCall<Response: ResponseParser>: Call {
+public struct AnyCall<Response: ResponseDecodable>: Call {
     public typealias ResponseType = Response
     
     public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
@@ -87,7 +87,7 @@ extension Result {
 
 public extension Session {
     @discardableResult
-    func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> SessionTask<C> {
+    func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType>)->()) -> SessionTask<C> {
         let tsk = dataTask(for: call, completion: completion)
         tsk.urlSessionTask.resume()
         return tsk

@@ -111,7 +111,33 @@ public extension ResponseParser where OutputType: Pagable {
     }
 }
 
-public struct RepositoriesResponse: UnboxableParser, Pagable {
+public extension ResponseDecodable where Self: Pagable {
+    static func responseDecoder() -> AnyResponseDecoder<Self> {
+        return PagableResponseDecoder(wrap: self.responseDecoder()).untyped()
+    }
+}
+
+class PagableResponseDecoder<D: ResponseDecoder, P: Pagable>: ResponseDecoder where D.DecodedType == P {
+    let wrapped: D
+
+    init(wrap: D) {
+        self.wrapped = wrap
+    }
+
+    func decode(response: HTTPURLResponse, data: Data) throws -> P {
+        var output = try wrapped.decode(response: response, data: data)
+
+        for link in response.parseLinks() {
+            if link.rel == .next {
+                output.nextPage = link.url
+            }
+        }
+
+        return output
+    }
+}
+
+public struct RepositoriesResponse: UnboxableResponseDecodable, Pagable {
     public let totalCount: Int
     public let repositories: [Repository]
     public var nextPage: URL?

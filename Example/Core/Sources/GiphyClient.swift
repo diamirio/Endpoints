@@ -22,7 +22,7 @@ public class GiphyClient: Client {
         return req
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
         do {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
@@ -93,7 +93,7 @@ public extension GiphyClient {
 // MARK: -
 // MARK: Responses
 
-public struct GiphyListResponse: UnboxableParser {
+public struct GiphyListResponse: UnboxableResponseDecodable {
     public var images: [GiphyImage]
     public var pagination: GiphyPagination
     

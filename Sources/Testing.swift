@@ -13,7 +13,7 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> SessionTask<C> {
+    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType>) -> ()) -> SessionTask<C> {
         let sessionResult = resultProvider.resultFor(call: call)
 
         return FakeSessionTask(result: sessionResult, client: client, call: call, completion: completion)

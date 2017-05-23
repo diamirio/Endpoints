@@ -16,13 +16,13 @@ protocol PagableSearch {
     associatedtype CallType: Call
     
     func prepareCallForFirstPage(withQuery query: String) -> CallType
-    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType?
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType, fromLastCall lastCall: CallType) -> CallType?
 }
 
 class ItemCell: UITableViewCell {
 }
 
-class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, UISearchBarDelegate where S.CallType.ResponseType.OutputType: ItemsResponse {
+class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, UISearchBarDelegate where S.CallType.ResponseType: ItemsResponse {
     
     lazy var searchBar: UISearchBar = {
         let sv = UISearchBar()

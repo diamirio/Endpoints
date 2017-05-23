@@ -22,7 +22,7 @@ class GithubRepoSearchUntyped: PagableSearch {
         return GithubClient.searchReposUntyped(query: query)
     }
     
-    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType, fromLastCall lastCall: CallType) -> CallType? {
         guard let nextPage = response.nextPage else {
             return nil
         }
@@ -40,7 +40,7 @@ class GithubRepoSearch: PagableSearch {
         return GithubClient.SearchRepositories(endpoint: .query(query, sort: sort))
     }
     
-    func prepareCallForNextPage(forResponse response: CallType.ResponseType.OutputType, fromLastCall lastCall: CallType) -> CallType? {
+    func prepareCallForNextPage(forResponse response: CallType.ResponseType, fromLastCall lastCall: CallType) -> CallType? {
         guard let nextPage = response.nextPage else {
             return nil
         }

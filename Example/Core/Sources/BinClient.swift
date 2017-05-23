@@ -44,14 +44,20 @@ public extension BinClient {
 // MARK: -
 // MARK: Responses
 
-public struct OutputValue: ResponseParser {
+public struct OutputValue: ResponseDecodable {
     public var value: String
     
-    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
-        let dict = try Dictionary<String, Any>.parse(data: data, encoding: encoding)
-        guard let args = dict["args"] as? [String: String], let value = args["value"] else {
-            throw ParsingError.invalidData(description: "value not found")
+    public static func responseDecoder() -> AnyResponseDecoder<OutputValue> {
+        return Decoder().untyped()
+    }
+
+    class Decoder: ResponseDecoder {
+        func decode(response: HTTPURLResponse, data: Data) throws -> OutputValue {
+            let dict = try JSONDictionaryDecoder<String, Any>().decode(response: response, data: data)
+            guard let args = dict["args"] as? [String: String], let value = args["value"] else {
+                throw ParsingError.invalidData(description: "value not found")
+            }
+            return OutputValue(value: value)
         }
-        return OutputValue(value: value)
     }
 }

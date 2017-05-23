@@ -38,7 +38,7 @@ import Foundation
 /// 
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+    associatedtype ResponseType: ResponseDecodable
     
     var request: URLRequestEncodable { get }
 }
@@ -108,7 +108,7 @@ public protocol Client {
     /// this client's Web API into the expected output type.
     ///
     /// - throws: Any `Error` if `result` is considered invalid.
-    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType
+    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
 }
 
 /// Encapsulates the result produced by a `URLSession`s
@@ -193,7 +193,7 @@ open class AnyClient: Client, ResponseValidator {
     ///
     /// Finally tries to parse the response using `Call.ResponseType`
     /// and returns the parsed object or rethrows the resulting error.
-    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
         if let error = result.error {
             throw error
         }
@@ -202,7 +202,7 @@ open class AnyClient: Client, ResponseValidator {
         try validate(result: result) //global validation
         
         if let data = result.data, let response = result.httpResponse {
-            return try C.ResponseType.self.parse(response: response, data: data)
+            return try C.ResponseType.responseDecoder().decode(response: response, data: data)
         } else {
             throw ParsingError.missingData
         }
