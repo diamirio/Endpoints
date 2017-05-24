@@ -99,7 +99,7 @@ class GiphyClient: Client {
         return request
     }
     
-    public func decode<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func decode<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
         do {
             // Use `AnyClient` to decode the response
             // If this fails, try to read error details from response body
@@ -143,13 +143,17 @@ In order for this to work, `RandomImage` must adopt the `ResponseDecodable` prot
 
 ```swift
 extension RandomImage: ResponseDecodable {
-    static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
-        let dict = try [String: Any].parse(data: data, encoding: encoding)
-        
+    static func responseDecoder() -> Decoder {
+        return decodeRandomImage
+    }
+
+    static func decodeRandomImage(response: HTTPURLResponse, data: Data) throws -> RandomImage {
+        let dict = try [String: Any].decodeJSONDictionary(response: response, data: data)
+
         guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-            throw throw DecodingError.invalidData(description: "invalid response. url not found")
+            throw DecodingError.invalidData(description: "invalid response. url not found")
         }
-        
+
         return RandomImage(url: URL(string: url)!)
     }
 }
@@ -158,19 +162,21 @@ extension RandomImage: ResponseDecodable {
 This can of course be made a lot easier by using a JSON parsing library (like [Unbox](https://github.com/JohnSundell/Unbox)) and  a few lines of integration code:
 
 ```swift
-protocol UnboxableParser: Unboxable, ResponseParser {}
+extension Unboxable where Self: ResponseDecodable {
+    static func responseDecoder() -> Decoder {
+        return decodeUnboxable
+    }
 
-extension UnboxableParser {
-    static func parse(data: Data, encoding: String.Encoding) throws -> Self {
+    static func decodeUnboxable(response: HTTPURLResponse, data: Data) throws -> Self {
         return try unbox(data: data)
     }
 }
 ```
 
-Now we can write:
+Now we can simply write:
 
 ```swift
-struct RandomImage: UnboxableParser {
+struct RandomImage: Unboxable, ResponseDecodable {
     var url: URL
     
     init(unboxer: Unboxer) throws {
