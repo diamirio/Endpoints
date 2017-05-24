@@ -8,20 +8,18 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 struct RandomImage: ResponseDecodable {
     var url: URL
 
-    static func responseDecoder() -> AnyResponseDecoder<RandomImage> {
-        return AnyResponseDecoder(Decoder())
+    static func responseDecoder() -> Decoder {
+        return decodeRandomImage
     }
 
-    class Decoder: ResponseDecoder {
-        func decode(response: HTTPURLResponse, data: Data) throws -> RandomImage {
-            let dict = try [String: Any].responseDecoder().decode(response: response, data: data)
+    static func decodeRandomImage(response: HTTPURLResponse, data: Data) throws -> RandomImage {
+        let dict = try [String: Any].decodeJSONDictionary(response: response, data: data)
 
-            guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-                throw DecodingError.invalidData(description: "invalid response. url not found")
-            }
-
-            return RandomImage(url: URL(string: url)!)
+        guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
+            throw DecodingError.invalidData(description: "invalid response. url not found")
         }
+
+        return RandomImage(url: URL(string: url)!)
     }
 }
 

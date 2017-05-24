@@ -5,16 +5,20 @@ import ExampleCore
 import Unbox
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-struct RandomImage: ResponseParser {
+struct RandomImage: ResponseDecodable {
     var url: URL
-    
-    static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
-        let dict = try [String: Any].parse(data: data, encoding: encoding)
-        
+
+    static func responseDecoder() -> Decoder {
+        return decodeRandomImage
+    }
+
+    static func decodeRandomImage(response: HTTPURLResponse, data: Data) throws -> RandomImage {
+        let dict = try [String: Any].decodeJSONDictionary(response: response, data: data)
+
         guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-            throw DecodingError.missingData
+            throw DecodingError.invalidData(description: "invalid response. url not found")
         }
-        
+
         return RandomImage(url: URL(string: url)!)
     }
 }

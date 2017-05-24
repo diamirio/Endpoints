@@ -5,7 +5,7 @@ import ExampleCore
 import Unbox
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-struct RandomImage: UnboxableParser {
+struct RandomImage: Unboxable, ResponseDecodable {
     var url: URL
     
     init(unboxer: Unboxer) throws {
