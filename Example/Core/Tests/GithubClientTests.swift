@@ -16,7 +16,7 @@ class GithubClientTests: XCTestCase {
         let search = GithubClient.SearchRepositories(endpoint: .query("swift", sort: .stars))
         
         tester.test(call: search) { result in
-            self.tester.assert(result: result)
+            XCTAssertTrue(result.isSuccess)
             
             result.onSuccess { value in
                 XCTAssertTrue(value.totalCount > 0)
@@ -30,7 +30,7 @@ class GithubClientTests: XCTestCase {
         let search = GithubClient.SearchRepositories(endpoint: .query("", sort: .stars))
         
         tester.test(call: search) { result in
-            self.tester.assert(result: result, isSuccess: false)
+            XCTAssertFalse(result.isSuccess)
             
             result.onError { error in
                 print("error: \(error.localizedDescription)")

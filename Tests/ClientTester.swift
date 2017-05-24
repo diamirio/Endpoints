@@ -19,14 +19,13 @@ class ClientTester<C: Client> {
     @discardableResult
     func test<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) ->  URLSessionTask {
         let exp = test.expectation(description: "")
-        let tsk = SessionTask(client: session.client, call: call)
-        tsk.debug = true
-        let urlTsk = tsk.urlSessionTask
-
-        tsk.completion = { result in
+        let tsk = session.dataTask(for: call) { (result) in
             validateResult?(result)
             exp.fulfill()
         }
+        tsk.debug = true
+        let urlTsk = tsk.urlSessionTask
+
         urlTsk.resume()
 
         test.waitForExpectations(timeout: 10, handler: nil)

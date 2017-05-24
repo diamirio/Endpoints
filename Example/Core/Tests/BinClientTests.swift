@@ -13,7 +13,7 @@ class BinClientTests: XCTestCase {
     
     func testGetOutput() {
         tester.test(call: BinClient.GetOutput(value: input)) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             XCTAssertEqual(self.input, result.value?.value)
         }
@@ -21,7 +21,7 @@ class BinClientTests: XCTestCase {
     
     func testGetOutputFunctional() {
         tester.test(call: BinClient.getOutput(value: input)) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             XCTAssertEqual(self.input, result.value?.value)
         }

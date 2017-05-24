@@ -53,12 +53,7 @@ class ClientTests: XCTestCase {
             XCTAssertEqual(result.error?.localizedDescription, "bad request")
             
             if let error = result.error as? StatusCodeError {
-                switch error {
-                case .unacceptable(400, _):
-                    print("code is ok")
-                default:
-                    XCTFail("wrong error: \(error)")
-                }
+                XCTAssertEqual(error.code, 400)
             } else {
                 XCTFail("wrong error: \(String(describing: result.error))")
             }
@@ -283,13 +278,13 @@ class ClientTests: XCTestCase {
         }
 
         func decode(result: URLSessionTaskResult) throws -> [String : Any] {
-            throw StatusCodeError.unacceptable(code: 0, reason: nil)
+            throw StatusCodeError(0)
         }
     }
     
     class ValidatingClient: AnyClient {
         override func validate(result: URLSessionTaskResult) throws {
-            throw StatusCodeError.unacceptable(code: 1, reason: nil)
+            throw StatusCodeError(1)
         }
     }
     
@@ -307,11 +302,8 @@ class ClientTests: XCTestCase {
                 XCTFail("error expected")
                 return
             }
-            
-            switch error {
-            case .unacceptable(let code, _):
-                XCTAssertEqual(code, 1, "client should throw error")
-            }
+
+            XCTAssertEqual(error.code, 1, "client should throw error")
         }
     }
     
@@ -331,9 +323,7 @@ class ClientTests: XCTestCase {
                 return
             }
 
-            if case .unacceptable(let code, _) = error {
-                XCTAssertEqual(code, 0, "request should throw error, not client")
-            }
+            XCTAssertEqual(error.code, 0, "request should throw error, not client")
         }
 
         XCTAssertEqual(tsk.httpResponse?.allHeaderFields["Mime"] as? String, mime)

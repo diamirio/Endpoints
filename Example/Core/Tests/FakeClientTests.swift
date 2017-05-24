@@ -36,9 +36,15 @@ class FakeClientTests: XCTestCase {
     func testErrorMessageValidation() {
         let msg = "error message"
         tester.test(call: ServerMessageRequest(message: msg)) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 300)
+            XCTAssertFalse(result.isSuccess)
             
             XCTAssertEqual(result.error?.localizedDescription, msg)
+
+            guard let error = result.error as? StatusCodeError else {
+                XCTFail("wrong result: \(result)")
+                return
+            }
+            XCTAssertEqual(error.code, 300)
         }
     }
 }

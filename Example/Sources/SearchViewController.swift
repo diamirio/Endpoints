@@ -77,7 +77,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
     let session: Session<C>
     let search: S
     var nextCall: S.CallType?
-    weak var activeTask: URLSessionDataTask?
+    weak var activeTask: URLSessionTask?
     
     var loading = false {
         didSet {
@@ -122,7 +122,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
                 
                 self.nextCall = self.search.prepareCallForNextPage(forResponse: value, fromLastCall: call)
             }
-        }.urlSessionTask
+        }
     }
     
     func reset() {

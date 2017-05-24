@@ -15,7 +15,7 @@ class GiphyClientTests: XCTestCase {
         var totalCount: Int?
         
         tester.test(call: search) { result in
-            self.tester.assert(result: result)
+            XCTAssertTrue(result.isSuccess)
             
             result.onSuccess { value in
                 XCTAssertEqual(value.images.count, 10)
@@ -35,7 +35,7 @@ class GiphyClientTests: XCTestCase {
         search.page = Int(floor(Double(total) / 10.0))
         
         tester.test(call: search) { result in
-            self.tester.assert(result: result)
+            XCTAssertTrue(result.isSuccess)
             
             result.onSuccess { value in
                 XCTAssertTrue(value.pagination.isLastPage)
@@ -47,7 +47,7 @@ class GiphyClientTests: XCTestCase {
         tester.session.client.apiKey = "WRONG!"
         
         tester.test(call: GiphyClient.Search(query: "cat", pageSize: 10, page: 0)) { result in
-            self.tester.assert(result: result, isSuccess: false)
+            XCTAssertFalse(result.isSuccess)
             
             result.onError { error in
                 print("error: \(error.localizedDescription)")

@@ -72,19 +72,27 @@ public extension Call {
 }
 
 /// Wraps an HTTP error code.
-public enum StatusCodeError: LocalizedError {
-    
-    /// Describes an unacceptable status code for an HTTP request.
-    /// Optionally, you can supply a `reason` which is then used as the 
-    /// `errorDescription` instead of the default string returned by
-    /// `HTTPURLResponse.localizedString(forStatusCode:)`
-    case unacceptable(code: Int, reason: String?)
+///
+/// Describes an unacceptable status code for an HTTP request.
+/// Optionally, you can supply a `reason` which is then used as the
+/// `errorDescription` instead of the default string returned by
+/// `HTTPURLResponse.localizedString(forStatusCode:)`
+public struct StatusCodeError: LocalizedError {
+    public let code: Int
+    public let reason: String?
+
+    public init(_ code: Int, reason: String? = nil) {
+        self.code = code
+        self.reason = reason
+    }
 
     public var errorDescription: String? {
-        switch self {
-        case .unacceptable(let code, let reason):
-            return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
-        }
+        return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
+    }
+
+    /// Create a new instance with the same `code` but a different `reason`
+    public func with(reason: String?) -> StatusCodeError {
+        return StatusCodeError(code, reason: reason)
     }
 }
 
@@ -99,7 +107,7 @@ public extension HTTPURLResponse {
     /// if `httpResponse` contains an unacceptable status code.
     func validateStatusCode() throws {
         guard hasAcceptableStatus() else {
-            throw StatusCodeError.unacceptable(code: statusCode, reason: nil)
+            throw StatusCodeError(statusCode)
         }
     }
 }

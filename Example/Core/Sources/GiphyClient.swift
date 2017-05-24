@@ -27,10 +27,9 @@ public class GiphyClient: Client {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
             return try anyClient.decode(result: result, for: call)
-        } catch {
+        } catch let error as StatusCodeError {
             // see if the backend sent detailed error information
             guard
-                let response = result.httpResponse,
                 let data = result.data,
                 let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
                 let meta = errorDict?["meta"] as? [String: Any],
@@ -40,7 +39,7 @@ public class GiphyClient: Client {
             }
             
             //propagate error that contains errorCode as reason from backend
-            throw StatusCodeError.unacceptable(code: response.statusCode, reason: errorCode)
+            throw error.with(reason: errorCode)
         }
     }
 }
