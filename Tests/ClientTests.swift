@@ -37,7 +37,6 @@ class ClientTests: XCTestCase {
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
-            XCTAssertNil(result.response?.statusCode)
             
             XCTAssertEqual(result.error?.localizedDescription, "The request timed out.")
 
@@ -334,9 +333,8 @@ class ClientTests: XCTestCase {
                 XCTFail("error expected")
                 return
             }
-            
-            switch error {
-            case .unacceptable(let code, _):
+
+            if case .unacceptable(let code, _) = error {
                 XCTAssertEqual(code, 0, "request should throw error, not client")
             }
             
@@ -390,5 +388,18 @@ class ClientTests: XCTestCase {
             self.tester.assert(result: result)
             XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
         }
+    }
+
+    func testSessionTask() {
+        let exp = expectation(description: "")
+        let c = AnyCall<Data>(Request(.get, "get"))
+
+        let task = SessionTask(client: tester.session.client, call: c) { result in
+            exp.fulfill()
+        }
+        task.debug = true
+        task.urlSessionTask.resume()
+
+        waitForExpectations(timeout: 4, handler: nil)
     }
 }

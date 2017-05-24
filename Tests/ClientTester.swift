@@ -16,7 +16,7 @@ class ClientTester<C: Client> {
         session.debug = true
     }
     
-    func test<C: Call>(call: C, validateResult: ((Result<C.ResponseType>)->())?=nil) {
+    func test<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) {
         let exp = test.expectation(description: "")
         session.start(call: call) { result in
             validateResult?(result)
@@ -25,8 +25,24 @@ class ClientTester<C: Client> {
         }
         test.waitForExpectations(timeout: 30, handler: nil)
     }
+
+    func testResponse<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) {
+        let exp = test.expectation(description: "")
+        let tsk = SessionTask(client: session.client, call: call)
+        let urlTsk = tsk.urlSessionTask
+        tsk.completion = { result in
+            urlTsk.response
+        }
+        tsk.start()
+        session.start(call: call) { result in
+            validateResult?(result)
+
+            exp.fulfill()
+        }
+        test.waitForExpectations(timeout: 30, handler: nil)
+    }
     
-    func assert<D: ResponseDecodable>(result: Result<D>, isSuccess: Bool=true, status code: Int?=nil) {
+    func assert<D: ResponseDecodable>(result: DecodedResult<D>, isSuccess: Bool=true, status code: Int?=nil) {
         if isSuccess {
             XCTAssertNil(result.error)
             XCTAssertNotNil(result.value)

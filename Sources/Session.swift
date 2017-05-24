@@ -1,13 +1,62 @@
 import Foundation
 
-public struct Result<Value> {
-    public var value: Value?
-    public var error: Error?
-    
-    public let response: HTTPURLResponse?
-    
-    public init(response: HTTPURLResponse?) {
-        self.response = response
+public enum DecodedResult<Value> {
+    case success(Value)
+    case failure(Error)
+
+    public init(_ block: () throws -> Value) {
+        do {
+            self = .success(try block())
+        } catch {
+            self = .failure(error)
+        }
+    }
+
+    public var value: Value? {
+        guard case let .success(value) = self else {
+            return nil
+        }
+        return value
+    }
+
+    public var error: Error? {
+        guard case let .failure(error) = self else {
+            return nil
+        }
+        return error
+    }
+
+    public var urlError: URLError? {
+        return error as? URLError
+    }
+
+    public var wasCancelled: Bool {
+        return urlError?.code == .cancelled
+    }
+
+    public func handle(success: (Value)->(), failure: (Error)->(), cancelled: (()->())?=nil) {
+        switch self {
+        case .success(let value):
+            success(value)
+        case .failure(let error):
+            if wasCancelled {
+                cancelled?()
+            } else {
+                failure(error)
+            }
+        }
+    }
+
+    @discardableResult
+    public func onSuccess(block: (Value)->()) -> DecodedResult {
+        handle(success: block, failure: { _ in })
+        return self
+    }
+
+    @discardableResult
+    public func onError(block: (Error)->()) -> DecodedResult {
+        handle(success: { _ in }, failure: block)
+        return self
     }
 }
 
@@ -22,35 +71,44 @@ public class Session<C: Client> {
         self.urlSession = urlSession
     }
 
-    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType>)->()) -> SessionTask<C> {
-        return SessionTask(client: client, call: call, urlSession: urlSession, debug: debug, completion: completion)
+    public func dataTask<C: Call>(for call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> SessionTask<C> {
+        let task = SessionTask(client: client, call: call)
+        task.urlSession = urlSession
+        task.completion = completion
+        task.debug = debug
+
+        return task
+    }
+
+    @discardableResult
+    public func start<C: Call>(call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> URLSessionTask {
+        let tsk = dataTask(for: call, completion: completion)
+        tsk.urlSessionTask.resume()
+        return tsk.urlSessionTask
     }
 }
 
-public class SessionTask<C: Call> {
-    public typealias ValueType = C.ResponseType
-    public typealias CompletionBlock = (Result<ValueType>)->()
+public class SessionTask<C: Call>: URLRequestEncodable {
+    public typealias CompletionBlock = (DecodedResult<C.ResponseType>)->()
 
-    public var debug: Bool
-
-    public let urlSession: URLSession
     public let client: Client
     public let call: C
 
-    public private(set) lazy var urlSessionTask: URLSessionDataTask = {
-        let request = self.client.encode(call: self.call)
-        return self.urlSession.dataTask(with: request,
-                                        completionHandler: self.completionHandler)
+    public var urlRequest: URLRequest {
+        return client.encode(call: call)
+    }
+
+    public var completion: CompletionBlock?
+    public var debug = false
+
+    public var urlSession = URLSession.shared
+
+    public private(set) lazy var urlSessionTask: URLSessionTask = {
+        return self.createURLSessionTask()
     }()
 
-    public let completion: CompletionBlock
-
-    public init(client: Client, call: C, urlSession: URLSession = URLSession.shared, debug: Bool=false, completion: @escaping CompletionBlock) {
-        self.urlSession = urlSession
-        self.client = client
-        self.call = call
-        self.debug = debug
-        self.completion = completion
+    private func createURLSessionTask() -> URLSessionTask {
+        return urlSession.dataTask(with: urlRequest, completionHandler: completionHandler)
     }
 
     private func completionHandler(data: Data?, response: URLResponse?, error: Error?) {
@@ -62,22 +120,17 @@ public class SessionTask<C: Call> {
             }
         #endif
 
-        let result = transform(sessionResult: sessionResult)
+        let result = DecodedResult {
+            try self.client.decode(result: sessionResult, for: call)
+        }
 
         DispatchQueue.main.async {
-            self.completion(result)
+            self.completion?(result)
         }
     }
 
-    public func transform(sessionResult: URLSessionTaskResult) -> Result<ValueType> {
-        var result = Result<C.ResponseType>(response: sessionResult.httpResponse)
-
-        do {
-            result.value = try client.decode(result: sessionResult, for: call)
-        } catch {
-            result.error = error
-        }
-
-        return result
+    public init(client: Client, call: C) {
+        self.client = client
+        self.call = call
     }
 }

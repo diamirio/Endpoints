@@ -13,7 +13,7 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
     
-    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType>) -> ()) -> SessionTask<C> {
+    override public func dataTask<C : Call>(for call: C, completion: @escaping (DecodedResult<C.ResponseType>) -> ()) -> SessionTask<C> {
         let sessionResult = resultProvider.resultFor(call: call)
 
         return FakeSessionTask(result: sessionResult, client: client, call: call, completion: completion)
@@ -21,21 +21,20 @@ public class FakeSession<C: Client>: Session<C> {
 }
 
 public class FakeSessionTask<C: Call>: SessionTask<C> {
-    let result: URLSessionTaskResult
+    let fakeResult: DecodedResult<C.ResponseType>
 
-    public override var urlSessionTask: URLSessionDataTask {
+    public override var urlSessionTask: URLSessionTask {
         return FakeURLSessionDataTask {
-            let res = self.transform(sessionResult: self.result)
-
             DispatchQueue.main.async {
-                self.completion(res)
+                self.completion?(self.fakeResult)
             }
         }
     }
 
     public init(result: URLSessionTaskResult, client: Client, call: C, completion: @escaping CompletionBlock) {
-        self.result = result
-        super.init(client: client, call: call, completion: completion)
+        self.fakeResult = DecodedResult { try client.decode(result: result, for: call) }
+        super.init(client: client, call: call)
+        self.completion = completion
     }
 }
 
@@ -62,7 +61,7 @@ public class FakeHTTPURLResponse: HTTPURLResponse {
 public class FakeURLSessionDataTask: URLSessionDataTask {
     let completion: ()->()
 
-    init(completion: @escaping ()->()) {
+    init(_ completion: @escaping ()->()) {
         self.completion = completion
     }
 

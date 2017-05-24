@@ -48,38 +48,3 @@ public struct AnyCall<Response: ResponseDecodable>: Call {
         self.request = request
     }
 }
-
-extension Result {
-    public var urlError: URLError? {
-        return error as? URLError
-    }
-    
-    public var wasCancelled: Bool {
-        return urlError?.code == .cancelled
-    }
-    
-    @discardableResult
-    public func onSuccess(block: (Value)->()) -> Result {
-        if let value = value {
-            block(value)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func onError(block: (Error)->()) -> Result {
-        if !wasCancelled, let error = error {
-            block(error)
-        }
-        return self
-    }
-}
-
-public extension Session {
-    @discardableResult
-    func start<C: Call>(call: C, completion: @escaping (Result<C.ResponseType>)->()) -> SessionTask<C> {
-        let tsk = dataTask(for: call, completion: completion)
-        tsk.urlSessionTask.resume()
-        return tsk
-    }
-}
