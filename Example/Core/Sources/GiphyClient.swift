@@ -22,11 +22,11 @@ public class GiphyClient: Client {
         return req
     }
 
-    public func decode<C>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType where C : Call {
+    public func decode<C>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType where C : Call {
         do {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
-            return try anyClient.decode(sessionTaskResult: result, for: call)
+            return try anyClient.decode(result: result, for: call)
         } catch {
             // see if the backend sent detailed error information
             guard

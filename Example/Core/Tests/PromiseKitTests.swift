@@ -4,7 +4,7 @@ import PromiseKit
 @testable import ExampleCore
 
 class PromiseKitTests: XCTestCase {
-    var session = PromiseSession(with: BinClient())
+    var session = Session(with: BinClient())
     
     func testSuccess() {
         let input = "inout"

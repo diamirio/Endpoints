@@ -30,36 +30,56 @@ import Foundation
 /// let loginData = ["user": user, "pwd": pwd]
 /// let login = AnyCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
 /// ````
-///
-/// Adopts `ResponseValidator`, so you can override `validate` if
-/// you want to validate the response for a specific `Call` type. 
-/// `AnyClient` will use this method to validate the response of the calls
-/// request before using its `ResponseType` to decode it.
 /// 
 /// - seealso: `Client`, `Session`, `ResponseDecodable`, `Request`
-public protocol Call: ResponseValidator {
-    associatedtype ResponseType: ResponseDecodable
+public protocol Call {
+    associatedtype ResponseType: ResponseDecodable = Data
     
     var request: URLRequestEncodable { get }
+
+    /// Decode the result of a `URLSessionTask` for a request
+    /// created by `self`.
+    ///
+    /// A default implementation is provided by `defaultDecode`.
+    func decode(result: URLSessionTaskResult) throws -> ResponseType
 }
 
 public extension Call {
-    
-    /// No-Op. Override to perform call-specific validation
-    func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
+    /// Forwards to `defaultDecode`.
+    func decode(result: URLSessionTaskResult) throws -> ResponseType {
+        return try defaultDecode(result: result)
+    }
+
+    /// Throws `result.error` if not-nil.
+    ///
+    /// Throws 'DecodingError.missingData` if `result.data`
+    /// or `result.httpResponse` is `nil`.
+    ///
+    /// Finally delegates decoding to the block returned by
+    /// `ResponseType.responseDecoder()` and returns the decoded
+    ///  object or rethrows a decoding error.
+    final func defaultDecode(result: URLSessionTaskResult) throws -> ResponseType {
+        if let error = result.error {
+            throw error
+        }
+
+        guard let data = result.data, let response = result.httpResponse else {
+            throw DecodingError.missingData
+        }
+
+        return try ResponseType.responseDecoder()(response, data)
+    }
 }
 
 /// Wraps an HTTP error code.
-public enum StatusCodeError: Error {
+public enum StatusCodeError: LocalizedError {
     
     /// Describes an unacceptable status code for an HTTP request.
     /// Optionally, you can supply a `reason` which is then used as the 
     /// `errorDescription` instead of the default string returned by
     /// `HTTPURLResponse.localizedString(forStatusCode:)`
     case unacceptable(code: Int, reason: String?)
-}
 
-extension StatusCodeError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .unacceptable(let code, let reason):
@@ -68,30 +88,18 @@ extension StatusCodeError: LocalizedError {
     }
 }
 
-/// A type responsible for validating the result produced by a
-/// `URLSession`s `completionHandler` block.
-public protocol ResponseValidator {
-    
-    /// Validates the data provided by `URLSession`s `completionHandler`
-    /// block.
-    /// - throws: Any `Error`, if `result` is not valid.
-    func validate(result: URLSessionTaskResult) throws
-}
-
-/// A type validating the status code of `HTTPURLResponse`.
-public class StatusCodeValidator: ResponseValidator {
-    
+public extension HTTPURLResponse {
     /// Checks if an HTTP status code is acceptable
     /// - returns: `true` if `code` is between 200 and 299.
-    public func isAcceptableStatus(code: Int) -> Bool {
-        return (200..<300).contains(code)
+    func hasAcceptableStatus() -> Bool {
+        return (200..<300).contains(statusCode)
     }
-    
+
     /// - throws: `StatusCodeError.unacceptable` with `reason` set to `nil`
-    /// if `result` contains an unacceptable status code.
-    public func validate(result: URLSessionTaskResult) throws {
-        if let code = result.httpResponse?.statusCode, !isAcceptableStatus(code: code) {
-            throw StatusCodeError.unacceptable(code: code, reason: nil)
+    /// if `httpResponse` contains an unacceptable status code.
+    func validateStatusCode() throws {
+        guard hasAcceptableStatus() else {
+            throw StatusCodeError.unacceptable(code: statusCode, reason: nil)
         }
     }
 }
@@ -108,7 +116,7 @@ public protocol Client {
     /// this client's Web API into the expected response type.
     ///
     /// - throws: Any `Error` if `result` is considered invalid.
-    func decode<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
+    func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
 }
 
 /// Encapsulates the result produced by a `URLSession`s
@@ -150,13 +158,10 @@ public struct URLSessionTaskResult {
 ///
 /// Use a `Session` configured with a `Client` to start `Call`s using a
 /// `URLSession`.
-open class AnyClient: Client, ResponseValidator {
+open class AnyClient: Client {
     
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
-    
-    /// Used by `validate` to check if the status code of a response is valid.
-    public private(set) lazy var statusCodeValidator = StatusCodeValidator()
     
     /// Creates a client with a base URL.
     public init(baseURL: URL) {
@@ -180,40 +185,28 @@ open class AnyClient: Client, ResponseValidator {
         
         return urlRequest
     }
-    
-    /// Throws `result.error`, if it is not `nil`.
-    ///
+
     /// Validates if `result` is processable by this client using 
-    /// `validate(result:)` and rethrows the resulting error, if any.
-    ///
-    /// Uses `call`s `validate` method to perform call-specific validation
-    /// and rethrows the resulting error, if any.
-    ///
-    /// Throws 'DecodingError.missingData` if `result.data` or `result.httpResponse` is `nil`.
-    ///
-    /// Finally tries to decode the response using `Call.ResponseType`
-    /// and returns the decoded object or rethrows the resulting error.
-    public func decode<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
-        if let error = result.error {
-            throw error
+    /// `validate(result:)` and puts any thrown error into `result`.
+    /// Then `call.decode(result:)` is used to decode `call`s response
+    /// type. If this fails, the error is rethrown.
+    public func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
+        var result = result
+
+        do {
+            try validate(result: result)
+        } catch {
+            result.error = error
         }
-        
-        try call.validate(result: result) //request-specific validation
-        try validate(result: result) //global validation
-        
-        if let data = result.data, let response = result.httpResponse {
-            return try C.ResponseType.responseDecoder()(response, data)
-        } else {
-            throw DecodingError.missingData
-        }
+
+        return try call.decode(result: result)
     }
     
-    /// Uses `StatusCodeValidator` to validate `result`.
+    /// Validates the status code using `HTTPURLResponse.validateStatusCode()`.
     /// 
     /// Override to perform additional validation necessary for *all* calls
     /// related to this client.
-    /// Use `Call.validate` for call-specific validation.
     open func validate(result: URLSessionTaskResult) throws {
-        try statusCodeValidator.validate(result: result)
+        try result.httpResponse?.validateStatusCode()
     }
 }

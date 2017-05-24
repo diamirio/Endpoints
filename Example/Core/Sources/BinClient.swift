@@ -11,7 +11,7 @@ public class BinClient: AnyClient {
     
     override public func validate(result: URLSessionTaskResult) throws {
         do {
-            try statusCodeValidator.validate(result: result)
+            try result.httpResponse?.validateStatusCode()
         } catch StatusCodeError.unacceptable(let code, let reason) {
             let message = result.httpResponse?.allHeaderFields["X-Error-Message"] as? String
 

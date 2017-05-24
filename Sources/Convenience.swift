@@ -42,20 +42,10 @@ public struct BasicAuthorization {
 public struct AnyCall<Response: ResponseDecodable>: Call {
     public typealias ResponseType = Response
     
-    public typealias ValidationBlock = (URLSessionTaskResult) throws ->()
-    
     public var request: URLRequestEncodable
-    
-    public var validate: ValidationBlock?
-    
-    public init(_ request: URLRequestEncodable, validate: ValidationBlock?=nil) {
+
+    public init(_ request: URLRequestEncodable) {
         self.request = request
-        
-        self.validate = validate
-    }
-    
-    public func validate(result: URLSessionTaskResult) throws {
-        try validate?(result)
     }
 }
 

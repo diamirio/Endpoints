@@ -285,8 +285,8 @@ class ClientTests: XCTestCase {
         var request: URLRequestEncodable {
             return Request(.get, "response-headers", query: [ "Mime": mime ])
         }
-        
-        func validate(result: URLSessionTaskResult) throws {
+
+        func decode(result: URLSessionTaskResult) throws -> [String : Any] {
             throw StatusCodeError.unacceptable(code: 0, reason: nil)
         }
     }

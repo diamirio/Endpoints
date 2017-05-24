@@ -2,30 +2,19 @@ import Foundation
 import Endpoints
 import PromiseKit
 
-public class PromiseSession<C: Client> {
-    public var debug = false
-    
-    public var urlSession: URLSession
-    public let client: C
-    
-    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
-        self.client = client
-        self.urlSession = urlSession
-    }
-    
+extension Session {
     public func start<C: Call>(call: C) -> Promise<C.ResponseType> {
         return Promise { fulfill, reject in
-            let urlRequest = client.encode(call: call)
-            let task = urlSession.dataTask(with: urlRequest) {  data, response, error in
-                do {
-                    let value = try self.client.decode(sessionTaskResult: URLSessionTaskResult(response: response, data: data, error: error), for: call)
-                    
-                    fulfill(value)
-                } catch {
+            self.start(call: call) { result in
+                if let error = result.error {
+                    // reject also on cancellation
                     reject(error)
                 }
+
+                result.onSuccess { value in
+                    fulfill(value)
+                }
             }
-            task.resume()
         }
     }
 }
