@@ -15,44 +15,22 @@ class ClientTester<C: Client> {
         self.session = session
         session.debug = true
     }
-    
-    func test<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) {
-        let exp = test.expectation(description: "")
-        session.start(call: call) { result in
-            validateResult?(result)
-            
-            exp.fulfill()
-        }
-        test.waitForExpectations(timeout: 30, handler: nil)
-    }
 
-    func testResponse<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) {
+    @discardableResult
+    func test<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) ->  URLSessionTask {
         let exp = test.expectation(description: "")
         let tsk = SessionTask(client: session.client, call: call)
+        tsk.debug = true
         let urlTsk = tsk.urlSessionTask
-        tsk.completion = { result in
-            urlTsk.response
-        }
-        tsk.start()
-        session.start(call: call) { result in
-            validateResult?(result)
 
+        tsk.completion = { result in
+            validateResult?(result)
             exp.fulfill()
         }
-        test.waitForExpectations(timeout: 30, handler: nil)
-    }
-    
-    func assert<D: ResponseDecodable>(result: DecodedResult<D>, isSuccess: Bool=true, status code: Int?=nil) {
-        if isSuccess {
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-        } else {
-            XCTAssertNotNil(result.error)
-            XCTAssertNil(result.value)
-        }
-        
-        if let code = code {
-            XCTAssertEqual(result.response?.statusCode, code)
-        }
+        urlTsk.resume()
+
+        test.waitForExpectations(timeout: 10, handler: nil)
+
+        return urlTsk
     }
 }

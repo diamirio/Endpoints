@@ -26,6 +26,15 @@ public enum DecodedResult<Value> {
         return error
     }
 
+
+    public var isSuccess: Bool {
+        return value != nil
+    }
+
+    public var isError: Bool {
+        return error != nil
+    }
+
     public var urlError: URLError? {
         return error as? URLError
     }

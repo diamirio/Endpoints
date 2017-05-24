@@ -125,7 +125,6 @@ public protocol Client {
 /// Mainly used by `Session` and `Client` to simplify the passing of 
 /// parameters.
 public struct URLSessionTaskResult {
-    
     public var response: URLResponse?
     public var data: Data?
     public var error: Error?
@@ -135,12 +134,21 @@ public struct URLSessionTaskResult {
        self.data = data
        self.error = error
    }
-    
+}
+
+public protocol URLResponseHolder {
+    var response: URLResponse? { get }
+}
+
+extension URLResponseHolder {
     /// Returns `response` cast to `HTTPURLResponse`.
     public var httpResponse: HTTPURLResponse? {
         return response as? HTTPURLResponse
     }
 }
+
+extension URLSessionTaskResult: URLResponseHolder {}
+extension URLSessionTask: URLResponseHolder {}
 
 /// The default implementation of `Client`.
 ///

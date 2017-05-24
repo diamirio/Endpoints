@@ -23,7 +23,7 @@ class ClientTests: XCTestCase {
                 XCTFail("was cancelled. should not be called.")
             }
             exp.fulfill()
-        }.urlSessionTask
+        }
         
         task.cancel()
         waitForExpectations(timeout: 1, handler: nil)
@@ -36,7 +36,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<Data>(urlReq)
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
+            XCTAssertFalse(result.isSuccess)
             
             XCTAssertEqual(result.error?.localizedDescription, "The request timed out.")
 
@@ -48,8 +48,8 @@ class ClientTests: XCTestCase {
     func testStatusError() {
         let c = AnyCall<Data>(Request(.get, "status/400"))
         
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 400)
+        let tsk = tester.test(call: c) { result in
+            XCTAssertFalse(result.isSuccess)
             XCTAssertEqual(result.error?.localizedDescription, "bad request")
             
             if let error = result.error as? StatusCodeError {
@@ -63,13 +63,14 @@ class ClientTests: XCTestCase {
                 XCTFail("wrong error: \(String(describing: result.error))")
             }
         }
+        XCTAssertEqual(tsk.httpResponse?.statusCode, 400)
     }
     
     func testGetData() {
         let c = AnyCall<Data>(Request(.get, "get"))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
         }
     }
     
@@ -78,7 +79,8 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
+
             result.onSuccess { value in
                 XCTAssertEqual(value["data"] as? String, body)
                 
@@ -97,7 +99,8 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
+
             result.onSuccess { value in
                 if let form = value["form"] as? [String: String] {
                     XCTAssertEqual(form["key"], "value")
@@ -120,7 +123,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             result.onSuccess { value in
                 if let form = value["form"] as? [String: String] {
@@ -144,7 +147,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             result.onSuccess { value in
                 if let form = value["json"] as? [String: String] {
@@ -166,7 +169,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<String>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             if let string = result.value {
                 XCTAssertTrue(string.contains("inputParamValue"))
@@ -178,7 +181,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+            XCTAssertTrue(result.isSuccess)
             
             if let jsonDict = result.value {
                 let args = jsonDict["args"]
@@ -229,13 +232,15 @@ class ClientTests: XCTestCase {
         let c = AnyCall<[String: Any]>(Request(.get, "xml"))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 200)
-            
-            if let error = result.error as? CocoaError {
-                XCTAssertTrue(error.isPropertyListError)
-                XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
-            } else {
-                XCTFail("wrong error: \(String(describing: result.error))")
+            XCTAssertFalse(result.isSuccess)
+
+            result.onError { error in
+                if let error = error as? CocoaError {
+                    XCTAssertTrue(error.isPropertyListError)
+                    XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
+                } else {
+                    XCTFail("wrong error: \(String(describing: result.error))")
+                }
             }
         }
     }
@@ -254,24 +259,16 @@ class ClientTests: XCTestCase {
         let value = "value"
         
         tester.test(call: GetOutput(value: value)) { result in
-            self.tester.assert(result: result)
-            
-            if let jsonDict = result.value {
-                let args = jsonDict["args"]
-                XCTAssertNotNil(args)
-                
-                if let args = args {
-                    XCTAssertTrue(args is Dictionary<String, String>)
-                    
-                    if let args = args as? Dictionary<String, String> {
-                        let param = args["param"]
-                        XCTAssertNotNil(param)
-                        
-                        if let param = param {
-                            XCTAssertEqual(param, value)
-                        }
-                    }
+            XCTAssertTrue(result.isSuccess)
+
+            result.onSuccess { dict in
+                guard let args = dict["args"] as? Dictionary<String, String> else {
+                    XCTFail()
+                    return
                 }
+
+                let param = args["param"]
+                XCTAssertEqual(param, value)
             }
         }
     }
@@ -304,7 +301,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<Data>(Request(.get, "get"))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
+            XCTAssertFalse(result.isSuccess)
             
             guard let error = result.error as? StatusCodeError else {
                 XCTFail("error expected")
@@ -326,8 +323,8 @@ class ClientTests: XCTestCase {
         let mime = "application/json"
         let c = ValidatingCall(mime: mime)
         
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
+        let tsk = tester.test(call: c) { result in
+            XCTAssertFalse(result.isSuccess)
             
             guard let error = result.error as? StatusCodeError else {
                 XCTFail("error expected")
@@ -337,9 +334,9 @@ class ClientTests: XCTestCase {
             if case .unacceptable(let code, _) = error {
                 XCTAssertEqual(code, 0, "request should throw error, not client")
             }
-            
-            XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
         }
+
+        XCTAssertEqual(tsk.httpResponse?.allHeaderFields["Mime"] as? String, mime)
     }
     
     func testBasicAuth() {
@@ -347,7 +344,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true)
+            XCTAssertTrue(result.isSuccess)
         }
     }
     
@@ -356,7 +353,7 @@ class ClientTests: XCTestCase {
         let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
+            XCTAssertFalse(result.isSuccess)
         }
     }
 
@@ -364,42 +361,29 @@ class ClientTests: XCTestCase {
         let url = URL(string: "https://httpbin.org/get?q=a")!
         let c = AnyCall<Data>(url)
         
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, url)
+        let tsk = tester.test(call: c) { result in
+            XCTAssertTrue(result.isSuccess)
         }
+        XCTAssertEqual(tsk.httpResponse?.url, url)
     }
     
     func testSimpleRelativeURLRequestCall() {
         let url = URL(string: "get?q=a")!
         let c = AnyCall<Data>(URLRequest(url: url))
         
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
+        let tsk = tester.test(call: c) { result in
+            XCTAssertTrue(result.isSuccess)
         }
+        XCTAssertEqual(tsk.httpResponse?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
     }
     
     func testRedirect() {
         let req = Request(.get, "/relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<Data>(req)
         
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
+        let tsk = tester.test(call: c) { result in
+            XCTAssertTrue(result.isSuccess)
         }
-    }
-
-    func testSessionTask() {
-        let exp = expectation(description: "")
-        let c = AnyCall<Data>(Request(.get, "get"))
-
-        let task = SessionTask(client: tester.session.client, call: c) { result in
-            exp.fulfill()
-        }
-        task.debug = true
-        task.urlSessionTask.resume()
-
-        waitForExpectations(timeout: 4, handler: nil)
+        XCTAssertEqual(tsk.httpResponse?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
     }
 }
