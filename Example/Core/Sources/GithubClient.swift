@@ -95,48 +95,38 @@ public struct Repository: Unboxable {
 
 public protocol Pagable: ResponseDecodable {
     var nextPage: URL? { get set }
-    static func dataDecoder() -> AnyResponseDecoder<Self>
+    static func dataDecoder() -> Decoder
 }
 
-extension Pagable {
-    public static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return AnyResponseDecoder(PagableResponseDecoder(wrap: dataDecoder()))
+public extension Pagable {
+    static func decodeDataAndPagingLinkHeaders(response: HTTPURLResponse, data: Data) throws -> Self {
+        var decoded = try dataDecoder()(response, data)
+
+        for link in response.parseLinks() {
+            if link.rel == .next {
+                decoded.nextPage = link.url
+            }
+        }
+        
+        return decoded
+    }
+}
+
+public protocol PagableUnboxable: Pagable, Unboxable {}
+
+public extension PagableUnboxable {
+    static func responseDecoder() -> Decoder {
+        return decodeDataAndPagingLinkHeaders
     }
 }
 
 extension Pagable where Self: Unboxable {
-    public static func dataDecoder() -> AnyResponseDecoder<Self> {
-        return AnyResponseDecoder(UnboxableDecoder<Self>())
+    public static func dataDecoder() -> Decoder {
+        return decodeUnboxable
     }
 }
 
-public extension ResponseDecodable where Self: Pagable {
-    static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return AnyResponseDecoder(PagableResponseDecoder(wrap: responseDecoder()))
-    }
-}
-
-class PagableResponseDecoder<D: ResponseDecoder, P: Pagable>: ResponseDecoder where D.DecodedType == P {
-    let wrapped: D
-
-    init(wrap: D) {
-        self.wrapped = wrap
-    }
-
-    func decode(response: HTTPURLResponse, data: Data) throws -> P {
-        var output = try wrapped.decode(response: response, data: data)
-
-        for link in response.parseLinks() {
-            if link.rel == .next {
-                output.nextPage = link.url
-            }
-        }
-
-        return output
-    }
-}
-
-public struct RepositoriesResponse: Unboxable, Pagable {
+public struct RepositoriesResponse: PagableUnboxable {
     public let totalCount: Int
     public let repositories: [Repository]
     public var nextPage: URL?

@@ -202,7 +202,7 @@ open class AnyClient: Client, ResponseValidator {
         try validate(result: result) //global validation
         
         if let data = result.data, let response = result.httpResponse {
-            return try C.ResponseType.responseDecoder().decode(response: response, data: data)
+            return try C.ResponseType.responseDecoder()(response, data)
         } else {
             throw DecodingError.missingData
         }

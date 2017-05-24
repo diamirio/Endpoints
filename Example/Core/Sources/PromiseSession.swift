@@ -18,7 +18,7 @@ public class PromiseSession<C: Client> {
             let urlRequest = client.encode(call: call)
             let task = urlSession.dataTask(with: urlRequest) {  data, response, error in
                 do {
-                    let value = try self.client.parse(sessionTaskResult: URLSessionTaskResult(response: response, data: data, error: error), for: call)
+                    let value = try self.client.decode(sessionTaskResult: URLSessionTaskResult(response: response, data: data, error: error), for: call)
                     
                     fulfill(value)
                 } catch {

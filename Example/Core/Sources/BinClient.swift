@@ -47,17 +47,15 @@ public extension BinClient {
 public struct OutputValue: ResponseDecodable {
     public var value: String
     
-    public static func responseDecoder() -> AnyResponseDecoder<OutputValue> {
-        return AnyResponseDecoder(Decoder())
+    public static func responseDecoder() -> Decoder {
+        return decodeOutputValue
     }
 
-    class Decoder: ResponseDecoder {
-        func decode(response: HTTPURLResponse, data: Data) throws -> OutputValue {
-            let dict = try JSONDictionaryDecoder<String, Any>().decode(response: response, data: data)
-            guard let args = dict["args"] as? [String: String], let value = args["value"] else {
-                throw DecodingError.invalidData(description: "value not found")
-            }
-            return OutputValue(value: value)
+    public static func decodeOutputValue(response: HTTPURLResponse, data: Data) throws -> OutputValue {
+        let dict = try [String: Any].decodeJSONDictionary(response: response, data: data)
+        guard let args = dict["args"] as? [String: String], let value = args["value"] else {
+            throw DecodingError.invalidData(description: "value not found")
         }
+        return OutputValue(value: value)
     }
 }

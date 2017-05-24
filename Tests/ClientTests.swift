@@ -206,7 +206,7 @@ class ClientTests: XCTestCase {
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
         let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "UTF-8")
 
-        let decodedObject = try! [String].responseDecoder().decode(response: resp, data: arrayData)
+        let decodedObject = try! [String].responseDecoder()(resp, arrayData)
         
         XCTAssertEqual(inputArray, decodedObject)
     }
@@ -217,7 +217,7 @@ class ClientTests: XCTestCase {
         
         do {
             let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "EUC-JP")
-            let decoded = try String.responseDecoder().decode(response: resp, data: data)
+            let decoded = try String.responseDecoder()(resp, data)
             XCTAssertEqual(decoded, input)
             XCTFail("this should actually fail")
         } catch {

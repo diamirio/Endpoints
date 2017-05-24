@@ -21,12 +21,12 @@ public class GiphyClient: Client {
         
         return req
     }
-    
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
+
+    public func decode<C>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType where C : Call {
         do {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
-            return try anyClient.parse(sessionTaskResult: result, for: call)
+            return try anyClient.decode(sessionTaskResult: result, for: call)
         } catch {
             // see if the backend sent detailed error information
             guard
@@ -93,7 +93,7 @@ public extension GiphyClient {
 // MARK: -
 // MARK: Responses
 
-public struct GiphyListResponse: UnboxableResponseDecodable {
+public struct GiphyListResponse: Unboxable, ResponseDecodable {
     public var images: [GiphyImage]
     public var pagination: GiphyPagination
     

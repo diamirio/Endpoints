@@ -3,68 +3,22 @@ import Foundation
 /// Used by `Call` to define the expected response type for its associated
 /// request.
 public protocol ResponseDecodable {
-    typealias ResponseDecoder = (_ response: HTTPURLResponse, _ data: Data)->(Self)
+    typealias Decoder = (_ response: HTTPURLResponse, _ data: Data) throws -> Self
 
     /// Returns a type-erased `ResponseDecoder`, responsible for creating
     /// instances of this type from a `HTTPURLResponse` and corresponding
     /// body `Data`.
-    static func responseDecoder() -> AnyResponseDecoder<Self>
-}
-
-/// A type that can convert a `Data` object into a specified `DecodedType`.
-/// Can also decode metadata from `HTTPURLResponse` and include it in the 
-/// decoded type instance.
-///
-/// Adopted by `Data`, `String`, `Dictionary<String, Any>` and `Array<Any>`
-/// (the last two use JSONSerialization to decode JSON objects).
-public protocol ResponseDecoder {
-    /// The type that can be decoded by `self`.
-    associatedtype DecodedType
-
-    /// Decodes a `HTTPURLRespnonse` and it's `Data` into `DecodedType`.
-    ///
-    /// - throws: `DecodingError` if `data` is not in the expected format.
-    func decode(response: HTTPURLResponse, data: Data) throws -> DecodedType
+    static func responseDecoder() -> Decoder
 }
 
 // MARK: - Decodable Support
 
 extension String: ResponseDecodable {
-    public static func responseDecoder() -> AnyResponseDecoder<String> {
-        return AnyResponseDecoder(StringDecoder())
+    public static func responseDecoder() -> Decoder {
+        return decodeString
     }
-}
 
-extension Data: ResponseDecodable {
-    public static func responseDecoder() -> AnyResponseDecoder<Data> {
-        return AnyResponseDecoder(DataResponseDecoder())
-    }
-}
-
-extension Array: ResponseDecodable {
-    public static func responseDecoder() -> AnyResponseDecoder<[Element]> {
-        return AnyResponseDecoder(JSONArrayDecoder<Element>())
-    }
-}
-
-extension Dictionary: ResponseDecodable {
-    public static func responseDecoder() -> AnyResponseDecoder<[Key: Value]> {
-        return AnyResponseDecoder(JSONDictionaryDecoder<Key, Value>())
-    }
-}
-
-// MARK: - Decoders
-
-public class DataResponseDecoder: ResponseDecoder {
-    public func decode(response: HTTPURLResponse, data: Data) throws -> Data {
-        return data
-    }
-}
-
-public class StringDecoder: ResponseDecoder {
-    public init() {}
-
-    public func decode(response: HTTPURLResponse, data: Data) throws -> String {
+    public static func decodeString(response: HTTPURLResponse, data: Data) throws -> String {
         let encoding = response.stringEncoding
         if let string = String(data: data, encoding: encoding) {
             return string
@@ -74,10 +28,22 @@ public class StringDecoder: ResponseDecoder {
     }
 }
 
-public class JSONArrayDecoder<Element>: ResponseDecoder {
-    public init() {}
+extension Data: ResponseDecodable {
+    public static func responseDecoder() -> Decoder {
+        return decodeData
+    }
 
-    public func decode(response: HTTPURLResponse, data: Data) throws -> [Element] {
+    public static func decodeData(response: HTTPURLResponse, data: Data) throws -> Data {
+        return data
+    }
+}
+
+extension Array: ResponseDecodable {
+    public static func responseDecoder() -> (HTTPURLResponse, Data) throws -> [Element] {
+        return decodeJSONArray
+    }
+
+    public static func decodeJSONArray(response: HTTPURLResponse, data: Data) throws -> [Element] {
         guard let array = try JSONSerialization.jsonObject(with: data) as? [Element] else {
             throw DecodingError.invalidData(description: "JSON structure is not an Array")
         }
@@ -86,10 +52,12 @@ public class JSONArrayDecoder<Element>: ResponseDecoder {
     }
 }
 
-public class JSONDictionaryDecoder<Key: Hashable, Value>: ResponseDecoder {
-    public init() {}
+extension Dictionary: ResponseDecodable {
+    public static func responseDecoder() -> Decoder {
+        return decodeJSONDictionary
+    }
 
-    public func decode(response: HTTPURLResponse, data: Data) throws -> [Key: Value] {
+    public static func decodeJSONDictionary(response: HTTPURLResponse, data: Data) throws -> [Key: Value] {
         guard let dict = try JSONSerialization.jsonObject(with: data) as? [Key: Value] else {
             throw DecodingError.invalidData(description: "JSON structure is not an Object")
         }
@@ -120,20 +88,6 @@ public enum DecodingError: LocalizedError {
         case .invalidData(let desc):
             return desc
         }
-    }
-}
-
-// MARK: - Type Erasure
-
-public struct AnyResponseDecoder<T>: ResponseDecoder {
-    private let _decode: (_ response: HTTPURLResponse, _ data: Data) throws -> T
-
-    public init<D: ResponseDecoder>(_ base: D) where D.DecodedType == T {
-        self._decode = base.decode
-    }
-
-    public func decode(response: HTTPURLResponse, data: Data) throws -> T {
-        return try _decode(response, data)
     }
 }
 

@@ -10,7 +10,7 @@ class EndpointUnboxTests: XCTestCase {
         tester = ClientTester(test: self, client: AnyClient(baseURL: URL(string: "https://httpbin.org")!))
     }
     
-    struct UnboxTest: UnboxableResponseDecodable {
+    struct UnboxTest: Unboxable, ResponseDecodable {
         let x: String
         
         init(unboxer: Unboxer) throws {
@@ -21,7 +21,7 @@ class EndpointUnboxTests: XCTestCase {
     func testUnboxableParsing() {
         let json = [ "x": "a" ]
         let jsonData = try! JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-        let parsed = try! UnboxTest.responseDecoder().decode(response: HTTPURLResponse(), data: jsonData)
+        let parsed = try! UnboxTest.decodeUnboxable(response: HTTPURLResponse(), data: jsonData)
         
         XCTAssertEqual(parsed.x, "a")
     }
@@ -29,7 +29,7 @@ class EndpointUnboxTests: XCTestCase {
     func testUnboxableArrayParsing() {
         let json = [[ "x": "a" ], [ "x": "z"]]
         let jsonData = try! JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-        let parsed = try! [UnboxTest].responseDecoder().decode(response: HTTPURLResponse(), data: jsonData)
+        let parsed = try! [UnboxTest].decodeUnboxableArray(response: HTTPURLResponse(), data: jsonData)
         
         XCTAssertEqual(parsed.count, 2)
         XCTAssertEqual(parsed.first!.x, "a")

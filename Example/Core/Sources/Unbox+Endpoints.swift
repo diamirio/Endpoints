@@ -2,28 +2,22 @@ import Foundation
 import Unbox
 import Endpoints
 
-public protocol UnboxableResponseDecodable: Unboxable, ResponseDecodable {}
-
-public extension UnboxableResponseDecodable {
-    static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return AnyResponseDecoder(UnboxableDecoder<Self>())
+public extension Unboxable where Self: ResponseDecodable {
+    static func responseDecoder() -> Decoder {
+        return decodeUnboxable
     }
-}
 
-extension Array where Element: Unboxable {
-    static func responseDecoder() -> AnyResponseDecoder<[Element]> {
-        return AnyResponseDecoder(UnboxableArrayDecoder<Element>())
-    }
-}
-
-public class UnboxableDecoder<U: Unboxable>: ResponseDecoder {
-    public func decode(response: HTTPURLResponse, data: Data) throws -> U {
+    static func decodeUnboxable(response: HTTPURLResponse, data: Data) throws -> Self {
         return try unbox(data: data)
     }
 }
 
-public class UnboxableArrayDecoder<U: Unboxable>: ResponseDecoder {
-    public func decode(response: HTTPURLResponse, data: Data) throws -> [U] {
-        return try unbox(data: data)
+public extension Array where Element: Unboxable {
+    static func responseDecoder() -> Decoder {
+        return decodeUnboxableArray
+    }
+
+    static func decodeUnboxableArray(response: HTTPURLResponse, data: Data) throws -> [Element] {
+        return try Unbox.unbox(data: data)
     }
 }

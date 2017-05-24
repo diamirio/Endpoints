@@ -49,7 +49,7 @@ public class FakeHTTPURLResponse: HTTPURLResponse {
         return fakeTextEncodingName
     }
 
-    public init(status code: Int=200, header: Parameters?=nil, textEncodingName: String?) {
+    public init(status code: Int=200, header: Parameters?=nil, textEncodingName: String?=nil) {
         fakeTextEncodingName = textEncodingName
         super.init(url: URL(string: "http://127.0.0.1")!, statusCode: code, httpVersion: nil, headerFields: header)!
     }
