@@ -73,7 +73,7 @@ public class SessionTask<C: Call> {
         var result = Result<C.ResponseType>(response: sessionResult.httpResponse)
 
         do {
-            result.value = try client.parse(sessionTaskResult: sessionResult, for: call)
+            result.value = try client.decode(sessionTaskResult: sessionResult, for: call)
         } catch {
             result.error = error
         }

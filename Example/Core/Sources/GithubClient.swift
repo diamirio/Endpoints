@@ -100,33 +100,19 @@ public protocol Pagable: ResponseDecodable {
 
 extension Pagable {
     public static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return PagableResponseDecoder(wrap: dataDecoder()).untyped()
+        return AnyResponseDecoder(PagableResponseDecoder(wrap: dataDecoder()))
     }
 }
 
 extension Pagable where Self: Unboxable {
     public static func dataDecoder() -> AnyResponseDecoder<Self> {
-        return UnboxableDecoder<Self>().untyped()
-    }
-}
-
-public extension ResponseParser where OutputType: Pagable {
-    public static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
-        var output = try self.parse(data: data, encoding: response.stringEncoding)
-        
-        for link in response.parseLinks() {
-            if link.rel == .next {
-                output.nextPage = link.url
-            }
-        }
-        
-        return output
+        return AnyResponseDecoder(UnboxableDecoder<Self>())
     }
 }
 
 public extension ResponseDecodable where Self: Pagable {
     static func responseDecoder() -> AnyResponseDecoder<Self> {
-        return PagableResponseDecoder(wrap: responseDecoder()).untyped()
+        return AnyResponseDecoder(PagableResponseDecoder(wrap: responseDecoder()))
     }
 }
 

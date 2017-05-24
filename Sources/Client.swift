@@ -5,14 +5,14 @@ import Foundation
 /// Encapsulates the request that is sent to the server and the type that is
 /// expected in the response.
 ///
-/// A `Client` uses `Call`s to encode requests and parse the server's response.
+/// A `Client` uses `Call`s to encode requests and decode the server's response.
 /// A `Session` can be used to start a `Call`.
 /// 
 /// You can implement this protocol to create a type-safe interface to your 
 /// Web API:
 /// ````
 /// struct Login: Call {
-///     typealias ResponseType = [String: Any] //you can use any DataParser
+///     typealias ResponseType = [String: Any] //you can use any ResponseDecodable
 ///
 ///     var user: String
 ///     var pwd: String
@@ -34,9 +34,9 @@ import Foundation
 /// Adopts `ResponseValidator`, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type. 
 /// `AnyClient` will use this method to validate the response of the calls
-/// request before using its `ResponseType` to parse it.
+/// request before using its `ResponseType` to decode it.
 /// 
-/// - seealso: `Client`, `Session`, `DataParser`, `Request`
+/// - seealso: `Client`, `Session`, `ResponseDecodable`, `Request`
 public protocol Call: ResponseValidator {
     associatedtype ResponseType: ResponseDecodable
     
@@ -96,7 +96,7 @@ public class StatusCodeValidator: ResponseValidator {
     }
 }
 
-/// A type responsible for encoding and parsing all calls for a given Web API.
+/// A type responsible for encoding and decoding all calls for a given Web API.
 /// A basic implementation is provided by `AnyClient`.
 public protocol Client {
     
@@ -105,10 +105,10 @@ public protocol Client {
     func encode<C: Call>(call: C) -> URLRequest
     
     /// Converts the `URLSession`s result for a `Call` to
-    /// this client's Web API into the expected output type.
+    /// this client's Web API into the expected response type.
     ///
     /// - throws: Any `Error` if `result` is considered invalid.
-    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
+    func decode<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
 }
 
 /// Encapsulates the result produced by a `URLSession`s
@@ -136,7 +136,7 @@ public struct URLSessionTaskResult {
 
 /// The default implementation of `Client`.
 ///
-/// All `Calls` made for a specific Web API should be encoded and parsed using
+/// All `Calls` made for a specific Web API should be encoded and decoded using
 /// a dedicated `Client` type. 
 ///
 /// You typically create a subclass of `AnyClient` for each Web API you want
@@ -189,11 +189,11 @@ open class AnyClient: Client, ResponseValidator {
     /// Uses `call`s `validate` method to perform call-specific validation
     /// and rethrows the resulting error, if any.
     ///
-    /// Throws 'ParsingError.missingData` if `result.data` or `result.httpResponse` is `nil`.
+    /// Throws 'DecodingError.missingData` if `result.data` or `result.httpResponse` is `nil`.
     ///
-    /// Finally tries to parse the response using `Call.ResponseType`
-    /// and returns the parsed object or rethrows the resulting error.
-    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
+    /// Finally tries to decode the response using `Call.ResponseType`
+    /// and returns the decoded object or rethrows the resulting error.
+    public func decode<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
         if let error = result.error {
             throw error
         }
@@ -204,7 +204,7 @@ open class AnyClient: Client, ResponseValidator {
         if let data = result.data, let response = result.httpResponse {
             return try C.ResponseType.responseDecoder().decode(response: response, data: data)
         } else {
-            throw ParsingError.missingData
+            throw DecodingError.missingData
         }
     }
     

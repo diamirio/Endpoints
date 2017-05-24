@@ -48,14 +48,14 @@ public struct OutputValue: ResponseDecodable {
     public var value: String
     
     public static func responseDecoder() -> AnyResponseDecoder<OutputValue> {
-        return Decoder().untyped()
+        return AnyResponseDecoder(Decoder())
     }
 
     class Decoder: ResponseDecoder {
         func decode(response: HTTPURLResponse, data: Data) throws -> OutputValue {
             let dict = try JSONDictionaryDecoder<String, Any>().decode(response: response, data: data)
             guard let args = dict["args"] as? [String: String], let value = args["value"] else {
-                throw ParsingError.invalidData(description: "value not found")
+                throw DecodingError.invalidData(description: "value not found")
             }
             return OutputValue(value: value)
         }

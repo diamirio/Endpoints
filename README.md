@@ -18,13 +18,13 @@ It requires Swift 3, makes heavy use of generics (and generalized existentials) 
 Here's how to load a random image from Giphy.
 
 ```swift
-// A client is responsible for encoding and parsing all calls for a given Web-API.
+// A client is responsible for encoding and decoding all calls for a given Web-API.
 let client = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
 
 // A call encapsulates the request that is sent to the server and the type that is expected in the response.
 let call = AnyCall<Data>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
 
-// A session wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error) in a completion block.
+// A session wraps `URLSession` and allows you to start the request for the call and get the decoded response object (or an error) in a completion block.
 let session = Session(with: client)
 
 // enable debug-mode to log network traffic
@@ -40,14 +40,14 @@ session.start(call: call) { result in
 }
 ```
 
-### Response Parsing
+### Response Decoding
 
-A call is supposed to know exactly what response to expect from its request. It delegates the parsing of the response to a `ResponseParser`.
+A call is supposed to know exactly what response to expect from its request. It delegates the decoding of the response to a `ResponseDecoder`.
 
-Some built-in types already adopt the `ResponseParser` protocol (using protocol extensions), so you can for example turn any response into a JSON array or dictionary:
+Some built-in types already adopt the `ResponseDecoder` protocol (using protocol extensions), so you can for example turn any response into a JSON array or dictionary:
 
 ```swift
-// Replace `Data` with any `ResponseParser` implementation
+// Replace `Data` with any `ResponseDecoder` implementation
 let call = AnyCall<[String: Any]>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
 ...
 session.start(call: call) { result in
@@ -82,7 +82,7 @@ A client is responsible for handling things that are common for all operations o
 
 `AnyClient` is the default implementation of the `Client` protocol and can be used as-is or as a starting point for your own dedicated client. 
 
-You'll usually need to create your own dedicated client that either subclasses `AnyClient` or delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here:
+You'll usually need to create your own dedicated client that either subclasses `AnyClient` or delegates the encoding of requests and decoding of responses to an `AnyClient` instance, as done here:
 
 ```swift
 class GiphyClient: Client {
@@ -99,11 +99,11 @@ class GiphyClient: Client {
         return request
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func decode<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
         do {
-            // Use `AnyClient` to parse the response
+            // Use `AnyClient` to decode the response
             // If this fails, try to read error details from response body
-            return try anyClient.parse(sessionTaskResult: result, for: call)
+            return try anyClient.decode(sessionTaskResult: result, for: call)
         } catch {
             // See if the backend sent detailed error information
             guard
@@ -139,15 +139,15 @@ struct GetRandomImage: Call {
 }
 ```
 
-In order for this to work, `RandomImage` must adopt the `ResponseParser` protocol:
+In order for this to work, `RandomImage` must adopt the `ResponseDecodable` protocol:
 
 ```swift
-extension RandomImage: ResponseParser {
+extension RandomImage: ResponseDecodable {
     static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
         let dict = try [String: Any].parse(data: data, encoding: encoding)
         
         guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-            throw throw ParsingError.invalidData(description: "invalid response. url not found")
+            throw throw DecodingError.invalidData(description: "invalid response. url not found")
         }
         
         return RandomImage(url: URL(string: url)!)

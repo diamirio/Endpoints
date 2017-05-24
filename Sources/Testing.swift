@@ -40,7 +40,17 @@ public class FakeSessionTask<C: Call>: SessionTask<C> {
 }
 
 public class FakeHTTPURLResponse: HTTPURLResponse {
-    public init(status code: Int=200, header: Parameters?=nil) {
+    let fakeTextEncodingName: String?
+
+    public override var textEncodingName: String? {
+        if let fakeTextEncodingName = fakeTextEncodingName {
+            return fakeTextEncodingName
+        }
+        return fakeTextEncodingName
+    }
+
+    public init(status code: Int=200, header: Parameters?=nil, textEncodingName: String?) {
+        fakeTextEncodingName = textEncodingName
         super.init(url: URL(string: "http://127.0.0.1")!, statusCode: code, httpVersion: nil, headerFields: header)!
     }
     

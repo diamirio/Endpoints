@@ -61,7 +61,7 @@ class ClientTests: XCTestCase {
                     XCTFail("wrong error: \(error)")
                 }
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(String(describing: result.error))")
             }
         }
     }
@@ -201,30 +201,32 @@ class ClientTests: XCTestCase {
         }
     }
     
-    func testParseJSONArray() {
+    func testDecodeJSONArray() {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
+        let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "UTF-8")
 
-        let parsedObject = try! AnyCall<[String]>.ResponseType.parse(data: arrayData, encoding: .utf8)
+        let decodedObject = try! [String].responseDecoder().decode(response: resp, data: arrayData)
         
-        XCTAssertEqual(inputArray, parsedObject)
+        XCTAssertEqual(inputArray, decodedObject)
     }
-    
-    func testFailStringParsing() {
+
+    func testFailStringDecoding() {
         let input = "😜 test"
         let data = input.data(using: .utf8)!
         
         do {
-            let parsed = try String.parse(data: data, encoding: .japaneseEUC)
-            XCTAssertEqual(parsed, input)
+            let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "EUC-JP")
+            let decoded = try String.responseDecoder().decode(response: resp, data: data)
+            XCTAssertEqual(decoded, input)
             XCTFail("this should actually fail")
         } catch {
-            XCTAssertTrue(error is ParsingError)
-            XCTAssertEqual(error.localizedDescription, "String could not be parsed with encoding 3")
+            XCTAssertTrue(error is DecodingError)
+            XCTAssertEqual(error.localizedDescription, "String could not be decoded with encoding 3")
         }
     }
     
-    func testFailJSONParsing() {
+    func testFailJSONDecoding() {
         let c = AnyCall<[String: Any]>(Request(.get, "xml"))
         
         tester.test(call: c) { result in
@@ -234,7 +236,7 @@ class ClientTests: XCTestCase {
                 XCTAssertTrue(error.isPropertyListError)
                 XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(String(describing: result.error))")
             }
         }
     }
