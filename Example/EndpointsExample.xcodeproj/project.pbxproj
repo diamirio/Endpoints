@@ -24,7 +24,6 @@
 		78E09C371E5DC07B003DB909 /* Unbox+Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B591E5DBFC4003DB909 /* Unbox+Endpoints.swift */; };
 		78E09C411E5DC09D003DB909 /* ExampleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78E09BF61E5DC02F003DB909 /* ExampleCore.framework */; };
 		78E09C471E5DC0A8003DB909 /* BinClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B5B1E5DBFC4003DB909 /* BinClientTests.swift */; };
-		78E09C481E5DC0A8003DB909 /* FakeClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B5C1E5DBFC4003DB909 /* FakeClientTests.swift */; };
 		78E09C491E5DC0A8003DB909 /* GiphyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B5D1E5DBFC4003DB909 /* GiphyClientTests.swift */; };
 		78E09C4A1E5DC0A8003DB909 /* GithubClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B5E1E5DBFC4003DB909 /* GithubClientTests.swift */; };
 		78E09C4D1E5DC0A8003DB909 /* UnboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E09B611E5DBFC4003DB909 /* UnboxTests.swift */; };
@@ -229,7 +228,6 @@
 		78E09B571E5DBFC4003DB909 /* GithubClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClient.swift; sourceTree = "<group>"; };
 		78E09B591E5DBFC4003DB909 /* Unbox+Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Unbox+Endpoints.swift"; sourceTree = "<group>"; };
 		78E09B5B1E5DBFC4003DB909 /* BinClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinClientTests.swift; sourceTree = "<group>"; };
-		78E09B5C1E5DBFC4003DB909 /* FakeClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeClientTests.swift; sourceTree = "<group>"; };
 		78E09B5D1E5DBFC4003DB909 /* GiphyClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiphyClientTests.swift; sourceTree = "<group>"; };
 		78E09B5E1E5DBFC4003DB909 /* GithubClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GithubClientTests.swift; sourceTree = "<group>"; };
 		78E09B5F1E5DBFC4003DB909 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -355,7 +353,6 @@
 			children = (
 				78E09CE81E5DC436003DB909 /* ClientTester.swift */,
 				78E09B5B1E5DBFC4003DB909 /* BinClientTests.swift */,
-				78E09B5C1E5DBFC4003DB909 /* FakeClientTests.swift */,
 				78E09B5D1E5DBFC4003DB909 /* GiphyClientTests.swift */,
 				78E09B5E1E5DBFC4003DB909 /* GithubClientTests.swift */,
 				78E09B611E5DBFC4003DB909 /* UnboxTests.swift */,
@@ -728,7 +725,6 @@
 				78E09C471E5DC0A8003DB909 /* BinClientTests.swift in Sources */,
 				78376D671E64192400C74C26 /* PromiseKitTests.swift in Sources */,
 				78E09C4A1E5DC0A8003DB909 /* GithubClientTests.swift in Sources */,
-				78E09C481E5DC0A8003DB909 /* FakeClientTests.swift in Sources */,
 				78E09C4D1E5DC0A8003DB909 /* UnboxTests.swift in Sources */,
 				78E09CE91E5DC436003DB909 /* ClientTester.swift in Sources */,
 			);
