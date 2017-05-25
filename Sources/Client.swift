@@ -32,83 +32,13 @@ import Foundation
 /// ````
 /// 
 /// - seealso: `Client`, `Session`, `ResponseDecodable`, `Request`
-public protocol Call {
-    associatedtype ResponseType: ResponseDecodable = Data
-    
+public protocol Call: URLRequestEncodable, ResultDecoder {
     var request: URLRequestEncodable { get }
-
-    /// Decode the result of a `URLSessionTask` for a request
-    /// created by `self`.
-    ///
-    /// A default implementation is provided by `defaultDecode`.
-    func decode(result: URLSessionTaskResult) throws -> ResponseType
 }
 
-public extension Call {
-    /// Forwards to `defaultDecode`.
-    func decode(result: URLSessionTaskResult) throws -> ResponseType {
-        return try defaultDecode(result: result)
-    }
-
-    /// Throws `result.error` if not-nil.
-    ///
-    /// Throws 'DecodingError.missingData` if `result.data`
-    /// or `result.httpResponse` is `nil`.
-    ///
-    /// Finally delegates decoding to the block returned by
-    /// `ResponseType.responseDecoder()` and returns the decoded
-    ///  object or rethrows a decoding error.
-    final func defaultDecode(result: URLSessionTaskResult) throws -> ResponseType {
-        if let error = result.error {
-            throw error
-        }
-
-        guard let data = result.data, let response = result.httpResponse else {
-            throw DecodingError.missingData
-        }
-
-        return try ResponseType.responseDecoder()(response, data)
-    }
-}
-
-/// Wraps an HTTP error code.
-///
-/// Describes an unacceptable status code for an HTTP request.
-/// Optionally, you can supply a `reason` which is then used as the
-/// `errorDescription` instead of the default string returned by
-/// `HTTPURLResponse.localizedString(forStatusCode:)`
-public struct StatusCodeError: LocalizedError {
-    public let code: Int
-    public let reason: String?
-
-    public init(_ code: Int, reason: String? = nil) {
-        self.code = code
-        self.reason = reason
-    }
-
-    public var errorDescription: String? {
-        return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
-    }
-
-    /// Create a new instance with the same `code` but a different `reason`
-    public func with(reason: String?) -> StatusCodeError {
-        return StatusCodeError(code, reason: reason)
-    }
-}
-
-public extension HTTPURLResponse {
-    /// Checks if an HTTP status code is acceptable
-    /// - returns: `true` if `code` is between 200 and 299.
-    func hasAcceptableStatus() -> Bool {
-        return (200..<300).contains(statusCode)
-    }
-
-    /// - throws: `StatusCodeError.unacceptable` with `reason` set to `nil`
-    /// if `httpResponse` contains an unacceptable status code.
-    func validateStatusCode() throws {
-        guard hasAcceptableStatus() else {
-            throw StatusCodeError(statusCode)
-        }
+extension Call {
+    public var urlRequest: URLRequest {
+        return request.urlRequest
     }
 }
 
@@ -126,37 +56,6 @@ public protocol Client {
     /// - throws: Any `Error` if `result` is considered invalid.
     func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
 }
-
-/// Encapsulates the result produced by a `URLSession`s
-/// `completionHandler` block.
-///
-/// Mainly used by `Session` and `Client` to simplify the passing of 
-/// parameters.
-public struct URLSessionTaskResult {
-    public var response: URLResponse?
-    public var data: Data?
-    public var error: Error?
-
-    public init(response: URLResponse?=nil, data: Data?=nil, error: Error?=nil) {
-       self.response = response
-       self.data = data
-       self.error = error
-   }
-}
-
-public protocol URLResponseHolder {
-    var response: URLResponse? { get }
-}
-
-extension URLResponseHolder {
-    /// Returns `response` cast to `HTTPURLResponse`.
-    public var httpResponse: HTTPURLResponse? {
-        return response as? HTTPURLResponse
-    }
-}
-
-extension URLSessionTaskResult: URLResponseHolder {}
-extension URLSessionTask: URLResponseHolder {}
 
 /// The default implementation of `Client`.
 ///
@@ -224,5 +123,30 @@ open class AnyClient: Client {
     /// related to this client.
     open func validate(result: URLSessionTaskResult) throws {
         try result.httpResponse?.validateStatusCode()
+    }
+}
+
+/// Wraps an HTTP error code.
+///
+/// Describes an unacceptable status code for an HTTP request.
+/// Optionally, you can supply a `reason` which is then used as the
+/// `errorDescription` instead of the default string returned by
+/// `HTTPURLResponse.localizedString(forStatusCode:)`
+public struct StatusCodeError: LocalizedError {
+    public let code: Int
+    public let reason: String?
+
+    public init(_ code: Int, reason: String? = nil) {
+        self.code = code
+        self.reason = reason
+    }
+
+    public var errorDescription: String? {
+        return reason ?? HTTPURLResponse.localizedString(forStatusCode: code)
+    }
+
+    /// Create a new instance with the same `code` but a different `reason`
+    public func with(reason: String?) -> StatusCodeError {
+        return StatusCodeError(code, reason: reason)
     }
 }

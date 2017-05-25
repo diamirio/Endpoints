@@ -1,5 +1,108 @@
 import Foundation
 
+public class DecodingTask<D: ResponseDecodable> {
+    public typealias DecodingBlock = (URLSessionTaskResult) throws -> D
+    public typealias CompletionBlock = (DecodedResult<D>)->()
+
+    public let request: URLRequest
+    public let decode: DecodingBlock
+
+    public var completion: CompletionBlock
+    public var debug = false
+
+    public var urlSession = URLSession.shared
+
+    public private(set) var activeURLSessionTask: URLSessionTask?
+
+    public convenience init<C: Call>(call: C, completion: @escaping CompletionBlock) where C.ResponseType == D {
+        self.init(request: call.request.urlRequest, decode: call.decode, completion: completion)
+    }
+
+    public init(request: URLRequest, decode: @escaping DecodingBlock, completion: @escaping CompletionBlock){
+        self.request = request
+        self.decode = decode
+        self.completion = completion
+    }
+
+    @discardableResult
+    public func start() -> URLSessionTask {
+        precondition(activeURLSessionTask == nil)
+
+        let urlSessionTask  = urlSession.dataTask(with: request, completionHandler: completionHandler)
+        urlSessionTask.resume()
+
+        activeURLSessionTask = urlSessionTask
+
+        return urlSessionTask
+    }
+
+    public func cancel() {
+        activeURLSessionTask?.cancel()
+    }
+
+    private func completionHandler(data: Data?, response: URLResponse?, error: Error?) {
+        let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
+
+        #if DEBUG
+            if debug {
+                print("\(activeURLSessionTask?.requestDescription ?? "?")\n\(sessionResult)")
+            }
+        #endif
+
+        let result = DecodedResult { try decode(sessionResult) }
+
+        DispatchQueue.main.async {
+            self.completion(result)
+        }
+    }
+}
+
+public class Session<C: Client> {
+    public var debug = false
+
+    public var urlSession: URLSession
+    public let client: C
+
+    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
+        self.client = client
+        self.urlSession = urlSession
+    }
+
+    public func dataTask<C: Call>(for call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> DecodingTask<C.ResponseType> {
+        let cc = ClientCall(client: client, call: call)
+        let task = DecodingTask(call: cc, completion: completion)
+        task.urlSession = urlSession
+        task.debug = debug
+
+        return task
+    }
+
+    @discardableResult
+    public func start<C: Call>(call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> URLSessionTask {
+        return dataTask(for: call, completion: completion).start()
+    }
+}
+
+public struct ClientCall<C: Call>: Call {
+    public typealias ResponseType = C.ResponseType
+
+    public let client: Client
+    public let call: C
+
+    public init(client: Client, call: C) {
+        self.client = client
+        self.call = call
+    }
+
+    public var request: URLRequestEncodable {
+        return client.encode(call: call)
+    }
+
+    public func decode(result: URLSessionTaskResult) throws -> ResponseType {
+        return try client.decode(result: result, for: call)
+    }
+}
+
 public enum DecodedResult<Value> {
     case success(Value)
     case failure(Error)
@@ -25,7 +128,6 @@ public enum DecodedResult<Value> {
         }
         return error
     }
-
 
     public var isSuccess: Bool {
         return value != nil
@@ -66,80 +168,5 @@ public enum DecodedResult<Value> {
     public func onError(block: (Error)->()) -> DecodedResult {
         handle(success: { _ in }, failure: block)
         return self
-    }
-}
-
-public class Session<C: Client> {
-    public var debug = false
-    
-    public var urlSession: URLSession
-    public let client: C
-    
-    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
-        self.client = client
-        self.urlSession = urlSession
-    }
-
-    public func dataTask<C: Call>(for call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> SessionTask<C> {
-        let task = SessionTask(client: client, call: call)
-        task.urlSession = urlSession
-        task.completion = completion
-        task.debug = debug
-
-        return task
-    }
-
-    @discardableResult
-    public func start<C: Call>(call: C, completion: @escaping (DecodedResult<C.ResponseType>)->()) -> URLSessionTask {
-        let tsk = dataTask(for: call, completion: completion)
-        tsk.urlSessionTask.resume()
-        return tsk.urlSessionTask
-    }
-}
-
-public class SessionTask<C: Call>: URLRequestEncodable {
-    public typealias CompletionBlock = (DecodedResult<C.ResponseType>)->()
-
-    public let client: Client
-    public let call: C
-
-    public var urlRequest: URLRequest {
-        return client.encode(call: call)
-    }
-
-    public var completion: CompletionBlock?
-    public var debug = false
-
-    public var urlSession = URLSession.shared
-
-    public private(set) lazy var urlSessionTask: URLSessionTask = {
-        return self.createURLSessionTask()
-    }()
-
-    private func createURLSessionTask() -> URLSessionTask {
-        return urlSession.dataTask(with: urlRequest, completionHandler: completionHandler)
-    }
-
-    private func completionHandler(data: Data?, response: URLResponse?, error: Error?) {
-        let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
-
-        #if DEBUG
-            if self.debug {
-                print("\(urlSessionTask.requestDescription)\n\(sessionResult)")
-            }
-        #endif
-
-        let result = DecodedResult {
-            try self.client.decode(result: sessionResult, for: call)
-        }
-
-        DispatchQueue.main.async {
-            self.completion?(result)
-        }
-    }
-
-    public init(client: Client, call: C) {
-        self.client = client
-        self.call = call
     }
 }

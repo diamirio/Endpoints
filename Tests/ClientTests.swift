@@ -7,6 +7,35 @@ class ClientTests: XCTestCase {
     override func setUp() {
         tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
+
+    func testTask() {
+        let exp = expectation(description: "")
+
+        let c = AnyCall<[String: Any]>(URL(string: "http://httpbin.org/get")!)
+        let task = DecodingTask(call: c) { result in
+            XCTAssertTrue(result.isSuccess)
+            exp.fulfill()
+        }
+        task.debug = true
+        task.start()
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testClientCall() {
+        let exp = expectation(description: "")
+
+        let c = AnyCall<Data>(Request(.get, "get"))
+        let cc = ClientCall(client: tester.session.client, call: c)
+        let task = DecodingTask(call: cc) { result in
+            XCTAssertTrue(result.isSuccess)
+            exp.fulfill()
+        }
+        task.debug = true
+        task.start()
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
     func testCancellation() {
         let c = AnyCall<Data>(Request(.get, "get"))

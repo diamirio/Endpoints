@@ -11,6 +11,36 @@ public protocol ResponseDecodable {
     static func responseDecoder() -> Decoder
 }
 
+public protocol ResultDecoder {
+    associatedtype ResponseType: ResponseDecodable = Data
+
+    /// Convert the result of a `URLSessionTask` to the specified
+    /// `ResponseType` or throw an error.
+    func decode(result: URLSessionTaskResult) throws -> ResponseType
+}
+
+public extension ResultDecoder {
+    /// Throws `result.error` if not-nil.
+    ///
+    /// Throws 'DecodingError.missingData` if `result.data`
+    /// or `result.httpResponse` is `nil`.
+    ///
+    /// Finally delegates decoding to the block returned by
+    /// `ResponseType.responseDecoder()` and returns the decoded
+    ///  object or rethrows a decoding error.
+    func decode(result: URLSessionTaskResult) throws -> ResponseType {
+        if let error = result.error {
+            throw error
+        }
+
+        guard let data = result.data, let response = result.httpResponse else {
+            throw DecodingError.missingData
+        }
+
+        return try ResponseType.responseDecoder()(response, data)
+    }
+}
+
 // MARK: - Decodable Support
 
 extension String: ResponseDecodable {

@@ -48,3 +48,50 @@ public struct AnyCall<Response: ResponseDecodable>: Call {
         self.request = request
     }
 }
+
+public extension HTTPURLResponse {
+    /// Checks if an HTTP status code is acceptable
+    /// - returns: `true` if `code` is between 200 and 299.
+    func hasAcceptableStatus() -> Bool {
+        return (200..<300).contains(statusCode)
+    }
+
+    /// - throws: `StatusCodeError.unacceptable` with `reason` set to `nil`
+    /// if `httpResponse` contains an unacceptable status code.
+    func validateStatusCode() throws {
+        guard hasAcceptableStatus() else {
+            throw StatusCodeError(statusCode)
+        }
+    }
+}
+
+/// Encapsulates the result produced by a `URLSession`s
+/// `completionHandler` block.
+///
+/// Mainly used by `Session` and `Client` to simplify the passing of
+/// parameters.
+public struct URLSessionTaskResult {
+    public var response: URLResponse?
+    public var data: Data?
+    public var error: Error?
+
+    public init(response: URLResponse?=nil, data: Data?=nil, error: Error?=nil) {
+        self.response = response
+        self.data = data
+        self.error = error
+    }
+}
+
+public protocol URLResponseHolder {
+    var response: URLResponse? { get }
+}
+
+extension URLResponseHolder {
+    /// Returns `response` cast to `HTTPURLResponse`.
+    public var httpResponse: HTTPURLResponse? {
+        return response as? HTTPURLResponse
+    }
+}
+
+extension URLSessionTaskResult: URLResponseHolder {}
+extension URLSessionTask: URLResponseHolder {}
