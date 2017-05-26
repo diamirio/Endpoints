@@ -50,9 +50,7 @@ public extension Call where DecodedType: ResponseDecodable {
     }
 
     var responseDecoder: ResponseDecoder<DecodedType> {
-        return { response, data in
-            try DecodedType.responseDecoder(response, data)
-        }
+        return DecodedType.responseDecoder
     }
 }
 
