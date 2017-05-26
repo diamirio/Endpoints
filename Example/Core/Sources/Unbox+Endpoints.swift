@@ -4,7 +4,11 @@ import Endpoints
 
 public extension Unboxable where Self: ResponseDecodable {
     static var responseDecoder: ResponseDecoder<Self> {
-        return { _, data in try unbox(data: data) }
+        return decodeUnboxable
+    }
+
+    static func decodeUnboxable(response: HTTPURLResponse, data: Data) throws -> Self {
+        return try Unbox.unbox(data: data)
     }
 }
 

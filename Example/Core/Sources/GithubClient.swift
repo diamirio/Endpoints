@@ -95,20 +95,32 @@ public struct Repository: Unboxable {
 
 public protocol Pagable {
     var nextPage: URL? { get set }
+
+    static var dataDecoder: ResponseDecoder<Self> { get }
 }
 
 public extension Pagable {
-//    static func decodeDataAndPagingLinkHeaders(response: HTTPURLResponse, data: Data) throws -> Self {
-//        var decoded = try dataDecoder(response, data)
-//
-//        for link in response.parseLinks() {
-//            if link.rel == .next {
-//                decoded.nextPage = link.url
-//            }
-//        }
-//        
-//        return decoded
-//    }
+    mutating func decodePagingHeader(from response: HTTPURLResponse) {
+        for link in response.parseLinks() {
+            if link.rel == .next {
+                nextPage = link.url
+            }
+        }
+    }
+}
+
+public extension Pagable where Self: Unboxable & ResponseDecodable {
+    static var dataDecoder: ResponseDecoder<Self> {
+        return decodeUnboxable
+    }
+
+    static var responseDecoder: ResponseDecoder<Self> {
+        return { response, data in
+            var decoded = try dataDecoder(response, data)
+            decoded.decodePagingHeader(from: response)
+            return decoded
+        }
+    }
 }
 
 public struct RepositoriesResponse: Pagable, Unboxable, ResponseDecodable {
