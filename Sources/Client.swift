@@ -32,13 +32,24 @@ import Foundation
 /// ````
 /// 
 /// - seealso: `Client`, `Session`, `ResponseDecodable`, `Request`
-public protocol Call: URLRequestEncodable, ResultDecoder {
+public protocol Call: URLRequestEncodable {
+    associatedtype DecoderType: ResponseDecoder
+
     var request: URLRequestEncodable { get }
+    func decode(result: URLSessionTaskResult) throws -> DecodedType
 }
 
-extension Call {
-    public var urlRequest: URLRequest {
+public extension Call {
+    typealias DecodedType = DecoderType.DecodedType
+
+    var urlRequest: URLRequest {
         return request.urlRequest
+    }
+
+    func decode(result: URLSessionTaskResult) throws -> DecodedType {
+        return try result.decode { response, data in
+            try DecoderType.responseDecoder()(response, data)
+        }
     }
 }
 
@@ -54,7 +65,7 @@ public protocol Client {
     /// this client's Web API into the expected response type.
     ///
     /// - throws: Any `Error` if `result` is considered invalid.
-    func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType
+    func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.DecodedType
 }
 
 /// The default implementation of `Client`.
@@ -105,7 +116,7 @@ open class AnyClient: Client {
     /// `validate(result:)` and puts any thrown error into `result`.
     /// Then `call.decode(result:)` is used to decode `call`s response
     /// type. If this fails, the error is rethrown.
-    public func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
+    public func decode<C: Call>(result: URLSessionTaskResult, for call: C) throws -> C.DecodedType {
         var result = result
 
         do {

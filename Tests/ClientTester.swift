@@ -17,7 +17,7 @@ class ClientTester<C: Client> {
     }
 
     @discardableResult
-    func test<C: Call>(call: C, validateResult: ((DecodedResult<C.ResponseType>)->())?=nil) ->  URLSessionTask {
+    func test<C: Call>(call: C, validateResult: ((DecodedResult<C.DecodedType>)->())?=nil) ->  URLSessionTask {
         let exp = test.expectation(description: "")
         let tsk = session.dataTask(for: call) { (result) in
             validateResult?(result)

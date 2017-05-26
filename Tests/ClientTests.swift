@@ -270,7 +270,7 @@ class ClientTests: XCTestCase {
     }
     
     struct GetOutput: Call {
-        typealias ResponseType = [String: Any]
+        typealias DecoderType = [String: Any]
         
         let value: String
         
@@ -298,7 +298,7 @@ class ClientTests: XCTestCase {
     }
     
     struct ValidatingCall: Call {
-        typealias ResponseType = [String: Any]
+        typealias DecoderType = [String: Any]
         
         var mime: String
         

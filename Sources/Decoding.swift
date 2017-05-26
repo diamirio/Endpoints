@@ -2,48 +2,42 @@ import Foundation
 
 /// Used by `Call` to define the expected response type for its associated
 /// request.
-public protocol ResponseDecodable {
-    typealias Decoder = (_ response: HTTPURLResponse, _ data: Data) throws -> Self
+public protocol ResponseDecoder {
+    associatedtype DecodedType = Self
+    typealias Decoder = (HTTPURLResponse, Data) throws -> DecodedType
 
-    /// Returns a type-erased `ResponseDecoder`, responsible for creating
+    /// Returns a `Decoder` block, responsible for creating
     /// instances of this type from a `HTTPURLResponse` and corresponding
     /// body `Data`.
     static func responseDecoder() -> Decoder
 }
 
-public protocol ResultDecoder {
-    associatedtype ResponseType: ResponseDecodable = Data
-
-    /// Convert the result of a `URLSessionTask` to the specified
-    /// `ResponseType` or throw an error.
-    func decode(result: URLSessionTaskResult) throws -> ResponseType
-}
-
-public extension ResultDecoder {
-    /// Throws `result.error` if not-nil.
+public extension URLSessionTaskResult {
+    /// Throws `error` if not-nil.
     ///
-    /// Throws 'DecodingError.missingData` if `result.data`
-    /// or `result.httpResponse` is `nil`.
+    /// Throws 'DecodingError.missingData` if `data`
+    /// or `httpResponse` is `nil`.
     ///
     /// Finally delegates decoding to the block returned by
-    /// `ResponseType.responseDecoder()` and returns the decoded
+    /// `decoder.responseDecoder()` and returns the decoded
     ///  object or rethrows a decoding error.
-    func decode(result: URLSessionTaskResult) throws -> ResponseType {
-        if let error = result.error {
+    func decode<D>(with decoder: (HTTPURLResponse, Data) throws -> D) throws -> D {
+        if let error = error {
             throw error
         }
 
-        guard let data = result.data, let response = result.httpResponse else {
+        guard let data = data, let response = httpResponse else {
             throw DecodingError.missingData
         }
 
-        return try ResponseType.responseDecoder()(response, data)
+        return try decoder(response, data)
     }
 }
 
+
 // MARK: - Decodable Support
 
-extension String: ResponseDecodable {
+extension String: ResponseDecoder {
     public static func responseDecoder() -> Decoder {
         return decodeString
     }
@@ -58,7 +52,7 @@ extension String: ResponseDecodable {
     }
 }
 
-extension Data: ResponseDecodable {
+extension Data: ResponseDecoder {
     public static func responseDecoder() -> Decoder {
         return decodeData
     }
@@ -68,7 +62,7 @@ extension Data: ResponseDecodable {
     }
 }
 
-extension Array: ResponseDecodable {
+extension Array: ResponseDecoder {
     public static func responseDecoder() -> Decoder {
         return decodeJSONArray
     }
@@ -82,7 +76,7 @@ extension Array: ResponseDecodable {
     }
 }
 
-extension Dictionary: ResponseDecodable {
+extension Dictionary: ResponseDecoder {
     public static func responseDecoder() -> Decoder {
         return decodeJSONDictionary
     }

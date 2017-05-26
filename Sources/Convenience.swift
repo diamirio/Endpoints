@@ -39,8 +39,8 @@ public struct BasicAuthorization {
     }
 }
 
-public struct AnyCall<Response: ResponseDecodable>: Call {
-    public typealias ResponseType = Response
+public struct AnyCall<R: ResponseDecoder>: Call {
+    public typealias DecoderType = R
     
     public var request: URLRequestEncodable
 
