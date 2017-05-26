@@ -65,6 +65,12 @@ public extension HTTPURLResponse {
     }
 }
 
+public extension DecodedResult {
+    var errrorStatusCode: Int? {
+        return (error as? StatusCodeError)?.code
+    }
+}
+
 /// Encapsulates the result produced by a `URLSession`s
 /// `completionHandler` block.
 ///

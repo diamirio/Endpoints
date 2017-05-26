@@ -69,7 +69,7 @@ extension Data: ResponseDecodable {
 }
 
 extension Array: ResponseDecodable {
-    public static func responseDecoder() -> (HTTPURLResponse, Data) throws -> [Element] {
+    public static func responseDecoder() -> Decoder {
         return decodeJSONArray
     }
 
