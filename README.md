@@ -63,7 +63,7 @@ session.start(call: call) { result in
 
 ```swift
 struct GetRandomImage: Call {
-    typealias ResponseType = [String: Any]
+    typealias DecodedType = [String: Any]
     
     var tag: String
     
@@ -99,7 +99,7 @@ class GiphyClient: Client {
         return request
     }
     
-    public func decode<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType {
+    public func decode<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.DecodedType {
         do {
             // Use `AnyClient` to decode the response
             // If this fails, try to read error details from response body
@@ -134,7 +134,7 @@ struct RandomImage {
 }
 
 struct GetRandomImage: Call {
-    typealias ResponseType = RandomImage
+    typealias DecodedType = RandomImage
     ...
 }
 ```
@@ -211,7 +211,7 @@ There are multiple ways to make performing a call more convenient. You could wri
 protocol GiphyCall: Call {}
 
 extension GiphyCall {
-    func start(completion: @escaping (Result<ResponseType.OutputType>)->()) {
+    func start(completion: @escaping (Result<DecodedType.OutputType>)->()) {
         let client = GiphyClient()
         let session = Session(with: client)
         

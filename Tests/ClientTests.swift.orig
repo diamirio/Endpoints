@@ -232,7 +232,7 @@ class ClientTests: XCTestCase {
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
         let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "UTF-8")
 
-        let decodedObject = try! [String].responseDecoder(resp, arrayData)
+        let decodedObject = try! [String].responseDecoder()(resp, arrayData)
         
         XCTAssertEqual(inputArray, decodedObject)
     }
@@ -243,7 +243,7 @@ class ClientTests: XCTestCase {
         
         do {
             let resp = FakeHTTPURLResponse(status: 200, header: nil, textEncodingName: "EUC-JP")
-            let decoded = try String.responseDecoder(resp, data)
+            let decoded = try String.responseDecoder()(resp, data)
             XCTAssertEqual(decoded, input)
             XCTFail("this should actually fail")
         } catch {
@@ -270,7 +270,11 @@ class ClientTests: XCTestCase {
     }
     
     struct GetOutput: Call {
+<<<<<<< Updated upstream
+        typealias DecoderType = [String: Any]
+=======
         typealias DecodedType = [String: Any]
+>>>>>>> Stashed changes
         
         let value: String
         
@@ -298,7 +302,11 @@ class ClientTests: XCTestCase {
     }
     
     struct ValidatingCall: Call {
+<<<<<<< Updated upstream
+        typealias DecoderType = [String: Any]
+=======
         typealias DecodedType = [String: Any]
+>>>>>>> Stashed changes
         
         var mime: String
         
@@ -306,8 +314,8 @@ class ClientTests: XCTestCase {
             return Request(.get, "response-headers", query: [ "Mime": mime ])
         }
 
-        var resultDecoder: ResultDecoder<DecodedType> {
-            return { _ in throw StatusCodeError(0) }
+        func decode(result: URLSessionTaskResult) throws -> [String : Any] {
+            throw StatusCodeError(0)
         }
     }
     

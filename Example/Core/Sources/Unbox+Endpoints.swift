@@ -3,17 +3,13 @@ import Unbox
 import Endpoints
 
 public extension Unboxable where Self: ResponseDecodable {
-    static func responseDecoder() -> Decoder {
-        return decodeUnboxable
-    }
-
-    static func decodeUnboxable(response: HTTPURLResponse, data: Data) throws -> Self {
-        return try unbox(data: data)
+    static var responseDecoder: ResponseDecoder<Self> {
+        return { _, data in try unbox(data: data) }
     }
 }
 
 public extension Array where Element: Unboxable {
-    static func responseDecoder() -> Decoder {
+    static func responseDecoder() -> ResponseDecoder<[Element]> {
         return decodeUnboxableArray
     }
 

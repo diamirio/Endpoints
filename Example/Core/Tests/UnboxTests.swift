@@ -9,19 +9,19 @@ class EndpointUnboxTests: XCTestCase {
     override func setUp() {
         tester = ClientTester(test: self, client: AnyClient(baseURL: URL(string: "https://httpbin.org")!))
     }
-    
+
     struct UnboxTest: Unboxable, ResponseDecodable {
         let x: String
-        
+
         init(unboxer: Unboxer) throws {
             x = try unboxer.unbox(key: "x")
         }
     }
-    
+
     func testUnboxableParsing() {
         let json = [ "x": "a" ]
         let jsonData = try! JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-        let parsed = try! UnboxTest.decodeUnboxable(response: HTTPURLResponse(), data: jsonData)
+        let parsed = try! UnboxTest.responseDecoder(HTTPURLResponse(), jsonData)
         
         XCTAssertEqual(parsed.x, "a")
     }

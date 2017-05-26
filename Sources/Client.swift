@@ -12,7 +12,7 @@ import Foundation
 /// Web API:
 /// ````
 /// struct Login: Call {
-///     typealias ResponseType = [String: Any] //you can use any ResponseDecodable
+///     typealias DecodedType = [String: Any] //you can use any ResponseDecodable
 ///
 ///     var user: String
 ///     var pwd: String
@@ -33,23 +33,32 @@ import Foundation
 /// 
 /// - seealso: `Client`, `Session`, `ResponseDecodable`, `Request`
 public protocol Call: URLRequestEncodable {
-    associatedtype DecoderType: ResponseDecoder
+    associatedtype DecodedType
 
     var request: URLRequestEncodable { get }
-    func decode(result: URLSessionTaskResult) throws -> DecodedType
+
+    /// Convert the result of a `URLSessionTask` to the specified
+    /// `DecodedType` or throw an error.
+    var resultDecoder: ResultDecoder<DecodedType> { get }
+}
+
+public extension Call where DecodedType: ResponseDecodable {
+    var resultDecoder: ResultDecoder<DecodedType> {
+        return { result in
+            try result.decode(with: self.responseDecoder)
+        }
+    }
+
+    var responseDecoder: ResponseDecoder<DecodedType> {
+        return { response, data in
+            try DecodedType.responseDecoder(response, data)
+        }
+    }
 }
 
 public extension Call {
-    typealias DecodedType = DecoderType.DecodedType
-
     var urlRequest: URLRequest {
         return request.urlRequest
-    }
-
-    func decode(result: URLSessionTaskResult) throws -> DecodedType {
-        return try result.decode { response, data in
-            try DecoderType.responseDecoder()(response, data)
-        }
     }
 }
 
@@ -125,7 +134,7 @@ open class AnyClient: Client {
             result.error = error
         }
 
-        return try call.decode(result: result)
+        return try call.resultDecoder(result)
     }
     
     /// Validates the status code using `HTTPURLResponse.validateStatusCode()`.

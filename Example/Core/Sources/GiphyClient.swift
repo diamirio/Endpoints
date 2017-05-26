@@ -22,7 +22,7 @@ public class GiphyClient: Client {
         return req
     }
 
-    public func decode<C>(result: URLSessionTaskResult, for call: C) throws -> C.ResponseType where C : Call {
+    public func decode<C>(result: URLSessionTaskResult, for call: C) throws -> C.DecodedType where C : Call {
         do {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
@@ -68,7 +68,7 @@ public protocol GiphyCall: Call {
 
 public extension GiphyClient {
     public struct Search: GiphyCall {
-        public typealias ResponseType = GiphyListResponse
+        public typealias DecodedType = GiphyListResponse
         
         public var query: String
         public var pageSize: Int

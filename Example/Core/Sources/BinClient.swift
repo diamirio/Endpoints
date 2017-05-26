@@ -27,7 +27,7 @@ protocol BinCall: Call {}
 
 public extension BinClient {
     public struct GetOutput: BinCall {
-        public typealias ResponseType = OutputValue
+        public typealias DecodedType = OutputValue
         
         public var value: String
         
@@ -47,15 +47,13 @@ public extension BinClient {
 public struct OutputValue: ResponseDecodable {
     public var value: String
     
-    public static func responseDecoder() -> Decoder {
-        return decodeOutputValue
-    }
-
-    public static func decodeOutputValue(response: HTTPURLResponse, data: Data) throws -> OutputValue {
-        let dict = try [String: Any].decodeJSONDictionary(response: response, data: data)
-        guard let args = dict["args"] as? [String: String], let value = args["value"] else {
-            throw DecodingError.invalidData(description: "value not found")
+    public static var responseDecoder: ResponseDecoder<OutputValue> {
+        return { response, data in
+            let dict = try [String: Any].responseDecoder(response, data)
+            guard let args = dict["args"] as? [String: String], let value = args["value"] else {
+                throw DecodingError.invalidData(description: "value not found")
+            }
+            return OutputValue(value: value)
         }
-        return OutputValue(value: value)
     }
 }

@@ -1,17 +1,45 @@
 import Foundation
 
-public typealias ResponseDecoder<D> = (HTTPURLResponse, Data) throws -> D
-public typealias ResultDecoder<D> = (URLSessionTaskResult) throws -> D
+typealias ResponseDecoder<D> = (_ response: HTTPURLResponse, _ data: Data) throws -> D
 
 /// Used by `Call` to define the expected response type for its associated
 /// request.
+<<<<<<< Updated upstream
+public protocol ResponseDecoder {
+    associatedtype DecodedType = Self
+    typealias Decoder = (HTTPURLResponse, Data) throws -> DecodedType
+
+    /// Returns a `Decoder` block, responsible for creating
+=======
 public protocol ResponseDecodable {
     /// Returns a type-erased `ResponseDecoder`, responsible for creating
+>>>>>>> Stashed changes
     /// instances of this type from a `HTTPURLResponse` and corresponding
     /// body `Data`.
-    static var responseDecoder: ResponseDecoder<Self> { get }
+    static func responseDecoder() -> ResponseDecoder<Self>
 }
 
+<<<<<<< Updated upstream
+=======
+public protocol ResultDecoder {
+    associatedtype DecodedType
+
+    /// Convert the result of a `URLSessionTask` to the specified
+    /// `DecodedType` or throw an error.
+    func decode(result: URLSessionTaskResult) throws -> DecodedType
+}
+
+public extension ResultDecoder where DecodedType: ResponseDecodable {
+    func decode(result: URLSessionTaskResult) throws -> DecodedType {
+        return try result.decode(with: decodeSuccess)
+    }
+
+    func decodeSuccess(response: HTTPURLResponse, data: Data) throws -> DecodedType {
+        return try DecodedType.responseDecoder()(response, data)
+    }
+}
+
+>>>>>>> Stashed changes
 public extension URLSessionTaskResult {
     /// Throws `error` if not-nil.
     ///
@@ -21,7 +49,7 @@ public extension URLSessionTaskResult {
     /// Finally delegates decoding to the block returned by
     /// `decoder.responseDecoder()` and returns the decoded
     ///  object or rethrows a decoding error.
-    func decode<D>(with responseDecoder: ResponseDecoder<D>) throws -> D {
+    func decode<D>(with decoder: (HTTPURLResponse, Data) throws -> D) throws -> D {
         if let error = error {
             throw error
         }
@@ -30,34 +58,40 @@ public extension URLSessionTaskResult {
             throw DecodingError.missingData
         }
 
-        return try responseDecoder(response, data)
+        return try decoder(response, data)
     }
 }
 
 
 // MARK: - Decodable Support
 
-extension Data: ResponseDecodable {
-    public static var responseDecoder: ResponseDecoder<Data> {
-        return { _, data in return data }
+extension String: ResponseDecoder {
+    public static func responseDecoder() -> Decoder {
+        return decodeString
     }
-}
 
-extension String: ResponseDecodable {
-    public static var responseDecoder: ResponseDecoder<String> {
-        return { response, data in
-            let encoding = response.stringEncoding
-            if let string = String(data: data, encoding: encoding) {
-                return string
-            } else {
-                throw DecodingError.invalidData(description: "String could not be decoded with encoding \(encoding.rawValue)")
-            }
+    public static func decodeString(response: HTTPURLResponse, data: Data) throws -> String {
+        let encoding = response.stringEncoding
+        if let string = String(data: data, encoding: encoding) {
+            return string
+        } else {
+            throw DecodingError.invalidData(description: "String could not be decoded with encoding \(encoding.rawValue)")
         }
     }
 }
 
-extension Array: ResponseDecodable {
-    public static var responseDecoder: ResponseDecoder<[Element]> {
+extension Data: ResponseDecoder {
+    public static func responseDecoder() -> Decoder {
+        return decodeData
+    }
+
+    public static func decodeData(response: HTTPURLResponse, data: Data) throws -> Data {
+        return data
+    }
+}
+
+extension Array: ResponseDecoder {
+    public static func responseDecoder() -> Decoder {
         return decodeJSONArray
     }
 
@@ -70,15 +104,17 @@ extension Array: ResponseDecodable {
     }
 }
 
-extension Dictionary: ResponseDecodable {
-    public static var responseDecoder: ResponseDecoder<[Key: Value]> {
-        return { response, data in
-            guard let dict = try JSONSerialization.jsonObject(with: data) as? [Key: Value] else {
-                throw DecodingError.invalidData(description: "JSON structure is not an Object")
-            }
+extension Dictionary: ResponseDecoder {
+    public static func responseDecoder() -> Decoder {
+        return decodeJSONDictionary
+    }
 
-            return dict
+    public static func decodeJSONDictionary(response: HTTPURLResponse, data: Data) throws -> [Key: Value] {
+        guard let dict = try JSONSerialization.jsonObject(with: data) as? [Key: Value] else {
+            throw DecodingError.invalidData(description: "JSON structure is not an Object")
         }
+
+        return dict
     }
 }
 

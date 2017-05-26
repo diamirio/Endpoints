@@ -1,10 +1,11 @@
 import Foundation
 
 public class DecodingTask<D> {
+    public typealias DecodingBlock = (URLSessionTaskResult) throws -> D
     public typealias CompletionBlock = (DecodedResult<D>)->()
 
     public let request: URLRequest
-    public let decode: ResultDecoder<D>
+    public let decode: DecodingBlock
 
     public var completion: CompletionBlock
     public var debug = false
@@ -14,10 +15,10 @@ public class DecodingTask<D> {
     public private(set) var activeURLSessionTask: URLSessionTask?
 
     public convenience init<C: Call>(call: C, completion: @escaping CompletionBlock) where C.DecodedType == D {
-        self.init(request: call.request.urlRequest, decode: call.resultDecoder, completion: completion)
+        self.init(request: call.request.urlRequest, decode: call.decode, completion: completion)
     }
 
-    public init(request: URLRequest, decode: @escaping ResultDecoder<D>, completion: @escaping CompletionBlock){
+    public init(request: URLRequest, decode: @escaping DecodingBlock, completion: @escaping CompletionBlock){
         self.request = request
         self.decode = decode
         self.completion = completion
@@ -78,12 +79,22 @@ public class Session<C: Client> {
 
     @discardableResult
     public func start<C: Call>(call: C, completion: @escaping (DecodedResult<C.DecodedType>)->()) -> URLSessionTask {
+<<<<<<< Updated upstream
+        let tsk = dataTask(for: call, completion: completion)
+
+        return tsk.start()
+=======
         return dataTask(for: call, completion: completion).start()
+>>>>>>> Stashed changes
     }
 }
 
 public struct ClientCall<C: Call>: Call {
+<<<<<<< Updated upstream
+    public typealias DecoderType = C.DecoderType
+=======
     public typealias DecodedType = C.DecodedType
+>>>>>>> Stashed changes
 
     public let client: Client
     public let call: C
@@ -97,10 +108,8 @@ public struct ClientCall<C: Call>: Call {
         return client.encode(call: call)
     }
 
-    public var resultDecoder: ResultDecoder<DecodedType> {
-        return { result in
-            try self.client.decode(result: result, for: self.call)
-        }
+    public func decode(result: URLSessionTaskResult) throws -> DecodedType {
+        return try client.decode(result: result, for: call)
     }
 }
 

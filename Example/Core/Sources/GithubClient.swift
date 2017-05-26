@@ -59,7 +59,7 @@ public extension GithubClient {
             case url(URL)
         }
         
-        public typealias ResponseType = RepositoriesResponse
+        public typealias DecodedType = RepositoriesResponse
         
         public var endpoint: Endpoint
         
@@ -93,40 +93,25 @@ public struct Repository: Unboxable {
     }
 }
 
-public protocol Pagable: ResponseDecodable {
+public protocol Pagable {
     var nextPage: URL? { get set }
-    static func dataDecoder() -> Decoder
 }
 
 public extension Pagable {
-    static func decodeDataAndPagingLinkHeaders(response: HTTPURLResponse, data: Data) throws -> Self {
-        var decoded = try dataDecoder()(response, data)
-
-        for link in response.parseLinks() {
-            if link.rel == .next {
-                decoded.nextPage = link.url
-            }
-        }
-        
-        return decoded
-    }
+//    static func decodeDataAndPagingLinkHeaders(response: HTTPURLResponse, data: Data) throws -> Self {
+//        var decoded = try dataDecoder(response, data)
+//
+//        for link in response.parseLinks() {
+//            if link.rel == .next {
+//                decoded.nextPage = link.url
+//            }
+//        }
+//        
+//        return decoded
+//    }
 }
 
-public protocol PagableUnboxable: Pagable, Unboxable {}
-
-public extension PagableUnboxable {
-    static func responseDecoder() -> Decoder {
-        return decodeDataAndPagingLinkHeaders
-    }
-}
-
-extension Pagable where Self: Unboxable {
-    public static func dataDecoder() -> Decoder {
-        return decodeUnboxable
-    }
-}
-
-public struct RepositoriesResponse: PagableUnboxable {
+public struct RepositoriesResponse: Pagable, Unboxable, ResponseDecodable {
     public let totalCount: Int
     public let repositories: [Repository]
     public var nextPage: URL?
