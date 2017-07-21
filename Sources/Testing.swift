@@ -14,14 +14,21 @@ public class FakeSession<C: Client>: Session<C> {
     }
     
     override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> ()) -> URLSessionDataTask {
-        let sessionResult = resultProvider.resultFor(call: call)
-        let result = transform(sessionResult: sessionResult, for: call)
-        
-        return FakeURLSessionDataTask {
+        DispatchQueue.global().async {
+            let sessionResult = self.resultProvider.resultFor(call: call)
+
+            if self.debug {
+                print("\(call.request.cURLRepresentation)\n\(sessionResult)")
+            }
+
+            let result = self.transform(sessionResult: sessionResult, for: call)
+
             DispatchQueue.main.async {
                 completion(result)
             }
         }
+
+        return URLSessionDataTask()
     }
 }
 
