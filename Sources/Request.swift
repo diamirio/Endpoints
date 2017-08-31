@@ -78,7 +78,7 @@ public struct FormEncodedBody: Body {
     
     /// add percent encoding to a string suitable for a form encoded request.
     func encode(_ string: String) -> String {
-        guard let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+        guard let encoded = string.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
             fatalError("failed to encode param string: \(string)")
         }
         return encoded
