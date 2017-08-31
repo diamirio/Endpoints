@@ -116,7 +116,7 @@ class ClientTests: XCTestCase {
     }
     
     func testPostFormEncodedBody() {
-        let params = [ "key": "&=?value+" ]
+        let params = [ "key": "&=?value+*-:_.😀" ]
         let body = FormEncodedBody(parameters: params)
         let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
         
