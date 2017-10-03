@@ -52,4 +52,8 @@ public class FakeURLSessionDataTask: URLSessionDataTask {
     public override func resume() {
         completion()
     }
+
+    public override func cancel() {
+        //no-op
+    }
 }
