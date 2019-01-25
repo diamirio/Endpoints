@@ -60,7 +60,7 @@ class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubR
         return btn
     }()
     
-    func sortTapped() {
+    @objc func sortTapped() {
         let sheet = UIAlertController(title: "Sort", message: nil, preferredStyle: .actionSheet)
         let sorts: [GithubClient.SearchRepositories.Sort] = [ .stars, .forks, .updated ]
         
@@ -76,7 +76,7 @@ class GithubRepoSearchViewController: SearchViewController<GithubClient, GithubR
         present(sheet, animated: true, completion: nil)
     }
     
-    func loginTapped() {
+    @objc func loginTapped() {
         if let _ = session.client.user {
             session.client.user = nil //logout
         } else {

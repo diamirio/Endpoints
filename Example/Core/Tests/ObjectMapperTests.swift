@@ -15,12 +15,12 @@ class EndpointMapperTests: XCTestCase {
         
         init?(map: Map) {}
         mutating func mapping(map: Map){
-            value <- map["args.input.value"]
+            value <- map["args.input"]
         }
     }
     
     func testResponseParsing() {
-        let value = "value"
+        let value = "valueTest"
         let c = AnyCall<ResponseObject>(Request(.get, "get", query: [ "input": value ]))
         
         tester.test(call: c) { result in

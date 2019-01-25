@@ -125,7 +125,7 @@ class SearchViewController<C: Client, S: PagableSearch>: UITableViewController, 
         }
     }
     
-    func reset() {
+    @objc func reset() {
         activeTask?.cancel()
         
         nextCall = search.prepareCallForFirstPage(withQuery: searchBar.text ?? "")

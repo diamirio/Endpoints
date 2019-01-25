@@ -160,13 +160,6 @@
 			remoteGlobalIDString = 630019221D596292003B4E30;
 			remoteInfo = PMKCoreTests;
 		};
-		78367D181ED3539D004C4F19 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6314112F1D5978D700E24B9E;
-			remoteInfo = PMKDispatchTests;
-		};
 		78367D1E1ED353E9004C4F19 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
@@ -257,6 +250,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 787AECBB1DABDEC7001A49BB;
 			remoteInfo = "Endpoints-iOS";
+		};
+		B48765EC21FB40B900315E12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78E09C9A1E5DC227003DB909 /* ObjectMapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DBB9B41F2142A25100078E5A;
+			remoteInfo = "ObjectMapper-Mac-Static";
+		};
+		B48765F321FB40B900315E12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 633027EA203CC0060037E136;
+			remoteInfo = PMKDeprecatedTests;
+		};
+		B48765F521FB40B900315E12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 78376D521E6415C200C74C26 /* PromiseKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C0244E622047A6CB00ACB4AC;
+			remoteInfo = "PMKJSA+Tests";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -359,8 +373,9 @@
 				78367D001ED3537A004C4F19 /* ObjectMapper.framework */,
 				78367D021ED3537A004C4F19 /* ObjectMapper.framework */,
 				78367D041ED3537A004C4F19 /* ObjectMapper-iOSTests.xctest */,
-				78367D061ED3537A004C4F19 /* ObjectMapper-MacTests.xctest */,
+				78367D061ED3537A004C4F19 /* ObjectMapper-macOSTests.xctest */,
 				78367D081ED3537A004C4F19 /* ObjectMapper-tvOSTests.xctest */,
+				B48765ED21FB40B900315E12 /* libObjectMapper.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -372,7 +387,8 @@
 				78367D131ED3539D004C4F19 /* PMKA+Tests.xctest */,
 				78367D151ED3539D004C4F19 /* PMKBridgeTests.xctest */,
 				78367D171ED3539D004C4F19 /* PMKCoreTests.xctest */,
-				78367D191ED3539D004C4F19 /* PMKDispatchTests.xctest */,
+				B48765F421FB40B900315E12 /* PMKDeprecatedTests.xctest */,
+				B48765F621FB40B900315E12 /* PMKJSA+Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -557,23 +573,25 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Peter Weishapl";
 				TargetAttributes = {
 					78E09ACA1E5DBED9003DB909 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = T852P6U9E5;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					78E09BF51E5DC02F003DB909 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = T852P6U9E5;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					78E09C3B1E5DC09D003DB909 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = T852P6U9E5;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -701,10 +719,10 @@
 			remoteRef = 78367D031ED3537A004C4F19 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		78367D061ED3537A004C4F19 /* ObjectMapper-MacTests.xctest */ = {
+		78367D061ED3537A004C4F19 /* ObjectMapper-macOSTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "ObjectMapper-MacTests.xctest";
+			path = "ObjectMapper-macOSTests.xctest";
 			remoteRef = 78367D051ED3537A004C4F19 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -741,13 +759,6 @@
 			fileType = wrapper.cfbundle;
 			path = PMKCoreTests.xctest;
 			remoteRef = 78367D161ED3539D004C4F19 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		78367D191ED3539D004C4F19 /* PMKDispatchTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = PMKDispatchTests.xctest;
-			remoteRef = 78367D181ED3539D004C4F19 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78E09C851E5DC20E003DB909 /* Endpoints.framework */ = {
@@ -797,6 +808,27 @@
 			fileType = wrapper.cfbundle;
 			path = "EndpointsTests-macOS.xctest";
 			remoteRef = 78E09C901E5DC20E003DB909 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B48765ED21FB40B900315E12 /* libObjectMapper.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libObjectMapper.a;
+			remoteRef = B48765EC21FB40B900315E12 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B48765F421FB40B900315E12 /* PMKDeprecatedTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PMKDeprecatedTests.xctest;
+			remoteRef = B48765F321FB40B900315E12 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B48765F621FB40B900315E12 /* PMKJSA+Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "PMKJSA+Tests.xctest";
+			remoteRef = B48765F521FB40B900315E12 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -924,15 +956,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -974,15 +1014,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1020,7 +1068,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1035,7 +1083,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.EndpointsExample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1055,7 +1103,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.ExampleCore";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1077,7 +1125,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.ExampleCore";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1091,7 +1139,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.ExampleCoreTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1103,7 +1151,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tailored-apps.ExampleCoreTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

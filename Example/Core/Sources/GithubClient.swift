@@ -41,15 +41,15 @@ public class GithubClient: AnyClient {
 // MARK: Requests
 
 public extension GithubClient {
-    public static func searchReposUntyped(query: String) -> AnyCall<RepositoriesResponse> {
+    static func searchReposUntyped(query: String) -> AnyCall<RepositoriesResponse> {
         return searchReposUntyped(url: Request(.get, "search/repositories", query: ["q": query]))
     }
     
-    public static func searchReposUntyped(url: URLRequestEncodable) -> AnyCall<RepositoriesResponse> {
+    static func searchReposUntyped(url: URLRequestEncodable) -> AnyCall<RepositoriesResponse> {
         return AnyCall<RepositoriesResponse>(url)
     }
     
-    public struct SearchRepositories: Call {
+    struct SearchRepositories: Call {
         public enum Sort: String {
             case stars, forks, updated
         }
@@ -98,7 +98,7 @@ public protocol Pagable {
 }
 
 public extension ResponseParser where OutputType: Pagable {
-    public static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
+    static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
         var output = try self.parse(data: data, encoding: response.stringEncoding)
         
         for link in response.parseLinks() {
@@ -162,7 +162,7 @@ public struct GithubErrorDetails: Unboxable {
 }
 
 public extension HTTPURLResponse {
-    public func parseLinks() -> [Link] {
+    func parseLinks() -> [Link] {
         guard let linkHeader = self.allHeaderFields["Link"] as? String else {
             return [Link]()
         }
