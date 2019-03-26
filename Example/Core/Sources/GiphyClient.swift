@@ -32,8 +32,8 @@ public class GiphyClient: Client {
             guard
                 let response = result.httpResponse,
                 let data = result.data,
-                let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                let meta = errorDict?["meta"] as? [String: Any],
+                let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String : Any],
+                let meta = errorDict["meta"] as? [String: Any],
                 let errorCode = meta["error_code"] as? String else {
                 // no error info from backend -> rethrow default error
                 throw error
@@ -68,7 +68,7 @@ public protocol GiphyCall: Call {
 }
 
 public extension GiphyClient {
-    public struct Search: GiphyCall {
+    struct Search: GiphyCall {
         public typealias ResponseType = GiphyListResponse
         
         public var query: String

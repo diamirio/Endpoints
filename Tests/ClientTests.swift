@@ -61,7 +61,7 @@ class ClientTests: XCTestCase {
                     XCTFail("wrong error: \(error)")
                 }
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(String(describing: result.error))")
             }
         }
     }
@@ -234,7 +234,7 @@ class ClientTests: XCTestCase {
                 XCTAssertTrue(error.isPropertyListError)
                 XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
             } else {
-                XCTFail("wrong error: \(result.error)")
+                XCTFail("wrong error: \(String(describing: result.error))")
             }
         }
     }

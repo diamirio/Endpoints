@@ -12,7 +12,7 @@ class PromiseKitTests: XCTestCase {
         
         firstly {
             session.start(call: BinClient.GetOutput(value: input))
-        }.then { value -> Void in
+        }.done { value -> Void in
             XCTAssertEqual(input, value.value)
             exp.fulfill()
         }.catch { error in
@@ -27,7 +27,7 @@ class PromiseKitTests: XCTestCase {
         
         firstly {
             session.start(call: AnyCall<Data>(Request(.get, "status/400")))
-        }.then { value -> Void in
+        }.done { value -> Void in
             XCTFail("expected error \(value)")
             exp.fulfill()
         }.catch { error in

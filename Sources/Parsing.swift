@@ -46,7 +46,7 @@ public extension DataParser {
     
     /// Convenience helper for `DataParser` implementations that need to parse
     /// JSON data.
-    public static func parseJSON(data: Data) throws -> Any {
+    static func parseJSON(data: Data) throws -> Any {
         return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
     }
 }
@@ -61,7 +61,7 @@ public extension ResponseParser {
     
     /// Uses `DataParser.parse(data:encoding)` to parse the response using
     /// 'response.stringEncoding'.
-    public static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
+    static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
         return try self.parse(data: data, encoding: response.stringEncoding)
     }
 }
