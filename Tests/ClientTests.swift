@@ -38,8 +38,8 @@ class ClientTests: XCTestCase {
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
-            
-            XCTAssertEqual(result.error?.localizedDescription, "The request timed out.")
+
+            XCTAssertEqual(URLError.timedOut, result.urlError?.code)
 
             let error = result.error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)

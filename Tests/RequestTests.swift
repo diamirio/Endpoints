@@ -5,14 +5,27 @@ class RequestTests: XCTestCase {
     func testRelativeRequestEncoding() {
         let base = "https://httpbin.org/"
         let queryParams = [ "q": "Äin €uro", "a": "test" ]
-        let encodedQueryString = "q=%C3%84in%20%E2%82%ACuro&a=test"
-        let expectedUrlString = "https://httpbin.org/get?\(encodedQueryString)"
-        
-        var req = testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams)
-        XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
-        
-        req = testRequestEncoding(baseUrl: base + "get", queryParams: queryParams)
-        XCTAssertEqual(req.url?.absoluteString, expectedUrlString)
+
+        func validate(request: URLRequest) {
+            if let url = request.url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                XCTAssertEqual("https", components.scheme)
+                XCTAssertEqual("httpbin.org", components.host)
+                XCTAssertEqual("/get", components.path)
+
+                let queryItems = components.queryItems?.sorted(by: { $0.name < $1.name })
+                XCTAssertEqual(URLQueryItem(name: "a", value: "test"), queryItems?[0])
+                XCTAssertEqual(URLQueryItem(name: "q", value: "Äin €uro"), queryItems?[1])
+
+                // test encoding
+                XCTAssertTrue(url.absoluteString.contains("%C3%84in%20%E2%82%ACuro"))
+
+            } else {
+                XCTFail("Creating URLComponents from \(String(describing: request.url)) failed")
+            }
+        }
+
+        validate(request: testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams))
+        validate(request: testRequestEncoding(baseUrl: base + "get", queryParams: queryParams))
     }
     
     func testHATEOASRequest() {

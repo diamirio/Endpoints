@@ -5,5 +5,5 @@ script:
     - xcodebuild -enableCodeCoverage=YES clean test -project Endpoints.xcodeproj -scheme Endpoints-macOS -destination "platform=OS X" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
     - bash <(curl -s https://codecov.io/bash) -cF ios
     - xcodebuild clean test -project Endpoints.xcodeproj -scheme Endpoints-iOS -destination "platform=iOS Simulator,name=iPad Air" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-    - xcodebuild clean test -project Endpoints.xcodeproj -scheme Endpoints-tvOS -destination "platform=tvOS Simulator,name=Apple TV 4K" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+    - xcodebuild clean build -project Endpoints.xcodeproj -scheme Endpoints-tvOS -destination "platform=tvOS Simulator,name=Apple TV 4K" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
     - xcodebuild clean build -project Endpoints.xcodeproj -scheme Endpoints-watchOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
