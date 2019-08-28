@@ -48,14 +48,18 @@
 		F92C234D23159E8B0000CAFE /* DecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C234B23159E8B0000CAFE /* DecodableParser.swift */; };
 		F92C234E23159E8B0000CAFE /* DecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C234B23159E8B0000CAFE /* DecodableParser.swift */; };
 		F92C234F23159E8B0000CAFE /* DecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C234B23159E8B0000CAFE /* DecodableParser.swift */; };
-		F92C235123159F3C0000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235023159F3C0000CAFE /* MultipartBody.swift */; };
-		F92C235223159F3C0000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235023159F3C0000CAFE /* MultipartBody.swift */; };
-		F92C235323159F3C0000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235023159F3C0000CAFE /* MultipartBody.swift */; };
-		F92C235423159F3C0000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235023159F3C0000CAFE /* MultipartBody.swift */; };
 		F92C23562315A07C0000CAFE /* DecodableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23552315A07C0000CAFE /* DecodableArray.swift */; };
 		F92C23572315A07C0000CAFE /* DecodableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23552315A07C0000CAFE /* DecodableArray.swift */; };
 		F92C23582315A07C0000CAFE /* DecodableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23552315A07C0000CAFE /* DecodableArray.swift */; };
 		F92C23592315A07C0000CAFE /* DecodableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23552315A07C0000CAFE /* DecodableArray.swift */; };
+		F92C235C2315A4490000CAFE /* MultipartBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */; };
+		F92C235D2315A4490000CAFE /* MultipartBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */; };
+		F92C235E2315A4490000CAFE /* MultipartBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */; };
+		F92C235F2315A4490000CAFE /* MultipartBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */; };
+		F92C23612315A6160000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23602315A6160000CAFE /* MultipartBody.swift */; };
+		F92C23622315A6160000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23602315A6160000CAFE /* MultipartBody.swift */; };
+		F92C23632315A6160000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23602315A6160000CAFE /* MultipartBody.swift */; };
+		F92C23642315A6160000CAFE /* MultipartBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92C23602315A6160000CAFE /* MultipartBody.swift */; };
 		F92D8C6E23157C0A0069FC37 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8C6D23157C0A0069FC37 /* Body.swift */; };
 		F92D8C6F23157C0A0069FC37 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8C6D23157C0A0069FC37 /* Body.swift */; };
 		F92D8C7023157C0A0069FC37 /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8C6D23157C0A0069FC37 /* Body.swift */; };
@@ -192,8 +196,9 @@
 		F92C234423159BDD0000CAFE /* HTTPURLResponse+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+Encoding.swift"; sourceTree = "<group>"; };
 		F92C234623159CDB0000CAFE /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
 		F92C234B23159E8B0000CAFE /* DecodableParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableParser.swift; sourceTree = "<group>"; };
-		F92C235023159F3C0000CAFE /* MultipartBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBody.swift; sourceTree = "<group>"; };
 		F92C23552315A07C0000CAFE /* DecodableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableArray.swift; sourceTree = "<group>"; };
+		F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBodyPart.swift; sourceTree = "<group>"; };
+		F92C23602315A6160000CAFE /* MultipartBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBody.swift; sourceTree = "<group>"; };
 		F92D8C6D23157C0A0069FC37 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		F92D8C7223157C3C0069FC37 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		F92D8C7723157CAF0069FC37 /* FormEncodedBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormEncodedBody.swift; sourceTree = "<group>"; };
@@ -348,13 +353,22 @@
 			path = Parsing;
 			sourceTree = "<group>";
 		};
+		F92C235A2315A43D0000CAFE /* Multipart */ = {
+			isa = PBXGroup;
+			children = (
+				F92C23602315A6160000CAFE /* MultipartBody.swift */,
+				F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */,
+			);
+			path = Multipart;
+			sourceTree = "<group>";
+		};
 		F92D8C6C23157C010069FC37 /* Body */ = {
 			isa = PBXGroup;
 			children = (
+				F92C235A2315A43D0000CAFE /* Multipart */,
 				F92D8C6D23157C0A0069FC37 /* Body.swift */,
 				F92D8C7723157CAF0069FC37 /* FormEncodedBody.swift */,
 				F92D8C7C23157CBE0069FC37 /* JSONEncodedBody.swift */,
-				F92C235023159F3C0000CAFE /* MultipartBody.swift */,
 			);
 			path = Body;
 			sourceTree = "<group>";
@@ -672,7 +686,6 @@
 				F92D8CA723157FD80069FC37 /* StatusCodeError.swift in Sources */,
 				F92C234723159CDB0000CAFE /* Encodable+toJSON.swift in Sources */,
 				F92D8CD6231581E00069FC37 /* FakeSession.swift in Sources */,
-				F92C235123159F3C0000CAFE /* MultipartBody.swift in Sources */,
 				F92D8CD1231581D80069FC37 /* FakeResultProvider.swift in Sources */,
 				F92C234C23159E8B0000CAFE /* DecodableParser.swift in Sources */,
 				F92D8C9223157F5D0069FC37 /* AnyCall.swift in Sources */,
@@ -682,6 +695,8 @@
 				F92C234323159B910000CAFE /* ResponseParser.swift in Sources */,
 				F92D8CDB231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
 				F92D8CBC231580740069FC37 /* URLSessionTaskResult.swift in Sources */,
+				F92C235C2315A4490000CAFE /* MultipartBodyPart.swift in Sources */,
+				F92C23612315A6160000CAFE /* MultipartBody.swift in Sources */,
 				F92D8C7D23157CBE0069FC37 /* JSONEncodedBody.swift in Sources */,
 				F92C234523159BDD0000CAFE /* HTTPURLResponse+Encoding.swift in Sources */,
 				F92D8C8D23157F4A0069FC37 /* Session+Extensions.swift in Sources */,
@@ -722,7 +737,7 @@
 				F92D8CD8231581E00069FC37 /* FakeSession.swift in Sources */,
 				F92D8CD3231581D80069FC37 /* FakeResultProvider.swift in Sources */,
 				F92D8C9423157F5D0069FC37 /* AnyCall.swift in Sources */,
-				F92C235323159F3C0000CAFE /* MultipartBody.swift in Sources */,
+				F92C23632315A6160000CAFE /* MultipartBody.swift in Sources */,
 				F92D8CB4231580270069FC37 /* StatusCodeValidator.swift in Sources */,
 				F92D8CAF231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDD231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
@@ -741,6 +756,7 @@
 				F92D8CA323157FB70069FC37 /* URLRequest+Extensions.swift in Sources */,
 				F92D8C9E23157F7C0069FC37 /* URL+URLRequestEncodable.swift in Sources */,
 				F92D8C8A23157F3B0069FC37 /* Result+Extensions.swift in Sources */,
+				F92C235E2315A4490000CAFE /* MultipartBodyPart.swift in Sources */,
 				F92D8CC82315813E0069FC37 /* URLRequestEncodable.swift in Sources */,
 				788C03B91E5C9840003ABC67 /* Session.swift in Sources */,
 				F92C234023159B610000CAFE /* DataParser.swift in Sources */,
@@ -760,7 +776,7 @@
 				F92D8CD9231581E00069FC37 /* FakeSession.swift in Sources */,
 				F92D8CD4231581D80069FC37 /* FakeResultProvider.swift in Sources */,
 				F92D8C9523157F5D0069FC37 /* AnyCall.swift in Sources */,
-				F92C235423159F3C0000CAFE /* MultipartBody.swift in Sources */,
+				F92C23642315A6160000CAFE /* MultipartBody.swift in Sources */,
 				F92D8CB5231580270069FC37 /* StatusCodeValidator.swift in Sources */,
 				F92D8CB0231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDE231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
@@ -779,6 +795,7 @@
 				F92D8CA423157FB70069FC37 /* URLRequest+Extensions.swift in Sources */,
 				F92D8C9F23157F7C0069FC37 /* URL+URLRequestEncodable.swift in Sources */,
 				F92D8C8B23157F3B0069FC37 /* Result+Extensions.swift in Sources */,
+				F92C235F2315A4490000CAFE /* MultipartBodyPart.swift in Sources */,
 				F92D8CC92315813E0069FC37 /* URLRequestEncodable.swift in Sources */,
 				788C03DB1E5C9AAA003ABC67 /* Session.swift in Sources */,
 				F92C234123159B610000CAFE /* DataParser.swift in Sources */,
@@ -808,7 +825,7 @@
 				F92D8CD7231581E00069FC37 /* FakeSession.swift in Sources */,
 				F92D8CD2231581D80069FC37 /* FakeResultProvider.swift in Sources */,
 				F92D8C9323157F5D0069FC37 /* AnyCall.swift in Sources */,
-				F92C235223159F3C0000CAFE /* MultipartBody.swift in Sources */,
+				F92C23622315A6160000CAFE /* MultipartBody.swift in Sources */,
 				F92D8CB3231580270069FC37 /* StatusCodeValidator.swift in Sources */,
 				F92D8CAE231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDC231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
@@ -827,6 +844,7 @@
 				F92D8CA223157FB70069FC37 /* URLRequest+Extensions.swift in Sources */,
 				F92D8C9D23157F7C0069FC37 /* URL+URLRequestEncodable.swift in Sources */,
 				F92D8C8923157F3B0069FC37 /* Result+Extensions.swift in Sources */,
+				F92C235D2315A4490000CAFE /* MultipartBodyPart.swift in Sources */,
 				F92D8CC72315813E0069FC37 /* URLRequestEncodable.swift in Sources */,
 				78106CBC1E2928EA0087F06C /* Session.swift in Sources */,
 				F92C233F23159B610000CAFE /* DataParser.swift in Sources */,
