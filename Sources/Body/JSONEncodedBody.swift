@@ -1,11 +1,3 @@
-//
-//  JSONEncodedBody.swift
-//  Endpoints
-//
-//  Created by Robin Mayerhofer on 27.08.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
-
 import Foundation
 
 /// A type representing a JSON encoded HTTP request body.
@@ -20,9 +12,15 @@ public struct JSONEncodedBody: Body {
         requestData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
     }
 
+    /// Initialize with an encodable object
+    ///
+    /// - throws: The error thrown by `toJSON()`, if `jsonObject` cannot be encoded.
+    public init(encodable: Encodable) throws {
+        requestData = try encodable.toJSON()
+    }
+
     /// Returns "Content-Type": "application/json".
     public var header: Parameters? {
         return [ "Content-Type" : "application/json" ]
     }
 }
-

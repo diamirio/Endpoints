@@ -14,12 +14,12 @@ public struct Request: URLRequestEncodable {
     public var body: Body?
     
     /// Creates a relative Request
-    public init(_ method: HTTPMethod, _ path: String?=nil, query: Parameters?=nil, header: Parameters?=nil, body: Body?=nil) {
+    public init(_ method: HTTPMethod, _ path: String? = nil, query: Parameters? = nil, header: Parameters? = nil, body: Body? = nil) {
         self.init(method, url: URL(path: path, query: query), header: header, body: body)
     }
     
     /// Creates an absolute Request
-    public init(_ method: HTTPMethod, url: URL, header: Parameters?=nil, body: Body?=nil) {
+    public init(_ method: HTTPMethod, url: URL, header: Parameters? = nil, body: Body? = nil) {
         self.method = method
         self.header = header
         self.body = body
