@@ -16,7 +16,7 @@ class FileUtil {
     /// - Parameter bundle: the bundle where the file is included
     static func load(
         named name: String,
-        withExtension ext: String,
+        withExtension ext: String = "json",
         bundle: Bundle = Bundle(for: FileUtil.self)
     ) throws -> Data {
         let bundle = Bundle(for: FileUtil.self)

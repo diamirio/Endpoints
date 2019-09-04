@@ -11,16 +11,8 @@ import XCTest
 
 class EndpointsCodableTests: XCTestCase {
 
-    override class func setUp() {
-        //
-    }
-
-    override func tearDown() {
-        //
-    }
-
     func testDecodingArray() throws {
-        let decoded = try [City].parse(data: FileUtil.load(named: "CityArray", withExtension: "json"), encoding: .utf8)
+        let decoded = try [City].parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)
 
         XCTAssertEqual(decoded.count, 7, "there should be exactly 7 elements in the array")
         XCTAssertEqual(decoded.first, City(name: "Biehle", postalCode: 9753), "the first element should have the right name / postalCode")
@@ -35,8 +27,37 @@ class EndpointsCodableTests: XCTestCase {
         XCTAssertEqual(city, decoded, "Encoding -> Decoding should result in the same values")
     }
 
+    func testUsingCustomDecoders() throws {
+        do {
+            _ = try Person.parse(data: FileUtil.load(named: "Person"), encoding: .utf8)
+            XCTFail("parsing should not succeed")
+        } catch ExpectedError.decoderWasReplaced {
+            // expected
+        }
+    }
+
     private struct City: Codable, DecodableParser, Equatable {
         let name: String
         let postalCode: Int
+    }
+
+    private struct Person: Decodable, DecodableParser {
+
+        static var decoder: JSONDecoder {
+            let decoder = JSONDecoder()
+
+            decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
+                throw ExpectedError.decoderWasReplaced
+            })
+
+            return decoder
+        }
+
+        let name: String
+        let birthday: Date
+    }
+
+    private enum ExpectedError: LocalizedError {
+        case decoderWasReplaced
     }
 }
