@@ -2,7 +2,6 @@ import UIKit
 import PlaygroundSupport
 import Endpoints
 import ExampleCore
-import Unbox
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 struct RandomImage: ResponseParser {

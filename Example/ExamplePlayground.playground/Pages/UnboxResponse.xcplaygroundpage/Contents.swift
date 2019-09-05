@@ -2,15 +2,18 @@ import UIKit
 import PlaygroundSupport
 import Endpoints
 import ExampleCore
-import Unbox
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-struct RandomImage: UnboxableParser {
-    var url: URL
-    
-    init(unboxer: Unboxer) throws {
-        url = try unboxer.unbox(keyPath: "data.image_url")
+struct RandomImage: DecodableParser, Response {
+    struct Data: Decodable {
+        let url: URL
+
+        private enum CodingKeys: String, CodingKey {
+            case url = "image_url"
+        }
     }
+
+    let data: Data
 }
 
 struct RandomCall: Call {
@@ -31,7 +34,7 @@ let session = Session(with: client)
 
 session.start(call: call) { result in
     result.onSuccess { value in
-        let url = value.url
+        let url = value.data.url
         print("image url: \(url)")
     }
     

@@ -26,7 +26,7 @@ public class BinClient: AnyClient {
 protocol BinCall: Call {}
 
 public extension BinClient {
-    public struct GetOutput: BinCall {
+    struct GetOutput: BinCall {
         public typealias ResponseType = OutputValue
         
         public var value: String
