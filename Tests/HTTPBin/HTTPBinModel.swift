@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Endpoints
 
 /// A basic model for a HTTPBin response (only contains atm needed fields
 struct HTTPBinResponse: DecodableParser, Decodable {
