@@ -10,7 +10,7 @@ extension Array: ResponseParser {
     }
 }
 
-extension Array where Element: Response & Decodable {
+extension Array where Element: JSONResponse & Decodable {
 
     public static func parse(data: Data, encoding: String.Encoding) throws -> Array {
         return try Element.decoder.decode(OutputType.self, from: data)

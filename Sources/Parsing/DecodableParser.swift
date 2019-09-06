@@ -2,7 +2,7 @@ import Foundation
 
 /// A `ResponseParser` and can parse metadata from `response` using the static `decoder`
 /// provided by itself if the output type is decodable and return the parsed output.
-public protocol DecodableParser: Response, ResponseParser {}
+public protocol DecodableParser: JSONResponse, ResponseParser {}
 
 public extension DecodableParser where OutputType: Decodable {
 

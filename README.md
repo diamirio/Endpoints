@@ -155,12 +155,12 @@ extension RandomImage: ResponseParser {
 }
 ```
 
-This can of course be made a lot easier by using the Codable API, for which there is a `DecodableParser` and a `Response` type. A `Response` is able to supply a `JSONDecoder` to decode data into itself via the static `decoder` property.
+This can of course be made a lot easier by using the Codable API, for which there is a `DecodableParser` and a `JSONResponse` type. A `JSONResponse` is able to supply a `JSONDecoder` to decode data into itself via the static `decoder` property.
 
 We can therefore write:
 
 ```swift
-struct RandomImage: DecodableParser, Response {
+struct RandomImage: DecodableParser, JSONResponse {
     struct Data: Decodable {
         let url: URL
         

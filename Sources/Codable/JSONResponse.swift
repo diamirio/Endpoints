@@ -1,11 +1,11 @@
 import Foundation
 
-/// A `Response` is a type which can provide a `decoder` to decode a Network response
-public protocol Response {
+/// A `JSONResponse` is a type which can provide a `decoder` to decode a Network response
+public protocol JSONResponse {
     static var decoder: JSONDecoder { get }
 }
 
-extension Response {
+extension JSONResponse {
     public static var decoder: JSONDecoder {
         return JSONDecoder()
     }

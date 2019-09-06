@@ -23,7 +23,7 @@ class MultipartTests: XCTestCase {
         ])
 
 
-    /// Create a request body that can be compared with teh multipartBody property
+    /// Create a request body that can be compared with the multipartBody property
     /// - Parameter boundary: The boundary without the two hyphens and CRLF
     private func createRequestDataString(boundary: String) -> String {
         // linefeeds here are only `\n` while multipart uses `\r\n`, therefore `\r` needs to be manually inserted
