@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = "9.0"
   s.osx.deployment_target = "10.11"
 
-  s.source_files = "Sources/*.swift"
+  s.source_files = "Sources/**/*.swift"
   s.frameworks  = "Foundation"
   s.pod_target_xcconfig = {
     "OTHER_SWIFT_FLAGS[config=Debug]" => "-DDEBUG"

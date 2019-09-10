@@ -38,8 +38,8 @@ class ClientTests: XCTestCase {
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
             XCTAssertNil(result.response?.statusCode)
-            
-            XCTAssertEqual(result.error?.localizedDescription, "The request timed out.")
+
+            XCTAssertEqual(URLError.timedOut, result.urlError?.code)
 
             let error = result.error as! URLError
             XCTAssertEqual(error.code, URLError.timedOut)
@@ -139,21 +139,34 @@ class ClientTests: XCTestCase {
         }
     }
     
-    func testPostJSONBody() {
-        let params = [ "key": "value" ]
-        let body = try! JSONEncodedBody(jsonObject: params)
+    func testPostJSONBody() throws {
+        let params = ["key": "value"]
+        let body = try JSONEncodedBody(jsonObject: params)
+        _testPostJSONBody(body: body, validateJSON: { json in
+            XCTAssertEqual(json, params)
+        })
+    }
+
+    func testPostJSONBodyEncodable() throws {
+        let params = ["key": "value"]
+        _testPostJSONBody(body: try JSONEncodedBody(encodable: params), validateJSON: { json in
+            XCTAssertEqual(json, params)
+        })
+    }
+
+    func _testPostJSONBody(body: JSONEncodedBody, validateJSON: @escaping (([String: String]) -> Void)) {
         let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
-        
+
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
-            
+
             result.onSuccess { value in
-                if let form = value["json"] as? [String: String] {
-                    XCTAssertEqual(form, params)
+                if let json = value["json"] as? [String: String] {
+                    validateJSON(json)
                 } else {
-                    XCTFail("form not found")
+                    XCTFail("json not found")
                 }
-                
+
                 if let headers = value["headers"] as? [String: String] {
                     XCTAssertEqual(headers["Content-Type"], "application/json")
                 } else {

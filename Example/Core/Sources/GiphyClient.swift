@@ -1,5 +1,4 @@
 import Foundation
-import Unbox
 import Endpoints
 import CoreGraphics
 
@@ -93,17 +92,18 @@ public extension GiphyClient {
 // MARK: -
 // MARK: Responses
 
-public struct GiphyListResponse: UnboxableParser {
-    public var images: [GiphyImage]
-    public var pagination: GiphyPagination
+public struct GiphyListResponse: DecodableParser, Response, Decodable {
     
-    public init(unboxer: Unboxer) throws {
-        images = try unboxer.unbox(key: "data")
-        pagination = try unboxer.unbox(key: "pagination")
+    public let images: [GiphyImage]
+    public let pagination: GiphyPagination
+
+    private enum CodingKeys: String, CodingKey {
+        case images = "data"
+        case pagination = "pagination"
     }
 }
 
-public struct GiphyPagination: Unboxable {
+public struct GiphyPagination: Decodable {
     public var count: Int
     public var totalCount: Int
     public var offset: Int
@@ -111,31 +111,60 @@ public struct GiphyPagination: Unboxable {
     public var isLastPage: Bool {
         return offset + count >= totalCount
     }
-    
-    public init(unboxer: Unboxer) throws {
-        count = try unboxer.unbox(key: "count")
-        totalCount = try unboxer.unbox(key: "total_count")
-        offset = try unboxer.unbox(key: "offset")
+
+    private enum CodingKeys: String, CodingKey {
+        case count
+        case totalCount = "total_count"
+        case offset
     }
 }
 
-public struct GiphyImage: Unboxable {
-    public var name: String
-    public var url: URL
-    public var size: CGSize
-    
-    public init(unboxer: Unboxer) throws {
-        name = try unboxer.unbox(keyPath: "slug")
-        
-        let images = unboxer.dictionary["images"] as! UnboxableDictionary
-        let downsized = images["downsized"] as! UnboxableDictionary
-        let unboxer = Unboxer(dictionary: downsized)
-        
-        url = try unboxer.unbox(key: "url")
-        
-        let width: Int = try unboxer.unbox(key: "width")
-        let height: Int = try unboxer.unbox(key: "height")
-        
+public struct GiphyImage: Decodable, Response {
+
+    private struct Images: Decodable {
+        let downsized: Image
+    }
+
+    private struct Image: Decodable {
+        let url: URL
+        let width: String
+        let height: String
+    }
+
+    public let name: String
+    public let url: URL
+    public let size: CGSize
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .slug)
+
+        let images = try container.decode(Images.self, forKey: .images)
+        url = images.downsized.url
+
+        guard let width = Int(images.downsized.width) else {
+            throw DecodingError.typeMismatch(
+                Int.self,
+                DecodingError.Context(
+                    codingPath: [],
+                    debugDescription: "Decoding width: expected to decode an Int (as a String), but the String was not convertible to Int. Value: \(images.downsized.width)")
+            )
+        }
+
+        guard let height = Int(images.downsized.height) else {
+            throw DecodingError.typeMismatch(
+                Int.self,
+                DecodingError.Context(
+                    codingPath: [],
+                    debugDescription: "Decoding height: expected to decode an Int (as a String), but the String was not convertible to Int. Value: \(images.downsized.height)")
+            )
+        }
+
         size = CGSize(width: width, height: height)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case slug
+        case images
     }
 }

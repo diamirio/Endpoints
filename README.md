@@ -9,7 +9,7 @@
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
-It requires Swift 3, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
+It requires Swift 5, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
 
 ## Usage
 
@@ -155,27 +155,21 @@ extension RandomImage: ResponseParser {
 }
 ```
 
-This can of course be made a lot easier by using a JSON parsing library (like [Unbox](https://github.com/JohnSundell/Unbox)) and  a few lines of integration code:
+This can of course be made a lot easier by using the Codable API, for which there is a `DecodableParser` and a `JSONResponse` type. A `JSONResponse` is able to supply a `JSONDecoder` to decode data into itself via the static `decoder` property.
+
+We can therefore write:
 
 ```swift
-protocol UnboxableParser: Unboxable, ResponseParser {}
-
-extension UnboxableParser {
-    static func parse(data: Data, encoding: String.Encoding) throws -> Self {
-        return try unbox(data: data)
+struct RandomImage: DecodableParser, JSONResponse {
+    struct Data: Decodable {
+        let url: URL
+        
+        private enum CodingKeys: String, CodingKey {
+            case url = "image_url"
+        }
     }
-}
-```
-
-Now we can write:
-
-```swift
-struct RandomImage: UnboxableParser {
-    var url: URL
     
-    init(unboxer: Unboxer) throws {
-        url = try unboxer.unbox(keyPath: "data.image_url")
-    }
+    let data: Data
 }
 ```
 
@@ -190,7 +184,7 @@ let session = Session(with: client)
 
 session.start(call: call) { result in
     result.onSuccess { value in
-        print("image url: \(value.url)")
+        print("image url: \(value.data.url)")
     }.onError { error in
         print("error: \(error)")
     }
@@ -260,7 +254,7 @@ To compile examples you need to fetch some git submodules using `git submodule u
 
 ## Requirements
 
-- Swift 3
+- Swift 5
 - iOS 8
 - tvOS 9
 - macOS 10.11

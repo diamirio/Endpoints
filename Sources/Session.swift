@@ -44,16 +44,17 @@ public class Session<C: Client> {
 
         return task
     }
-    
+
     func transform<C: Call>(sessionResult: URLSessionTaskResult, for call: C) -> Result<C.ResponseType.OutputType> {
         var result = Result<C.ResponseType.OutputType>(response: sessionResult.httpResponse)
-        
+
         do {
             result.value = try client.parse(sessionTaskResult: sessionResult, for: call)
         } catch {
             result.error = error
         }
-        
+
         return result
+
     }
 }

@@ -1,6 +1,5 @@
 import Foundation
 import Endpoints
-import Unbox
 
 // MARK: -
 // MARK: Client
@@ -26,7 +25,7 @@ public class GithubClient: AnyClient {
         do {
             try super.validate(result: result)
         } catch {
-            if let data = result.data, let githubError: GithubError = try? unbox(data: data) {
+            if let data = result.data, let githubError: GithubError = try? GithubError.decoder.decode(GithubError.self, from: data) {
                 //propagate error details received server
                 throw githubError
             } else {
@@ -81,15 +80,15 @@ public extension GithubClient {
 // MARK: -
 // MARK: Responses
 
-public struct Repository: Unboxable {
+public struct Repository: Decodable, Response {
     public let name: String
     public let description: String?
     public let url: URL
-    
-    public init(unboxer: Unboxer) throws {
-        name = try unboxer.unbox(key: "name")
-        description = unboxer.unbox(key: "description")
-        url = try unboxer.unbox(key: "html_url")
+
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case description
+        case url = "html_url"
     }
 }
 
@@ -111,14 +110,16 @@ public extension ResponseParser where OutputType: Pagable {
     }
 }
 
-public struct RepositoriesResponse: UnboxableParser, Pagable {
+public struct RepositoriesResponse: DecodableParser, Response, Decodable, Pagable {
+
     public let totalCount: Int
     public let repositories: [Repository]
     public var nextPage: URL?
-    
-    public init(unboxer: Unboxer) throws {
-        totalCount = try unboxer.unbox(key: "total_count")
-        repositories = try unboxer.unbox(key: "items")
+
+    private enum CodingKeys: String, CodingKey {
+        case totalCount = "total_count"
+        case repositories = "items"
+        case nextPage = "next_page"
     }
 }
 
@@ -131,15 +132,10 @@ public struct Link {
     var rel: LinkRelation
 }
 
-public struct GithubError: Unboxable, LocalizedError {
-    public var message: String
-    public var details: [GithubErrorDetails]?
-    
-    public init(unboxer: Unboxer) throws {
-        self.message = try unboxer.unbox(key: "message")
-        self.details = unboxer.unbox(key: "errors")
-    }
-    
+public struct GithubError: DecodableParser, Response, Decodable, LocalizedError {
+    public let message: String
+    public let details: [GithubErrorDetails]?
+
     public var errorDescription: String? {
         var desc = message
         
@@ -149,16 +145,16 @@ public struct GithubError: Unboxable, LocalizedError {
         
         return desc
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case message
+        case details = "errors"
+    }
 }
 
-public struct GithubErrorDetails: Unboxable {
-    public var field: String
-    public var code: String
-    
-    public init(unboxer: Unboxer) throws {
-        self.field = try unboxer.unbox(key: "field")
-        self.code = try unboxer.unbox(key: "code")
-    }
+public struct GithubErrorDetails: Decodable {
+    public let field: String
+    public let code: String
 }
 
 public extension HTTPURLResponse {
