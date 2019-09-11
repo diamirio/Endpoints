@@ -1,15 +1,7 @@
-//
-//  Endpoints+CodableTests.swift
-//  Endpoints-iOS
-//
-//  Created by Robin Mayerhofer on 04.09.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
-
 import XCTest
 @testable import Endpoints
 
-class EndpointsCodableTests: XCTestCase {
+class EndpointsJSONCodableTests: XCTestCase {
 
     func testDecodingArray() throws {
         let decoded = try [City].parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)

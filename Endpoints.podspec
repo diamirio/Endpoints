@@ -4,7 +4,8 @@ Pod::Spec.new do |s|
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary = "Type-Safe Swift Networking"
   s.homepage = "https://github.com/tailoredmedia/Endpoints"
-  s.author = { "Peter Weishapl" => "pw@tailored-apps.com" }
+  s.authors = { "Peter Weishapl" => "pw@tailored-apps.com",
+                "Robin Mayerhofer" => "rm@tailored-apps.com" }
   s.source = {
       :git => "https://github.com/tailoredmedia/Endpoints.git",
       :tag => s.version
