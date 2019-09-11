@@ -1,18 +1,32 @@
 import Foundation
 
-extension Array: ResponseParser {
-    public static func parse(data: Data, encoding: String.Encoding) throws -> Array {
-        guard let array = try parseJSON(data: data) as? Array else {
-            throw ParsingError.invalidData(description: "JSON structure is not an Array")
-        }
+/**
+ Array parsing directly as a response type of `Call`s is only supported via `Decodable`.
+ If you want to support another parsing mechanism, then you need to implement
+ an own `ResponseParser` and use that.
 
-        return array
-    }
-}
+ Example:
+ ```
+ public struct CustomArrayParser<Element>: ResponseParser {
 
-extension Array where Element: JSONResponse & Decodable {
+     public typealias OutputType = [Element]
 
-    public static func parse(data: Data, encoding: String.Encoding) throws -> Array {
-        return try Element.decoder.decode(OutputType.self, from: data)
+     public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
+         // ...
+     }
+ }
+
+ public struct CustomCall: Call {
+     public typealias ResponseType = CustomArrayParser<String>
+
+     public var request: URLRequestEncodable {
+         // ...
+     }
+ }
+ ```
+ */
+extension Array: JSONDecodableParser, DecodableParser, ResponseParser, DataParser where Element: Decodable {
+    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
+        return try jsonDecoder.decode(OutputType.self, from: data)
     }
 }

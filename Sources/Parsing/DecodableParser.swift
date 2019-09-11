@@ -1,12 +1,17 @@
 import Foundation
 
-/// A `ResponseParser` and can parse metadata from `response` using the static `decoder`
-/// provided by itself if the output type is decodable and return the parsed output.
-public protocol DecodableParser: JSONResponse, ResponseParser {}
+/// A `DecodableParser`` and can parse metadata into `OutputType`s.
+/// The `OutputType` must always conform to `Decodable`
+public protocol DecodableParser: ResponseParser where OutputType: Decodable {
 
-public extension DecodableParser where OutputType: Decodable {
+    /// Converts a `Data` object to `OutputType`.
+    ///
+    /// - throws: if `data` is not in the expected format.
+    static func parse(data: Data) throws -> OutputType
+}
 
+public extension DecodableParser {
     static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
-        return try decoder.decode(OutputType.self, from: data)
+        return try parse(data: data)
     }
 }

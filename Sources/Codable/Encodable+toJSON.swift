@@ -1,11 +1,11 @@
 import Foundation
 
 public extension Encodable {
-    static var encoder: JSONEncoder {
+    static var jsonEncoder: JSONEncoder {
         return JSONEncoder()
     }
 
     func toJSON() throws -> Data {
-        return try Self.encoder.encode(self)
+        return try Self.jsonEncoder.encode(self)
     }
 }
