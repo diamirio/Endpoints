@@ -33,9 +33,26 @@ class EndpointsJSONCodableTests: XCTestCase {
         XCTAssertEqual(city, decoded, "Encoding -> Decoding should result in the same values")
     }
 
-    func testUsingCustomDecoders() throws {
+    func testUsingCustomDecoder() throws {
         do {
             _ = try Person.parse(data: FileUtil.load(named: "Person"), encoding: .utf8)
+            XCTFail("parsing should not succeed")
+        } catch ExpectedError.decoderWasReplaced {
+            // expected
+        }
+    }
+
+    func testUsingCustomDecoderAndAnyClient() throws {
+        let client = AnyClient(baseURL: URL(string: "www.tailored-apps.com")!)
+        let call = PersonCall()
+        let result = URLSessionTaskResult(response:
+            FakeHTTPURLResponse(status: 200, header: nil),
+                                          data: try FileUtil.load(named: "Person"),
+                                          error: nil
+        )
+
+        do {
+            _ = try client.parse(sessionTaskResult: result, for: call)
             XCTFail("parsing should not succeed")
         } catch ExpectedError.decoderWasReplaced {
             // expected
@@ -47,6 +64,16 @@ class EndpointsJSONCodableTests: XCTestCase {
         XCTAssertEqual(cities.first, City(name: "Biehle", postalCode: 9753), "the first element should have the right name / postalCode")
     }
 
+    fileprivate static func getDateCrashDecoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+
+        decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
+            throw ExpectedError.decoderWasReplaced
+        })
+
+        return decoder
+    }
+
     private struct CitiesCall: Call {
         typealias ResponseType = [City]
 
@@ -55,28 +82,43 @@ class EndpointsJSONCodableTests: XCTestCase {
         }
     }
 
+    private struct PersonsCall: Call {
+        typealias ResponseType = [Person]
+
+        var request: URLRequestEncodable {
+            return Request(.get)
+        }
+    }
+
+    private struct PersonCall: Call {
+        typealias ResponseType = Person
+
+        var request: URLRequestEncodable {
+            return Request(.get)
+        }
+    }
+
     private struct City: JSONSelfDecodable, Encodable, Equatable {
+        static var jsonDecoder: JSONDecoder {
+            return JSONDecoder()
+        }
+
         let name: String
         let postalCode: Int
     }
 
-    private struct Person: JSONSelfDecodable {
-
-        static var jsonDecoder: JSONDecoder {
-            let decoder = JSONDecoder()
-
-            decoder.dateDecodingStrategy = .custom({ (decoder) -> Date in
-                throw ExpectedError.decoderWasReplaced
-            })
-
-            return decoder
-        }
-
+    fileprivate struct Person: JSONSelfDecodable {
         let name: String
         let birthday: Date
     }
 
     private enum ExpectedError: LocalizedError {
         case decoderWasReplaced
+    }
+}
+
+extension EndpointsJSONCodableTests.Person {
+    public static var jsonDecoder: JSONDecoder {
+        return EndpointsJSONCodableTests.getDateCrashDecoder()
     }
 }

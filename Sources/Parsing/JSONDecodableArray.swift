@@ -1,7 +1,7 @@
 import Foundation
 
 /**
- Array parsing directly as a response type of `Call`s is only supported via `Decodable`.
+ Array parsing directly as a response type of `Call`s is only supported via `Decodable` using an unconfigured `JSONDecoder()`.
  If you want to support another parsing mechanism, then you need to implement
  an own `ResponseParser` and use that.
 
@@ -28,5 +28,9 @@ import Foundation
 extension Array: JSONDecodableParser, DecodableParser, ResponseParser, DataParser where Element: Decodable {
     public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
         return try jsonDecoder.decode(OutputType.self, from: data)
+    }
+
+    public static var jsonDecoder: JSONDecoder {
+        return JSONDecoder()
     }
 }
