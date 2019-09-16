@@ -29,8 +29,4 @@ extension Array: JSONDecodableParser, DecodableParser, ResponseParser, DataParse
     public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
         return try jsonDecoder.decode(OutputType.self, from: data)
     }
-
-    public static var jsonDecoder: JSONDecoder {
-        return JSONDecoder()
-    }
 }
