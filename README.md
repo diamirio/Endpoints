@@ -57,6 +57,64 @@ session.start(call: call) { result in
 }
 ```
 
+#### Codable Integration
+
+`Endpoints` has a built in Codable support. 
+
+##### Decoding
+
+The parser responsible for handling decodable types is the `DecodableParser`. As the different parsers do not have a common interface, it is just a layer that removes the encoding as a function requirement, as no `Decoder` needs it.
+JSON responses can be used by adopting the `JSONDecodableParser` protocol. A `JSONDecodableParser` needs to provide a `jsonDecoder` which is used to turn the data into an object.  
+For convenience, it is recommended to define a default decoder via a protocol extension and customize it by providing a different one in a specific `JSONDecodableParser`.  
+If a type acts as output as well as parser, then simply adopting `JSONSelfDecodable` is enough.
+
+```swift
+// default decoder
+extension JSONDecodableParser {
+    public static var jsonDecoder: JSONDecoder {
+        return JSONDecoder()
+    }
+}
+
+struct Person: JSONSelfDecodable {
+    let name: String
+    let birthday: Date
+}
+
+// specific decoder
+extension Person {
+    public static var jsonDecoder: JSONDecoder {
+        // return a customized decoder
+    }
+}
+```
+
+All arrays, whose elements conform to `Decodable` are `JSONDecodableParser`s. Although due to static / dynamic dispatch limitations, it is not possible to overwrite the `jsonDecoder` in specific arrays.
+If you need to use a different decoder, then a dedicated `JSONDecodableParser` is the way to go.
+
+```swift
+public struct CustomArrayParser<Element>: ResponseParser {
+
+    public typealias OutputType = [Element]
+
+    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
+        // ...
+    }
+}
+
+public struct CustomCall: Call {
+    public typealias ResponseType = CustomArrayParser<String>
+
+    public var request: URLRequestEncodable {
+        // ...
+    }
+}
+```
+
+##### Encoding
+
+Every encodable is able to provide a `JSONEncoder()` to encode itself via the `toJSON()` method.
+
 ### Dedicated Calls
 
 `AnyCall` is the default implementation of the `Call` protocol, which you can use as-is. But if you want to make your networking layer really type-safe you'll want to create a dedicated `Call` type for each operation of your Web-API:

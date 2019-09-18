@@ -2,7 +2,7 @@ import Foundation
 
 /// A type that can convert a `Data` object into a specified `OutputType`.
 ///
-/// Adopted by `Data`, `String`, `Dictionary` and `Array`.
+/// Adopted by `Data`, `String`, `Dictionary`.
 ///
 /// Used by `Call` to define the expected response type for its associated
 /// request.

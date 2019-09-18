@@ -7,7 +7,7 @@ class ClientTests: XCTestCase {
     override func setUp() {
         tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
-    
+
     func testCancellation() {
         let c = AnyCall<Data>(Request(.get, "get"))
         
