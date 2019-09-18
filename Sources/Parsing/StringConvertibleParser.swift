@@ -35,7 +35,7 @@ public struct StringConvertibleParser<Parsed: LosslessStringConvertible>: Respon
 
 // MARK: - Typealiases for most commonly used LosslessStringConvertibles
 
-public typealias BoolParser =   StringConvertibleParser<Bool>
+public typealias BoolParser   = StringConvertibleParser<Bool>
 public typealias DoubleParser = StringConvertibleParser<Double>
-public typealias FloatParser =  StringConvertibleParser<Float>
-public typealias IntParser =   StringConvertibleParser<Int>
+public typealias FloatParser  = StringConvertibleParser<Float>
+public typealias IntParser    = StringConvertibleParser<Int>
