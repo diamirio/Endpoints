@@ -9,7 +9,7 @@ import Foundation
 
 /// A `JSONParser` is a `DecodableParser` that works with JSON representation.
 /// It provides aa `jsonDecoder` to decode a response.
-open class JSONParser<T: Decodable> {
+open class JSONParser<T: Decodable>: ResponseParser {
 
     public typealias OutputType = T
 
