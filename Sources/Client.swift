@@ -12,5 +12,5 @@ public protocol Client {
     /// this client's Web API into the expected output type.
     ///
     /// - throws: Any `Error` if `result` is considered invalid.
-    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType
+    func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType
 }

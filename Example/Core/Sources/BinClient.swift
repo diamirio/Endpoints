@@ -27,7 +27,7 @@ protocol BinCall: Call {}
 
 public extension BinClient {
     struct GetOutput: BinCall {
-        public typealias ResponseType = OutputValue
+        public typealias Parser = OutputValue
         
         public var value: String
         

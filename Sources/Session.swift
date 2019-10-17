@@ -22,7 +22,7 @@ public class Session<C: Client> {
         self.urlSession = urlSession
     }
 
-    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>)->()) -> URLSessionDataTask {
+    public func dataTask<C: Call>(for call: C, completion: @escaping (Result<C.Parser.OutputType>) -> Void) -> URLSessionDataTask {
         let urlRequest = client.encode(call: call)
         weak var tsk: URLSessionDataTask?
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
@@ -45,8 +45,8 @@ public class Session<C: Client> {
         return task
     }
 
-    func transform<C: Call>(sessionResult: URLSessionTaskResult, for call: C) -> Result<C.ResponseType.OutputType> {
-        var result = Result<C.ResponseType.OutputType>(response: sessionResult.httpResponse)
+    func transform<C: Call>(sessionResult: URLSessionTaskResult, for call: C) -> Result<C.Parser.OutputType> {
+        var result = Result<C.Parser.OutputType>(response: sessionResult.httpResponse)
 
         do {
             result.value = try client.parse(sessionTaskResult: sessionResult, for: call)

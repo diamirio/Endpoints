@@ -12,7 +12,7 @@ import Foundation
 /// Web API:
 /// ````
 /// struct Login: Call {
-///     typealias ResponseType = [String: Any] //you can use any DataParser
+///     typealias Parser = DictionaryParser<String, Any> //you can use any DataParser
 ///
 ///     var user: String
 ///     var pwd: String
@@ -28,7 +28,7 @@ import Foundation
 /// Alternatively, you can dynamically create `Call`s using `AnyCall`:
 /// ````
 /// let loginData = ["user": user, "pwd": pwd]
-/// let login = AnyCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
+/// let login = AnyCall<DictionaryParser<String, Any>>(Request(.post, "login", body: JSONEncodedBody(loginData)))
 /// ````
 ///
 /// Adopts `ResponseValidator`, so you can override `validate` if
@@ -38,7 +38,7 @@ import Foundation
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+    associatedtype Parser: ResponseParser
 
     var request: URLRequestEncodable { get }
 }

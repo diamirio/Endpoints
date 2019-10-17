@@ -1,7 +1,7 @@
 import Foundation
 
-public struct AnyCall<Response: ResponseParser>: Call {
-    public typealias ResponseType = Response
+public struct AnyCall<Parser: ResponseParser>: Call {
+    public typealias Parser = Parser
 
     public typealias ValidationBlock = (URLSessionTaskResult) throws -> ()
 

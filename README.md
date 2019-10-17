@@ -48,7 +48,7 @@ Some built-in types already adopt the `ResponseParser` protocol (using protocol 
 
 ```swift
 // Replace `Data` with any `ResponseParser` implementation
-let call = AnyCall<[String: Any]>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
+let call = AnyCall<DictionaryParser<String, Any>>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
 ...
 session.start(call: call) { result in
     result.onSuccess { value in
@@ -103,7 +103,7 @@ public struct CustomArrayParser<Element>: ResponseParser {
 }
 
 public struct CustomCall: Call {
-    public typealias ResponseType = CustomArrayParser<String>
+    public typealias Parser = CustomArrayParser<String>
 
     public var request: URLRequestEncodable {
         // ...
@@ -121,7 +121,7 @@ Every encodable is able to provide a `JSONEncoder()` to encode itself via the `t
 
 ```swift
 struct GetRandomImage: Call {
-    typealias ResponseType = [String: Any]
+    typealias Parser = DictionaryParser<String, Any>
     
     var tag: String
     
@@ -192,7 +192,7 @@ struct RandomImage {
 }
 
 struct GetRandomImage: Call {
-    typealias ResponseType = RandomImage
+    typealias Parser = RandomImage
     ...
 }
 ```

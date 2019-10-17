@@ -15,7 +15,7 @@ class BinResultProvider: FakeResultProvider {
 }
 
 struct ServerMessageRequest: Call {
-    typealias ResponseType = Data
+    typealias Parser = Data
     
     var message: String
     

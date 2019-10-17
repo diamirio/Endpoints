@@ -68,7 +68,7 @@ public protocol GiphyCall: Call {
 
 public extension GiphyClient {
     struct Search: GiphyCall {
-        public typealias ResponseType = GiphyListResponse
+        public typealias Parser = GiphyListResponse
         
         public var query: String
         public var pageSize: Int

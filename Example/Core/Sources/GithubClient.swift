@@ -58,7 +58,7 @@ public extension GithubClient {
             case url(URL)
         }
         
-        public typealias ResponseType = RepositoriesResponse
+        public typealias Parser = RepositoriesResponse
         
         public var endpoint: Endpoint
         
