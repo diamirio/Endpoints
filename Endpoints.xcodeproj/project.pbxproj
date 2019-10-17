@@ -164,10 +164,6 @@
 		F92D8CE1231582100069FC37 /* FakeURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8CDF231582100069FC37 /* FakeURLSessionDataTask.swift */; };
 		F92D8CE2231582100069FC37 /* FakeURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8CDF231582100069FC37 /* FakeURLSessionDataTask.swift */; };
 		F92D8CE3231582100069FC37 /* FakeURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92D8CDF231582100069FC37 /* FakeURLSessionDataTask.swift */; };
-		F9619DE12328F52F00E556DA /* JSONDecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */; };
-		F9619DE22328F52F00E556DA /* JSONDecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */; };
-		F9619DE32328F52F00E556DA /* JSONDecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */; };
-		F9619DE42328F52F00E556DA /* JSONDecodableParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */; };
 		F9619DFE23293F9D00E556DA /* StringConvertibleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DFD23293F9D00E556DA /* StringConvertibleParser.swift */; };
 		F9619DFF23293F9D00E556DA /* StringConvertibleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DFD23293F9D00E556DA /* StringConvertibleParser.swift */; };
 		F9619E0023293F9D00E556DA /* StringConvertibleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9619DFD23293F9D00E556DA /* StringConvertibleParser.swift */; };
@@ -268,7 +264,6 @@
 		F92C234423159BDD0000CAFE /* HTTPURLResponse+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPURLResponse+Encoding.swift"; sourceTree = "<group>"; };
 		F92C234623159CDB0000CAFE /* Encodable+toJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+toJSON.swift"; sourceTree = "<group>"; };
 		F92C234B23159E8B0000CAFE /* DecodableParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableParser.swift; sourceTree = "<group>"; };
-		F92C23552315A07C0000CAFE /* JSONDecodableArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodableArray.swift; sourceTree = "<group>"; };
 		F92C235B2315A4490000CAFE /* MultipartBodyPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBodyPart.swift; sourceTree = "<group>"; };
 		F92C23602315A6160000CAFE /* MultipartBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartBody.swift; sourceTree = "<group>"; };
 		F92D8C6D23157C0A0069FC37 /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
@@ -292,7 +287,6 @@
 		F92D8CD5231581E00069FC37 /* FakeSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSession.swift; sourceTree = "<group>"; };
 		F92D8CDA231581FA0069FC37 /* FakeHTTPURLResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeHTTPURLResponse.swift; sourceTree = "<group>"; };
 		F92D8CDF231582100069FC37 /* FakeURLSessionDataTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeURLSessionDataTask.swift; sourceTree = "<group>"; };
-		F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodableParser.swift; sourceTree = "<group>"; };
 		F9619DFD23293F9D00E556DA /* StringConvertibleParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConvertibleParser.swift; sourceTree = "<group>"; };
 		F9619E0323293FF300E556DA /* CodableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableString.swift; sourceTree = "<group>"; };
 		F9619E092329419400E556DA /* StringConvertibleParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConvertibleParserTests.swift; sourceTree = "<group>"; };
@@ -436,8 +430,6 @@
 			children = (
 				F92C233D23159B5E0000CAFE /* DataParser.swift */,
 				F92C234B23159E8B0000CAFE /* DecodableParser.swift */,
-				F92C23552315A07C0000CAFE /* JSONDecodableArray.swift */,
-				F9619DE02328F52F00E556DA /* JSONDecodableParser.swift */,
 				F9D9CB3623586DB6003F144A /* JSONParser.swift */,
 				F92C234223159B910000CAFE /* ResponseParser.swift */,
 				F9619DFD23293F9D00E556DA /* StringConvertibleParser.swift */,
@@ -851,7 +843,6 @@
 				F92C234C23159E8B0000CAFE /* DecodableParser.swift in Sources */,
 				F92D8C9223157F5D0069FC37 /* AnyCall.swift in Sources */,
 				F92D8CB2231580270069FC37 /* StatusCodeValidator.swift in Sources */,
-				F9619DE12328F52F00E556DA /* JSONDecodableParser.swift in Sources */,
 				F92C233E23159B5E0000CAFE /* DataParser.swift in Sources */,
 				F92D8CAD231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92C234323159B910000CAFE /* ResponseParser.swift in Sources */,
@@ -912,7 +903,6 @@
 				F92D8CAF231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDD231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
 				F92C234E23159E8B0000CAFE /* DecodableParser.swift in Sources */,
-				F9619DE32328F52F00E556DA /* JSONDecodableParser.swift in Sources */,
 				F9EAE0FA232243F7008053B9 /* HTTPURLResponse+Encoding.swift in Sources */,
 				F92C234923159CE00000CAFE /* Encodable+toJSON.swift in Sources */,
 				F92D8CBE231580740069FC37 /* URLSessionTaskResult.swift in Sources */,
@@ -956,7 +946,6 @@
 				F92D8CB0231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDE231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
 				F92C234F23159E8B0000CAFE /* DecodableParser.swift in Sources */,
-				F9619DE42328F52F00E556DA /* JSONDecodableParser.swift in Sources */,
 				F9EAE0FB232243F7008053B9 /* HTTPURLResponse+Encoding.swift in Sources */,
 				F92C234A23159CE00000CAFE /* Encodable+toJSON.swift in Sources */,
 				F92D8CBF231580740069FC37 /* URLSessionTaskResult.swift in Sources */,
@@ -1017,7 +1006,6 @@
 				F92D8CAE231580180069FC37 /* ResponseValidator.swift in Sources */,
 				F92D8CDC231581FA0069FC37 /* FakeHTTPURLResponse.swift in Sources */,
 				F92C234D23159E8B0000CAFE /* DecodableParser.swift in Sources */,
-				F9619DE22328F52F00E556DA /* JSONDecodableParser.swift in Sources */,
 				F9EAE0F9232243F6008053B9 /* HTTPURLResponse+Encoding.swift in Sources */,
 				F92C234823159CDF0000CAFE /* Encodable+toJSON.swift in Sources */,
 				F92D8CBD231580740069FC37 /* URLSessionTaskResult.swift in Sources */,

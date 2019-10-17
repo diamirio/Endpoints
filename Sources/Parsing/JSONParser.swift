@@ -7,13 +7,15 @@
 
 import Foundation
 
-open class JSONParser<T: Decodable>: JSONDecodableParser {
+/// A `JSONParser` is a `DecodableParser` that works with JSON representation.
+/// It provides aa `jsonDecoder` to decode a response.
+open class JSONParser<T: Decodable> {
 
     public typealias OutputType = T
 
     required public init() {}
 
-    public var jsonDecoder: JSONDecoder {
+    open var jsonDecoder: JSONDecoder {
         return JSONDecoder()
     }
 
