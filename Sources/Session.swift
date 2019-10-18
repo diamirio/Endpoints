@@ -28,11 +28,9 @@ public class Session<C: Client> {
         let task = urlSession.dataTask(with: urlRequest) { data, response, error in
             let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
 
-            #if DEBUG
-                if let tsk = tsk, self.debug {
-                    print("\(tsk.requestDescription)\n\(sessionResult)")
-                }
-            #endif
+            if let tsk = tsk, self.debug {
+                print("\(tsk.requestDescription)\n\(sessionResult)")
+            }
 
             let result = self.transform(sessionResult: sessionResult, for: call)
 
@@ -55,6 +53,5 @@ public class Session<C: Client> {
         }
 
         return result
-
     }
 }
