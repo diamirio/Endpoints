@@ -12,7 +12,7 @@ import Foundation
 /// Web API:
 /// ````
 /// struct Login: Call {
-///     typealias Parser = DictionaryParser<String, Any> //you can use any DataParser
+///     typealias Parser = DictionaryParser<String, Any> //you can use any ResponseParser
 ///
 ///     var user: String
 ///     var pwd: String
@@ -34,7 +34,7 @@ import Foundation
 /// Adopts `ResponseValidator`, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type.
 /// `AnyClient` will use this method to validate the response of the calls
-/// request before using its `ResponseType` to parse it.
+/// request before using its `Parser` to parse it.
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {

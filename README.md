@@ -154,7 +154,7 @@ class GiphyClient: Client {
         return request
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType {
         do {
             // Use `AnyClient` to parse the response
             // If this fails, try to read error details from response body
@@ -227,7 +227,7 @@ There are multiple ways to make performing a call more convenient. You could wri
 protocol GiphyCall: Call {}
 
 extension GiphyCall {
-    func start(completion: @escaping (Result<ResponseType.OutputType>)->()) {
+    func start(completion: @escaping (Result<Parser.OutputType>)->()) {
         let client = GiphyClient()
         let session = Session(with: client)
         
