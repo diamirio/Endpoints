@@ -68,7 +68,15 @@ class ClientTests: XCTestCase {
     
     func testGetData() {
         let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        
+
+        tester.test(call: c) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+        }
+    }
+
+    func testGetDataNoContentParser() {
+        let c = AnyCall<NoContentParser>(Request(.get, "get"))
+
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
         }

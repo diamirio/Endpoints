@@ -25,7 +25,21 @@ class CodableStringTests: XCTestCase {
         XCTAssertFalse(model.value)
     }
 
-    fileprivate struct Model<T: LosslessStringConvertible>: Decodable {
+    func testDecodingEncoding() throws {
+        let model = CodableString(42.42)
+
+        let codedModel = try JSONParser<CodableString<Double>>().parse(
+            data: try model.toJSON(),
+            encoding: .utf8
+        )
+
+        XCTAssertEqual(
+            model.value,
+            codedModel.value
+        )
+    }
+
+    fileprivate struct Model<T: LosslessStringConvertible>: Codable {
         private let valueString: CodableString<T>
         var value: T {
             return valueString.value
