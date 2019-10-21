@@ -15,7 +15,7 @@ class BinClientTests: XCTestCase {
         tester.test(call: BinClient.GetOutput(value: input)) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
             
-            XCTAssertEqual(self.input, result.value?.value)
+            XCTAssertEqual(self.input, result.value)
         }
     }
     
@@ -23,7 +23,7 @@ class BinClientTests: XCTestCase {
         tester.test(call: BinClient.getOutput(value: input)) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
             
-            XCTAssertEqual(self.input, result.value?.value)
+            XCTAssertEqual(self.input, result.value)
         }
     }
 }

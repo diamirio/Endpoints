@@ -13,7 +13,7 @@ class PromiseKitTests: XCTestCase {
         firstly {
             session.start(call: BinClient.GetOutput(value: input))
         }.done { value -> Void in
-            XCTAssertEqual(input, value.value)
+            XCTAssertEqual(input, value)
             exp.fulfill()
         }.catch { error in
             XCTFail("error \(error)")
@@ -26,7 +26,7 @@ class PromiseKitTests: XCTestCase {
         let exp = expectation(description: "")
         
         firstly {
-            session.start(call: AnyCall<Data>(Request(.get, "status/400")))
+            session.start(call: AnyCall<DataResponseParser>(Request(.get, "status/400")))
         }.done { value -> Void in
             XCTFail("expected error \(value)")
             exp.fulfill()

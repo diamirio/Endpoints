@@ -21,7 +21,7 @@ public class GiphyClient: Client {
         return req
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType {
         do {
             // use `AnyClient` to parse the response
             // if this fails, try to read error details from response body
@@ -68,7 +68,7 @@ public protocol GiphyCall: Call {
 
 public extension GiphyClient {
     struct Search: GiphyCall {
-        public typealias Parser = GiphyListResponse
+        public typealias Parser = JSONParser<GiphyListResponse>
         
         public var query: String
         public var pageSize: Int
@@ -92,7 +92,7 @@ public extension GiphyClient {
 // MARK: -
 // MARK: Responses
 
-public struct GiphyListResponse: DecodableParser, Response, Decodable {
+public struct GiphyListResponse: Decodable {
     
     public let images: [GiphyImage]
     public let pagination: GiphyPagination
@@ -119,7 +119,7 @@ public struct GiphyPagination: Decodable {
     }
 }
 
-public struct GiphyImage: Decodable, Response {
+public struct GiphyImage: Decodable {
 
     private struct Images: Decodable {
         let downsized: Image

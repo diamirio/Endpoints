@@ -25,7 +25,8 @@ public class GithubClient: AnyClient {
         do {
             try super.validate(result: result)
         } catch {
-            if let data = result.data, let githubError: GithubError = try? GithubError.decoder.decode(GithubError.self, from: data) {
+            if let data = result.data,
+                let githubError: GithubError = try? JSONParser<GithubError>().parse(data: data, encoding: .utf8) {
                 //propagate error details received server
                 throw githubError
             } else {
@@ -40,12 +41,12 @@ public class GithubClient: AnyClient {
 // MARK: Requests
 
 public extension GithubClient {
-    static func searchReposUntyped(query: String) -> AnyCall<RepositoriesResponse> {
+    static func searchReposUntyped(query: String) -> AnyCall<JSONParser<RepositoriesResponse>> {
         return searchReposUntyped(url: Request(.get, "search/repositories", query: ["q": query]))
     }
     
-    static func searchReposUntyped(url: URLRequestEncodable) -> AnyCall<RepositoriesResponse> {
-        return AnyCall<RepositoriesResponse>(url)
+    static func searchReposUntyped(url: URLRequestEncodable) -> AnyCall<JSONParser<RepositoriesResponse>> {
+        return AnyCall(url)
     }
     
     struct SearchRepositories: Call {
@@ -58,7 +59,7 @@ public extension GithubClient {
             case url(URL)
         }
         
-        public typealias Parser = RepositoriesResponse
+        public typealias Parser = JSONParser<RepositoriesResponse>
         
         public var endpoint: Endpoint
         
@@ -80,7 +81,7 @@ public extension GithubClient {
 // MARK: -
 // MARK: Responses
 
-public struct Repository: Decodable, Response {
+public struct Repository: Decodable {
     public let name: String
     public let description: String?
     public let url: URL
@@ -97,8 +98,8 @@ public protocol Pagable {
 }
 
 public extension ResponseParser where OutputType: Pagable {
-    static func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
-        var output = try self.parse(data: data, encoding: response.stringEncoding)
+    func parse(response: HTTPURLResponse, data: Data) throws -> OutputType {
+        var output = try parse(data: data, encoding: response.stringEncoding)
         
         for link in response.parseLinks() {
             if link.rel == .next {
@@ -110,7 +111,7 @@ public extension ResponseParser where OutputType: Pagable {
     }
 }
 
-public struct RepositoriesResponse: DecodableParser, Response, Decodable, Pagable {
+public struct RepositoriesResponse: Decodable, Pagable {
 
     public let totalCount: Int
     public let repositories: [Repository]
@@ -132,7 +133,7 @@ public struct Link {
     var rel: LinkRelation
 }
 
-public struct GithubError: DecodableParser, Response, Decodable, LocalizedError {
+public struct GithubError: Decodable, LocalizedError {
     public let message: String
     public let details: [GithubErrorDetails]?
 
