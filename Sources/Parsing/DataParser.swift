@@ -17,12 +17,3 @@ public protocol DataParser {
     /// A `DataParser` needs to be initable without any arguments
     init()
 }
-
-public extension DataParser {
-
-    /// Convenience helper for `DataParser` implementations that need to parse
-    /// JSON data.
-    func parseJSON(data: Data) throws -> Any {
-        return try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-    }
-}

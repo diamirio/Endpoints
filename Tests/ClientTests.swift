@@ -9,7 +9,7 @@ class ClientTests: XCTestCase {
     }
 
     func testCancellation() {
-        let c = AnyCall<EmptyResponseParser>(Request(.get, "get"))
+        let c = AnyCall<NoContentParser>(Request(.get, "get"))
         
         let exp = expectation(description: "")
         let task = tester.session.start(call: c) { result in
@@ -33,7 +33,7 @@ class ClientTests: XCTestCase {
         var urlReq = Request(.get, "delay/1").urlRequest
         urlReq.timeoutInterval = 0.5
         
-        let c = AnyCall<EmptyResponseParser>(urlReq)
+        let c = AnyCall<NoContentParser>(urlReq)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -218,7 +218,7 @@ class ClientTests: XCTestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! AnyCall<JSONArrayParser<String>>.Parser().parse(data: arrayData, encoding: .utf8)
+        let parsedObject = try! AnyCall<JSONParser<[String]>>.Parser().parse(data: arrayData, encoding: .utf8)
         
         XCTAssertEqual(inputArray, parsedObject)
     }

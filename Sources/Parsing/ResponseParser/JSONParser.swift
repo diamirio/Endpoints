@@ -23,5 +23,3 @@ open class JSONParser<T: Decodable>: ResponseParser {
         return try jsonDecoder.decode(OutputType.self, from: data)
     }
 }
-
-open class JSONArrayParser<T: Decodable>: JSONParser<[T]> {}

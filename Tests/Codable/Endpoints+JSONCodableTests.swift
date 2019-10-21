@@ -4,7 +4,7 @@ import XCTest
 class EndpointsJSONCodableTests: XCTestCase {
 
     func testDecodingArray() throws {
-        let decoded = try JSONArrayParser<City>().parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)
+        let decoded = try JSONParser<[City]>().parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)
 
         validateCityArray(decoded)
     }
