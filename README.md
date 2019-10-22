@@ -22,7 +22,7 @@ Here's how to load a random image from Giphy.
 let client = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
 
 // A call encapsulates the request that is sent to the server and the type that is expected in the response.
-let call = AnyCall<Data>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
+let call = AnyCall<DataResponseParser>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
 
 // A session wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error) in a completion block.
 let session = Session(with: client)
@@ -47,67 +47,64 @@ A call is supposed to know exactly what response to expect from its request. It 
 Some built-in types already adopt the `ResponseParser` protocol (using protocol extensions), so you can for example turn any response into a JSON array or dictionary:
 
 ```swift
-// Replace `Data` with any `ResponseParser` implementation
-let call = AnyCall<[String: Any]>(Request(.get, "gifs/random", query: [ "tag": "cat", "api_key": "dc6zaTOxFJmzC" ]))
+// Replace `DataResponseParser` with any `ResponseParser` implementation
+let call = AnyCall<DictionaryParser<String, Any>>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
 ...
 session.start(call: call) { result in
     result.onSuccess { value in
         //value is now a JSON dictionary 🎉
     }
 }
+
+let call = AnyCall<JSONParser<GiphyGif>>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
+...
+session.start(call: call) { result in
+    result.onSuccess { value in
+        //value is now a `GiphyGif` dictionary 🎉
+    }
+}
 ```
 
-#### Codable Integration
+#### Provided `ResponseParser`s
 
-`Endpoints` has a built in Codable support. 
+Look up the documentation in the code for further explanations of the types.
+
+* `DataResponseParser`
+* `DictionaryParser`
+* `JSONParser`
+* `NoContentParser`
+* `StringConvertibleParser`
+* `StringParser`
+
+#### JSON Codable Integration
+
+`Endpoints` has a built in JSON Codable support. 
 
 ##### Decoding
 
-The parser responsible for handling decodable types is the `DecodableParser`. As the different parsers do not have a common interface, it is just a layer that removes the encoding as a function requirement, as no `Decoder` needs it.
-JSON responses can be used by adopting the `JSONDecodableParser` protocol. A `JSONDecodableParser` needs to provide a `jsonDecoder` which is used to turn the data into an object.  
-For convenience, it is recommended to define a default decoder via a protocol extension and customize it by providing a different one in a specific `JSONDecodableParser`.  
-If a type acts as output as well as parser, then simply adopting `JSONSelfDecodable` is enough.
+The `ResponseParser` responsible for handling decodable types is the `JSONParser`.  
+The `JSONParser` uses the default `JSONDecoder()`, however, the `JSONParser` can be subclassed, and the `jsonDecoder` can be overwritten with your configured `JSONDecoder`.
 
 ```swift
-// default decoder
-extension JSONDecodableParser {
-    public static var jsonDecoder: JSONDecoder {
-        return JSONDecoder()
+// Decode a type using the default decoder
+struct GiphyCall: Call {
+    typealias Parser = JSONParser<GiphyGif>
+    ...
+}
+
+// custom decoder
+
+struct GiphyParser<T>: JSONParser<T> {
+    override public var jsonDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        // configure...
+        return decoder
     }
 }
 
-struct Person: JSONSelfDecodable {
-    let name: String
-    let birthday: Date
-}
-
-// specific decoder
-extension Person {
-    public static var jsonDecoder: JSONDecoder {
-        // return a customized decoder
-    }
-}
-```
-
-All arrays, whose elements conform to `Decodable` are `JSONDecodableParser`s. Although due to static / dynamic dispatch limitations, it is not possible to overwrite the `jsonDecoder` in specific arrays.
-If you need to use a different decoder, then a dedicated `JSONDecodableParser` is the way to go.
-
-```swift
-public struct CustomArrayParser<Element>: ResponseParser {
-
-    public typealias OutputType = [Element]
-
-    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
-        // ...
-    }
-}
-
-public struct CustomCall: Call {
-    public typealias ResponseType = CustomArrayParser<String>
-
-    public var request: URLRequestEncodable {
-        // ...
-    }
+struct GiphyCall: Call {
+    typealias Parser = GiphyParser<GiphyGif>
+    ...
 }
 ```
 
@@ -121,7 +118,7 @@ Every encodable is able to provide a `JSONEncoder()` to encode itself via the `t
 
 ```swift
 struct GetRandomImage: Call {
-    typealias ResponseType = [String: Any]
+    typealias Parser = DictionaryParser<String, Any>
     
     var tag: String
     
@@ -157,7 +154,7 @@ class GiphyClient: Client {
         return request
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType {
         do {
             // Use `AnyClient` to parse the response
             // If this fails, try to read error details from response body
@@ -186,39 +183,7 @@ class GiphyClient: Client {
 You usually want your networking layer to provide a dedicated response type for every supported call. In our example this could look  like this:
 
 ```swift
-struct RandomImage {
-    var url: URL
-    ...
-}
-
-struct GetRandomImage: Call {
-    typealias ResponseType = RandomImage
-    ...
-}
-```
-
-In order for this to work, `RandomImage` must adopt the `ResponseParser` protocol:
-
-```swift
-extension RandomImage: ResponseParser {
-    static func parse(data: Data, encoding: String.Encoding) throws -> RandomImage {
-        let dict = try [String: Any].parse(data: data, encoding: encoding)
-        
-        guard let data = dict["data"] as? [String : Any], let url = data["image_url"] as? String else {
-            throw throw ParsingError.invalidData(description: "invalid response. url not found")
-        }
-        
-        return RandomImage(url: URL(string: url)!)
-    }
-}
-```
-
-This can of course be made a lot easier by using the Codable API, for which there is a `DecodableParser` and a `JSONResponse` type. A `JSONResponse` is able to supply a `JSONDecoder` to decode data into itself via the static `decoder` property.
-
-We can therefore write:
-
-```swift
-struct RandomImage: DecodableParser, JSONResponse {
+struct RandomImage: Decodable {
     struct Data: Decodable {
         let url: URL
         
@@ -228,6 +193,11 @@ struct RandomImage: DecodableParser, JSONResponse {
     }
     
     let data: Data
+}
+
+struct GetRandomImage: Call {
+    typealias Parser = JSONParser<RandomImage>
+    ...
 }
 ```
 
@@ -257,7 +227,7 @@ There are multiple ways to make performing a call more convenient. You could wri
 protocol GiphyCall: Call {}
 
 extension GiphyCall {
-    func start(completion: @escaping (Result<ResponseType.OutputType>)->()) {
+    func start(completion: @escaping (Result<Parser.OutputType>)->()) {
         let client = GiphyClient()
         let session = Session(with: client)
         
@@ -303,12 +273,12 @@ github "tailoredmedia/Endpoints.git"
 **Swift Package Manager:**
 
 ```
-.Package(url: "https://github.com/tailoredmedia/Endpoints.git", majorVersion: 0)
+.package(url: "https://github.com/tailoredmedia/Endpoints.git", .upToNextMajor(from: "2.0.0"))
 ```
 
 ## Example
 
-To compile examples you need to fetch some git submodules using `git submodule update --init --recursive`.
+To compile examples you need to open the project in Xcode, the dependencies are added via the Swift Package Manager, Xcode will download them automatically.
 
 ## Requirements
 

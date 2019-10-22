@@ -86,7 +86,7 @@ class MultipartTests: XCTestCase {
 
     func testMultipartHTTPBinCall() {
         struct PostCall: Call {
-            typealias ResponseType = HTTPBinResponse
+            typealias Parser = JSONParser<HTTPBinResponse>
 
             var request: URLRequestEncodable {
                 return Request(.post, "post", body: multipartBody)

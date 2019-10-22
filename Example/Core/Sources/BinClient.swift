@@ -27,7 +27,7 @@ protocol BinCall: Call {}
 
 public extension BinClient {
     struct GetOutput: BinCall {
-        public typealias ResponseType = OutputValue
+        public typealias Parser = OutputParser
         
         public var value: String
         
@@ -36,22 +36,25 @@ public extension BinClient {
         }
     }
     
-    static func getOutput(value: String) -> AnyCall<OutputValue> {
-        return AnyCall<OutputValue>(Request(.get, "get", query: [ "value": value]))
+    static func getOutput(value: String) -> AnyCall<OutputParser> {
+        return AnyCall(Request(.get, "get", query: [ "value": value]))
     }
 }
 
 // MARK: -
 // MARK: Responses
 
-public struct OutputValue: ResponseParser {
-    public var value: String
+public struct OutputParser: ResponseParser {
+
+    public typealias OutputType = String
+
+    public init() {}
     
-    public static func parse(data: Data, encoding: String.Encoding) throws -> OutputValue {
-        let dict = try Dictionary<String, Any>.parse(data: data, encoding: encoding)
+    public func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
+        let dict = try DictionaryParser<String, Any>().parse(data: data, encoding: encoding)
         guard let args = dict["args"] as? [String: String], let value = args["value"] else {
             throw ParsingError.invalidData(description: "value not found")
         }
-        return OutputValue(value: value)
+        return value
     }
 }

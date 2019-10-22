@@ -10,7 +10,9 @@ public struct StringConvertibleParser<Parsed: LosslessStringConvertible>: Respon
 
     public typealias OutputType = Parsed
 
-    public static func parse(data: Data, encoding: String.Encoding) throws -> Parsed {
+    public init() {}
+
+    public func parse(data: Data, encoding: String.Encoding) throws -> Parsed {
         guard var string = String(data: data, encoding: encoding) else {
             throw ParsingError.invalidData(description: "The data could not be converted to a string with the given encoding.")
         }

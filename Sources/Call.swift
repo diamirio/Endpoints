@@ -12,7 +12,7 @@ import Foundation
 /// Web API:
 /// ````
 /// struct Login: Call {
-///     typealias ResponseType = [String: Any] //you can use any DataParser
+///     typealias Parser = DictionaryParser<String, Any> //you can use any ResponseParser
 ///
 ///     var user: String
 ///     var pwd: String
@@ -28,17 +28,17 @@ import Foundation
 /// Alternatively, you can dynamically create `Call`s using `AnyCall`:
 /// ````
 /// let loginData = ["user": user, "pwd": pwd]
-/// let login = AnyCall<[String: Any]>(Request(.post, "login", body: JSONEncodedBody(loginData)))
+/// let login = AnyCall<DictionaryParser<String, Any>>(Request(.post, "login", body: JSONEncodedBody(loginData)))
 /// ````
 ///
 /// Adopts `ResponseValidator`, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type.
 /// `AnyClient` will use this method to validate the response of the calls
-/// request before using its `ResponseType` to parse it.
+/// request before using its `Parser` to parse it.
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {
-    associatedtype ResponseType: ResponseParser
+    associatedtype Parser: ResponseParser
 
     var request: URLRequestEncodable { get }
 }

@@ -10,7 +10,7 @@ extension Result {
     }
 
     @discardableResult
-    public func onSuccess(block: (Value)->()) -> Result {
+    public func onSuccess(block: (Value) -> Void) -> Result {
         if let value = value {
             block(value)
         }
@@ -18,7 +18,7 @@ extension Result {
     }
 
     @discardableResult
-    public func onError(block: (Error)->()) -> Result {
+    public func onError(block: (Error) -> Void) -> Result {
         if !wasCancelled, let error = error {
             block(error)
         }

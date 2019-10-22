@@ -20,7 +20,6 @@ class GithubClientTests: XCTestCase {
             result.onSuccess { value in
                 XCTAssertTrue(value.totalCount > 0)
                 XCTAssertTrue(value.totalCount >= value.repositories.count)
-                XCTAssertNotNil(value.nextPage)
             }
         }
     }

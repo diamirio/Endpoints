@@ -1,3 +1,0 @@
-[submodule "Example/Core/PromiseKit"]
-	path = Example/Core/PromiseKit
-	url = https://github.com/mxcl/PromiseKit

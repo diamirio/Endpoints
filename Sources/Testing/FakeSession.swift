@@ -9,7 +9,7 @@ public class FakeSession<C: Client>: Session<C> {
         super.init(with: client)
     }
 
-    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.ResponseType.OutputType>) -> Void) -> URLSessionDataTask {
+    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.Parser.OutputType>) -> Void) -> URLSessionDataTask {
         return FakeURLSessionDataTask {
             DispatchQueue.global().async {
                 let sessionResult = self.resultProvider.resultFor(call: call)

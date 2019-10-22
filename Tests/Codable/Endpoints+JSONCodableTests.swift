@@ -4,7 +4,7 @@ import XCTest
 class EndpointsJSONCodableTests: XCTestCase {
 
     func testDecodingArray() throws {
-        let decoded = try [City].parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)
+        let decoded = try JSONParser<[City]>().parse(data: FileUtil.load(named: "CityArray"), encoding: .utf8)
 
         validateCityArray(decoded)
     }
@@ -35,7 +35,7 @@ class EndpointsJSONCodableTests: XCTestCase {
 
     func testUsingCustomDecoder() throws {
         do {
-            _ = try Person.parse(data: FileUtil.load(named: "Person"), encoding: .utf8)
+            _ = try DateCrashParser<Person>().parse(data: FileUtil.load(named: "Person"), encoding: .utf8)
             XCTFail("parsing should not succeed")
         } catch ExpectedError.decoderWasReplaced {
             // expected
@@ -75,7 +75,7 @@ class EndpointsJSONCodableTests: XCTestCase {
     }
 
     private struct CitiesCall: Call {
-        typealias ResponseType = [City]
+        typealias Parser = JSONParser<[City]>
 
         var request: URLRequestEncodable {
             return Request(.get)
@@ -83,7 +83,7 @@ class EndpointsJSONCodableTests: XCTestCase {
     }
 
     private struct PersonsCall: Call {
-        typealias ResponseType = [Person]
+        typealias Parser = DateCrashParser<[Person]>
 
         var request: URLRequestEncodable {
             return Request(.get)
@@ -91,14 +91,14 @@ class EndpointsJSONCodableTests: XCTestCase {
     }
 
     private struct PersonCall: Call {
-        typealias ResponseType = Person
+        typealias Parser = DateCrashParser<Person>
 
         var request: URLRequestEncodable {
             return Request(.get)
         }
     }
 
-    private struct City: JSONSelfDecodable, Encodable, Equatable {
+    private struct City: Codable, Equatable {
         static var jsonDecoder: JSONDecoder {
             return JSONDecoder()
         }
@@ -107,7 +107,7 @@ class EndpointsJSONCodableTests: XCTestCase {
         let postalCode: Int
     }
 
-    fileprivate struct Person: JSONSelfDecodable {
+    fileprivate struct Person: Decodable {
         let name: String
         let birthday: Date
     }
@@ -119,6 +119,12 @@ class EndpointsJSONCodableTests: XCTestCase {
 
 extension EndpointsJSONCodableTests.Person {
     public static var jsonDecoder: JSONDecoder {
+        return EndpointsJSONCodableTests.getDateCrashDecoder()
+    }
+}
+
+class DateCrashParser<T: Decodable>: JSONParser<T> {
+    override var jsonDecoder: JSONDecoder {
         return EndpointsJSONCodableTests.getDateCrashDecoder()
     }
 }

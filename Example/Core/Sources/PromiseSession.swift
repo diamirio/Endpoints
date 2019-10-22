@@ -13,7 +13,7 @@ public class PromiseSession<C: Client> {
         self.urlSession = urlSession
     }
     
-    public func start<C: Call>(call: C) -> Promise<C.ResponseType.OutputType> {
+    public func start<C: Call>(call: C) -> Promise<C.Parser.OutputType> {
         return Promise(resolver: { resolver in
             let urlRequest = client.encode(call: call)
             let task = urlSession.dataTask(with: urlRequest) {  data, response, error in

@@ -10,7 +10,7 @@ import Foundation
 import Endpoints
 
 /// A basic model for a HTTPBin response (only contains atm needed fields
-struct HTTPBinResponse: JSONSelfDecodable {
+struct HTTPBinResponse: Decodable {
     let files: [String: String]
     let form: [String: String]
     let headers: [String: String]

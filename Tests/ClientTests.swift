@@ -9,7 +9,7 @@ class ClientTests: XCTestCase {
     }
 
     func testCancellation() {
-        let c = AnyCall<Data>(Request(.get, "get"))
+        let c = AnyCall<NoContentParser>(Request(.get, "get"))
         
         let exp = expectation(description: "")
         let task = tester.session.start(call: c) { result in
@@ -33,7 +33,7 @@ class ClientTests: XCTestCase {
         var urlReq = Request(.get, "delay/1").urlRequest
         urlReq.timeoutInterval = 0.5
         
-        let c = AnyCall<Data>(urlReq)
+        let c = AnyCall<NoContentParser>(urlReq)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -47,7 +47,7 @@ class ClientTests: XCTestCase {
     }
     
     func testStatusError() {
-        let c = AnyCall<Data>(Request(.get, "status/400"))
+        let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false, status: 400)
@@ -67,8 +67,16 @@ class ClientTests: XCTestCase {
     }
     
     func testGetData() {
-        let c = AnyCall<Data>(Request(.get, "get"))
-        
+        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
+
+        tester.test(call: c) { result in
+            self.tester.assert(result: result, isSuccess: true, status: 200)
+        }
+    }
+
+    func testGetDataNoContentParser() {
+        let c = AnyCall<NoContentParser>(Request(.get, "get"))
+
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
         }
@@ -76,7 +84,7 @@ class ClientTests: XCTestCase {
     
     func testPostRawString() {
         let body = "body"
-        let c = AnyCall<[String: Any]>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -95,7 +103,7 @@ class ClientTests: XCTestCase {
     func testPostString() {
         //foundation urlrequest defaults to form encoding
         let body = "key=value"
-        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -118,7 +126,7 @@ class ClientTests: XCTestCase {
     func testPostFormEncodedBody() {
         let params = [ "key": "&=?value+*-:_.😀" ]
         let body = FormEncodedBody(parameters: params)
-        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -155,7 +163,7 @@ class ClientTests: XCTestCase {
     }
 
     func _testPostJSONBody(body: JSONEncodedBody, validateJSON: @escaping (([String: String]) -> Void)) {
-        let c = AnyCall<[String: Any]>(Request(.post, "post", body: body))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
 
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -177,7 +185,7 @@ class ClientTests: XCTestCase {
     }
     
     func testGetString() {
-        let c = AnyCall<String>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
+        let c = AnyCall<StringParser>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -189,7 +197,7 @@ class ClientTests: XCTestCase {
     }
     
     func testGetJSONDictionary() {
-        let c = AnyCall<[String: Any]>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true, status: 200)
@@ -218,7 +226,7 @@ class ClientTests: XCTestCase {
         let inputArray = [ "one", "two", "three" ]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
-        let parsedObject = try! AnyCall<[String]>.ResponseType.parse(data: arrayData, encoding: .utf8)
+        let parsedObject = try! AnyCall<JSONParser<[String]>>.Parser().parse(data: arrayData, encoding: .utf8)
         
         XCTAssertEqual(inputArray, parsedObject)
     }
@@ -228,17 +236,17 @@ class ClientTests: XCTestCase {
         let data = input.data(using: .utf8)!
         
         do {
-            let parsed = try String.parse(data: data, encoding: .japaneseEUC)
+            let parsed = try StringParser().parse(data: data, encoding: .japaneseEUC)
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
         } catch {
             XCTAssertTrue(error is ParsingError)
-            XCTAssertEqual(error.localizedDescription, "String could not be parsed with encoding 3")
+            XCTAssertTrue(error.localizedDescription.hasPrefix("String could not be parsed with encoding"))
         }
     }
     
     func testFailJSONParsing() {
-        let c = AnyCall<[String: Any]>(Request(.get, "xml"))
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false, status: 200)
@@ -253,7 +261,7 @@ class ClientTests: XCTestCase {
     }
     
     struct GetOutput: Call {
-        typealias ResponseType = [String: Any]
+        typealias Parser = DictionaryParser<String, Any>
         
         let value: String
         
@@ -289,7 +297,7 @@ class ClientTests: XCTestCase {
     }
     
     struct ValidatingCall: Call {
-        typealias ResponseType = [String: Any]
+        typealias Parser = DictionaryParser<String, Any>
         
         var mime: String
         
@@ -313,7 +321,7 @@ class ClientTests: XCTestCase {
         let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
         let tester = ClientTester(test: self, client: client)
         
-        let c = AnyCall<Data>(Request(.get, "get"))
+        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -357,7 +365,7 @@ class ClientTests: XCTestCase {
     
     func testBasicAuth() {
         let auth = BasicAuthorization(user: "a", password: "a")
-        let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: true)
@@ -366,7 +374,7 @@ class ClientTests: XCTestCase {
     
     func testBasicAuthFail() {
         let auth = BasicAuthorization(user: "a", password: "b")
-        let c = AnyCall<Data>(Request(.get, "basic-auth/a/a", header: auth.header))
+        let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result, isSuccess: false)
@@ -375,7 +383,7 @@ class ClientTests: XCTestCase {
 
     func testSimpleAbsoluteURLCall() {
         let url = URL(string: "https://httpbin.org/get?q=a")!
-        let c = AnyCall<Data>(url)
+        let c = AnyCall<DataResponseParser>(url)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
@@ -385,7 +393,7 @@ class ClientTests: XCTestCase {
     
     func testSimpleRelativeURLRequestCall() {
         let url = URL(string: "get?q=a")!
-        let c = AnyCall<Data>(URLRequest(url: url))
+        let c = AnyCall<DataResponseParser>(URLRequest(url: url))
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)
@@ -395,7 +403,7 @@ class ClientTests: XCTestCase {
     
     func testRedirect() {
         let req = Request(.get, "/relative-redirect/2", header: ["x": "y"])
-        let c = AnyCall<Data>(req)
+        let c = AnyCall<DataResponseParser>(req)
         
         tester.test(call: c) { result in
             self.tester.assert(result: result)

@@ -34,7 +34,7 @@ class RequestTests: XCTestCase {
         
         var req = Request(.get, "post", query: ["x": "y"], header: [ "x": "y" ], body: body)
         req.url = absoluteURL
-        let c = AnyCall<Data>(req)
+        let c = AnyCall<DataResponseParser>(req)
         
         let urlReq = AnyClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
         
@@ -80,7 +80,7 @@ class RequestTests: XCTestCase {
 extension RequestTests {
     func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
         let request = Request(.get, path, query: queryParams)
-        let call = AnyCall<Data>(request)
+        let call = AnyCall<DataResponseParser>(request)
         let client = AnyClient(baseURL: URL(string: baseUrl)!)
         let urlRequest = client.encode(call: call)
         

@@ -57,9 +57,9 @@ open class AnyClient: Client, ResponseValidator {
     ///
     /// Throws 'ParsingError.missingData` if `result.data` or `result.httpResponse` is `nil`.
     ///
-    /// Finally tries to parse the response using `Call.ResponseType`
+    /// Finally tries to parse the response using `Call.Parser`
     /// and returns the parsed object or rethrows the resulting error.
-    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.ResponseType.OutputType {
+    public func parse<C: Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType {
         if let error = result.error {
             throw error
         }
@@ -68,7 +68,7 @@ open class AnyClient: Client, ResponseValidator {
         try validate(result: result) //global validation
 
         if let data = result.data, let response = result.httpResponse {
-            return try C.ResponseType.self.parse(response: response, data: data)
+            return try C.Parser().parse(response: response, data: data)
         } else {
             throw ParsingError.missingData
         }
