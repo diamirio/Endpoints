@@ -25,11 +25,16 @@ class CodableStringTests: XCTestCase {
         XCTAssertFalse(model.value)
     }
 
+    // do not test Model<?> directly, as macOS 10.14 or earlier, and iOS 12 and earlier
+    // do not support de-/encoding top level literals
+    // https://bugs.swift.org/browse/SR-6163
+    // https://bugs.swift.org/browse/SR-7213
     func testDecodingEncoding() throws {
-        let model = CodableString(42.42)
+        let model: Model<Double> = try JSONParser().parse(data: FileUtil.load(named: "ModelFloat"), encoding: .utf8)
+        let data = try model.toJSON()
 
-        let codedModel = try JSONParser<CodableString<Double>>().parse(
-            data: try model.toJSON(),
+        let codedModel: Model<Double> = try JSONParser().parse(
+            data: data,
             encoding: .utf8
         )
 
