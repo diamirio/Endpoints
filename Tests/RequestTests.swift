@@ -64,9 +64,8 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"\" \"https://httpbin.org/get?x=z\"", "-d should always be added for correct Content-Length header")
     }
     
-    func testBinaryDataCurlRepresentation() {
-        let url = Bundle(for: RequestTests.self).url(forResource: "binary", withExtension: "jpg")!
-        let body = try! Data(contentsOf: url)
+    func testBinaryDataCurlRepresentation() throws {
+        let body = try FileUtil.load(named: "binary", withExtension: "jpg")
         let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: [ "a": "b"], body: body)
         let curl = r.cURLRepresentation(prettyPrinted: false, bodyEncoding: .utf8)
         

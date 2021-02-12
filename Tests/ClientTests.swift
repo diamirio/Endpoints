@@ -3,7 +3,9 @@ import XCTest
 
 class ClientTests: XCTestCase {
     var tester: ClientTester<AnyClient>!
-    let baseURL = URL(string: "http://httpbin.org")!
+    
+    // 2021-02-12: redirect endpoints for httpbin.org no longer work, https://github.com/postmanlabs/httpbin/issues/617
+    let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
     override func setUp() {
         tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
@@ -359,7 +361,8 @@ class ClientTests: XCTestCase {
                 XCTAssertEqual(code, 0, "request should throw error, not client")
             }
             
-            XCTAssertEqual(result.response?.allHeaderFields["Mime"] as? String, mime)
+            let responseMime = result.response?.allHeaderFields["Mime"] ?? result.response?.allHeaderFields["mime"]
+            XCTAssertEqual(responseMime as? String, mime)
         }
     }
     
@@ -402,9 +405,9 @@ class ClientTests: XCTestCase {
     }
     
     func testRedirect() {
-        let req = Request(.get, "/relative-redirect/2", header: ["x": "y"])
+        let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
-        
+
         tester.test(call: c) { result in
             self.tester.assert(result: result)
             XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)

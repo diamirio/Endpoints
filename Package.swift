@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
@@ -20,7 +20,11 @@ let package = Package(
             dependencies: [
                 "Endpoints"
             ],
-            path: "Tests"
+            path: "Tests",
+            
+            resources: [
+                .process("TestResources"),
+            ]
         )
     ]
 )

@@ -17,10 +17,8 @@ class FileUtil {
     static func load(
         named name: String,
         withExtension ext: String = "json",
-        bundle: Bundle = Bundle(for: FileUtil.self)
+        bundle: Bundle = Bundle.module
     ) throws -> Data {
-        let bundle = Bundle(for: FileUtil.self)
-
         guard let url = bundle.url(forResource: name, withExtension: ext) else {
             throw FileError.missing
         }
