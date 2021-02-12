@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Endpoints",
-        "repositoryURL": "https://github.com/tailoredmedia/Endpoints",
-        "state": {
-          "branch": "master",
-          "revision": "600489f07bce89ded962c4442d5b40d979783805",
-          "version": null
-        }
-      },
-      {
         "package": "PromiseKit",
         "repositoryURL": "https://github.com/mxcl/PromiseKit",
         "state": {
