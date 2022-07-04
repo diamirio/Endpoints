@@ -26,6 +26,10 @@ class ClientTester<C: Client> {
         test.waitForExpectations(timeout: 30, handler: nil)
     }
     
+    func testAsync<C: Call>(call: C) async throws -> Result<C.Parser.OutputType> {
+        return try await session.start(call: call)
+    }
+    
     func assert<Output>(result: Result<Output>, isSuccess: Bool=true, status code: Int?=nil) {
         if isSuccess {
             XCTAssertNil(result.error)

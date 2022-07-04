@@ -7,4 +7,8 @@ public extension Session {
         tsk.resume()
         return tsk
     }
+    
+    func start<C: Call>(call: C) async throws -> Result<C.Parser.OutputType> {
+        return try await dataTask(for: call)
+    }
 }

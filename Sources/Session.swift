@@ -11,6 +11,11 @@ public struct Result<Value> {
     }
 }
 
+public struct AsyncResult<T> {
+    public var value: T?
+    public var errior: Error?
+}
+
 public class Session<C: Client> {
     public var debug = false
     
@@ -41,6 +46,22 @@ public class Session<C: Client> {
         tsk = task //keep a weak reference for debug output
 
         return task
+    }
+    
+    public func dataTask<C: Call>(for call: C) async throws -> Result<C.Parser.OutputType> {
+        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
+            let urlRequest = client.encode(call: call)
+            let task = urlSession.dataTask(with: urlRequest) { data, response, error in
+                let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
+                let result = self.transform(sessionResult: sessionResult, for: call)
+                result.onSuccess { _ in
+                    continuation.resume(returning: (result))
+                }.onError { error in
+                    continuation.resume(throwing: error)
+                }
+            }
+            task.resume()
+        })
     }
 
     func transform<C: Call>(sessionResult: URLSessionTaskResult, for call: C) -> Result<C.Parser.OutputType> {
