@@ -68,16 +68,27 @@ class ClientTests: XCTestCase {
         }
     }
     
+#if compiler(>=5.5) && canImport(_Concurrency)
+    
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
     func testStatusErrorAsync() async {
         do {
             let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
-            try await tester.testAsync(call: c)
+            _ = try await tester.testAsync(call: c)
             XCTFail("Should throw exception")
         } catch {
             XCTAssertEqual(error.localizedDescription, "bad request")
         }
     }
-
+    
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
+    func testGetDataAsync() async throws {
+        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
+        let result = try await tester.testAsync(call: c)
+        tester.assert(result: result, isSuccess: true, status: 200)
+    }
+    
+#endif
     
     func testGetData() {
         let c = AnyCall<DataResponseParser>(Request(.get, "get"))
@@ -87,12 +98,6 @@ class ClientTests: XCTestCase {
         }
     }
 
-    func testGetDataAsync() async throws {
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        let result = try await tester.testAsync(call: c)
-        tester.assert(result: result, isSuccess: true, status: 200)
-    }
-    
     func testGetDataNoContentParser() {
         let c = AnyCall<NoContentParser>(Request(.get, "get"))
 

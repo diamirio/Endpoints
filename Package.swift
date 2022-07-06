@@ -3,10 +3,6 @@ import PackageDescription
 
 let package = Package(
     name: "Endpoints",
-    platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13)
-    ],
     products: [
         .library(
             name: "Endpoints",
