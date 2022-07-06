@@ -1,11 +1,14 @@
 Pod::Spec.new do |s|
   s.name = "Endpoints"
-  s.version = "2.0.0"
+  s.version = "2.1.0"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary = "Type-Safe Swift Networking"
   s.homepage = "https://github.com/tailoredmedia/Endpoints"
   s.authors = { "Peter Weishapl" => "pw@tailored-apps.com",
-                "Robin Mayerhofer" => "rm@tailored-apps.com" }
+                "Robin Mayerhofer" => "rm@tailored-apps.com",
+                "Dominik Arnhof" => "da@tailored-apps.com",
+                "Alexander Kauer" => "ak@tailored-apps.com"
+  }
   s.source = {
       :git => "https://github.com/tailoredmedia/Endpoints.git",
       :tag => s.version
