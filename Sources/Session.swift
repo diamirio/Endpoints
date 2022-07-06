@@ -50,7 +50,7 @@ public class Session<C: Client> {
         return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
             let task = dataTask(for: call, completion: { result in
                 result.onSuccess { _ in
-                    continuation.resume(returning: (result))
+                    continuation.resume(returning: result)
                 }.onError { error in
                     continuation.resume(throwing: error)
                 }
@@ -58,23 +58,6 @@ public class Session<C: Client> {
             task.resume()
         })
     }
-    
-//    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-//    public func dataTask<C: Call>(for call: C) async throws -> Result<C.Parser.OutputType> {
-//        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
-//            let urlRequest = client.encode(call: call)
-//            let task = urlSession.dataTask(with: urlRequest) { data, response, error in
-//                let sessionResult = URLSessionTaskResult(response: response, data: data, error: error)
-//                let result = self.transform(sessionResult: sessionResult, for: call)
-//                result.onSuccess { _ in
-//                    continuation.resume(returning: (result))
-//                }.onError { error in
-//                    continuation.resume(throwing: error)
-//                }
-//            }
-//            task.resume()
-//        })
-//    }
     
 #endif
 
