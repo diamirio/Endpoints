@@ -88,6 +88,41 @@ class ClientTests: XCTestCase {
         tester.assert(result: result, isSuccess: true, status: 200)
     }
     
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
+    func testGetDataAsyncWithCancellation() async throws {
+        let exp = expectation(description: "task was executed until end")
+        exp.isInverted = true
+        
+        let task = Task {
+            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
+            _ = try await tester.testAsync(call: c)
+            exp.fulfill()
+        }
+        
+        try await Task.sleep(nanoseconds: 400)
+        task.cancel()
+        await waitForExpectations(timeout: 5)
+        
+        XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
+    }
+    
+    
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
+    func testGetDataAsyncWithCancellationWhenTaskIsNotStarted() async throws {
+        let exp = expectation(description: "task was executed until end")
+        exp.isInverted = true
+        
+        let task = Task {
+            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
+            _ = try await tester.testAsync(call: c)
+            exp.fulfill()
+        }
+        
+        task.cancel()
+        await waitForExpectations(timeout: 5)
+        XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
+    }
+    
 #endif
     
     func testGetData() {

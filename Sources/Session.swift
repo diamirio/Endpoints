@@ -47,16 +47,37 @@ public class Session<C: Client> {
     
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
     public func dataTask<C: Call>(for call: C) async throws -> Result<C.Parser.OutputType> {
-        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
-            let task = dataTask(for: call, completion: { result in
-                result.onSuccess { _ in
-                    continuation.resume(returning: result)
-                }.onError { error in
-                    continuation.resume(throwing: error)
-                }
-            })
-            task.resume()
-        })
+        var cancelledBeforeStart = false
+        var task: URLSessionDataTask?
+        
+        let cancelTask = {
+            cancelledBeforeStart = true
+            task?.cancel()
+        }
+        
+        let result = try await withTaskCancellationHandler(
+            operation: {
+                try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
+                    if cancelledBeforeStart {
+                        return
+                    }
+                    
+                    task = dataTask(for: call, completion: { result in
+                        result.onSuccess { _ in
+                            continuation.resume(returning: result)
+                        }.onError { error in
+                            continuation.resume(throwing: error)
+                        }
+                    })
+                    
+                    task?.resume()
+                })
+            }, onCancel: {
+                cancelTask()
+            }
+        )
+        
+        return result
     }
     
 #endif
