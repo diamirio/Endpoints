@@ -84,8 +84,8 @@ class ClientTests: XCTestCase {
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
     func testGetDataAsync() async throws {
         let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        let result = try await tester.testAsync(call: c)
-        tester.assert(result: result, isSuccess: true, status: 200)
+        let (_, response) = try await tester.testAsync(call: c)
+        XCTAssertEqual(response.statusCode, 200)
     }
     
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
