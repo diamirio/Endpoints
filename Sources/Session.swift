@@ -46,17 +46,54 @@ public class Session<C: Client> {
 #if compiler(>=5.5) && canImport(_Concurrency)
     
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    public func dataTask<C: Call>(for call: C) async throws -> Result<C.Parser.OutputType> {
-        return try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Result<C.Parser.OutputType>, Error>) in
-            let task = dataTask(for: call, completion: { result in
-                result.onSuccess { _ in
-                    continuation.resume(returning: result)
-                }.onError { error in
-                    continuation.resume(throwing: error)
-                }
-            })
-            task.resume()
-        })
+    public func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
+        var cancelledBeforeStart = false
+        var task: URLSessionDataTask?
+        
+        let cancelTask = {
+            cancelledBeforeStart = true
+            task?.cancel()
+        }
+        
+        let result = try await withTaskCancellationHandler(
+            operation: {
+                try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<HttpResult<C>, Error>) in
+                    if cancelledBeforeStart {
+                        return
+                    }
+                    
+                    task = dataTask(for: call, completion: { result in
+                        result.onSuccess { response in
+                            guard let response = result.response,
+                                  let body = result.value
+                            else {
+                                continuation.resume(throwing: HttpError.NoResponse)
+                                return
+                            }
+                            
+                            continuation.resume(returning: HttpResult(value: body, response: response))
+                        }.onError { error in
+                            continuation.resume(throwing: error)
+                        }
+                    })
+                    
+                    task?.resume()
+                })
+            }, onCancel: {
+                cancelTask()
+            }
+        )
+        
+        return (result.value, result.response)
+    }
+    
+    private struct HttpResult<C: Call> {
+        let value: C.Parser.OutputType
+        let response: HTTPURLResponse
+    }
+    
+    enum HttpError: Error {
+        case NoResponse
     }
     
 #endif
