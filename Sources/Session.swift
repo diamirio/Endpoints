@@ -57,8 +57,10 @@ public class Session<C: Client> {
         
         let result = try await withTaskCancellationHandler(
             operation: {
+                
                 try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<HttpResult<C>, Error>) in
                     if cancelledBeforeStart {
+                        continuation.resume(throwing: ContinuationError.canceled)
                         return
                     }
                     
@@ -90,10 +92,6 @@ public class Session<C: Client> {
     private struct HttpResult<C: Call> {
         let value: C.Parser.OutputType
         let response: HTTPURLResponse
-    }
-    
-    enum HttpError: Error {
-        case NoResponse
     }
     
 #endif
