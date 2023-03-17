@@ -8,15 +8,16 @@ on:
 
 jobs:
   lint:
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - uses: ruby/setup-ruby@v1
+      - name: Setup Ruby 2.7.7
+        uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '2.7.7'
           bundler-cache: true
-          ruby-version: 2.6
 
       - run: bundle install
 
@@ -30,7 +31,7 @@ jobs:
 
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
 
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v2
