@@ -17,7 +17,7 @@ public class Session<C: Client> {
     public var urlSession: URLSession
     public let client: C
     
-    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
+    public init(with client: C, using urlSession: URLSession = URLSession.shared) {
         self.client = client
         self.urlSession = urlSession
     }
