@@ -21,6 +21,10 @@ public class AsyncSession<C: AsyncClient> {
         self.urlSession = urlSession
     }
     
+    public func dataTask<C: Call>(for call: C) async throws -> HTTPURLResponse? where C.Parser.OutputType == Void  {
+        return nil
+    }
+    
     public func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
         

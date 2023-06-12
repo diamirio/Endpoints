@@ -51,6 +51,16 @@
                ReferencedContainer = "container:EndpointsTestbed.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EndpointsTests"
+               BuildableName = "EndpointsTests"
+               BlueprintName = "EndpointsTests"
+               ReferencedContainer = "container:..">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

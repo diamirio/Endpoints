@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82B1AB9E29E3544B007B23C1 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1AB9D29E3544B007B23C1 /* ExampleView.swift */; };
+		82B1ABA029E35455007B23C1 /* ExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1AB9F29E35455007B23C1 /* ExampleViewModel.swift */; };
+		82B1ABA229E35486007B23C1 /* ExampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1ABA129E35486007B23C1 /* ExampleModel.swift */; };
+		82B1ABA529E354C0007B23C1 /* BaseApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1ABA429E354C0007B23C1 /* BaseApiClient.swift */; };
 		82BA52F129DEE35C00F7726A /* EndpointsTestbedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA52F029DEE35C00F7726A /* EndpointsTestbedApp.swift */; };
 		82BA52F329DEE35C00F7726A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BA52F229DEE35C00F7726A /* ContentView.swift */; };
 		82BA52F529DEE35D00F7726A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82BA52F429DEE35D00F7726A /* Assets.xcassets */; };
@@ -36,6 +40,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		82B1AB9D29E3544B007B23C1 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
+		82B1AB9F29E35455007B23C1 /* ExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewModel.swift; sourceTree = "<group>"; };
+		82B1ABA129E35486007B23C1 /* ExampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleModel.swift; sourceTree = "<group>"; };
+		82B1ABA429E354C0007B23C1 /* BaseApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseApiClient.swift; sourceTree = "<group>"; };
 		82BA52ED29DEE35C00F7726A /* EndpointsTestbed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EndpointsTestbed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82BA52F029DEE35C00F7726A /* EndpointsTestbedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointsTestbedApp.swift; sourceTree = "<group>"; };
 		82BA52F229DEE35C00F7726A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,6 +84,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		82B1AB9C29E3543C007B23C1 /* ExampleView */ = {
+			isa = PBXGroup;
+			children = (
+				82B1AB9D29E3544B007B23C1 /* ExampleView.swift */,
+				82B1AB9F29E35455007B23C1 /* ExampleViewModel.swift */,
+				82B1ABA129E35486007B23C1 /* ExampleModel.swift */,
+			);
+			path = ExampleView;
+			sourceTree = "<group>";
+		};
+		82B1ABA329E354B0007B23C1 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				82B1ABA429E354C0007B23C1 /* BaseApiClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		82BA52E429DEE35C00F7726A = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +127,8 @@
 		82BA52EF29DEE35C00F7726A /* EndpointsTestbed */ = {
 			isa = PBXGroup;
 			children = (
+				82B1ABA329E354B0007B23C1 /* Networking */,
+				82B1AB9C29E3543C007B23C1 /* ExampleView */,
 				82BA52F029DEE35C00F7726A /* EndpointsTestbedApp.swift */,
 				82BA52F229DEE35C00F7726A /* ContentView.swift */,
 				82BA531F29DEE8E000F7726A /* ContentViewModel.swift */,
@@ -283,9 +311,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82B1ABA529E354C0007B23C1 /* BaseApiClient.swift in Sources */,
+				82B1ABA029E35455007B23C1 /* ExampleViewModel.swift in Sources */,
 				82BA52F329DEE35C00F7726A /* ContentView.swift in Sources */,
+				82B1ABA229E35486007B23C1 /* ExampleModel.swift in Sources */,
 				82BA52F129DEE35C00F7726A /* EndpointsTestbedApp.swift in Sources */,
 				82BA532029DEE8E000F7726A /* ContentViewModel.swift in Sources */,
+				82B1AB9E29E3544B007B23C1 /* ExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

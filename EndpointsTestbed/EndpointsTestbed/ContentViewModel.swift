@@ -14,8 +14,12 @@ class ContentViewModel: ObservableObject {
     func someCall() {
         Task {
             let url = URL(string: "https://postman-echo.com")!
-            let myClient = AnyClient(baseURL: url)
-            let mySession = Session(with: myClient)
+            let myClient = AnyAsyncClient(baseURL: url)
+            let mySession = AsyncSession(with: myClient)
+            
+            let (body, urlResponse) = try await mySession.start(call: BaseApiClient.ExampleGetCall())
+            
+            // do whatever you like to do with the response
         }
     }
 }

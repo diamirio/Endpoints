@@ -27,30 +27,18 @@ class AsyncClientTester<C: AsyncClient> {
     }
     
     func test<C: Call>(call: C, validateResult: ((Result<C.Parser.OutputType>) -> Void)? = nil) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
-        let task = Task {
-            try await session.start(call: call)
-        }
-        
-        Task {
-            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 30)
-            task.cancel()
-        }
-        
-        return try await task.value
-    }
-    
-    func assert<Output>(result: Result<Output>, isSuccess: Bool=true, status code: Int?=nil) {
-        if isSuccess {
-            XCTAssertNil(result.error)
-            XCTAssertNotNil(result.value)
-        } else {
-            XCTAssertNotNil(result.error)
-            XCTAssertNil(result.value)
-        }
-        
-        if let code = code {
-            XCTAssertEqual(result.response?.statusCode, code)
-        }
+        return try await session.start(call: call)
+//        Check if needed!
+//        let task = Task {
+//            try await session.start(call: call)
+//        }
+//
+//        Task {
+//            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 50)
+//            task.cancel()
+//        }
+//
+//        return try await task.value
     }
 }
 
