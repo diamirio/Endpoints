@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum HttpError: Error {
+public enum HttpError: Error {
     case NoResponse
 }
