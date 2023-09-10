@@ -196,8 +196,12 @@ class AsyncClientTests: XCTestCase {
         do {
             _ = try await tester.test(call: c)
         } catch let endpointsError as EndpointsError {
-            XCTAssertTrue(endpointsError.error is EndpointsParsingError)
-            XCTAssertTrue(endpointsError.error.localizedDescription.hasPrefix("Expected a parsed response body but value is nil"))
+            if let error = endpointsError.error as? CocoaError {
+                XCTAssertTrue(error.isPropertyListError)
+                XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
+            } else {
+                XCTFail("wrong error: \(String(describing: endpointsError.error))")
+            }
         }
     }
     
