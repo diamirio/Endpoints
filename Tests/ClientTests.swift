@@ -68,63 +68,6 @@ class ClientTests: XCTestCase {
         }
     }
     
-#if compiler(>=5.5) && canImport(_Concurrency)
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testStatusErrorAsync() async {
-        do {
-            let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
-            _ = try await tester.testAsync(call: c)
-            XCTFail("Should throw exception")
-        } catch {
-            XCTAssertEqual(error.localizedDescription, "bad request")
-        }
-    }
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsync() async throws {
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        let (_, response) = try await tester.testAsync(call: c)
-        XCTAssertEqual(response.statusCode, 200)
-    }
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsyncWithCancellation() async throws {
-        let exp = expectation(description: "task was executed until end")
-        exp.isInverted = true
-        
-        let task = Task {
-            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-            _ = try await tester.testAsync(call: c)
-            exp.fulfill()
-        }
-        
-        try await Task.sleep(nanoseconds: 400)
-        task.cancel()
-        await waitForExpectations(timeout: 5)
-        
-        XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
-    }
-    
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsyncWithCancellationWhenTaskIsNotStarted() async throws {
-        let exp = expectation(description: "task was executed until end")
-        exp.isInverted = true
-        
-        let task = Task {
-            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-            _ = try await tester.testAsync(call: c)
-            exp.fulfill()
-        }
-        
-        task.cancel()
-        await waitForExpectations(timeout: 5)
-        XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
-    }
-    
-#endif
-    
     func testGetData() {
         let c = AnyCall<DataResponseParser>(Request(.get, "get"))
 
@@ -299,7 +242,7 @@ class ClientTests: XCTestCase {
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
         } catch {
-            XCTAssertTrue(error is ParsingError)
+            XCTAssertTrue(error is EndpointsParsingError)
             XCTAssertTrue(error.localizedDescription.hasPrefix("String could not be parsed with encoding"))
         }
     }

@@ -1,10 +1,3 @@
-//
-//  AsyncClientTests.swift
-//  
-//
-//  Created by Dominik Arnhof on 14.12.22.
-//
-
 import XCTest
 @testable import Endpoints
 
@@ -19,13 +12,13 @@ class AsyncClientTests: XCTestCase {
     }
 
     
-    func testStatusErrorAsync() async {
+    func testStatusErrorAsync() async throws {
         do {
             let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
             _ = try await tester.test(call: c)
             XCTFail("Should throw exception")
-        } catch {
-            XCTAssertEqual(error.localizedDescription, "bad request")
+        } catch let endpointsError as EndpointsError {
+            XCTAssertEqual(endpointsError.error.localizedDescription, "bad request")
         }
     }
     
@@ -139,14 +132,12 @@ class AsyncClientTests: XCTestCase {
         let (body, _) = try await tester.test(call: c)
         
         guard let headers = body["headers"] as? [String: String] else {
-            XCTFail("headers not found")
-            throw TestError.conditionNotMatched
+            throw TestError(errorDescription: "Headers are not cast-able")
         }
         XCTAssertEqual(headers["Content-Type"], "application/json")
         
         guard let json = body["json"] as? [String: String] else {
-            XCTFail("json not found")
-            throw TestError.conditionNotMatched
+            throw TestError(errorDescription: "Json body is not cast-able")
         }
         
         return json
@@ -195,7 +186,7 @@ class AsyncClientTests: XCTestCase {
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
         } catch {
-            XCTAssertTrue(error is ParsingError)
+            XCTAssertTrue(error is EndpointsParsingError)
             XCTAssertTrue(error.localizedDescription.hasPrefix("String could not be parsed with encoding"))
         }
     }
@@ -204,13 +195,9 @@ class AsyncClientTests: XCTestCase {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
         do {
             _ = try await tester.test(call: c)
-        } catch {
-            if let error = error as? CocoaError {
-                XCTAssertTrue(error.isPropertyListError)
-                XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
-            } else {
-                XCTFail("wrong error: \(String(describing: error))")
-            }
+        } catch let endpointsError as EndpointsError {
+            XCTAssertTrue(endpointsError.error is EndpointsParsingError)
+            XCTAssertTrue(endpointsError.error.localizedDescription.hasPrefix("Expected a parsed response body but value is nil"))
         }
     }
     
@@ -224,30 +211,18 @@ class AsyncClientTests: XCTestCase {
         }
     }
     
-    func testTypedRequest() {
+    func testTypedRequest() async throws {
         let value = "value"
+        let c = GetOutput(value: value)
+        let (body, _) = try await tester.test(call: c)
         
-//        tester.test(call: GetOutput(value: value)) { result in
-//            self.tester.assert(result: result)
-//
-//            if let jsonDict = result.value {
-//                let args = jsonDict["args"]
-//                XCTAssertNotNil(args)
-//
-//                if let args = args {
-//                    XCTAssertTrue(args is Dictionary<String, String>)
-//
-//                    if let args = args as? Dictionary<String, String> {
-//                        let param = args["param"]
-//                        XCTAssertNotNil(param)
-//
-//                        if let param = param {
-//                            XCTAssertEqual(param, value)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        guard let args = body["args"] as? Dictionary<String, String> else {
+            throw TestError(errorDescription: "Response body is not a dictionary")
+        }
+        
+        let param = args["param"]
+        XCTAssertNotNil(param)
+        XCTAssertEqual(param, value)
     }
     
     struct ValidatingCall: Call {
@@ -264,105 +239,52 @@ class AsyncClientTests: XCTestCase {
         }
     }
     
-    class ValidatingClient: AnyClient {
-        override func validate(result: URLSessionTaskResult) throws {
-            throw StatusCodeError.unacceptable(code: 1, reason: nil)
-        }
-    }
-    
-    func testClientValidation() {
-        // check if call validation comes before client validation
-        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
-        let tester = ClientTester(test: self, client: client)
-        
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result, isSuccess: false)
-//
-//            guard let error = result.error as? StatusCodeError else {
-//                XCTFail("error expected")
-//                return
-//            }
-//
-//            switch error {
-//            case .unacceptable(let code, _):
-//                XCTAssertEqual(code, 1, "client should throw error")
-//            }
-//        }
-    }
-    
-    func testValidatingRequest() {
-        // check if call validation comes before client validation
-        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
-        let tester = ClientTester(test: self, client: client)
-        
-        let mime = "application/json"
-        let c = ValidatingCall(mime: mime)
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result, isSuccess: false)
-//
-//            guard let error = result.error as? StatusCodeError else {
-//                XCTFail("error expected")
-//                return
-//            }
-//
-//            switch error {
-//            case .unacceptable(let code, _):
-//                XCTAssertEqual(code, 0, "request should throw error, not client")
-//            }
-//
-//            let responseMime = result.response?.allHeaderFields["Mime"] ?? result.response?.allHeaderFields["mime"]
-//            XCTAssertEqual(responseMime as? String, mime)
-//        }
-    }
-    
-    func testBasicAuth() {
+    func testBasicAuth() async throws {
         let auth = BasicAuthorization(user: "a", password: "a")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result, isSuccess: true)
-//        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.statusCode, 200)
     }
     
-    func testBasicAuthFail() {
+    func testBasicAuthFail() async throws {
         let auth = BasicAuthorization(user: "a", password: "b")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result, isSuccess: false)
-//        }
+        do {
+            _ = try await tester.test(call: c)
+            XCTFail("Should throw error")
+        } catch let error as EndpointsError {
+            XCTAssertNotNil(error.response)
+            XCTAssertEqual(error.response?.statusCode, 401)
+        }
     }
 
-    func testSimpleAbsoluteURLCall() {
+    func testSimpleAbsoluteURLCall() async throws {
         let url = URL(string: "https://httpbin.org/get?q=a")!
         let c = AnyCall<DataResponseParser>(url)
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result)
-//            XCTAssertEqual(result.response?.url, url)
-//        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, url)
     }
     
-    func testSimpleRelativeURLRequestCall() {
+    func testSimpleRelativeURLRequestCall() async throws {
         let url = URL(string: "get?q=a")!
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
-        
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result)
-//            XCTAssertEqual(result.response?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
-//        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
     }
     
-    func testRedirect() {
+    func testRedirect() async throws {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
+    }
+}
 
-//        tester.test(call: c) { result in
-//            self.tester.assert(result: result)
-//            XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
-//        }
+struct CustomError: LocalizedError {
+    let error: Error
+    let response: HTTPURLResponse? = nil
+    
+    var errorDescription: String? {
+        error.localizedDescription
     }
 }

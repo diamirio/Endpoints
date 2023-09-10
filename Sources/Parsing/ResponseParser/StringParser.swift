@@ -18,7 +18,7 @@ public struct StringParser: ResponseParser {
 
     public func parse(data: Data, encoding: String.Encoding) throws -> String {
         guard let string = String(data: data, encoding: encoding) else {
-            throw ParsingError.invalidData(description: "String could not be parsed with encoding \(encoding)")
+            throw EndpointsParsingError.invalidData(description: "String could not be parsed with encoding \(encoding)")
         }
         return string
     }

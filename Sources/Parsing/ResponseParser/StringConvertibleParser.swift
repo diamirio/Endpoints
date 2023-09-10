@@ -14,7 +14,7 @@ public struct StringConvertibleParser<Parsed: LosslessStringConvertible>: Respon
 
     public func parse(data: Data, encoding: String.Encoding) throws -> Parsed {
         guard var string = String(data: data, encoding: encoding) else {
-            throw ParsingError.invalidData(description: "The data could not be converted to a string with the given encoding.")
+            throw EndpointsParsingError.invalidData(description: "The data could not be converted to a string with the given encoding.")
         }
 
         guard let value = Parsed(string) else {
@@ -25,7 +25,7 @@ public struct StringConvertibleParser<Parsed: LosslessStringConvertible>: Respon
             )
 
             guard let value = Parsed(string) else {
-                throw ParsingError.invalidData(description: "The value '\(string)' could not be converted to \(Parsed.self)")
+                throw EndpointsParsingError.invalidData(description: "The value '\(string)' could not be converted to \(Parsed.self)")
             }
 
             return value

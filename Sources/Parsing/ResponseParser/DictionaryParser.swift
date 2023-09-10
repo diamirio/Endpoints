@@ -17,7 +17,7 @@ public struct DictionaryParser<Key: Hashable, Value>: ResponseParser {
 
     public func parse(data: Data, encoding: String.Encoding) throws -> OutputType {
         guard let dict = try JSONSerialization.jsonObject(with: data, options: .allowFragments)  as? OutputType else {
-            throw ParsingError.invalidData(description: "Could not parse JSON data to \(OutputType.self)")
+            throw EndpointsParsingError.invalidData(description: "Could not parse JSON data to \(OutputType.self)")
         }
         return dict
     }

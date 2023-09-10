@@ -7,16 +7,6 @@ public extension Session {
         tsk.resume()
         return tsk
     }
-    
-#if compiler(>=5.5) && canImport(_Concurrency)
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func start<C: Call>(call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
-        return try await dataTask(for: call)
-    }
-
-#endif
-    
 }
 
 #if compiler(>=5.5) && canImport(_Concurrency)

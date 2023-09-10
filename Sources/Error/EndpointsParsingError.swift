@@ -1,7 +1,7 @@
 import Foundation
 
-/// Describes an error that occured during parsing `Data`.
-public enum ParsingError: LocalizedError {
+/// Describes an error that occurs during parsing `Data`.
+public enum EndpointsParsingError: LocalizedError {
 
     /// `Data` is missing.
     ///

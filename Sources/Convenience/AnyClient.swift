@@ -70,7 +70,7 @@ open class AnyClient: Client, ResponseValidator {
         if let data = result.data, let response = result.httpResponse {
             return try C.Parser().parse(response: response, data: data)
         } else {
-            throw ParsingError.missingData
+            throw EndpointsParsingError.missingData
         }
     }
 

@@ -37,13 +37,13 @@ open class AnyAsyncClient: AsyncClient, ResponseValidator {
             throw error
         }
 
-        try call.validate(result: result) //request-specific validation
+        try call.validate(result: result) // request-specific validation
         try validate(result: result) //global validation
 
         if let data = result.data, let response = result.httpResponse {
             return try C.Parser().parse(response: response, data: data)
         } else {
-            throw ParsingError.missingData
+            throw EndpointsParsingError.missingData
         }
     }
     

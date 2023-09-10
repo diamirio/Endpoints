@@ -8,5 +8,5 @@
 import Foundation
 
 public enum HttpError: Error {
-    case NoResponse
+    case general
 }

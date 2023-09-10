@@ -28,17 +28,6 @@ class AsyncClientTester<C: AsyncClient> {
     
     func test<C: Call>(call: C, validateResult: ((Result<C.Parser.OutputType>) -> Void)? = nil) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         return try await session.start(call: call)
-//        Check if needed!
-//        let task = Task {
-//            try await session.start(call: call)
-//        }
-//
-//        Task {
-//            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 50)
-//            task.cancel()
-//        }
-//
-//        return try await task.value
     }
 }
 
