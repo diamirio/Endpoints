@@ -21,11 +21,6 @@ public class AsyncSession<C: AsyncClient> {
         self.urlSession = urlSession
     }
     
-    public func dataTask<C: Call>(for call: C) async throws -> HTTPURLResponse? where C.Parser.OutputType == Void  {
-        // TODO: implement?
-        return nil
-    }
-    
     public func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
         
@@ -61,6 +56,8 @@ public class AsyncSession<C: AsyncClient> {
             }
 
             return (value, response)
+        } catch let error as EndpointsError {
+            throw error
         } catch {
             let sessionResult = URLSessionTaskResult(response: nil, data: nil, error: error)
             let result = try await transform(sessionResult: sessionResult, for: call)
@@ -68,7 +65,7 @@ public class AsyncSession<C: AsyncClient> {
             if let error = result.error {
                 throw error
             } else {
-                throw HttpError.general
+                throw EndpointsSessionError.general
             }
         }
     }

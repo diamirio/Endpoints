@@ -1,10 +1,3 @@
-//
-//  ExampleView.swift
-//  EndpointsTestbed
-//
-//  Created by Alexander Kauer on 09.04.23.
-//
-
 import SwiftUI
 
 struct ExampleView: View {
@@ -21,7 +14,7 @@ struct ExampleView: View {
             }
         }
         .onAppear() {
-            viewModel.exectueRequest()
+            viewModel.executeRequests()
         }
     }
 }

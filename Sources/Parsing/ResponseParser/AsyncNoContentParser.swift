@@ -1,10 +1,3 @@
-//
-//  AsyncNoContentParser.swift
-//  
-//
-//  Created by Alexander Kauer on 09.04.23.
-//
-
 import Foundation
 
 /// A `AsyncNoContentParser` is a convenience `ResponseParser`, when no response is expected

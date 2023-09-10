@@ -282,6 +282,12 @@ class AsyncClientTests: XCTestCase {
         let (_, response) = try await tester.test(call: c)
         XCTAssertEqual(response.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
     }
+    
+    func testNoResponseBody() async throws {
+        let c = AnyCall<DataResponseParser>(Request(.get, "status/200"))
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.statusCode, 200)
+    }
 }
 
 struct CustomError: LocalizedError {
