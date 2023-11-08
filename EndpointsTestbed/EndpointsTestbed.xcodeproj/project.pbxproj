@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8211A84D2AFBDBFD00A36244 /* AsyncReactor in Frameworks */ = {isa = PBXBuildFile; productRef = 8211A84C2AFBDBFD00A36244 /* AsyncReactor */; };
+		8211A84F2AFBDC1200A36244 /* ExampleReactorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8211A84E2AFBDC1200A36244 /* ExampleReactorView.swift */; };
+		8211A8512AFBDC2000A36244 /* ExampleReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8211A8502AFBDC2000A36244 /* ExampleReactor.swift */; };
 		82B1AB9E29E3544B007B23C1 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1AB9D29E3544B007B23C1 /* ExampleView.swift */; };
 		82B1ABA029E35455007B23C1 /* ExampleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1AB9F29E35455007B23C1 /* ExampleViewModel.swift */; };
 		82B1ABA229E35486007B23C1 /* ExampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B1ABA129E35486007B23C1 /* ExampleModel.swift */; };
@@ -41,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8211A84E2AFBDC1200A36244 /* ExampleReactorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleReactorView.swift; sourceTree = "<group>"; };
+		8211A8502AFBDC2000A36244 /* ExampleReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleReactor.swift; sourceTree = "<group>"; };
 		82B1AB9D29E3544B007B23C1 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
 		82B1AB9F29E35455007B23C1 /* ExampleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewModel.swift; sourceTree = "<group>"; };
 		82B1ABA129E35486007B23C1 /* ExampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleModel.swift; sourceTree = "<group>"; };
@@ -65,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8211A84D2AFBDBFD00A36244 /* AsyncReactor in Frameworks */,
 				82BA531E29DEE73D00F7726A /* Endpoints in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +92,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8211A84A2AFBDBD200A36244 /* ExampleAsyncReactor */ = {
+			isa = PBXGroup;
+			children = (
+				8211A84E2AFBDC1200A36244 /* ExampleReactorView.swift */,
+				8211A8502AFBDC2000A36244 /* ExampleReactor.swift */,
+			);
+			path = ExampleAsyncReactor;
+			sourceTree = "<group>";
+		};
 		82B1AB9C29E3543C007B23C1 /* ExampleMVVM */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				82B1ABA329E354B0007B23C1 /* Networking */,
+				8211A84A2AFBDBD200A36244 /* ExampleAsyncReactor */,
 				82B1AB9C29E3543C007B23C1 /* ExampleMVVM */,
 				82BA52F029DEE35C00F7726A /* EndpointsTestbedApp.swift */,
 				82E74FF92AADDF68001A230C /* World.swift */,
@@ -199,6 +215,7 @@
 			name = EndpointsTestbed;
 			packageProductDependencies = (
 				82BA531D29DEE73D00F7726A /* Endpoints */,
+				8211A84C2AFBDBFD00A36244 /* AsyncReactor */,
 			);
 			productName = EndpointsTestbed;
 			productReference = 82BA52ED29DEE35C00F7726A /* EndpointsTestbed.app */;
@@ -248,7 +265,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					82BA52EC29DEE35C00F7726A = {
 						CreatedOnToolsVersion = 14.3;
@@ -272,6 +289,9 @@
 				Base,
 			);
 			mainGroup = 82BA52E429DEE35C00F7726A;
+			packageReferences = (
+				8211A84B2AFBDBFD00A36244 /* XCRemoteSwiftPackageReference "AsyncReactor" */,
+			);
 			productRefGroup = 82BA52EE29DEE35C00F7726A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -318,10 +338,12 @@
 				82B1ABA029E35455007B23C1 /* ExampleViewModel.swift in Sources */,
 				82E74FFC2AADE042001A230C /* HTTPBinClient.swift in Sources */,
 				82B1ABA229E35486007B23C1 /* ExampleModel.swift in Sources */,
+				8211A84F2AFBDC1200A36244 /* ExampleReactorView.swift in Sources */,
 				82BA52F129DEE35C00F7726A /* EndpointsTestbedApp.swift in Sources */,
 				82E74FFE2AADE19A001A230C /* ManipulatedHTTPBinClient.swift in Sources */,
 				82E74FFA2AADDF68001A230C /* World.swift in Sources */,
 				82B1AB9E29E3544B007B23C1 /* ExampleView.swift in Sources */,
+				8211A8512AFBDC2000A36244 /* ExampleReactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +416,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -454,6 +477,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -647,7 +671,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		8211A84B2AFBDBFD00A36244 /* XCRemoteSwiftPackageReference "AsyncReactor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/diamirio/AsyncReactor";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		8211A84C2AFBDBFD00A36244 /* AsyncReactor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8211A84B2AFBDBFD00A36244 /* XCRemoteSwiftPackageReference "AsyncReactor" */;
+			productName = AsyncReactor;
+		};
 		82BA531D29DEE73D00F7726A /* Endpoints */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Endpoints;

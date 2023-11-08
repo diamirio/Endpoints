@@ -32,7 +32,7 @@ open class AnyAsyncClient: AsyncClient, ResponseValidator {
         return urlRequest
     }
     
-    public func parse<C>(sessionTaskResult result: URLSessionTaskResult, for call: C) async throws -> C.Parser.OutputType where C : Call {
+    open func parse<C>(sessionTaskResult result: URLSessionTaskResult, for call: C) async throws -> C.Parser.OutputType where C : Call {
         if let error = result.error {
             throw error
         }
