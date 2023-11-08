@@ -1,9 +1,9 @@
 import Foundation
 
-public class FakeSession<C: Client>: Session<C> {
+public class FakeSession<CL: Client>: Session<CL> {
     var resultProvider: FakeResultProvider
 
-    public init(with client: C, resultProvider: FakeResultProvider) {
+    public init(with client: CL, resultProvider: FakeResultProvider) {
         self.resultProvider = resultProvider
 
         super.init(with: client)

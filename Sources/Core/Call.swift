@@ -48,19 +48,3 @@ public extension Call {
     /// No-Op. Override to perform call-specific validation
     func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
 }
-
-protocol EndpointsRequestPlugin {
-    func request(_ request: URLRequestEncodable) -> URLRequestEncodable
-}
-
-class MyPlugin: EndpointsRequestPlugin {
-    func request(_ request: URLRequestEncodable) -> URLRequestEncodable {
-        // save request header in Keychain
-        return request
-    }
-    
-}
-
-protocol EndpointsResponsePlugin {
-    func response(_ response: URLSessionTaskResult) // sure???
-}

@@ -10,13 +10,13 @@ import Foundation
 #if compiler(>=5.5) && canImport(_Concurrency)
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-public class AsyncSession<C: AsyncClient> {
+public class AsyncSession<Client: AsyncClient> {
     public var debug = false
     
     public var urlSession: URLSession
-    public let client: C
+    public let client: Client
     
-    public init(with client: C, using urlSession: URLSession=URLSession.shared) {
+    public init(with client: Client, using urlSession: URLSession=URLSession.shared) {
         self.client = client
         self.urlSession = urlSession
     }

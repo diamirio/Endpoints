@@ -11,13 +11,13 @@ public struct Result<Value> {
     }
 }
 
-public class Session<C: Client> {
+public class Session<CL: Client> {
     public var debug = false
     
     public var urlSession: URLSession
-    public let client: C
+    public let client: CL
     
-    public init(with client: C, using urlSession: URLSession = URLSession.shared) {
+    public init(with client: CL, using urlSession: URLSession = URLSession.shared) {
         self.client = client
         self.urlSession = urlSession
     }
