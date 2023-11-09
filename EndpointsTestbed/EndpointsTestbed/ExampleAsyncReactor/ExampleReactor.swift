@@ -1,10 +1,3 @@
-//
-//  ExampleReactor.swift
-//  EndpointsTestbed
-//
-//  Created by Alexander Kauer on 08.11.23.
-//
-
 import AsyncReactor
 import Foundation
 import Endpoints
