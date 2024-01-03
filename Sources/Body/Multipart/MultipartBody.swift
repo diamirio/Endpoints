@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A Body for a multipart/form-data conforming to RFC 2046

@@ -1,5 +1,5 @@
 import Foundation
 
 public protocol FakeResultProvider {
-    func resultFor<C: Call>(call: C) -> URLSessionTaskResult
+    func data<C: Call>(for call: C) async throws -> (URLResponse, Data)
 }

@@ -1,10 +1,4 @@
-//
-//  DataResponseParser.swift
-//  Endpoints
-//
-//  Created by Robin Mayerhofer on 21.10.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
 

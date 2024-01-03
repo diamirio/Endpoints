@@ -1,9 +1,4 @@
-//
-//  JSONParser.swift
-//  
-//
-//  Created by Robin Mayerhofer on 17.10.19.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
 

@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A type that can convert a `Data` object into a specified `OutputType`.

@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A type representing a call to a Web API endpoint.
@@ -46,5 +48,8 @@ public protocol Call: ResponseValidator {
 public extension Call {
 
     /// No-Op. Override to perform call-specific validation
-    func validate(result: URLSessionTaskResult) throws { /*no validation by default*/ }
+    func validate(
+        response: HTTPURLResponse?,
+        data: Data?
+    ) throws { /*no validation by default*/ }
 }

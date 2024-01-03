@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import XCTest
 @testable import Endpoints
 
@@ -11,15 +13,15 @@ class EndpointsJSONCodableTests: XCTestCase {
 
     // this test case is relevant, as there is a difference between using [City].parse
     // and parse on the same type, but with the heavy generics use of Endpoints
-    func testDecodingArrayViaResponse() throws {
+    func testDecodingArrayViaResponse() async throws {
         let client = AnyClient(baseURL: URL(string: "www.tailored-apps.com")!)
         let call = CitiesCall()
-        let result = URLSessionTaskResult(response:
-            FakeHTTPURLResponse(status: 200, header: nil),
-            data: try FileUtil.load(named: "CityArray"),
-            error: nil)
 
-        let cities = try client.parse(sessionTaskResult: result, for: call)
+        let cities = try await client.parse(
+            response: FakeHTTPURLResponse(status: 200, header: nil),
+            data: try FileUtil.load(named: "CityArray"),
+            for: call
+        )
 
         validateCityArray(cities)
     }
@@ -42,17 +44,16 @@ class EndpointsJSONCodableTests: XCTestCase {
         }
     }
 
-    func testUsingCustomDecoderAndAnyClient() throws {
+    func testUsingCustomDecoderAndAnyClient() async throws {
         let client = AnyClient(baseURL: URL(string: "www.tailored-apps.com")!)
         let call = PersonCall()
-        let result = URLSessionTaskResult(response:
-            FakeHTTPURLResponse(status: 200, header: nil),
-                                          data: try FileUtil.load(named: "Person"),
-                                          error: nil
-        )
 
         do {
-            _ = try client.parse(sessionTaskResult: result, for: call)
+            _ = try await client.parse(
+                response: FakeHTTPURLResponse(status: 200, header: nil),
+                data: try FileUtil.load(named: "Person"),
+                for: call
+            )
             XCTFail("parsing should not succeed")
         } catch ExpectedError.decoderWasReplaced {
             // expected

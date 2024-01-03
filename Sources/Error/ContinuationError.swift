@@ -1,9 +1,4 @@
-//
-//  ContinuationError.swift
-//  
-//
-//  Created by Alexander Kauer on 06.12.22.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
 

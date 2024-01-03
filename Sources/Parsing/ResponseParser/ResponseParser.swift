@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A `DataParser` and can parse metadata from `response` and add

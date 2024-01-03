@@ -1,8 +1,10 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import XCTest
 @testable import Endpoints
 
 class RequestTests: XCTestCase {    
-    func testRelativeRequestEncoding() {
+    func testRelativeRequestEncoding() async throws {
         let base = "https://httpbin.org/"
         let queryParams = [ "q": "Äin €uro", "a": "test" ]
 
@@ -24,11 +26,14 @@ class RequestTests: XCTestCase {
             }
         }
 
-        validate(request: testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams))
-        validate(request: testRequestEncoding(baseUrl: base + "get", queryParams: queryParams))
+        let request1 = try await testRequestEncoding(baseUrl: base, path: "get", queryParams: queryParams)
+        validate(request: request1)
+
+        let request2 = try await testRequestEncoding(baseUrl: base + "get", queryParams: queryParams)
+        validate(request: request2)
     }
     
-    func testHATEOASRequest() {
+    func testHATEOASRequest() async throws {
         let absoluteURL = URL(string: "https://httpbin.org/get?x=z")!
         let body = try! JSONEncodedBody(jsonObject: [ "x": "y" ])
         
@@ -36,8 +41,8 @@ class RequestTests: XCTestCase {
         req.url = absoluteURL
         let c = AnyCall<DataResponseParser>(req)
         
-        let urlReq = AnyClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
-        
+        let urlReq = try await AnyClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
+
         XCTAssertEqual(urlReq.url, absoluteURL)
         XCTAssertEqual(urlReq.httpBody, body.requestData)
         XCTAssertEqual(urlReq.allHTTPHeaderFields?["Content-Type"], "application/json")
@@ -77,24 +82,18 @@ class RequestTests: XCTestCase {
 }
 
 extension RequestTests {
-    func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) -> URLRequest {
+    func testRequestEncoding(baseUrl: String, path: String?=nil, queryParams: [String: String]?=nil) async throws -> URLRequest {
         let request = Request(.get, path, query: queryParams)
         let call = AnyCall<DataResponseParser>(request)
         let client = AnyClient(baseURL: URL(string: baseUrl)!)
-        let urlRequest = client.encode(call: call)
-        
-        let exp = expectation(description: "")
-        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            let httpResponse = response as! HTTPURLResponse
-            XCTAssertNotNil(data)
-            XCTAssertNil(error)
-            XCTAssertEqual(httpResponse.statusCode, 200)
-            
-            exp.fulfill()
-        }.resume()
-        
-        waitForExpectations(timeout: 10, handler: nil)
-        
+        let urlRequest = try await client.encode(call: call)
+
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        let httpResponse = response as! HTTPURLResponse
+        XCTAssertNotNil(data)
+        XCTAssertEqual(httpResponse.statusCode, 200)
+
         return urlRequest
     }
 }

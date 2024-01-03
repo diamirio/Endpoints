@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A `AsyncNoContentParser` is a convenience `ResponseParser`, when no response is expected

@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// Encapsulates the result produced by a `URLSession`s
@@ -6,7 +8,6 @@ import Foundation
 /// Mainly used by `Session` and `Client` to simplify the passing of
 /// parameters.
 public struct URLSessionTaskResult {
-
     public var response: URLResponse?
     public var data: Data?
     public var error: Error?

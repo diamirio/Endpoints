@@ -1,10 +1,4 @@
-//
-//  FileUtil.swift
-//  Endpoints
-//
-//  Created by Robin Mayerhofer on 04.09.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
 

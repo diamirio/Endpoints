@@ -1,10 +1,4 @@
-//
-//  MultipartTests.swift
-//  Endpoints
-//
-//  Created by Robin Mayerhofer on 04.09.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import XCTest
 @testable import Endpoints
@@ -84,7 +78,7 @@ class MultipartTests: XCTestCase {
         )
     }
 
-    func testMultipartHTTPBinCall() {
+    func testMultipartHTTPBinCall() async throws {
         struct PostCall: Call {
             typealias Parser = JSONParser<HTTPBinResponse>
 
@@ -99,23 +93,10 @@ class MultipartTests: XCTestCase {
         let session = Session(with: client)
         let call = PostCall(multipartBody: multipartBody)
 
-        let exp = expectation(description: "call finishes")
-
-        session.start(call: call) { (result) in
-            result.onError { (error) in
-                XCTFail(":(")
-            }.onSuccess { [weak self] (value) in
-                guard let self = self else { return }
-
-                XCTAssertEqual("unittest1", value.files["testName"])
-                XCTAssertEqual("unittest2", value.form["testName2"])
-                XCTAssertEqual("multipart/form-data; boundary=\(self.multipartBody.boundary)", value.headers["Content-Type"])
-            }
-
-            exp.fulfill()
-        }
-
-        waitForExpectations(timeout: 5.0)
+        let (value, respnse) = try await session.dataTask(for: call)
+        XCTAssertEqual("unittest1", value.files["testName"])
+        XCTAssertEqual("unittest2", value.form["testName2"])
+        XCTAssertEqual("multipart/form-data; boundary=\(self.multipartBody.boundary)", value.headers["Content-Type"])
     }
 }
 

@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 /// Generic wrapper for LosslessStringConvertible Codable support
 ///
 /// e.g. "12" can be converted to Int, which would otherwise not be possible automatically

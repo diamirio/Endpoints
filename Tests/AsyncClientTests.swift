@@ -1,17 +1,17 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import XCTest
 @testable import Endpoints
 
-@available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
 class AsyncClientTests: XCTestCase {
-    var tester: AsyncClientTester<AnyAsyncClient>!
+    var tester: AsyncClientTester<AnyClient>!
     
     // 2021-02-12: redirect endpoints for httpbin.org no longer work, https://github.com/postmanlabs/httpbin/issues/617
     let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
     override func setUp() {
-        tester = AsyncClientTester(test: self, client: AnyAsyncClient(baseURL: baseURL))
+        tester = AsyncClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
 
-    
     func testStatusErrorAsync() async throws {
         do {
             let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))

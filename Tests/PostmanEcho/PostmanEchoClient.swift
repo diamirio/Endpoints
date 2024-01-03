@@ -1,15 +1,10 @@
-//
-//  PostmanEchoClient.swift
-//  
-//
-//  Created by Alexander Kauer on 06.04.23.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
 @testable import Endpoints
 
 public class PostmanEchoClient: AnyClient {
-    
+
     public init() {
         let url = URL(string: "https://postman-echo.com")!
         super.init(baseURL: url)
