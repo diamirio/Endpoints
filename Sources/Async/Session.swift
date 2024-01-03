@@ -4,15 +4,15 @@ import Foundation
 
 public class Session<CL: Client> {
     public var debug = false
-    
+
     public var urlSession: URLSession
     public let client: CL
-    
-    public init(with client: CL, using urlSession: URLSession=URLSession.shared) {
+
+    public init(with client: CL, using urlSession: URLSession = URLSession.shared) {
         self.client = client
         self.urlSession = urlSession
     }
-    
+
     public func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
 

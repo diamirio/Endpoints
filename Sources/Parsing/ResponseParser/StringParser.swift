@@ -5,7 +5,6 @@ import Foundation
 /// A `StringParser` os a convenience `ResponseParser`
 /// for retrieving the response as a string
 public struct StringParser: ResponseParser {
-
     public typealias OutputType = String
 
     public init() {}

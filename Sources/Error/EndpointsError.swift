@@ -7,12 +7,12 @@ import Foundation
 public struct EndpointsError: LocalizedError {
     public let error: Error
     public let response: HTTPURLResponse?
-    
+
     public init(error: Error, response: HTTPURLResponse?) {
         self.error = error
         self.response = response
     }
-    
+
     public var errorDescription: String? {
         error.localizedDescription
     }

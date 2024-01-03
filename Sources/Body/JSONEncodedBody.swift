@@ -23,6 +23,6 @@ public struct JSONEncodedBody: Body {
 
     /// Returns "Content-Type": "application/json".
     public var header: Parameters? {
-        return [ "Content-Type" : "application/json" ]
+        ["Content-Type": "application/json"]
     }
 }

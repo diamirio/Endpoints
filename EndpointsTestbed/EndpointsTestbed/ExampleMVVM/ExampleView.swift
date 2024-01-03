@@ -1,9 +1,8 @@
 import SwiftUI
 
 struct ExampleView: View {
-    
     @StateObject var viewModel = ExampleViewModel()
-    
+
     var body: some View {
         VStack {
             if viewModel.text.isEmpty {
@@ -13,7 +12,7 @@ struct ExampleView: View {
                     .font(.headline)
             }
         }
-        .onAppear() {
+        .onAppear {
             viewModel.executeRequests()
         }
     }

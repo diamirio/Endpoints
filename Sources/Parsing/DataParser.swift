@@ -7,7 +7,6 @@ import Foundation
 /// Used by `Call` to define the expected response type for its associated
 /// request.
 public protocol DataParser {
-
     /// The type that can be produced by `self`.
     associatedtype OutputType
 

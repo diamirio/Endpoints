@@ -1,5 +1,5 @@
-import Foundation
 import Endpoints
+import Foundation
 
 class HTTPBinClient: AnyAsyncClient {
     public init() {
@@ -9,11 +9,11 @@ class HTTPBinClient: AnyAsyncClient {
 
     struct GetStatusCode: Call {
         let deliveredStatusCode: Int
-        
+
         typealias Parser = JSONParser<String>
-        
+
         var request: URLRequestEncodable {
             Request(.get, "/status/\(deliveredStatusCode)")
-        }        
+        }
     }
 }

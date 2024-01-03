@@ -46,10 +46,9 @@ public protocol Call: ResponseValidator {
 }
 
 public extension Call {
-
     /// No-Op. Override to perform call-specific validation
     func validate(
-        response: HTTPURLResponse?,
-        data: Data?
-    ) throws { /*no validation by default*/ }
+        response _: HTTPURLResponse?,
+        data _: Data?
+    ) throws { /* no validation by default */ }
 }

@@ -3,7 +3,6 @@
 import Foundation
 
 open class AnyClient: Client, ResponseValidator {
-    
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
 
@@ -14,10 +13,10 @@ open class AnyClient: Client, ResponseValidator {
     public init(baseURL: URL) {
         self.baseURL = baseURL
     }
-    
-    open func encode<C>(
-        call: C
-    ) async throws -> URLRequest where C : Call {
+
+    open func encode(
+        call: some Call
+    ) async throws -> URLRequest {
         var urlRequest = call.request.urlRequest
 
         if let url = urlRequest.url, url.isRelative {
@@ -26,14 +25,14 @@ open class AnyClient: Client, ResponseValidator {
 
         return urlRequest
     }
-    
+
     open func parse<C>(
         response: HTTPURLResponse?,
         data: Data?,
         for call: C
-    ) async throws -> C.Parser.OutputType where C : Call {
+    ) async throws -> C.Parser.OutputType where C: Call {
         try call.validate(response: response, data: data) // request-specific validation
-        try validate(response: response, data: data) //global validation
+        try validate(response: response, data: data) // global validation
 
         guard let data, let response else {
             throw EndpointsParsingError.missingData
@@ -41,7 +40,7 @@ open class AnyClient: Client, ResponseValidator {
 
         return try C.Parser().parse(response: response, data: data)
     }
-    
+
     open func validate(
         response: HTTPURLResponse?,
         data: Data?

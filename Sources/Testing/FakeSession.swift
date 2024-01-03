@@ -16,7 +16,7 @@ public class FakeSession<CL: Client>: Session<CL> {
     ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let (response, data) = try await resultProvider.data(for: call)
 
-        if self.debug {
+        if debug {
             print("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
         }
 

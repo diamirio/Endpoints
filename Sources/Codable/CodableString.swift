@@ -4,7 +4,6 @@
 ///
 /// e.g. "12" can be converted to Int, which would otherwise not be possible automatically
 public struct CodableString<Value: LosslessStringConvertible>: Codable {
-
     public var value: Value
 
     /// Init with an initial value

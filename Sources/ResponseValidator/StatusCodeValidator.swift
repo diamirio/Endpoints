@@ -7,13 +7,13 @@ public class StatusCodeValidator: ResponseValidator {
     /// Checks if an HTTP status code is acceptable
     /// - returns: `true` if `code` is between 200 and 299.
     public func isAcceptableStatus(code: Int) -> Bool {
-        return (200..<300).contains(code)
+        (200 ..< 300).contains(code)
     }
 
     /// - throws: `StatusCodeError.unacceptable` with `reason` set to `nil`
     public func validate(
         response: HTTPURLResponse?,
-        data: Data?
+        data _: Data?
     ) throws {
         if let code = response?.statusCode,
            !isAcceptableStatus(code: code) {

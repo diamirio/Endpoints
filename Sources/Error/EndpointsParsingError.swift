@@ -4,7 +4,6 @@ import Foundation
 
 /// Describes an error that occurs during parsing `Data`.
 public enum EndpointsParsingError: LocalizedError {
-
     /// `Data` is missing.
     ///
     /// Thrown by `AnyClient.parse` when the response data is `nil`.
@@ -18,9 +17,9 @@ public enum EndpointsParsingError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .missingData:
-            return "no data"
-        case .invalidData(let desc):
-            return desc
+            "no data"
+        case let .invalidData(desc):
+            desc
         }
     }
 }

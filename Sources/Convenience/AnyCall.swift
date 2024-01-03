@@ -3,10 +3,9 @@
 import Foundation
 
 public struct AnyCall<Parser: ResponseParser>: Call {
-
     public typealias Parser = Parser
 
-    public typealias ValidationBlock = (HTTPURLResponse?, Data?) throws -> ()
+    public typealias ValidationBlock = (HTTPURLResponse?, Data?) throws -> Void
 
     public var request: URLRequestEncodable
 

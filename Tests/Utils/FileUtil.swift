@@ -2,8 +2,7 @@
 
 import Foundation
 
-class FileUtil {
-
+enum FileUtil {
     /// Loads a file with aa given name and extension located in the same bundle as the `FileUtil` class
     /// - Parameter name: the name of the file
     /// - Parameter ext: the extension (without the `.`)
@@ -27,7 +26,7 @@ enum FileError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missing:
-            return "File missing"
+            "File missing"
         }
     }
 }
