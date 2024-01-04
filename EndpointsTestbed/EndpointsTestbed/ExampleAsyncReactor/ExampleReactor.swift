@@ -22,8 +22,8 @@ class ExampleReactor: AsyncReactor {
 
 	private func executeRequest() async {
 		do {
-			let (body, response) = try await world.postmanSession.start(
-				call: PostmanEchoClient.ExampleGetCall()
+			let (body, response) = try await world.postmanSession.dataTask(
+				for: PostmanEchoClient.ExampleGetCall()
 			)
 
 			guard response.statusCode == 200 else { return }

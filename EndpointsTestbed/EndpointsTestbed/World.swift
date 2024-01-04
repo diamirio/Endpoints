@@ -3,18 +3,18 @@ import Foundation
 
 let world = World()
 struct World {
-	let postmanSession: AsyncSession<PostmanEchoClient>
-	let httpBinSession: AsyncSession<HTTPBinClient>
-	let manipulatedHttpBinSession: AsyncSession<ManipulatedHTTPBinClient>
+	let postmanSession: Session<PostmanEchoClient>
+	let httpBinSession: Session<HTTPBinClient>
+	let manipulatedHttpBinSession: Session<ManipulatedHTTPBinClient>
 
 	init() {
 		let postmanClient = PostmanEchoClient()
-		self.postmanSession = AsyncSession(with: postmanClient)
+		self.postmanSession = Session(with: postmanClient)
 
 		let httpBinClient = HTTPBinClient()
-		self.httpBinSession = AsyncSession(with: httpBinClient)
+		self.httpBinSession = Session(with: httpBinClient)
 
 		let manipulatedHttpBinClient = ManipulatedHTTPBinClient()
-		self.manipulatedHttpBinSession = AsyncSession(with: manipulatedHttpBinClient)
+		self.manipulatedHttpBinSession = Session(with: manipulatedHttpBinClient)
 	}
 }

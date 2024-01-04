@@ -1,7 +1,7 @@
 import Endpoints
 import Foundation
 
-class HTTPBinClient: AnyAsyncClient {
+class HTTPBinClient: AnyClient {
 	public init() {
 		let url = URL(string: "https://httpbin.org/")!
 		super.init(baseURL: url)

@@ -7,14 +7,17 @@ class ExampleViewModel: ObservableObject {
 
 	func executeRequests() {
 		Task {
-			let (body, response) = try await world.postmanSession.start(call: PostmanEchoClient.ExampleGetCall())
+			let (body, response) = try await world.postmanSession.dataTask(
+				for: PostmanEchoClient.ExampleGetCall()
+			)
 			guard response.statusCode == 200 else { return }
 			self.text = body.url
 		}
 
 		Task {
-			let (_, response) = try await world.manipulatedHttpBinSession
-				.start(call: ManipulatedHTTPBinClient.GetStatusCode(deliveredStatusCode: 220))
+			let (_, response) = try await world.manipulatedHttpBinSession.dataTask(
+				for: ManipulatedHTTPBinClient.GetStatusCode(deliveredStatusCode: 220)
+			)
 			guard response.statusCode == 200 else { return }
 			print("Success")
 		}

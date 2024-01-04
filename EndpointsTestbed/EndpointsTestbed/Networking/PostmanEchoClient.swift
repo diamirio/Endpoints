@@ -1,7 +1,7 @@
 import Endpoints
 import Foundation
 
-public class PostmanEchoClient: AnyAsyncClient {
+public class PostmanEchoClient: AnyClient {
 	public init() {
 		let url = URL(string: "https://postman-echo.com")!
 		super.init(baseURL: url)
