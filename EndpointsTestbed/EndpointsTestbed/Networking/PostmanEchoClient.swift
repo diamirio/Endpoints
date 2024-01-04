@@ -2,16 +2,16 @@ import Endpoints
 import Foundation
 
 public class PostmanEchoClient: AnyAsyncClient {
-    public init() {
-        let url = URL(string: "https://postman-echo.com")!
-        super.init(baseURL: url)
-    }
+	public init() {
+		let url = URL(string: "https://postman-echo.com")!
+		super.init(baseURL: url)
+	}
 
-    struct ExampleGetCall: Call {
-        typealias Parser = JSONParser<ExampleModel>
+	struct ExampleGetCall: Call {
+		typealias Parser = JSONParser<ExampleModel>
 
-        var request: URLRequestEncodable {
-            Request(.get, "/get")
-        }
-    }
+		var request: URLRequestEncodable {
+			Request(.get, "/get")
+		}
+	}
 }

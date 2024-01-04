@@ -6,13 +6,13 @@ import Foundation
 ///
 /// This protocol is adopted by `Request`, `URLRequest`, `URL` and `Call`.
 public protocol URLRequestEncodable: CustomDebugStringConvertible {
-    /// Returns an `URLRequest` configured with the data encapsulated by `self`.
-    var urlRequest: URLRequest { get }
+	/// Returns an `URLRequest` configured with the data encapsulated by `self`.
+	var urlRequest: URLRequest { get }
 }
 
 public extension URLRequestEncodable {
-    /// Returns the value returned by `cURLRepresentation`.
-    var debugDescription: String {
-        cURLRepresentation
-    }
+	/// Returns the value returned by `cURLRepresentation`.
+	var debugDescription: String {
+		cURLRepresentation
+	}
 }

@@ -8,18 +8,18 @@ import Foundation
 /// Mainly used by `Session` and `Client` to simplify the passing of
 /// parameters.
 public struct URLSessionTaskResult {
-    public var response: URLResponse?
-    public var data: Data?
-    public var error: Error?
+	public var response: URLResponse?
+	public var data: Data?
+	public var error: Error?
 
-    public init(response: URLResponse? = nil, data: Data? = nil, error: Error? = nil) {
-        self.response = response
-        self.data = data
-        self.error = error
-    }
+	public init(response: URLResponse? = nil, data: Data? = nil, error: Error? = nil) {
+		self.response = response
+		self.data = data
+		self.error = error
+	}
 
-    /// Returns `response` cast to `HTTPURLResponse`.
-    public var httpResponse: HTTPURLResponse? {
-        response as? HTTPURLResponse
-    }
+	/// Returns `response` cast to `HTTPURLResponse`.
+	public var httpResponse: HTTPURLResponse? {
+		response as? HTTPURLResponse
+	}
 }

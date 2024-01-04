@@ -3,5 +3,5 @@
 import Foundation
 
 enum ContinuationError: Error {
-    case canceled
+	case canceled
 }

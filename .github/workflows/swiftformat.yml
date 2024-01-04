@@ -1,0 +1,14 @@
+name: Code style check
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-13
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check SwiftFromat
+      run: swift run swiftformat . --lint
+

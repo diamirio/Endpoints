@@ -9,34 +9,35 @@ import Foundation
 /// First it tries to directly convert the string, if that fails,
 /// then newlines, spaces and quotes are trimmed and the conversion is tried again.
 public struct StringConvertibleParser<Parsed: LosslessStringConvertible>: ResponseParser {
-    public typealias OutputType = Parsed
+	public typealias OutputType = Parsed
 
-    public init() {}
+	public init() {}
 
-    public func parse(data: Data, encoding: String.Encoding) throws -> Parsed {
-        guard var string = String(data: data, encoding: encoding) else {
-            throw EndpointsParsingError.invalidData(
-                description: "The data could not be converted to a string with the given encoding."
-            )
-        }
+	public func parse(data: Data, encoding: String.Encoding) throws -> Parsed {
+		guard var string = String(data: data, encoding: encoding) else {
+			throw EndpointsParsingError.invalidData(
+				description: "The data could not be converted to a string with the given encoding."
+			)
+		}
 
-        guard let value = Parsed(string) else {
-            string = string.trimmingCharacters(in:
-                CharacterSet.whitespacesAndNewlines
-                    .union(CharacterSet(charactersIn: "\""))
-            )
+		guard let value = Parsed(string) else {
+			string = string.trimmingCharacters(
+				in:
+				CharacterSet.whitespacesAndNewlines
+					.union(CharacterSet(charactersIn: "\""))
+			)
 
-            guard let value = Parsed(string) else {
-                throw EndpointsParsingError.invalidData(
-                    description: "The value '\(string)' could not be converted to \(Parsed.self)"
-                )
-            }
+			guard let value = Parsed(string) else {
+				throw EndpointsParsingError.invalidData(
+					description: "The value '\(string)' could not be converted to \(Parsed.self)"
+				)
+			}
 
-            return value
-        }
+			return value
+		}
 
-        return value
-    }
+		return value
+	}
 }
 
 // MARK: - Typealiases for most commonly used LosslessStringConvertibles

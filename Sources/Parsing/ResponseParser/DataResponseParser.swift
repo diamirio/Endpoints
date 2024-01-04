@@ -5,11 +5,11 @@ import Foundation
 /// A `DataResponseParser` is a convenience `ResponseParser`
 /// for directly receiving the data of the response.
 public struct DataResponseParser: ResponseParser {
-    public typealias OutputType = Data
+	public typealias OutputType = Data
 
-    public init() {}
+	public init() {}
 
-    public func parse(data: Data, encoding _: String.Encoding) throws -> OutputType {
-        data
-    }
+	public func parse(data: Data, encoding _: String.Encoding) throws -> OutputType {
+		data
+	}
 }

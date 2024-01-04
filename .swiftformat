@@ -1,2 +1,30 @@
+# Format options
+--indent tabs
+--tabwidth 4
+--maxwidth 120
+
+# Rules
+--self init-only
+--commas inline
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--elseposition next-line
+--stripunusedargs closure-only
+
+--decimalgrouping ignore
+--binarygrouping ignore
+--octalgrouping ignore
+--hexgrouping ignore
+
+--disable andOperator
+--disable redundantRawValues
+--disable preferKeyPath
+--disable extensionAccessControl
+--disable enumNamespaces
+--disable initCoderUnavailable
+--disable wrapMultilineStatementBraces
+
+# File options
+--exclude /**/.build/
 --swiftversion 5.9
---indent 4
