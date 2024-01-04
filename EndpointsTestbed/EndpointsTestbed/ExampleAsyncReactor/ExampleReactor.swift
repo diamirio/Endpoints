@@ -11,7 +11,8 @@ class ExampleReactor: AsyncReactor {
         var text = ""
     }
 
-    @Published private(set) var state = State()
+    @Published
+    private(set) var state = State()
 
     func action(_ action: Action) async {
         switch action {

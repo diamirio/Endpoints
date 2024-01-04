@@ -30,6 +30,9 @@ public class FakeSession<CL: Client>: Session<CL> {
         }
 
         do {
+            try await call.validate(response: response, data: data) // request-specific validation
+            try await client.validate(response: response, data: data) // global validation
+
             let value = try await client.parse(response: response, data: data, for: call)
             return (value, response)
         }

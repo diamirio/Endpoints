@@ -15,9 +15,7 @@ struct ExampleReactorView: View {
             }
         }
         .onAppear {
-            Task {
-                await reactor.action(.executeRequests)
-            }
+            reactor.send(.executeRequests)
         }
     }
 }

@@ -23,15 +23,15 @@ class ManipulatedHTTPBinClient: AnyClient {
         return try await defaultClient.parse(response: response, data: data, for: call)
     }
 
-    override func validate(response: HTTPURLResponse?, data: Data?) throws {
+    override func validate(response: HTTPURLResponse?, data: Data?) async throws {
         // Custom validation if needed
         print("- MANIPULATED validate -")
     }
 
     struct GetStatusCode: Call {
-        let deliveredStatusCode: Int
-
         typealias Parser = JSONParser<String>
+
+        let deliveredStatusCode: Int
 
         var request: URLRequestEncodable {
             Request(.get, "/status/\(deliveredStatusCode)")

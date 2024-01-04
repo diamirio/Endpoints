@@ -3,7 +3,8 @@ import Foundation
 
 @MainActor
 class ExampleViewModel: ObservableObject {
-    @Published var text: String = ""
+    @Published
+    var text: String = ""
 
     func executeRequests() {
         Task {
@@ -11,7 +12,10 @@ class ExampleViewModel: ObservableObject {
                 for: PostmanEchoClient.ExampleGetCall()
             )
             guard response.statusCode == 200 else { return }
-            self.text = body.url
+
+            await MainActor.run {
+                self.text = body.url
+            }
         }
 
         Task {

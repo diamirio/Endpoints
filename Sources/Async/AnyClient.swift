@@ -2,7 +2,7 @@
 
 import Foundation
 
-open class AnyClient: Client, ResponseValidator {
+open class AnyClient: Client {
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
 
@@ -31,9 +31,6 @@ open class AnyClient: Client, ResponseValidator {
         data: Data?,
         for call: C
     ) async throws -> C.Parser.OutputType where C: Call {
-        try call.validate(response: response, data: data) // request-specific validation
-        try validate(response: response, data: data) // global validation
-
         guard let data, let response else {
             throw EndpointsParsingError.missingData
         }
@@ -44,7 +41,7 @@ open class AnyClient: Client, ResponseValidator {
     open func validate(
         response: HTTPURLResponse?,
         data: Data?
-    ) throws {
+    ) async throws {
         try statusCodeValidator.validate(response: response, data: data)
     }
 }
