@@ -15,6 +15,6 @@ public protocol DataParser {
 	/// - throws: `ParsingError` if `data` is not in the expected format.
 	func parse(data: Data, encoding: String.Encoding) throws -> OutputType
 
-	/// A `DataParser` needs to be initable without any arguments
+	/// A `DataParser` needs to be initializable without any arguments
 	init()
 }
