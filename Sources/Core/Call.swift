@@ -40,15 +40,15 @@ import Foundation
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
 public protocol Call: ResponseValidator {
-	associatedtype Parser: ResponseParser
+    associatedtype Parser: ResponseParser
 
-	var request: URLRequestEncodable { get }
+    var request: URLRequestEncodable { get }
 }
 
 public extension Call {
-	/// No-Op. Override to perform call-specific validation
-	func validate(
-		response _: HTTPURLResponse?,
-		data _: Data?
-	) throws { /* no validation by default */ }
+    /// No-Op. Override to perform call-specific validation
+    func validate(
+        response _: HTTPURLResponse?,
+        data _: Data?
+    ) throws { /* no validation by default */ }
 }

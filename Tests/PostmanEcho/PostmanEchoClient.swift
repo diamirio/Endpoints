@@ -4,20 +4,20 @@
 import Foundation
 
 public class PostmanEchoClient: AnyClient {
-	public init() {
-		let url = URL(string: "https://postman-echo.com")!
-		super.init(baseURL: url)
-	}
+    public init() {
+        let url = URL(string: "https://postman-echo.com")!
+        super.init(baseURL: url)
+    }
 
-	struct MyCall: Call {
-		typealias Parser = JSONParser<PostmanEcho>
+    struct MyCall: Call {
+        typealias Parser = JSONParser<PostmanEcho>
 
-		var request: URLRequestEncodable {
-			Request(.get, "/")
-		}
-	}
+        var request: URLRequestEncodable {
+            Request(.get, "/")
+        }
+    }
 }
 
 struct PostmanEcho: Decodable {
-	var url: String
+    var url: String
 }

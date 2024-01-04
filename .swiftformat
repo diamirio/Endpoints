@@ -1,6 +1,5 @@
 # Format options
---indent tabs
---tabwidth 4
+--indent 4
 --maxwidth 120
 
 # Rules

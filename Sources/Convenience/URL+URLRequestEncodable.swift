@@ -3,7 +3,7 @@
 import Foundation
 
 extension URL: URLRequestEncodable {
-	public var urlRequest: URLRequest {
-		URLRequest(url: self)
-	}
+    public var urlRequest: URLRequest {
+        URLRequest(url: self)
+    }
 }

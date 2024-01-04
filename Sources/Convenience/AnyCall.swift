@@ -3,26 +3,26 @@
 import Foundation
 
 public struct AnyCall<Parser: ResponseParser>: Call {
-	public typealias Parser = Parser
+    public typealias Parser = Parser
 
-	public typealias ValidationBlock = (HTTPURLResponse?, Data?) throws -> Void
+    public typealias ValidationBlock = (HTTPURLResponse?, Data?) throws -> Void
 
-	public var request: URLRequestEncodable
+    public var request: URLRequestEncodable
 
-	public var validate: ValidationBlock?
+    public var validate: ValidationBlock?
 
-	public init(
-		_ request: URLRequestEncodable,
-		validate: ValidationBlock? = nil
-	) {
-		self.request = request
-		self.validate = validate
-	}
+    public init(
+        _ request: URLRequestEncodable,
+        validate: ValidationBlock? = nil
+    ) {
+        self.request = request
+        self.validate = validate
+    }
 
-	public func validate(
-		response: HTTPURLResponse?,
-		data: Data?
-	) throws {
-		try validate?(response, data)
-	}
+    public func validate(
+        response: HTTPURLResponse?,
+        data: Data?
+    ) throws {
+        try validate?(response, data)
+    }
 }
