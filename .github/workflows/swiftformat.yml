@@ -3,7 +3,7 @@ name: Code style check
 on: [push]
 
 jobs:
-  build:
+  check:
 
     runs-on: macos-13
 
