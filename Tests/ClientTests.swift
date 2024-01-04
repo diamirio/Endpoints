@@ -3,16 +3,16 @@
 @testable import Endpoints
 import XCTest
 
-class AsyncClientTests: XCTestCase {
-    var tester: AsyncClientTester<AnyClient>!
+class ClientTests: XCTestCase {
+    var tester: ClientTester<AnyClient>!
 
     // 2021-02-12: redirect endpoints for httpbin.org no longer work, https://github.com/postmanlabs/httpbin/issues/617
     let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
     override func setUp() {
-        tester = AsyncClientTester(test: self, client: AnyClient(baseURL: baseURL))
+        tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
 
-    func testStatusErrorAsync() async throws {
+    func testStatusError() async throws {
         do {
             let call = AnyCall<DataResponseParser>(Request(.get, "status/400"))
             _ = try await tester.test(call: call)
@@ -23,13 +23,13 @@ class AsyncClientTests: XCTestCase {
         }
     }
 
-    func testGetDataAsync() async throws {
+    func testGetData() async throws {
         let call = AnyCall<DataResponseParser>(Request(.get, "get"))
         let (_, response) = try await tester.test(call: call)
         XCTAssertEqual(response.statusCode, 200)
     }
 
-    func testGetDataAsyncWithCancellation() async throws {
+    func testGetDataWithCancellation() async throws {
         let exp = expectation(description: "task was executed until end")
         exp.isInverted = true
 
@@ -46,7 +46,7 @@ class AsyncClientTests: XCTestCase {
         XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
     }
 
-    func testGetDataAsyncWithCancellationWhenTaskIsNotStarted() async throws {
+    func testGetDataWithCancellationWhenTaskIsNotStarted() async throws {
         let exp = expectation(description: "task was executed until end")
         exp.isInverted = true
 
@@ -59,14 +59,6 @@ class AsyncClientTests: XCTestCase {
         task.cancel()
         await fulfillment(of: [exp], timeout: 5)
         XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
-    }
-
-    func testGetData() async throws {
-        let call = AnyCall<DataResponseParser>(Request(.get, "get"))
-        let (body, response) = try await tester.test(call: call)
-
-        XCTAssert(response.statusCode == 200)
-        XCTAssertNotNil(body)
     }
 
     func testPostRawString() async throws {

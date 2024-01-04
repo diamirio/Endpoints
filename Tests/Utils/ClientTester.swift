@@ -4,7 +4,7 @@ import Endpoints
 import Foundation
 import XCTest
 
-class AsyncClientTester<CL: Client> {
+class ClientTester<CL: Client> {
     var session: Session<CL>
     let test: XCTestCase
 
