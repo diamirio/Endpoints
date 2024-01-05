@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = "Sources/**/*.swift"
   s.frameworks  = "Foundation"
 
-  s.swift_versions = "5.0"
+  s.swift_versions = "5.9"
 end
