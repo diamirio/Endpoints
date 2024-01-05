@@ -2,7 +2,7 @@
 
 import Foundation
 
-public class Session<CL: Client> {
+open class Session<CL: Client> {
     public var debug = false
 
     public var urlSession: URLSession
@@ -13,7 +13,8 @@ public class Session<CL: Client> {
         self.urlSession = urlSession
     }
 
-    public func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
+    @discardableResult
+    open func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
 
         let (data, response) = try await urlSession.data(for: urlRequest)
