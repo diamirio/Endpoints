@@ -21,6 +21,9 @@ jobs:
 
       - run: bundle install
 
+      - name: Select Xcode 15.1
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app/Contents/Developer
+
       - name: Cocoapods -> lint podspec and test
         run: bundle exec pod lib lint --verbose --platforms=ios
 
@@ -43,6 +46,9 @@ jobs:
           bundler-cache: true
 
       - run: bundle install
+
+      - name: Select Xcode 15.1
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app/Contents/Developer
 
       - name: Publish Pod
         env:
