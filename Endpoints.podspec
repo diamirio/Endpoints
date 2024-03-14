@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "Endpoints"
-  s.version = "2.2.1"
+  s.version = "3.0.0"
   s.license = { :type => "MIT", :file => "LICENSE" }
   s.summary = "Type-Safe Swift Networking"
   s.homepage = "https://github.com/tailoredmedia/Endpoints"
@@ -14,13 +14,13 @@ Pod::Spec.new do |s|
       :tag => s.version
   }
 
-  s.ios.deployment_target = "8.0"
-  s.watchos.deployment_target = "2.0"
-  s.tvos.deployment_target = "9.0"
-  s.osx.deployment_target = "10.11"
+  s.ios.deployment_target = "13.0"
+  s.watchos.deployment_target = "6.0"
+  s.tvos.deployment_target = "12.0"
+  s.osx.deployment_target = "10.15"
 
   s.source_files = "Sources/**/*.swift"
   s.frameworks  = "Foundation"
 
-  s.swift_versions = "5.0"
+  s.swift_versions = "5.9"
 end

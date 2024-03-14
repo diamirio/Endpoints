@@ -1,5 +1,7 @@
-import XCTest
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 @testable import Endpoints
+import XCTest
 
 class CodableStringTests: XCTestCase {
     func testIntString() throws {
@@ -47,7 +49,7 @@ class CodableStringTests: XCTestCase {
     fileprivate struct Model<T: LosslessStringConvertible>: Codable {
         private let valueString: CodableString<T>
         var value: T {
-            return valueString.value
+            valueString.value
         }
 
         private enum CodingKeys: String, CodingKey {

@@ -1,8 +1,9 @@
-import XCTest
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 @testable import Endpoints
+import XCTest
 
 class StringConvertibleParserTests: XCTestCase {
-
     func testIntString() throws {
         let n1 = try IntParser().parse(data: FileUtil.load(named: "StringInt"), encoding: .utf8)
         let n2 = try IntParser().parse(data: FileUtil.load(named: "StringQuotesInt"), encoding: .utf8)

@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A type representing an HTTP Body.
@@ -7,7 +9,6 @@ import Foundation
 /// Adopted by `Data` and `String`.
 /// - seealso: `FormEncodedBody`, `JSONEncodedBody`.
 public protocol Body {
-
     /// Returns HTTP Header parameters required for `self`, if any.
     ///
     /// This is usally a "Content-Type" header like "application/json" for a
@@ -20,12 +21,12 @@ public protocol Body {
     var requestData: Data { get }
 }
 
-extension Body {
-    public var header: Parameters? { return nil }
+public extension Body {
+    var header: Parameters? { nil }
 }
 
 extension Data: Body {
-    public var requestData: Data { return self }
+    public var requestData: Data { self }
 }
 
 extension String: Body {

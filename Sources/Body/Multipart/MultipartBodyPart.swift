@@ -1,7 +1,8 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 public protocol MultipartBodyPart {
-
     /// The name (usually from the HTML form)
     ///
     /// There can be multiple parts with the same name.
@@ -32,7 +33,7 @@ extension MultipartBodyPart {
     var dispositionString: String {
         var disp = "Content-Disposition: form-data; name=\"\(name)\""
 
-        if let filename = filename {
+        if let filename {
             disp.append("; filename=\"\(filename)\"")
         }
 
@@ -40,13 +41,13 @@ extension MultipartBodyPart {
     }
 
     var contentTypeString: String? {
-        guard let mimeType = mimeType else {
+        guard let mimeType else {
             return nil
         }
 
         var cType = "Content-Type: \(mimeType)"
 
-        if let charset = charset {
+        if let charset {
             cType.append("; charset=\(charset)")
         }
 

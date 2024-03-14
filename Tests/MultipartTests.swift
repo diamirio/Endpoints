@@ -1,27 +1,23 @@
-//
-//  MultipartTests.swift
-//  Endpoints
-//
-//  Created by Robin Mayerhofer on 04.09.19.
-//  Copyright © 2019 Tailored Apps. All rights reserved.
-//
+// Copyright © 2023 DIAMIR. All Rights Reserved.
 
-import XCTest
 @testable import Endpoints
+import XCTest
 
 class MultipartTests: XCTestCase {
-
     private let multipartBody = MultipartBody(parts: [
-        MultipartBody.Part(name: "testName",
-                           data: "unittest1".data(using: .utf8)!,
-                           filename: "testfile.txt",
-                           mimeType: "text/plain",
-                           charset: "utf-8"),
-        MultipartBody.Part(name: "testName2",
-                           data: "unittest2".data(using: .utf8)!,
-                           mimeType: "text/plain")
-        ])
-
+        MultipartBody.Part(
+            name: "testName",
+            data: "unittest1".data(using: .utf8)!,
+            filename: "testfile.txt",
+            mimeType: "text/plain",
+            charset: "utf-8"
+        ),
+        MultipartBody.Part(
+            name: "testName2",
+            data: "unittest2".data(using: .utf8)!,
+            mimeType: "text/plain"
+        )
+    ])
 
     /// Create a request body that can be compared with the multipartBody property
     /// - Parameter boundary: The boundary without the two hyphens and CRLF
@@ -84,12 +80,12 @@ class MultipartTests: XCTestCase {
         )
     }
 
-    func testMultipartHTTPBinCall() {
+    func testMultipartHTTPBinCall() async throws {
         struct PostCall: Call {
             typealias Parser = JSONParser<HTTPBinResponse>
 
             var request: URLRequestEncodable {
-                return Request(.post, "post", body: multipartBody)
+                Request(.post, "post", body: multipartBody)
             }
 
             let multipartBody: MultipartBody
@@ -99,23 +95,10 @@ class MultipartTests: XCTestCase {
         let session = Session(with: client)
         let call = PostCall(multipartBody: multipartBody)
 
-        let exp = expectation(description: "call finishes")
-
-        session.start(call: call) { (result) in
-            result.onError { (error) in
-                XCTFail(":(")
-            }.onSuccess { [weak self] (value) in
-                guard let self = self else { return }
-
-                XCTAssertEqual("unittest1", value.files["testName"])
-                XCTAssertEqual("unittest2", value.form["testName2"])
-                XCTAssertEqual("multipart/form-data; boundary=\(self.multipartBody.boundary)", value.headers["Content-Type"])
-            }
-
-            exp.fulfill()
-        }
-
-        waitForExpectations(timeout: 5.0)
+        let (value, _) = try await session.dataTask(for: call)
+        XCTAssertEqual("unittest1", value.files["testName"])
+        XCTAssertEqual("unittest2", value.form["testName2"])
+        XCTAssertEqual("multipart/form-data; boundary=\(multipartBody.boundary)", value.headers["Content-Type"])
     }
 }
 
@@ -125,10 +108,10 @@ private extension String {
         var searchStartIndex = startIndex
 
         while searchStartIndex < endIndex,
-            let range = range(of: string, range: searchStartIndex..<endIndex), !range.isEmpty {
-                let index = distance(from: startIndex, to: range.lowerBound)
-                indices.append(index)
-                searchStartIndex = range.upperBound
+              let range = range(of: string, range: searchStartIndex ..< endIndex), !range.isEmpty {
+            let index = distance(from: startIndex, to: range.lowerBound)
+            indices.append(index)
+            searchStartIndex = range.upperBound
         }
 
         return indices
