@@ -25,8 +25,7 @@ public extension URLRequestEncodable {
                 bodyString = bodyString.replacingOccurrences(of: "\"", with: "\\\"")
 
                 body = bodyString
-            }
-            else {
+            } else {
                 body = "<binary data (\(bodyData)) not convertible to \(bodyEncoding)>"
             }
         }
@@ -34,8 +33,7 @@ public extension URLRequestEncodable {
 
         if let urlString = urlRequest.url?.absoluteString {
             curl.append("\"\(urlString)\"")
-        }
-        else {
+        } else {
             curl.append("\"no absolute url - \(String(describing: urlRequest.url))\"")
         }
 
@@ -59,12 +57,10 @@ extension URLSessionTaskResult: CustomDebugStringConvertible {
         if let data, let string = String(data: data, encoding: resp.stringEncoding) {
             if string.isEmpty {
                 description.append("<empty>")
-            }
-            else {
+            } else {
                 description.append("\(string)")
             }
-        }
-        else {
+        } else {
             description.append("<no data>")
         }
         return description

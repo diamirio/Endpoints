@@ -8,8 +8,7 @@ struct ExampleReactorView: View {
         VStack {
             if reactor.state.text.isEmpty {
                 ProgressView()
-            }
-            else {
+            } else {
                 Text(reactor.state.text)
                     .font(.headline)
             }

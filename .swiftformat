@@ -8,7 +8,6 @@
 --wraparguments before-first
 --wrapparameters before-first
 --wrapcollections before-first
---elseposition next-line
 --stripunusedargs closure-only
 
 --decimalgrouping ignore
@@ -25,5 +24,6 @@
 --disable wrapMultilineStatementBraces
 
 # File options
---exclude /**/.build/
+--exclude /**/.build/, /**/bundle/
 --swiftversion 5.9
+

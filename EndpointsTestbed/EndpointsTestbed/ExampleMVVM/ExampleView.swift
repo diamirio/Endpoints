@@ -7,8 +7,7 @@ struct ExampleView: View {
         VStack {
             if viewModel.text.isEmpty {
                 ProgressView()
-            }
-            else {
+            } else {
                 Text(viewModel.text)
                     .font(.headline)
             }

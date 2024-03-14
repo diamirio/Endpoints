@@ -38,8 +38,7 @@ class EndpointsJSONCodableTests: XCTestCase {
         do {
             _ = try DateCrashParser<Person>().parse(data: FileUtil.load(named: "Person"), encoding: .utf8)
             XCTFail("parsing should not succeed")
-        }
-        catch ExpectedError.decoderWasReplaced {
+        } catch ExpectedError.decoderWasReplaced {
             // expected
         }
     }
@@ -55,8 +54,7 @@ class EndpointsJSONCodableTests: XCTestCase {
                 for: call
             )
             XCTFail("parsing should not succeed")
-        }
-        catch ExpectedError.decoderWasReplaced {
+        } catch ExpectedError.decoderWasReplaced {
             // expected
         }
     }

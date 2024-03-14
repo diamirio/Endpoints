@@ -38,8 +38,7 @@ open class Session<CL: Client> {
 
             let value = try await client.parse(response: response, data: data, for: call)
             return (value, response)
-        }
-        catch {
+        } catch {
             throw EndpointsError(error: error, response: response)
         }
     }

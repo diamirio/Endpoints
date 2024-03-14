@@ -20,8 +20,7 @@ class RequestTests: XCTestCase {
 
                 // test encoding
                 XCTAssertTrue(url.absoluteString.contains("%C3%84in%20%E2%82%ACuro"))
-            }
-            else {
+            } else {
                 XCTFail("Creating URLComponents from \(String(describing: request.url)) failed")
             }
         }

@@ -32,8 +32,7 @@ class ExampleReactor: AsyncReactor {
             await MainActor.run {
                 state.text = body.url
             }
-        }
-        catch {
+        } catch {
             guard let error = error as? EndpointsError else { return }
             print(error.response?.statusCode ?? "")
         }

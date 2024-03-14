@@ -17,8 +17,7 @@ class ClientTests: XCTestCase {
             let call = AnyCall<DataResponseParser>(Request(.get, "status/400"))
             _ = try await tester.test(call: call)
             XCTFail("Should throw exception")
-        }
-        catch let endpointsError as EndpointsError {
+        } catch let endpointsError as EndpointsError {
             XCTAssertEqual(endpointsError.error.localizedDescription, "bad request")
         }
     }
@@ -183,8 +182,7 @@ class ClientTests: XCTestCase {
             let parsed = try StringParser().parse(data: data, encoding: .japaneseEUC)
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
-        }
-        catch {
+        } catch {
             XCTAssertTrue(error is EndpointsParsingError)
             XCTAssertTrue(error.localizedDescription.hasPrefix("String could not be parsed with encoding"))
         }
@@ -194,13 +192,11 @@ class ClientTests: XCTestCase {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
         do {
             _ = try await tester.test(call: c)
-        }
-        catch let endpointsError as EndpointsError {
+        } catch let endpointsError as EndpointsError {
             if let error = endpointsError.error as? CocoaError {
                 XCTAssertTrue(error.isPropertyListError)
                 XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
-            }
-            else {
+            } else {
                 XCTFail("wrong error: \(String(describing: endpointsError.error))")
             }
         }
@@ -257,8 +253,7 @@ class ClientTests: XCTestCase {
         do {
             _ = try await tester.test(call: c)
             XCTFail("Should throw error")
-        }
-        catch let error as EndpointsError {
+        } catch let error as EndpointsError {
             XCTAssertNotNil(error.response)
             XCTAssertEqual(error.response?.statusCode, 401)
         }
