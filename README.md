@@ -239,7 +239,7 @@ github "tailoredmedia/Endpoints.git"
 
 ## Example
 
-Example implementation can be found [./Example](here).
+Example implementation can be found [here](./Example).
 
 ## Requirements
 
