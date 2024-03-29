@@ -1,8 +1,9 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A Body for a multipart/form-data conforming to RFC 2046
 public struct MultipartBody: Body {
-
     /// CRLF (Carriage Return + Line Feed)
     private static let lineEnd = "\r\n"
 
@@ -14,7 +15,13 @@ public struct MultipartBody: Body {
         public let charset: String?
         public let data: Data
 
-        public init(name: String, data: Data, filename: String? = nil, mimeType: String? = nil, charset: String? = nil) {
+        public init(
+            name: String,
+            data: Data,
+            filename: String? = nil,
+            mimeType: String? = nil,
+            charset: String? = nil
+        ) {
             self.name = name
             self.data = data
             self.filename = filename
@@ -32,28 +39,29 @@ public struct MultipartBody: Body {
     /// Creates a multipart body with the given parts
     ///
     /// - Parameter parts: the parts of the multipart body, as per rfc1341 there must be at least 1 part
-    /// - Parameter boundary: the boundary of the multipart request, excluding the two hyphens and CRLF. Must not be longer than 70 characters.
+    /// - Parameter boundary: the boundary of the multipart request, excluding the two hyphens and CRLF.
+    ///   Must not be longer than 70 characters.
     public init(parts: [MultipartBodyPart], boundary: String = UUID().uuidString) {
         self.parts = parts
         self.boundary = boundary
     }
 
     public var header: Parameters? {
-        return [ "Content-Type": "multipart/form-data; boundary=\(boundary)" ]
+        ["Content-Type": "multipart/form-data; boundary=\(boundary)"]
     }
 
     public var requestData: Data {
         var data = Data()
 
-        // See RFC 2046 5.1:
-        // The Content-Type field for multipart entities requires one parameter, "boundary".
-        // The boundary delimiter line is then defined as a line consisting entirely of two hyphen characters ("-", decimal value 45)
-        // followed by the boundary parameter value from the Content-Type header field, optional linear whitespace, and a terminating CRLF.
-        // Boundary delimiters must not appear within the encapsulated material, and must be no longer than 70 characters, not counting the two leading hyphens.
+        /// ### See RFC 2046 5.1:
+        /// The Content-Type field for multipart entities requires one parameter, "boundary".  The boundary delimiter
+        /// line is then defined as a line consisting entirely of two hyphen characters ("-", decimal value 45)
+        /// followed by the boundary parameter value from the Content-Type header field, optional linear whitespace,
+        /// and a terminating CRLF. Boundary delimiters must not appear within the encapsulated material,
+        /// and must be no longer than 70 characters, not counting the two leading hyphens.
         let partBoundaryPrefix = "--\(boundary)\(MultipartBody.lineEnd)"
 
         for part in parts {
-
             // build header of part-entity
             data.append(string: partBoundaryPrefix)
             data.append(string: part.dispositionString)

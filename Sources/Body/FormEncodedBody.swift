@@ -1,8 +1,9 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 /// A type representing a form encoded HTTP request body.
 public struct FormEncodedBody: Body {
-
     /// The parameters dictionary to be encoded.
     public var parameters: Parameters
 
@@ -15,13 +16,13 @@ public struct FormEncodedBody: Body {
 
     /// Returns "Content-Type": "application/x-www-form-urlencoded".
     public var header: Parameters? {
-        return [ "Content-Type": "application/x-www-form-urlencoded" ]
+        ["Content-Type": "application/x-www-form-urlencoded"]
     }
 
     /// Returns the encapsulated parameters dictionary as form encoded `Data`.
     public var requestData: Data {
-        return parameters.map { key, value in
-            return "\(encode(key))=\(encode(value))"
+        parameters.map { key, value in
+            "\(encode(key))=\(encode(value))"
         }.joined(separator: "&").data(using: .utf8)!
     }
 

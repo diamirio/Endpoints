@@ -8,10 +8,10 @@ on:
 
 jobs:
   lint:
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup Ruby 2.7.7
         uses: ruby/setup-ruby@v1
@@ -20,6 +20,9 @@ jobs:
           bundler-cache: true
 
       - run: bundle install
+
+      - name: Select Xcode 15.1
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app/Contents/Developer
 
       - name: Cocoapods -> lint podspec and test
         run: bundle exec pod lib lint --verbose --platforms=ios
@@ -31,17 +34,21 @@ jobs:
 
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
 
-    runs-on: macos-latest
+    runs-on: macos-13
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: ruby/setup-ruby@v1
+      - name: Setup Ruby 2.7.7
+        uses: ruby/setup-ruby@v1
         with:
+          ruby-version: '2.7.7'
           bundler-cache: true
-          ruby-version: 2.6
 
       - run: bundle install
+
+      - name: Select Xcode 15.1
+        run: sudo xcode-select -s /Applications/Xcode_15.1.app/Contents/Developer
 
       - name: Publish Pod
         env:

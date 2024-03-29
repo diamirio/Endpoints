@@ -1,3 +1,5 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
 public struct BasicAuthorization {
@@ -10,7 +12,7 @@ public struct BasicAuthorization {
     }
 
     public var key: String {
-        return "Authorization"
+        "Authorization"
     }
 
     public var value: String {
@@ -23,7 +25,6 @@ public struct BasicAuthorization {
     }
 
     public var header: Parameters {
-        return [ key: value ]
+        [key: value]
     }
 }
-

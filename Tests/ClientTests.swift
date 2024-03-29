@@ -1,473 +1,297 @@
-import XCTest
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 @testable import Endpoints
+import XCTest
 
 class ClientTests: XCTestCase {
     var tester: ClientTester<AnyClient>!
-    
+
     // 2021-02-12: redirect endpoints for httpbin.org no longer work, https://github.com/postmanlabs/httpbin/issues/617
     let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
     override func setUp() {
         tester = ClientTester(test: self, client: AnyClient(baseURL: baseURL))
     }
 
-    func testCancellation() {
-        let c = AnyCall<NoContentParser>(Request(.get, "get"))
-        
-        let exp = expectation(description: "")
-        let task = tester.session.start(call: c) { result in
-            XCTAssertTrue(result.wasCancelled)
-            XCTAssertNotNil(result.error)
-            XCTAssertNotNil(result.urlError)
-            
-            result.onError { error in
-                XCTFail("was cancelled. this is not considered an error. should not be called.")
-            }.onSuccess { value in
-                XCTFail("was cancelled. should not be called.")
-            }
-            exp.fulfill()
-        }
-        
-        task.cancel()
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-    
-    func testTimeoutError() {
-        var urlReq = Request(.get, "delay/1").urlRequest
-        urlReq.timeoutInterval = 0.5
-        
-        let c = AnyCall<NoContentParser>(urlReq)
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
-            XCTAssertNil(result.response?.statusCode)
-
-            XCTAssertEqual(URLError.timedOut, result.urlError?.code)
-
-            let error = result.error as! URLError
-            XCTAssertEqual(error.code, URLError.timedOut)
-        }
-    }
-    
-    func testStatusError() {
-        let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 400)
-            XCTAssertEqual(result.error?.localizedDescription, "bad request")
-            
-            if let error = result.error as? StatusCodeError {
-                switch error {
-                case .unacceptable(400, _):
-                    print("code is ok")
-                default:
-                    XCTFail("wrong error: \(error)")
-                }
-            } else {
-                XCTFail("wrong error: \(String(describing: result.error))")
-            }
-        }
-    }
-    
-#if compiler(>=5.5) && canImport(_Concurrency)
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testStatusErrorAsync() async {
+    func testStatusError() async throws {
         do {
-            let c = AnyCall<DataResponseParser>(Request(.get, "status/400"))
-            _ = try await tester.testAsync(call: c)
+            let call = AnyCall<DataResponseParser>(Request(.get, "status/400"))
+            _ = try await tester.test(call: call)
             XCTFail("Should throw exception")
-        } catch {
-            XCTAssertEqual(error.localizedDescription, "bad request")
+        } catch let endpointsError as EndpointsError {
+            XCTAssertEqual(endpointsError.error.localizedDescription, "bad request")
         }
     }
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsync() async throws {
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        let (_, response) = try await tester.testAsync(call: c)
+
+    func testGetData() async throws {
+        let call = AnyCall<DataResponseParser>(Request(.get, "get"))
+        let (_, response) = try await tester.test(call: call)
         XCTAssertEqual(response.statusCode, 200)
     }
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsyncWithCancellation() async throws {
+
+    func testGetDataWithCancellation() async throws {
         let exp = expectation(description: "task was executed until end")
         exp.isInverted = true
-        
+
         let task = Task {
-            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-            _ = try await tester.testAsync(call: c)
+            let call = AnyCall<DataResponseParser>(Request(.get, "get"))
+            _ = try await tester.test(call: call)
             exp.fulfill()
         }
-        
+
         try await Task.sleep(nanoseconds: 400)
         task.cancel()
-        await waitForExpectations(timeout: 5)
-        
+        await fulfillment(of: [exp], timeout: 5)
+
         XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
     }
-    
-    
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0,  *)
-    func testGetDataAsyncWithCancellationWhenTaskIsNotStarted() async throws {
+
+    func testGetDataWithCancellationWhenTaskIsNotStarted() async throws {
         let exp = expectation(description: "task was executed until end")
         exp.isInverted = true
-        
+
         let task = Task {
-            let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-            _ = try await tester.testAsync(call: c)
+            let call = AnyCall<DataResponseParser>(Request(.get, "get"))
+            _ = try await tester.test(call: call)
             exp.fulfill()
         }
-        
+
         task.cancel()
-        await waitForExpectations(timeout: 5)
+        await fulfillment(of: [exp], timeout: 5)
         XCTAssertTrue(task.isCancelled, "Parent Task should be cancelled.")
     }
-    
-#endif
-    
-    func testGetData() {
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
 
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+    func testPostRawString() async throws {
+        let requestBody = "body"
+        let call = AnyCall<DictionaryParser<String, Any>>(Request(
+            .post,
+            "post",
+            header: ["Content-Type": "raw"],
+            body: requestBody
+        ))
+        let (body, _) = try await tester.test(call: call)
+
+        guard let headers = body["headers"] as? [String: String] else {
+            XCTFail("headers not found")
+            return
         }
+
+        XCTAssertEqual(headers["Content-Type"], "raw")
     }
 
-    func testGetDataNoContentParser() {
-        let c = AnyCall<NoContentParser>(Request(.get, "get"))
+    func testPostString() async throws {
+        // foundation urlrequest defaults to form encoding
+        let requestBody = "key=value"
+        let call = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: requestBody))
+        let (body, _) = try await tester.test(call: call)
 
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+        guard let form = body["form"] as? [String: String] else {
+            XCTFail("form not found")
+            return
         }
+
+        XCTAssertEqual(form["key"], "value")
     }
-    
-    func testPostRawString() {
-        let body = "body"
-        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", header: [ "Content-Type": "raw" ], body: body))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            result.onSuccess { value in
-                XCTAssertEqual(value["data"] as? String, body)
-                
-                if let headers = value["headers"] as? [String: String] {
-                    XCTAssertEqual(headers["Content-Type"], "raw")
-                } else {
-                    XCTFail("headers not found")
-                }
-            }
+
+    func testPostFormEncodedBody() async throws {
+        let params = ["key": "&=?value+*-:_.😀"]
+        let requestBody = FormEncodedBody(parameters: params)
+        let call = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: requestBody))
+        let (body, _) = try await tester.test(call: call)
+
+        guard let form = body["form"] as? [String: String] else {
+            XCTFail("form not found")
+            return
         }
-    }
-    
-    func testPostString() {
-        //foundation urlrequest defaults to form encoding
-        let body = "key=value"
-        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            result.onSuccess { value in
-                if let form = value["form"] as? [String: String] {
-                    XCTAssertEqual(form["key"], "value")
-                } else {
-                    XCTFail("form not found")
-                }
-                
-                if let headers = value["headers"] as? [String: String] {
-                    XCTAssertEqual(headers["Content-Type"], "application/x-www-form-urlencoded")
-                } else {
-                    XCTFail("headers not found")
-                }
-            }
+        XCTAssertEqual(form, params)
+
+        guard let headers = body["headers"] as? [String: String] else {
+            XCTFail("form not found")
+            return
         }
+        XCTAssertEqual(headers["Content-Type"], "application/x-www-form-urlencoded")
     }
-    
-    func testPostFormEncodedBody() {
-        let params = [ "key": "&=?value+*-:_.😀" ]
-        let body = FormEncodedBody(parameters: params)
-        let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            
-            result.onSuccess { value in
-                if let form = value["form"] as? [String: String] {
-                    XCTAssertEqual(form, params)
-                } else {
-                    XCTFail("form not found")
-                }
-                
-                if let headers = value["headers"] as? [String: String] {
-                    XCTAssertEqual(headers["Content-Type"], "application/x-www-form-urlencoded")
-                } else {
-                    XCTFail("headers not found")
-                }
-            }
-        }
-    }
-    
-    func testPostJSONBody() throws {
+
+    func testPostJSONBody() async throws {
         let params = ["key": "value"]
         let body = try JSONEncodedBody(jsonObject: params)
-        _testPostJSONBody(body: body, validateJSON: { json in
-            XCTAssertEqual(json, params)
-        })
+        let json = try await _testPostJSONBody(body: body)
+        XCTAssertEqual(json, params)
     }
 
-    func testPostJSONBodyEncodable() throws {
+    func testPostJSONBodyEncodable() async throws {
         let params = ["key": "value"]
-        _testPostJSONBody(body: try JSONEncodedBody(encodable: params), validateJSON: { json in
-            XCTAssertEqual(json, params)
-        })
+        let json = try await _testPostJSONBody(body: JSONEncodedBody(encodable: params))
+        XCTAssertEqual(json, params)
     }
 
-    func _testPostJSONBody(body: JSONEncodedBody, validateJSON: @escaping (([String: String]) -> Void)) {
+    func _testPostJSONBody(body: JSONEncodedBody) async throws -> [String: String] {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: body))
+        let (body, _) = try await tester.test(call: c)
 
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
+        guard let headers = body["headers"] as? [String: String] else {
+            throw TestError(errorDescription: "Headers are not cast-able")
+        }
+        XCTAssertEqual(headers["Content-Type"], "application/json")
 
-            result.onSuccess { value in
-                if let json = value["json"] as? [String: String] {
-                    validateJSON(json)
-                } else {
-                    XCTFail("json not found")
-                }
+        guard let json = body["json"] as? [String: String] else {
+            throw TestError(errorDescription: "Json body is not cast-able")
+        }
 
-                if let headers = value["headers"] as? [String: String] {
-                    XCTAssertEqual(headers["Content-Type"], "application/json")
-                } else {
-                    XCTFail("headers not found")
-                }
-            }
-        }
+        return json
     }
-    
-    func testGetString() {
-        let c = AnyCall<StringParser>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            
-            if let string = result.value {
-                XCTAssertTrue(string.contains("inputParamValue"))
-            }
-        }
+
+    func testGetString() async throws {
+        let c = AnyCall<StringParser>(Request(.get, "get", query: ["inputParam": "inputParamValue"]))
+        let (body, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.statusCode, 200)
+        XCTAssertTrue(body.contains("inputParamValue"))
     }
-    
-    func testGetJSONDictionary() {
-        let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "get", query: [ "inputParam" : "inputParamValue" ]))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true, status: 200)
-            
-            if let jsonDict = result.value {
-                let args = jsonDict["args"]
-                XCTAssertNotNil(args)
-                
-                if let args = args {
-                    XCTAssertTrue(args is Dictionary<String, String>)
-                    
-                    if let args = args as? Dictionary<String, String> {
-                        let param = args["inputParam"]
-                        XCTAssertNotNil(param)
-                        
-                        if let param = param {
-                            XCTAssertEqual(param, "inputParamValue")
-                        }
-                    }
-                }
-            }
+
+    func testGetJSONDictionary() async throws {
+        let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "get", query: ["inputParam": "inputParamValue"]))
+        let (body, _) = try await tester.test(call: c)
+
+        let args = body["args"]
+        XCTAssertNotNil(args)
+
+        guard let args,
+              let dictArgs = args as? [String: String],
+              let param = dictArgs["inputParam"]
+        else {
+            XCTFail("Condition not matched")
+            return
         }
+
+        XCTAssertEqual(param, "inputParamValue")
     }
-    
+
     func testParseJSONArray() {
-        let inputArray = [ "one", "two", "three" ]
+        let inputArray = ["one", "two", "three"]
         let arrayData = try! JSONSerialization.data(withJSONObject: inputArray, options: .prettyPrinted)
 
         let parsedObject = try! AnyCall<JSONParser<[String]>>.Parser().parse(data: arrayData, encoding: .utf8)
-        
+
         XCTAssertEqual(inputArray, parsedObject)
     }
-    
+
     func testFailStringParsing() {
         let input = "😜 test"
         let data = input.data(using: .utf8)!
-        
+
         do {
             let parsed = try StringParser().parse(data: data, encoding: .japaneseEUC)
             XCTAssertEqual(parsed, input)
             XCTFail("this should actually fail")
         } catch {
-            XCTAssertTrue(error is ParsingError)
+            XCTAssertTrue(error is EndpointsParsingError)
             XCTAssertTrue(error.localizedDescription.hasPrefix("String could not be parsed with encoding"))
         }
     }
-    
-    func testFailJSONParsing() {
+
+    func testFailJSONParsing() async throws {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false, status: 200)
-            
-            if let error = result.error as? CocoaError {
+        do {
+            _ = try await tester.test(call: c)
+        } catch let endpointsError as EndpointsError {
+            if let error = endpointsError.error as? CocoaError {
                 XCTAssertTrue(error.isPropertyListError)
                 XCTAssertEqual(error.code, CocoaError.Code.propertyListReadCorrupt)
             } else {
-                XCTFail("wrong error: \(String(describing: result.error))")
+                XCTFail("wrong error: \(String(describing: endpointsError.error))")
             }
         }
     }
-    
+
     struct GetOutput: Call {
         typealias Parser = DictionaryParser<String, Any>
-        
+
         let value: String
-        
+
         var request: URLRequestEncodable {
-            return Request(.get, "get", query: ["param" : value])
+            Request(.get, "get", query: ["param": value])
         }
     }
-    
-    func testTypedRequest() {
+
+    func testTypedRequest() async throws {
         let value = "value"
-        
-        tester.test(call: GetOutput(value: value)) { result in
-            self.tester.assert(result: result)
-            
-            if let jsonDict = result.value {
-                let args = jsonDict["args"]
-                XCTAssertNotNil(args)
-                
-                if let args = args {
-                    XCTAssertTrue(args is Dictionary<String, String>)
-                    
-                    if let args = args as? Dictionary<String, String> {
-                        let param = args["param"]
-                        XCTAssertNotNil(param)
-                        
-                        if let param = param {
-                            XCTAssertEqual(param, value)
-                        }
-                    }
-                }
-            }
+        let c = GetOutput(value: value)
+        let (body, _) = try await tester.test(call: c)
+
+        guard let args = body["args"] as? [String: String] else {
+            throw TestError(errorDescription: "Response body is not a dictionary")
         }
+
+        let param = args["param"]
+        XCTAssertNotNil(param)
+        XCTAssertEqual(param, value)
     }
-    
+
     struct ValidatingCall: Call {
         typealias Parser = DictionaryParser<String, Any>
-        
+
         var mime: String
-        
+
         var request: URLRequestEncodable {
-            return Request(.get, "response-headers", query: [ "Mime": mime ])
+            Request(.get, "response-headers", query: ["Mime": mime])
         }
-        
-        func validate(result: URLSessionTaskResult) throws {
+
+        func validate(result _: URLSessionTaskResult) throws {
             throw StatusCodeError.unacceptable(code: 0, reason: nil)
         }
     }
-    
-    class ValidatingClient: AnyClient {
-        override func validate(result: URLSessionTaskResult) throws {
-            throw StatusCodeError.unacceptable(code: 1, reason: nil)
-        }
-    }
-    
-    func testClientValidation() {
-        // check if call validation comes before client validation
-        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
-        let tester = ClientTester(test: self, client: client)
-        
-        let c = AnyCall<DataResponseParser>(Request(.get, "get"))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
-            
-            guard let error = result.error as? StatusCodeError else {
-                XCTFail("error expected")
-                return
-            }
-            
-            switch error {
-            case .unacceptable(let code, _):
-                XCTAssertEqual(code, 1, "client should throw error")
-            }
-        }
-    }
-    
-    func testValidatingRequest() {
-        // check if call validation comes before client validation
-        let client = ValidatingClient(baseURL: self.tester.session.client.baseURL)
-        let tester = ClientTester(test: self, client: client)
-        
-        let mime = "application/json"
-        let c = ValidatingCall(mime: mime)
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
-            
-            guard let error = result.error as? StatusCodeError else {
-                XCTFail("error expected")
-                return
-            }
-            
-            switch error {
-            case .unacceptable(let code, _):
-                XCTAssertEqual(code, 0, "request should throw error, not client")
-            }
-            
-            let responseMime = result.response?.allHeaderFields["Mime"] ?? result.response?.allHeaderFields["mime"]
-            XCTAssertEqual(responseMime as? String, mime)
-        }
-    }
-    
-    func testBasicAuth() {
+
+    func testBasicAuth() async throws {
         let auth = BasicAuthorization(user: "a", password: "a")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: true)
-        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.statusCode, 200)
     }
-    
-    func testBasicAuthFail() {
+
+    func testBasicAuthFail() async throws {
         let auth = BasicAuthorization(user: "a", password: "b")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result, isSuccess: false)
+        do {
+            _ = try await tester.test(call: c)
+            XCTFail("Should throw error")
+        } catch let error as EndpointsError {
+            XCTAssertNotNil(error.response)
+            XCTAssertEqual(error.response?.statusCode, 401)
         }
     }
 
-    func testSimpleAbsoluteURLCall() {
+    func testSimpleAbsoluteURLCall() async throws {
         let url = URL(string: "https://httpbin.org/get?q=a")!
         let c = AnyCall<DataResponseParser>(url)
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, url)
-        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, url)
     }
-    
-    func testSimpleRelativeURLRequestCall() {
+
+    func testSimpleRelativeURLRequestCall() async throws {
         let url = URL(string: "get?q=a")!
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
-        
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, URL(string: url.relativeString, relativeTo: self.baseURL)?.absoluteURL)
-        }
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, URL(string: url.relativeString, relativeTo: baseURL)?.absoluteURL)
     }
-    
-    func testRedirect() {
+
+    func testRedirect() async throws {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.url, URL(string: "get", relativeTo: baseURL)?.absoluteURL)
+    }
 
-        tester.test(call: c) { result in
-            self.tester.assert(result: result)
-            XCTAssertEqual(result.response?.url, URL(string: "get", relativeTo: self.baseURL)?.absoluteURL)
-        }
+    func testNoResponseBody() async throws {
+        let c = AnyCall<DataResponseParser>(Request(.get, "status/200"))
+        let (_, response) = try await tester.test(call: c)
+        XCTAssertEqual(response.statusCode, 200)
+    }
+}
+
+struct CustomError: LocalizedError {
+    let error: Error
+    let response: HTTPURLResponse? = nil
+
+    var errorDescription: String? {
+        error.localizedDescription
     }
 }

@@ -1,29 +1,42 @@
+// Copyright © 2023 DIAMIR. All Rights Reserved.
+
 import Foundation
 
-public class FakeSession<C: Client>: Session<C> {
+public class FakeSession<CL: Client>: Session<CL> {
     var resultProvider: FakeResultProvider
 
-    public init(with client: C, resultProvider: FakeResultProvider) {
+    public init(with client: CL, resultProvider: FakeResultProvider) {
         self.resultProvider = resultProvider
 
         super.init(with: client)
     }
 
-    override public func dataTask<C : Call>(for call: C, completion: @escaping (Result<C.Parser.OutputType>) -> Void) -> URLSessionDataTask {
-        return FakeURLSessionDataTask {
-            DispatchQueue.global().async {
-                let sessionResult = self.resultProvider.resultFor(call: call)
+    override public func dataTask<C: Call>(
+        for call: C
+    ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
+        let (response, data) = try await resultProvider.data(for: call)
 
-                if self.debug {
-                    print("\(call.request.cURLRepresentation)\n\(sessionResult)")
-                }
+        if debug {
+            print("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
+        }
 
-                let result = self.transform(sessionResult: sessionResult, for: call)
+        guard let response = response as? HTTPURLResponse else {
+            throw EndpointsError(
+                error: EndpointsParsingError.invalidData(
+                    description: "Response was not a valid HTTPURLResponse"
+                ),
+                response: nil
+            )
+        }
 
-                DispatchQueue.main.async {
-                    completion(result)
-                }
-            }
+        do {
+            try await call.validate(response: response, data: data) // request-specific validation
+            try await client.validate(response: response, data: data) // global validation
+
+            let value = try await client.parse(response: response, data: data, for: call)
+            return (value, response)
+        } catch {
+            throw EndpointsError(error: error, response: response)
         }
     }
 }
