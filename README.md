@@ -213,10 +213,6 @@ let (body, response) = try await session.dataTask(for: call)
 print("image url: \(body.data.url)")
 ```
 
-### Convenience
-
-There are multiple ways to make performing a call more convenient. You could write a dedicated `GiphyCall` that creates the correct `Client` and `Session` for your users.
-
 ## Installation
 
 **CocoaPods:**
