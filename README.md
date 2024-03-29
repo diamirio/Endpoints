@@ -1,14 +1,15 @@
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Endpoints.svg)](https://cocoapods.org/pods/Endpoints)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
-[![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/diamirio/AsyncReactor/assets/19715246/56eef378-e63e-4732-8710-040d3440afbb">
   <img alt="DIAMIR Logo" src="https://github.com/diamirio/AsyncReactor/assets/19715246/8424fef3-5aeb-4e15-af36-55f1f3fc37b0">
 </picture>
 
 # Endpoints
+
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Endpoints.svg)](https://cocoapods.org/pods/Endpoints)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+[![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
+
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
@@ -81,7 +82,7 @@ Look up the documentation in the code for further explanations of the types.
 
 #### JSON Codable Integration
 
-`Endpoints` has a built in JSON Codable support. 
+`Endpoints` has a built in JSON Codable support.
 
 ##### Decoding
 
@@ -138,7 +139,7 @@ let call = GetRandomImage(tag: "cat")
 
 A client is responsible for handling things that are common for all operations of a given Web-API. Typically this includes appending API tokens or authentication tokens to a request or validating responses and handling errors.
 
-`AnyClient` is the default implementation of the `Client` protocol and can be used as-is or as a starting point for your own dedicated client. 
+`AnyClient` is the default implementation of the `Client` protocol and can be used as-is or as a starting point for your own dedicated client.
 
 You'll usually need to create your own dedicated client that either subclasses `AnyClient` or delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here:
 
@@ -263,19 +264,19 @@ GiphyClient.GetRandomImage(tag: "cat").start { result in ... }
 
 **CocoaPods:**
 
-```
+```bash
 pod "Endpoints"
 ```
 
 **Carthage:**
 
-```
+```bash
 github "tailoredmedia/Endpoints.git"
 ```
 
 **Swift Package Manager:**
 
-```
+```bash
 .package(url: "https://github.com/tailoredmedia/Endpoints.git", .upToNextMajor(from: "2.0.0"))
 ```
 
@@ -285,8 +286,8 @@ To compile examples you need to open the project in Xcode, the dependencies are 
 
 ## Requirements
 
-- Swift 5
-- iOS 8
-- tvOS 9
-- macOS 10.11
-- watchOS 2.0
+* Swift 5
+* iOS 13
+* tvOS 12
+* macOS 10.15
+* watchOS 6
