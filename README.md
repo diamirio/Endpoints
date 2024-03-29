@@ -10,7 +10,6 @@
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
 
-
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
 It requires Swift 5, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
@@ -35,13 +34,7 @@ let session = Session(with: client)
 session.debug = true
 
 // start call
-session.start(call: call) { result in
-    result.onSuccess { value in
-        //value is an object of the type specified in `Call`
-    }.onError { error in
-        //something went wrong
-    }
-}
+let (body, httpResponse) = try await session.dataTask(for: call)
 ```
 
 ### Response Parsing
@@ -53,20 +46,20 @@ Some built-in types already adopt the `ResponseParser` protocol (using protocol 
 ```swift
 // Replace `DataResponseParser` with any `ResponseParser` implementation
 let call = AnyCall<DictionaryParser<String, Any>>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
-...
-session.start(call: call) { result in
-    result.onSuccess { value in
-        //value is now a JSON dictionary 🎉
-    }
-}
 
-let call = AnyCall<JSONParser<GiphyGif>>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
 ...
-session.start(call: call) { result in
-    result.onSuccess { value in
-        //value is now a `GiphyGif` dictionary 🎉
-    }
-}
+
+// body is now a JSON dictionary 🎉
+let (body, httpResponse) = try await session.dataTask(for: call)
+````
+
+```swift
+let call = AnyCall<JSONParser<GiphyGif>>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
+
+...
+
+// body is now a `GiphyGif` dictionary 🎉
+let (body, httpResponse) = try await session.dataTask(for: call)
 ```
 
 #### Provided `ResponseParser`s
@@ -149,7 +142,7 @@ class GiphyClient: Client {
     
     var apiKey = "dc6zaTOxFJmzC"
     
-    func encode<C: Call>(call: C) -> URLRequest {
+    override func encode<C>(call: C) async throws -> URLRequest {
         var request = anyClient.encode(call: call)
         
         // Append the API key to every request
@@ -158,19 +151,21 @@ class GiphyClient: Client {
         return request
     }
     
-    public func parse<C : Call>(sessionTaskResult result: URLSessionTaskResult, for call: C) throws -> C.Parser.OutputType {
+    override func parse<C>(response: HTTPURLResponse?, data: Data?, for call: C) async throws -> C.Parser.OutputType
+        where C: Call {
         do {
             // Use `AnyClient` to parse the response
             // If this fails, try to read error details from response body
-            return try anyClient.parse(sessionTaskResult: result, for: call)
+            return try await anyClient.parse(sessionTaskResult: result, for: call)
         } catch {
             // See if the backend sent detailed error information
             guard
-                let response = result.httpResponse,
-                let data = result.data,
+                let response,
+                let data,
                 let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
                 let meta = errorDict?["meta"] as? [String: Any],
-                let errorCode = meta["error_code"] as? String else {
+                let errorCode = meta["error_code"] as? String 
+            else {
                 // no error info from backend -> rethrow default error
                 throw error
             }
@@ -214,51 +209,13 @@ let client = GiphyClient()
 let call = GetRandomImage(tag: "cat")
 let session = Session(with: client)
 
-session.start(call: call) { result in
-    result.onSuccess { value in
-        print("image url: \(value.data.url)")
-    }.onError { error in
-        print("error: \(error)")
-    }
-}
+let (body, response) = try await session.dataTask(for: call)
+print("image url: \(body.data.url)")
 ```
 
 ### Convenience
 
-There are multiple ways to make performing a call more convenient. You could write a dedicated `GiphyCall` that creates the correct `Client` and `Session` for your users:
-
-```swift
-protocol GiphyCall: Call {}
-
-extension GiphyCall {
-    func start(completion: @escaping (Result<Parser.OutputType>)->()) {
-        let client = GiphyClient()
-        let session = Session(with: client)
-        
-        session.start(call: self, completion: completion)
-    }
-}
-```
-
-When `GiphyCall` is adopted by `GetRandomImage` instead of `Call`, performing a request is much simpler:
-
-```swift
-GetRandomImage(tag: "cat").start { result in ... }
-```
-
-To make it easer to find supported calls, you could namespace your calls using an extension of your `Client`:
-
-```swift
-extension GiphyClient {
-    struct GetRandomImage: GiphyCall { ... }
-}
-```
-
-Xcode can now help developers find the right `Call` instance:
-
-```swift
-GiphyClient.GetRandomImage(tag: "cat").start { result in ... }
-```
+There are multiple ways to make performing a call more convenient. You could write a dedicated `GiphyCall` that creates the correct `Client` and `Session` for your users.
 
 ## Installation
 
@@ -277,12 +234,12 @@ github "tailoredmedia/Endpoints.git"
 **Swift Package Manager:**
 
 ```bash
-.package(url: "https://github.com/tailoredmedia/Endpoints.git", .upToNextMajor(from: "2.0.0"))
+.package(url: "https://github.com/tailoredmedia/Endpoints.git", .upToNextMajor(from: "3.0.0"))
 ```
 
 ## Example
 
-To compile examples you need to open the project in Xcode, the dependencies are added via the Swift Package Manager, Xcode will download them automatically.
+Example implementation can be found [./Example](here).
 
 ## Requirements
 
