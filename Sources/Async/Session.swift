@@ -27,7 +27,7 @@ open class Session<CL: Client> {
             if #available(iOS 14.0, *) {
                 Logger.default.debug("\(urlRequest.cURLRepresentation)")
             } else {
-                print("\(urlRequest.cURLRepresentation)")
+                os_log("%s", log: .default, type: .debug, urlRequest.cURLRepresentation)
             }
         }
 
