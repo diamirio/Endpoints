@@ -5,10 +5,7 @@
 
 # Endpoints
 
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/Endpoints.svg)](https://cocoapods.org/pods/Endpoints)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
-[![Platform](https://img.shields.io/cocoapods/p/Endpoints.svg)](http://cocoadocs.org/docsets/Endpoints)
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
@@ -214,18 +211,6 @@ print("image url: \(body.data.url)")
 ```
 
 ## Installation
-
-**CocoaPods:**
-
-```bash
-pod "Endpoints"
-```
-
-**Carthage:**
-
-```bash
-github "tailoredmedia/Endpoints.git"
-```
 
 **Swift Package Manager:**
 
