@@ -2,7 +2,7 @@
 
 import Foundation
 #if canImport(OSLog)
-import OSLog
+    import OSLog
 #endif
 
 public class FakeSession<CL: Client>: Session<CL> {

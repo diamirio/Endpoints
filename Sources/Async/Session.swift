@@ -2,7 +2,7 @@
 
 import Foundation
 #if canImport(OSLog)
-import OSLog
+    import OSLog
 #endif
 
 open class Session<CL: Client> {
