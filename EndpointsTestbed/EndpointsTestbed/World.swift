@@ -10,11 +10,14 @@ struct World {
     init() {
         let postmanClient = PostmanEchoClient()
         self.postmanSession = Session(with: postmanClient)
+        postmanSession.debug = true
 
         let httpBinClient = HTTPBinClient()
         self.httpBinSession = Session(with: httpBinClient)
+        httpBinSession.debug = true
 
         let manipulatedHttpBinClient = ManipulatedHTTPBinClient()
         self.manipulatedHttpBinSession = Session(with: manipulatedHttpBinClient)
+        manipulatedHttpBinSession.debug = true
     }
 }
