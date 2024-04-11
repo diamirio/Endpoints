@@ -19,26 +19,32 @@ public class FakeSession<CL: Client>: Session<CL> {
     ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let (response, data) = try await resultProvider.data(for: call)
 
-        if debug {
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
-                Logger.default.debug("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
-            } else {
-                os_log(
-                    "%s",
-                    log: .default,
-                    type: .debug,
-                    "\(call.request.cURLRepresentation)\n\(response)\n\(response)"
-                )
-            }
-        }
-
         guard let response = response as? HTTPURLResponse else {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
+                Logger.default.debug("no response.")
+            } else {
+                os_log("no response.", log: .default, type: .debug)
+            }
+
             throw EndpointsError(
                 error: EndpointsParsingError.invalidData(
                     description: "Response was not a valid HTTPURLResponse"
                 ),
                 response: nil
             )
+        }
+
+        if debug {
+            var message = ""
+            message += "\(call.request.cURLRepresentation)\n"
+            message += "\(response.debugDescription)\n"
+            message += "\(data.debugDescription(encoding: response.stringEncoding))"
+
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
+                Logger.default.debug("\(message, privacy: .private)")
+            } else {
+                os_log("%s", log: .default, type: .debug, message)
+            }
         }
 
         do {

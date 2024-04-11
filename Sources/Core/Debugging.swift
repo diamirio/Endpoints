@@ -67,18 +67,32 @@ extension URLSessionTaskResult: CustomDebugStringConvertible {
     }
 }
 
-public extension URLSessionTask {
-    var requestDescription: String {
-        guard let originalRequest, let realRequest = currentRequest else {
-            return "<task not started yet>"
+public extension HTTPURLResponse {
+    override var debugDescription: String {
+        var description = "\(statusCode)\n"
+
+        allHeaderFields.forEach {
+            description.append("-\($0): \($1)\n")
+        }
+        
+        return description
+    }
+}
+
+public extension Data {
+    func debugDescription(encoding: String.Encoding) -> String {
+        var description = ""
+
+        if let string = String(data: self, encoding: encoding) {
+            if string.isEmpty {
+                description.append("<empty>")
+            } else {
+                description.append("\(string)")
+            }
+        } else {
+            description.append("<no data>")
         }
 
-        var string = ""
-        if originalRequest != realRequest {
-            string = "\(originalRequest.cURLRepresentation)\n-> redirected to ->\n"
-        }
-        string += "\(realRequest.cURLRepresentation)"
-
-        return string
+        return description
     }
 }

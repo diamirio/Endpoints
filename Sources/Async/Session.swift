@@ -13,7 +13,7 @@ open class Session<CL: Client> {
 
     public init(
         with client: CL,
-        using urlSession: URLSession = URLSession.shared
+        using urlSession: URLSession = URLSession(configuration: .default, delegate: URLSessionDelegateHandler(), delegateQueue: nil)
     ) {
         self.client = client
         self.urlSession = urlSession
@@ -25,21 +25,31 @@ open class Session<CL: Client> {
 
         let (data, response) = try await urlSession.data(for: urlRequest)
 
-        if debug {
-            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
-                Logger.default.debug("\(urlRequest.cURLRepresentation)")
-            } else {
-                os_log("%s", log: .default, type: .debug, urlRequest.cURLRepresentation)
-            }
-        }
-
         guard let response = response as? HTTPURLResponse else {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
+                Logger.default.debug("no response.")
+            } else {
+                os_log("no response.", log: .default, type: .debug)
+            }
             throw EndpointsError(
                 error: EndpointsParsingError.invalidData(
                     description: "Response was not a valid HTTPURLResponse"
                 ),
                 response: nil
             )
+        }
+
+        if debug {
+            var message = ""
+            message += "\(urlRequest.cURLRepresentation)\n"
+            message += "\(response.debugDescription)\n"
+            message += "\(data.debugDescription(encoding: response.stringEncoding))"
+
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
+                Logger.default.debug("\(message, privacy: .private)")
+            } else {
+                os_log("%s", log: .default, type: .debug, message)
+            }
         }
 
         do {
@@ -51,5 +61,25 @@ open class Session<CL: Client> {
         } catch {
             throw EndpointsError(error: error, response: response)
         }
+    }
+}
+
+public class URLSessionDelegateHandler: NSObject, URLSessionTaskDelegate {
+    public func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        let message = "\(response.url?.absoluteString ?? "") -> redirected to -> \(request.url?.absoluteString ?? "")"
+
+        if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
+            Logger.default.debug("\(message, privacy: .private)")
+        } else {
+            os_log("%s", log: .default, type: .debug, message)
+        }
+
+        completionHandler(request)
     }
 }
