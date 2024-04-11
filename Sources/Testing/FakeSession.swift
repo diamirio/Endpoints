@@ -1,7 +1,9 @@
 // Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
+#if canImport(OSLog)
 import OSLog
+#endif
 
 public class FakeSession<CL: Client>: Session<CL> {
     var resultProvider: FakeResultProvider
@@ -18,7 +20,7 @@ public class FakeSession<CL: Client>: Session<CL> {
         let (response, data) = try await resultProvider.data(for: call)
 
         if debug {
-            if #available(iOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
                 Logger.default.debug("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
             } else {
                 os_log(

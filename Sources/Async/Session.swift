@@ -1,7 +1,9 @@
 // Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
+#if canImport(OSLog)
 import OSLog
+#endif
 
 open class Session<CL: Client> {
     public var debug = false
@@ -24,7 +26,7 @@ open class Session<CL: Client> {
         let (data, response) = try await urlSession.data(for: urlRequest)
 
         if debug {
-            if #available(iOS 14.0, *) {
+            if #available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *) {
                 Logger.default.debug("\(urlRequest.cURLRepresentation)")
             } else {
                 os_log("%s", log: .default, type: .debug, urlRequest.cURLRepresentation)
