@@ -13,7 +13,11 @@ open class Session<CL: Client> {
 
     public init(
         with client: CL,
-        using urlSession: URLSession = URLSession(configuration: .default, delegate: URLSessionDelegateHandler(), delegateQueue: nil)
+        using urlSession: URLSession = URLSession(
+            configuration: .default,
+            delegate: URLSessionDelegateHandler(),
+            delegateQueue: nil
+        )
     ) {
         self.client = client
         self.urlSession = urlSession

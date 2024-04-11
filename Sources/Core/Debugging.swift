@@ -74,7 +74,7 @@ public extension HTTPURLResponse {
         allHeaderFields.forEach {
             description.append("-\($0): \($1)\n")
         }
-        
+
         return description
     }
 }
