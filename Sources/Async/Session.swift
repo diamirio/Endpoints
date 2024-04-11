@@ -1,6 +1,7 @@
 // Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
+import OSLog
 
 open class Session<CL: Client> {
     public var debug = false
@@ -8,7 +9,10 @@ open class Session<CL: Client> {
     public var urlSession: URLSession
     public let client: CL
 
-    public init(with client: CL, using urlSession: URLSession = URLSession.shared) {
+    public init(
+        with client: CL,
+        using urlSession: URLSession = URLSession.shared
+    ) {
         self.client = client
         self.urlSession = urlSession
     }
@@ -20,7 +24,11 @@ open class Session<CL: Client> {
         let (data, response) = try await urlSession.data(for: urlRequest)
 
         if debug {
-            print("\(urlRequest.cURLRepresentation)")
+            if #available(iOS 14.0, *) {
+                Logger.default.debug("\(urlRequest.cURLRepresentation)")
+            } else {
+                print("\(urlRequest.cURLRepresentation)")
+            }
         }
 
         guard let response = response as? HTTPURLResponse else {

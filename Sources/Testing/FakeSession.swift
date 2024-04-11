@@ -1,6 +1,7 @@
 // Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Foundation
+import OSLog
 
 public class FakeSession<CL: Client>: Session<CL> {
     var resultProvider: FakeResultProvider
@@ -17,7 +18,11 @@ public class FakeSession<CL: Client>: Session<CL> {
         let (response, data) = try await resultProvider.data(for: call)
 
         if debug {
-            print("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
+            if #available(iOS 14.0, *) {
+                Logger.default.debug("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
+            } else {
+                print("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
+            }
         }
 
         guard let response = response as? HTTPURLResponse else {
