@@ -21,7 +21,12 @@ public class FakeSession<CL: Client>: Session<CL> {
             if #available(iOS 14.0, *) {
                 Logger.default.debug("\(call.request.cURLRepresentation)\n\(response)\n\(response)")
             } else {
-                os_log("%s", log: .default, type: .debug, "\(call.request.cURLRepresentation)\n\(response)\n\(response)")
+                os_log(
+                    "%s",
+                    log: .default,
+                    type: .debug,
+                    "\(call.request.cURLRepresentation)\n\(response)\n\(response)"
+                )
             }
         }
 
