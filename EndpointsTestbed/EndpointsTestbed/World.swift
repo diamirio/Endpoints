@@ -1,7 +1,9 @@
 import Endpoints
 import Foundation
 
+@MainActor
 let world = World()
+
 struct World {
     let postmanSession: Session<PostmanEchoClient>
     let httpBinSession: Session<HTTPBinClient>

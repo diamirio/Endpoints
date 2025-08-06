@@ -1,5 +1,15 @@
 {
+  "originHash" : "d60fd0d2ae51db67eba9e4953b65b820e6a0ca74261188dbc9326d5feaa9974e",
   "pins" : [
+    {
+      "identity" : "asyncreactor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/diamirio/AsyncReactor",
+      "state" : {
+        "revision" : "23292274e53eedae5c2198536a3a476355fe59d4",
+        "version" : "1.2.0"
+      }
+    },
     {
       "identity" : "swiftformat",
       "kind" : "remoteSourceControl",
@@ -10,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
