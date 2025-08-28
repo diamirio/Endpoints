@@ -1,8 +1,8 @@
 // Copyright © 2023 DIAMIR. All Rights Reserved.
 
 import Endpoints
-import Testing
 import Foundation
+import Testing
 
 // Helper struct for running API calls within tests.
 struct ClientTester<CL: Client> {
@@ -10,7 +10,7 @@ struct ClientTester<CL: Client> {
 
     init(client: CL) {
         self.session = Session(with: client)
-        self.session.debug = true
+        session.debug = true
     }
 
     func performTest<C: Call>(

@@ -34,7 +34,7 @@ struct ClientTests {
         let task = Task {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
-                _ = try await self.tester.performTest(call: call)
+                _ = try await tester.performTest(call: call)
                 Issue.record("Task should have been cancelled before completion.")
             } catch let error as URLError {
                 #expect(error.code == .cancelled)
@@ -54,7 +54,7 @@ struct ClientTests {
         let task = Task {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
-                _ = try await self.tester.performTest(call: call)
+                _ = try await tester.performTest(call: call)
                 Issue.record("Task should have been cancelled before completion.")
             } catch let error as URLError {
                 #expect(error.code == .cancelled)
@@ -149,9 +149,9 @@ struct ClientTests {
     @Test func testParseJSONArray() throws {
         let inputArray = ["one", "two", "three"]
         let arrayData = try JSONSerialization.data(withJSONObject: inputArray)
-        
+
         let parsedObject = try AnyCall<JSONParser<[String]>>.Parser().parse(data: arrayData, encoding: .utf8)
-        
+
         #expect(inputArray == parsedObject)
     }
 
@@ -166,11 +166,11 @@ struct ClientTests {
 
     @Test func testFailJSONParsing() async throws {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
-        
+
         let error = await #expect(throws: EndpointsError.self) {
             _ = try await tester.performTest(call: c)
         }
-        
+
         if let cocoaError = error?.error as? CocoaError {
             #expect(cocoaError.isPropertyListError)
             #expect(cocoaError.code == CocoaError.Code.propertyListReadCorrupt)
@@ -186,7 +186,7 @@ struct ClientTests {
 
         let args = try #require(body["args"] as? [String: String], "Response body is not a dictionary")
         let param = try #require(args["param"])
-        
+
         #expect(param == value)
     }
 
@@ -200,11 +200,11 @@ struct ClientTests {
     @Test func testBasicAuthFail() async throws {
         let auth = BasicAuthorization(user: "a", password: "b")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
-        
+
         let error = await #expect(throws: EndpointsError.self) {
             _ = try await tester.performTest(call: c)
         }
-        
+
         let response = try #require(error?.response)
         #expect(response.statusCode == 401)
     }
@@ -220,14 +220,14 @@ struct ClientTests {
         let url = try #require(URL(string: "get?q=a"))
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
         let (_, response) = try await tester.performTest(call: c)
-        #expect(response.url == URL(string: url.relativeString, relativeTo: self.tester.session.client.baseURL)?.absoluteURL)
+        #expect(response.url == URL(string: url.relativeString, relativeTo: tester.session.client.baseURL)?.absoluteURL)
     }
 
     @Test func testRedirect() async throws {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
         let (_, response) = try await tester.performTest(call: c)
-        #expect(response.url == URL(string: "get", relativeTo: self.tester.session.client.baseURL)?.absoluteURL)
+        #expect(response.url == URL(string: "get", relativeTo: tester.session.client.baseURL)?.absoluteURL)
     }
 
     @Test func testNoResponseBody() async throws {
