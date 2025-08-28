@@ -15,11 +15,11 @@ struct ClientTests {
         do {
             let call = AnyCall<DataResponseParser>(Request(.get, "status/400"))
             _ = try await tester.performTest(call: call)
-            #expect(Bool(false), "Should have thrown an exception")
+            Issue.record("Should have thrown an exception")
         } catch let endpointsError as EndpointsError {
             #expect(endpointsError.error.localizedDescription == "bad request")
         } catch {
-            #expect(Bool(false), "Caught an unexpected error: \(error.localizedDescription)")
+            Issue.record("Caught an unexpected error: \(error.localizedDescription)")
         }
     }
 
@@ -35,11 +35,11 @@ struct ClientTests {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
                 _ = try await self.tester.performTest(call: call)
-                #expect(Bool(false), "Task should have been cancelled before completion.")
+                Issue.record("Task should have been cancelled before completion.")
             } catch let error as URLError {
                 #expect(error.code == .cancelled)
             } catch {
-                #expect(Bool(false), "Caught an unexpected error: \(error.localizedDescription)")
+                Issue.record("Caught an unexpected error: \(error.localizedDescription)")
             }
         }
 
@@ -55,7 +55,7 @@ struct ClientTests {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
                 _ = try await self.tester.performTest(call: call)
-                #expect(Bool(false), "Task should have been cancelled before completion.")
+                Issue.record("Task should have been cancelled before completion.")
             } catch let error as URLError {
                 #expect(error.code == .cancelled)
             } catch {
@@ -175,7 +175,7 @@ struct ClientTests {
             #expect(cocoaError.isPropertyListError)
             #expect(cocoaError.code == CocoaError.Code.propertyListReadCorrupt)
         } else {
-            #expect(Bool(false), "Wrong error type thrown")
+            Issue.record("Wrong error type thrown")
         }
     }
 
