@@ -2,7 +2,7 @@
 
 import Foundation
 
-public class FakeHTTPURLResponse: HTTPURLResponse {
+public class FakeHTTPURLResponse: HTTPURLResponse, @unchecked Sendable {
     public init(
         status code: Int = 200,
         url: URL = URL(string: "http://127.0.0.1")!,

@@ -68,7 +68,7 @@ open class Session<CL: Client> {
     }
 }
 
-public class URLSessionDelegateHandler: NSObject, URLSessionTaskDelegate {
+public final class URLSessionDelegateHandler: NSObject, URLSessionTaskDelegate {
     public func urlSession(
         _ session: URLSession,
         task: URLSessionTask,

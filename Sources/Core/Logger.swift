@@ -8,6 +8,8 @@ import Foundation
 #if canImport(OSLog)
     @available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, visionOS 1.0, *)
     extension Logger {
-        static var `default` = Logger(subsystem: "io.diamir.Endpoints", category: "EndpointsSession")
+        static var `default`: Logger {
+            Logger(subsystem: "io.diamir.Endpoints", category: "EndpointsSession")
+        }
     }
 #endif

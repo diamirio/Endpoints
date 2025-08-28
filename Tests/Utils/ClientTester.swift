@@ -2,23 +2,18 @@
 
 import Endpoints
 import Foundation
-import XCTest
+import Testing
 
-class ClientTester<CL: Client> {
+// Helper struct for running API calls within tests.
+struct ClientTester<CL: Client> {
     var session: Session<CL>
-    let test: XCTestCase
 
-    convenience init(test: XCTestCase, client: CL) {
-        self.init(test: test, session: Session(with: client))
-    }
-
-    init(test: XCTestCase, session: Session<CL>) {
-        self.test = test
-        self.session = session
+    init(client: CL) {
+        self.session = Session(with: client)
         session.debug = true
     }
 
-    func test<C: Call>(
+    func performTest<C: Call>(
         call: C
     ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         try await session.dataTask(for: call)
