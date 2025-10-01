@@ -8,7 +8,7 @@ import Foundation
 /// request.
 public protocol DataParser: Sendable {
     /// The type that can be produced by `self`.
-    associatedtype OutputType
+    associatedtype OutputType: Sendable
 
     /// Converts a `Data` object with a specified encoding to `OutputType`.
     ///

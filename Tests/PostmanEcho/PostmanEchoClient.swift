@@ -3,10 +3,12 @@
 @testable import Endpoints
 import Foundation
 
-public class PostmanEchoClient: AnyClient {
+public struct PostmanEchoClient: Client {
+    public var client: Client
+    
     public init() {
         let url = URL(string: "https://postman-echo.com")!
-        super.init(baseURL: url)
+        client = AnyClient(baseURL: url)
     }
 
     struct MyCall: Call {

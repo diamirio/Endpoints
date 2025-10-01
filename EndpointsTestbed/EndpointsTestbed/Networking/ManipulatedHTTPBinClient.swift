@@ -6,7 +6,7 @@ struct ManipulatedHTTPBinClient: Client {
 
     init() {
         let url = URL(string: "https://httpbin.org/")!
-        self.client = DefaultClient(baseURL: url)
+        self.client = AnyClient(baseURL: url)
     }
 
     func encode(call: some Endpoints.Call) async throws -> URLRequest {

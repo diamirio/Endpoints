@@ -6,7 +6,7 @@ struct HTTPBinClient: Client {
 
     init() {
         let url = URL(string: "https://httpbin.org/")!
-        self.client = DefaultClient(baseURL: url)
+        self.client = AnyClient(baseURL: url)
     }
 
     struct GetStatusCode: Call {

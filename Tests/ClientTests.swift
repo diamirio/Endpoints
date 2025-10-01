@@ -220,14 +220,16 @@ struct ClientTests {
         let url = try #require(URL(string: "get?q=a"))
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
         let (_, response) = try await tester.performTest(call: c)
-        #expect(response.url == URL(string: url.relativeString, relativeTo: tester.session.client.baseURL)?.absoluteURL)
+        let expectedUrl = URL(string: url.relativeString, relativeTo: await tester.session.client.baseURL)?.absoluteURL
+        #expect(response.url == expectedUrl)
     }
 
     @Test func testRedirect() async throws {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
         let (_, response) = try await tester.performTest(call: c)
-        #expect(response.url == URL(string: "get", relativeTo: tester.session.client.baseURL)?.absoluteURL)
+        let expectedUrl = URL(string: "get", relativeTo: await tester.session.client.baseURL)?.absoluteURL
+        #expect(response.url == expectedUrl)
     }
 
     @Test func testNoResponseBody() async throws {

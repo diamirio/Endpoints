@@ -2,7 +2,7 @@
 
 import Foundation
 
-public struct DefaultClient: Client {
+public struct AnyClient: Client {
     /// To satisfy conformance only
     public var client: Client { self }
     

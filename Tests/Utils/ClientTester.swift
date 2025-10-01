@@ -5,12 +5,11 @@ import Foundation
 import Testing
 
 // Helper struct for running API calls within tests.
-struct ClientTester<CL: Client> {
+struct ClientTester<CL: Client>: Sendable {
     var session: Session<CL>
 
     init(client: CL) {
         self.session = Session(with: client)
-        session.debug = true
     }
 
     func performTest<C: Call>(

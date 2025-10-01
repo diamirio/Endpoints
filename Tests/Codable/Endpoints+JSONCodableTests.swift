@@ -127,8 +127,13 @@ extension EndpointsJSONCodableTests.Person {
     }
 }
 
-class DateCrashParser<T: Decodable>: JSONParser<T> {
-    override var jsonDecoder: JSONDecoder {
-        EndpointsJSONCodableTests.getDateCrashDecoder()
+
+struct DateCrashParser<T: Decodable>: ResponseParser {
+    public typealias OutputType = T
+    
+    let jsonDecoder = EndpointsJSONCodableTests.getDateCrashDecoder()
+    
+    func parse(data: Data, encoding: String.Encoding) throws -> T {
+        try jsonDecoder.decode(OutputType.self, from: data)
     }
 }

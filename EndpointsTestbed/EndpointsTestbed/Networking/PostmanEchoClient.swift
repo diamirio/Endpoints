@@ -6,7 +6,7 @@ struct PostmanEchoClient: Client {
 
     init() {
         let baseURL = URL(string: "https://postman-echo.com")!
-        self.client = DefaultClient(baseURL: baseURL)
+        self.client = AnyClient(baseURL: baseURL)
     }
 
     struct ExampleGetCall: Call {
