@@ -1,10 +1,12 @@
 import Endpoints
 import Foundation
 
-class HTTPBinClient: AnyClient {
-    public init() {
+struct HTTPBinClient: Client {
+    var client: Client
+
+    init() {
         let url = URL(string: "https://httpbin.org/")!
-        super.init(baseURL: url)
+        self.client = DefaultClient(baseURL: url)
     }
 
     struct GetStatusCode: Call {

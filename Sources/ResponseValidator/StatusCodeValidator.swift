@@ -3,7 +3,7 @@
 import Foundation
 
 /// A type validating the status code of `HTTPURLResponse`.
-public class StatusCodeValidator: ResponseValidator {
+public final class StatusCodeValidator: ResponseValidator {
     /// Checks if an HTTP status code is acceptable
     /// - returns: `true` if `code` is between 200 and 299.
     public func isAcceptableStatus(code: Int) -> Bool {

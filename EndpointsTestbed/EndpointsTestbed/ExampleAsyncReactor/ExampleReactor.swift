@@ -1,6 +1,7 @@
 import AsyncReactor
 import Endpoints
 import Foundation
+import Injection
 
 class ExampleReactor: AsyncReactor {
     enum Action {
@@ -14,6 +15,9 @@ class ExampleReactor: AsyncReactor {
     @Published
     private(set) var state = State()
 
+    @Inject
+    var postmanSession: Session<PostmanEchoClient>
+
     func action(_ action: Action) async {
         switch action {
         case .executeRequests:
@@ -23,15 +27,12 @@ class ExampleReactor: AsyncReactor {
 
     private func executeRequest() async {
         do {
-            let (body, response) = try await world.postmanSession.dataTask(
+            let (body, response) = try await postmanSession.dataTask(
                 for: PostmanEchoClient.ExampleGetCall()
             )
 
             guard response.statusCode == 200 else { return }
-
-            await MainActor.run {
-                state.text = body.url
-            }
+            state.text = body.url
         } catch {
             guard let error = error as? EndpointsError else { return }
             print(error.response?.statusCode ?? "")

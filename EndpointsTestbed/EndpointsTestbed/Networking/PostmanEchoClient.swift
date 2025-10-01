@@ -1,10 +1,12 @@
 import Endpoints
 import Foundation
 
-public class PostmanEchoClient: AnyClient {
-    public init() {
-        let url = URL(string: "https://postman-echo.com")!
-        super.init(baseURL: url)
+struct PostmanEchoClient: Client {
+    let client: Client
+
+    init() {
+        let baseURL = URL(string: "https://postman-echo.com")!
+        self.client = DefaultClient(baseURL: baseURL)
     }
 
     struct ExampleGetCall: Call {

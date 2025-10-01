@@ -2,13 +2,12 @@
 
 import Foundation
 #if canImport(OSLog)
-    import OSLog
+import OSLog
 #endif
 
-open class Session<CL: Client> {
-    public var debug = false
-
-    public var urlSession: URLSession
+public actor Session<CL: Client> {
+    public let debug = false
+    public let urlSession: URLSession
     public let client: CL
 
     public init(
@@ -24,7 +23,9 @@ open class Session<CL: Client> {
     }
 
     @discardableResult
-    open func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
+    public func dataTask<C: Call>(
+        for call: C
+    ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
 
         let (data, response) = try await urlSession.data(for: urlRequest)

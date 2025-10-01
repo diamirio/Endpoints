@@ -39,7 +39,7 @@ import Foundation
 /// request before using its `Parser` to parse it.
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
-public protocol Call: ResponseValidator {
+public protocol Call: ResponseValidator, Sendable {
     associatedtype Parser: ResponseParser
 
     var request: URLRequestEncodable { get }

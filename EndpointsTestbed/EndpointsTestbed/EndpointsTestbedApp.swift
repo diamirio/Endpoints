@@ -3,6 +3,10 @@ import SwiftUI
 
 @main
 struct EndpointsTestbedApp: App {
+    init() {
+        DI.register()
+    }
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {

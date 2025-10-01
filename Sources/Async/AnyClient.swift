@@ -2,7 +2,10 @@
 
 import Foundation
 
-open class AnyClient: Client {
+public struct DefaultClient: Client {
+    /// To satisfy conformance only
+    public var client: Client { self }
+    
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
 
@@ -14,7 +17,7 @@ open class AnyClient: Client {
         self.baseURL = baseURL
     }
 
-    open func encode(
+    public func encode(
         call: some Call
     ) async throws -> URLRequest {
         var urlRequest = call.request.urlRequest
@@ -26,7 +29,7 @@ open class AnyClient: Client {
         return urlRequest
     }
 
-    open func parse<C>(
+    public func parse<C>(
         response: HTTPURLResponse?,
         data: Data?,
         for call: C
@@ -38,7 +41,7 @@ open class AnyClient: Client {
         return try C.Parser().parse(response: response, data: data)
     }
 
-    open func validate(
+    public func validate(
         response: HTTPURLResponse?,
         data: Data?
     ) async throws {
