@@ -8,11 +8,11 @@ public struct JSONParser<T: Decodable>: ResponseParser {
     public typealias OutputType = T
 
     public var jsonDecoder: JSONDecoder
-    
+
     public init() {
         self.jsonDecoder = JSONDecoder()
     }
-    
+
     public func parse(data: Data, encoding _: String.Encoding) throws -> OutputType {
         try jsonDecoder.decode(OutputType.self, from: data)
     }

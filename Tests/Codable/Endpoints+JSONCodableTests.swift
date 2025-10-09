@@ -127,12 +127,11 @@ extension EndpointsJSONCodableTests.Person {
     }
 }
 
-
 struct DateCrashParser<T: Decodable>: ResponseParser {
-    public typealias OutputType = T
-    
+    typealias OutputType = T
+
     let jsonDecoder = EndpointsJSONCodableTests.getDateCrashDecoder()
-    
+
     func parse(data: Data, encoding: String.Encoding) throws -> T {
         try jsonDecoder.decode(OutputType.self, from: data)
     }

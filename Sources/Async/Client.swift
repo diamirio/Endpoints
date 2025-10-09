@@ -6,10 +6,10 @@ import Foundation
 /// A basic implementation is provided by `AnyClient`.
 public protocol Client: ResponseValidator, Sendable {
     var client: Client { get }
-    
+
     /// Converts a `Call` created for this client's Web API
     /// into a `URLRequest`.
-    func encode<C: Call>(call: C) async throws -> URLRequest
+    func encode(call: some Call) async throws -> URLRequest
 
     /// Converts the `URLSession`s result for a `Call` to
     /// this client's Web API into the expected output type.
@@ -25,7 +25,7 @@ public protocol Client: ResponseValidator, Sendable {
 public extension Client {
     /// Converts a `Call` created for this client's Web API
     /// into a `URLRequest`.
-    func encode<C: Call>(call: C) async throws -> URLRequest {
+    func encode(call: some Call) async throws -> URLRequest {
         try await client.encode(call: call)
     }
 
@@ -40,7 +40,7 @@ public extension Client {
     ) async throws -> C.Parser.OutputType {
         try await client.parse(response: response, data: data, for: call)
     }
-    
+
     func validate(
         response: HTTPURLResponse?,
         data: Data?

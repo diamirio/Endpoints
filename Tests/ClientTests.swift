@@ -11,7 +11,7 @@ struct ClientTests {
         self.tester = ClientTester(client: AnyClient(baseURL: baseURL))
     }
 
-    @Test func testStatusError() async throws {
+    @Test func statusError() async throws {
         do {
             let call = AnyCall<DataResponseParser>(Request(.get, "status/400"))
             _ = try await tester.performTest(call: call)
@@ -23,14 +23,14 @@ struct ClientTests {
         }
     }
 
-    @Test func testGetData() async throws {
+    @Test func getData() async throws {
         let call = AnyCall<DataResponseParser>(Request(.get, "get"))
         let (_, response) = try await tester.performTest(call: call)
         #expect(response.statusCode == 200)
     }
 
     @MainActor
-    @Test func testGetDataWithCancellation() async throws {
+    @Test func getDataWithCancellation() async throws {
         let task = Task {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
@@ -50,7 +50,7 @@ struct ClientTests {
     }
 
     @MainActor
-    @Test func testGetDataWithCancellationWhenTaskIsNotStarted() async throws {
+    @Test func getDataWithCancellationWhenTaskIsNotStarted() async throws {
         let task = Task {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
@@ -67,7 +67,7 @@ struct ClientTests {
         _ = await task.value
     }
 
-    @Test func testPostRawString() async throws {
+    @Test func postRawString() async throws {
         let requestBody = "body"
         let call = AnyCall<DictionaryParser<String, Any>>(Request(
             .post,
@@ -81,7 +81,7 @@ struct ClientTests {
         #expect(headers["Content-Type"] == "raw")
     }
 
-    @Test func testPostString() async throws {
+    @Test func postString() async throws {
         let requestBody = "key=value"
         let call = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: requestBody))
         let (body, _) = try await tester.performTest(call: call)
@@ -90,7 +90,7 @@ struct ClientTests {
         #expect(form["key"] == "value")
     }
 
-    @Test func testPostFormEncodedBody() async throws {
+    @Test func postFormEncodedBody() async throws {
         let params = ["key": "&=?value+*-:_.😀"]
         let requestBody = FormEncodedBody(parameters: params)
         let call = AnyCall<DictionaryParser<String, Any>>(Request(.post, "post", body: requestBody))
@@ -103,14 +103,14 @@ struct ClientTests {
         #expect(headers["Content-Type"] == "application/x-www-form-urlencoded")
     }
 
-    @Test func testPostJSONBody() async throws {
+    @Test func postJSONBody() async throws {
         let params = ["key": "value"]
         let body = try JSONEncodedBody(jsonObject: params)
         let json = try await _testPostJSONBody(body: body)
         #expect(json == params)
     }
 
-    @Test func testPostJSONBodyEncodable() async throws {
+    @Test func postJSONBodyEncodable() async throws {
         let params = ["key": "value"]
         let json = try await _testPostJSONBody(body: JSONEncodedBody(encodable: params))
         #expect(json == params)
@@ -128,14 +128,14 @@ struct ClientTests {
         return json
     }
 
-    @Test func testGetString() async throws {
+    @Test func getString() async throws {
         let c = AnyCall<StringParser>(Request(.get, "get", query: ["inputParam": "inputParamValue"]))
         let (body, response) = try await tester.performTest(call: c)
         #expect(response.statusCode == 200)
         #expect(body.contains("inputParamValue"))
     }
 
-    @Test func testGetJSONDictionary() async throws {
+    @Test func getJSONDictionary() async throws {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "get", query: ["inputParam": "inputParamValue"]))
         let (body, _) = try await tester.performTest(call: c)
 
@@ -146,7 +146,7 @@ struct ClientTests {
         #expect(param == "inputParamValue")
     }
 
-    @Test func testParseJSONArray() throws {
+    @Test func parseJSONArray() throws {
         let inputArray = ["one", "two", "three"]
         let arrayData = try JSONSerialization.data(withJSONObject: inputArray)
 
@@ -155,7 +155,7 @@ struct ClientTests {
         #expect(inputArray == parsedObject)
     }
 
-    @Test func testFailStringParsing() throws {
+    @Test func failStringParsing() throws {
         let input = "😜 test"
         let data = try #require(input.data(using: .utf8))
 
@@ -164,7 +164,7 @@ struct ClientTests {
         }
     }
 
-    @Test func testFailJSONParsing() async throws {
+    @Test func failJSONParsing() async throws {
         let c = AnyCall<DictionaryParser<String, Any>>(Request(.get, "xml"))
 
         let error = await #expect(throws: EndpointsError.self) {
@@ -179,7 +179,7 @@ struct ClientTests {
         }
     }
 
-    @Test func testTypedRequest() async throws {
+    @Test func typedRequest() async throws {
         let value = "value"
         let c = GetOutput(value: value)
         let (body, _) = try await tester.performTest(call: c)
@@ -190,14 +190,14 @@ struct ClientTests {
         #expect(param == value)
     }
 
-    @Test func testBasicAuth() async throws {
+    @Test func basicAuth() async throws {
         let auth = BasicAuthorization(user: "a", password: "a")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
         let (_, response) = try await tester.performTest(call: c)
         #expect(response.statusCode == 200)
     }
 
-    @Test func testBasicAuthFail() async throws {
+    @Test func basicAuthFail() async throws {
         let auth = BasicAuthorization(user: "a", password: "b")
         let c = AnyCall<DataResponseParser>(Request(.get, "basic-auth/a/a", header: auth.header))
 
@@ -209,30 +209,30 @@ struct ClientTests {
         #expect(response.statusCode == 401)
     }
 
-    @Test func testSimpleAbsoluteURLCall() async throws {
+    @Test func simpleAbsoluteURLCall() async throws {
         let url = try #require(URL(string: "https://httpbin.org/get?q=a"))
         let c = AnyCall<DataResponseParser>(url)
         let (_, response) = try await tester.performTest(call: c)
         #expect(response.url == url)
     }
 
-    @Test func testSimpleRelativeURLRequestCall() async throws {
+    @Test func simpleRelativeURLRequestCall() async throws {
         let url = try #require(URL(string: "get?q=a"))
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
         let (_, response) = try await tester.performTest(call: c)
-        let expectedUrl = URL(string: url.relativeString, relativeTo: await tester.session.client.baseURL)?.absoluteURL
+        let expectedUrl = await URL(string: url.relativeString, relativeTo: tester.session.client.baseURL)?.absoluteURL
         #expect(response.url == expectedUrl)
     }
 
-    @Test func testRedirect() async throws {
+    @Test func redirect() async throws {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
         let (_, response) = try await tester.performTest(call: c)
-        let expectedUrl = URL(string: "get", relativeTo: await tester.session.client.baseURL)?.absoluteURL
+        let expectedUrl = await URL(string: "get", relativeTo: tester.session.client.baseURL)?.absoluteURL
         #expect(response.url == expectedUrl)
     }
 
-    @Test func testNoResponseBody() async throws {
+    @Test func noResponseBody() async throws {
         let c = AnyCall<DataResponseParser>(Request(.get, "status/200"))
         let (_, response) = try await tester.performTest(call: c)
         #expect(response.statusCode == 200)

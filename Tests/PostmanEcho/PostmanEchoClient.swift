@@ -5,10 +5,10 @@ import Foundation
 
 public struct PostmanEchoClient: Client {
     public var client: Client
-    
+
     public init() {
         let url = URL(string: "https://postman-echo.com")!
-        client = AnyClient(baseURL: url)
+        self.client = AnyClient(baseURL: url)
     }
 
     struct MyCall: Call {

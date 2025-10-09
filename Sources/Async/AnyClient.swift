@@ -5,7 +5,7 @@ import Foundation
 public struct AnyClient: Client {
     /// To satisfy conformance only
     public var client: Client { self }
-    
+
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
 

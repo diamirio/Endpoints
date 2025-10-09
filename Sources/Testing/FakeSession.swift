@@ -5,7 +5,7 @@ import Foundation
     import OSLog
 #endif
 //
-//public final class FakeSession<CL: Client>: Session {
+// public final class FakeSession<CL: Client>: Session {
 //    public let client: CL
 //    public let debug: Bool = false
 //    public let resultProvider: FakeResultProvider
@@ -58,4 +58,4 @@ import Foundation
 //            throw EndpointsError(error: error, response: response)
 //        }
 //    }
-//}
+// }
