@@ -11,6 +11,32 @@ Endpoints makes it easy to write a type-safe network abstraction layer for any W
 
 It requires Swift 6.2+, makes heavy use of generics and protocols (with protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs). Built for modern Swift concurrency with async/await and actor support.
 
+**Key Features:**
+- **Type-safe API**: Strongly typed requests and responses
+- **Swift 6.2+**: Full support for Swift's strict concurrency model
+- **Actor-based Session**: Thread-safe networking with `Session` as an actor
+- **Sendable conformance**: All core protocols require `Sendable` conformance for safe concurrent access
+- **Async/await**: Native async/await support throughout the API
+- **Flexible parsing**: Multiple built-in response parsers with support for custom parsers
+- **JSON Codable**: First-class support for `Codable` types
+
+## Requirements
+
+* Swift 6.2+
+* iOS 13+
+* tvOS 12+
+* macOS 10.15+
+* watchOS 6+
+* visionOS 1+
+
+## Installation
+
+**Swift Package Manager:**
+
+```swift
+.package(url: "https://github.com/diamirio/Endpoints.git", .upToNextMajor(from: "3.0.0"))
+```
+
 ## Usage
 
 ### Basics
@@ -24,7 +50,8 @@ let client = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
 // A call encapsulates the request that is sent to the server and the type that is expected in the response.
 let call = AnyCall<DataResponseParser>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
 
-// A session wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error).
+// A session is an actor that wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error).
+// Session is an actor, ensuring thread-safe access to URLSession.
 let session = Session(with: client)
 
 // start call
@@ -84,7 +111,8 @@ struct GiphyCall: Call {
 }
 
 // Custom parser with configured decoder
-struct CustomJSONParser<T: Decodable>: ResponseParser {
+// Note: T must be Sendable for Swift 6.2+ concurrency safety
+struct CustomJSONParser<T: Decodable & Sendable>: ResponseParser {
     typealias OutputType = T
 
     let jsonDecoder: JSONDecoder
@@ -113,14 +141,16 @@ Every encodable is able to provide a `JSONEncoder()` to encode itself via the `t
 
 ### Dedicated Calls
 
-`AnyCall` is the default implementation of the `Call` protocol, which you can use as-is. But if you want to make your networking layer really type-safe you'll want to create a dedicated `Call` type for each operation of your Web-API:
+`AnyCall` is the default implementation of the `Call` protocol, which you can use as-is. But if you want to make your networking layer really type-safe you'll want to create a dedicated `Call` type for each operation of your Web-API.
+
+**Note:** All `Call` types must conform to `Sendable` for Swift 6.2+ concurrency safety. Use value types (structs) with sendable properties:
 
 ```swift
 struct GetRandomImage: Call {
     typealias Parser = DictionaryParser<String, Any>
-    
+
     var tag: String
-    
+
     var request: URLRequestEncodable {
         return Request(.get, "gifs/random", query: [ "tag": tag, "api_key": "dc6zaTOxFJmzC" ])
     }
@@ -136,7 +166,9 @@ A client is responsible for handling things that are common for all operations o
 
 `AnyClient` is the default implementation of the `Client` protocol and can be used as-is or as a starting point for your own dedicated client.
 
-You'll usually need to create your own dedicated client that implements the `Client` protocol and delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here:
+You'll usually need to create your own dedicated client that implements the `Client` protocol and delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here.
+
+**Note:** All `Client` types must conform to `Sendable`. Use structs with sendable properties to ensure thread-safety:
 
 ```swift
 struct GiphyClient: Client {
@@ -219,23 +251,6 @@ let (body, response) = try await session.dataTask(for: call)
 print("image url: \(body.data.url)")
 ```
 
-## Installation
-
-**Swift Package Manager:**
-
-```swift
-.package(url: "https://github.com/diamirio/Endpoints.git", .upToNextMajor(from: "3.0.0"))
-```
-
 ## Example
 
-Example implementation can be found [here](./EndpointsTestbed).
-
-## Requirements
-
-* Swift 6.2+
-* iOS 13+
-* tvOS 12+
-* macOS 10.15+
-* watchOS 6+
-* visionOS 1+
+Example implementation can be found [here](https://github.com/diamirio/Endpoints-Example).
