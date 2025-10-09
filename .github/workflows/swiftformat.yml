@@ -12,6 +12,8 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '26.0'
+    - name: Install SwiftFromat
+      run: brew install swiftformat
     - name: Check SwiftFromat
-      run: swift run swiftformat . --lint
+      run: swiftformat . --lint
 
