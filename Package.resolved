@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/diamirio/AsyncReactor",
       "state" : {
-        "revision" : "23292274e53eedae5c2198536a3a476355fe59d4",
-        "version" : "1.2.0"
+        "revision" : "e3fde7f9c1fb4db349039796c5c138571c71dadd",
+        "version" : "1.2.1"
       }
     },
     {

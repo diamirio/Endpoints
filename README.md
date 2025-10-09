@@ -9,7 +9,7 @@
 
 Endpoints makes it easy to write a type-safe network abstraction layer for any Web-API.
 
-It requires Swift 5, makes heavy use of generics (and generalized existentials) and protocols (and protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs).
+It requires Swift 6.2+, makes heavy use of generics and protocols (with protocol extensions). It also encourages a clean separation of concerns and the use of value types (i.e. structs). Built for modern Swift concurrency with async/await and actor support.
 
 ## Usage
 
@@ -24,11 +24,8 @@ let client = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
 // A call encapsulates the request that is sent to the server and the type that is expected in the response.
 let call = AnyCall<DataResponseParser>(Request(.get, "gifs/random", query: ["tag": "cat", "api_key": "dc6zaTOxFJmzC"]))
 
-// A session wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error) in a completion block.
+// A session wraps `URLSession` and allows you to start the request for the call and get the parsed response object (or an error).
 let session = Session(with: client)
-
-// enable debug-mode to log network traffic
-session.debug = true
 
 // start call
 let (body, httpResponse) = try await session.dataTask(for: call)
@@ -76,8 +73,8 @@ Look up the documentation in the code for further explanations of the types.
 
 ##### Decoding
 
-The `ResponseParser` responsible for handling decodable types is the `JSONParser`.  
-The `JSONParser` uses the default `JSONDecoder()`, however, the `JSONParser` can be subclassed, and the `jsonDecoder` can be overwritten with your configured `JSONDecoder`.
+The `ResponseParser` responsible for handling decodable types is the `JSONParser`.
+The `JSONParser` uses the default `JSONDecoder()` by default, but you can customize it by creating a custom parser with a configured decoder.
 
 ```swift
 // Decode a type using the default decoder
@@ -86,18 +83,26 @@ struct GiphyCall: Call {
     ...
 }
 
-// custom decoder
+// Custom parser with configured decoder
+struct CustomJSONParser<T: Decodable>: ResponseParser {
+    typealias OutputType = T
 
-struct GiphyParser<T>: JSONParser<T> {
-    override public var jsonDecoder: JSONDecoder {
+    let jsonDecoder: JSONDecoder
+
+    init() {
         let decoder = JSONDecoder()
-        // configure...
-        return decoder
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self.jsonDecoder = decoder
+    }
+
+    func parse(data: Data, encoding: String.Encoding) throws -> T {
+        try jsonDecoder.decode(T.self, from: data)
     }
 }
 
 struct GiphyCall: Call {
-    typealias Parser = GiphyParser<GiphyGif>
+    typealias Parser = CustomJSONParser<GiphyGif>
     ...
 }
 ```
@@ -131,29 +136,33 @@ A client is responsible for handling things that are common for all operations o
 
 `AnyClient` is the default implementation of the `Client` protocol and can be used as-is or as a starting point for your own dedicated client.
 
-You'll usually need to create your own dedicated client that either subclasses `AnyClient` or delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here:
+You'll usually need to create your own dedicated client that implements the `Client` protocol and delegates the encoding of requests and parsing of responses to an `AnyClient` instance, as done here:
 
 ```swift
-class GiphyClient: Client {
-    private let anyClient = AnyClient(baseURL: URL(string: "https://api.giphy.com/v1/")!)
-    
+struct GiphyClient: Client {
+    var client: Client
     var apiKey = "dc6zaTOxFJmzC"
-    
-    override func encode<C>(call: C) async throws -> URLRequest {
-        var request = anyClient.encode(call: call)
-        
+
+    init() {
+        let url = URL(string: "https://api.giphy.com/v1/")!
+        self.client = AnyClient(baseURL: url)
+    }
+
+    func encode(call: some Call) async throws -> URLRequest {
+        var request = try await client.encode(call: call)
+
         // Append the API key to every request
-        request.append(query: ["api_key": apiKey]) 
-        
+        request.append(query: ["api_key": apiKey])
+
         return request
     }
-    
-    override func parse<C>(response: HTTPURLResponse?, data: Data?, for call: C) async throws -> C.Parser.OutputType
+
+    func parse<C>(response: HTTPURLResponse?, data: Data?, for call: C) async throws -> C.Parser.OutputType
         where C: Call {
         do {
             // Use `AnyClient` to parse the response
             // If this fails, try to read error details from response body
-            return try await anyClient.parse(sessionTaskResult: result, for: call)
+            return try await client.parse(response: response, data: data, for: call)
         } catch {
             // See if the backend sent detailed error information
             guard
@@ -161,12 +170,12 @@ class GiphyClient: Client {
                 let data,
                 let errorDict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
                 let meta = errorDict?["meta"] as? [String: Any],
-                let errorCode = meta["error_code"] as? String 
+                let errorCode = meta["error_code"] as? String
             else {
                 // no error info from backend -> rethrow default error
                 throw error
             }
-            
+
             // Propagate error that contains errorCode as reason from backend
             throw StatusCodeError.unacceptable(code: response.statusCode, reason: errorCode)
         }
@@ -214,8 +223,8 @@ print("image url: \(body.data.url)")
 
 **Swift Package Manager:**
 
-```bash
-.package(url: "https://github.com/tailoredmedia/Endpoints.git", .upToNextMajor(from: "3.0.0"))
+```swift
+.package(url: "https://github.com/diamirio/Endpoints.git", .upToNextMajor(from: "3.0.0"))
 ```
 
 ## Example
@@ -224,8 +233,9 @@ Example implementation can be found [here](./EndpointsTestbed).
 
 ## Requirements
 
-* Swift 5
-* iOS 13
-* tvOS 12
-* macOS 10.15
-* watchOS 6
+* Swift 6.2+
+* iOS 13+
+* tvOS 12+
+* macOS 10.15+
+* watchOS 6+
+* visionOS 1+
