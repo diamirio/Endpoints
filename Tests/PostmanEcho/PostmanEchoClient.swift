@@ -3,13 +3,8 @@
 @testable import Endpoints
 import Foundation
 
-public struct PostmanEchoClient: Client {
-    public var client: Client
-
-    public init() {
-        let url = URL(string: "https://postman-echo.com")!
-        self.client = AnyClient(baseURL: url)
-    }
+public struct PostmanEchoClient {
+    public init() {}
 
     struct MyCall: Call {
         typealias Parser = JSONParser<PostmanEcho>
