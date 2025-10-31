@@ -2,7 +2,7 @@
 
 import Foundation
 
-public struct AnyClient: Client {
+public struct DefaultClient: Client {
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
     public let baseURL: URL
 

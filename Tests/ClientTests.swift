@@ -4,11 +4,11 @@ import Testing
 
 @Suite("Client Tests")
 struct ClientTests {
-    let tester: ClientTester<AnyClient>
+    let tester: ClientTester<DefaultClient>
 
     init() {
         let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
-        self.tester = ClientTester(client: AnyClient(baseURL: baseURL))
+        self.tester = ClientTester(client: DefaultClient(baseURL: baseURL))
     }
 
     @Test func statusError() async throws {
