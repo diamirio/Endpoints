@@ -8,7 +8,7 @@ struct ClientTests {
 
     init() {
         let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
-        self.tester = ClientTester(client: DefaultClient(baseURL: baseURL))
+        self.tester = ClientTester(client: DefaultClient(url: baseURL))
     }
 
     @Test func statusError() async throws {
@@ -220,7 +220,7 @@ struct ClientTests {
         let url = try #require(URL(string: "get?q=a"))
         let c = AnyCall<DataResponseParser>(URLRequest(url: url))
         let (_, response) = try await tester.performTest(call: c)
-        let expectedUrl = await URL(string: url.relativeString, relativeTo: tester.session.client.baseURL)?.absoluteURL
+        let expectedUrl = await URL(string: url.relativeString, relativeTo: tester.session.client.url)?.absoluteURL
         #expect(response.url == expectedUrl)
     }
 
@@ -228,7 +228,7 @@ struct ClientTests {
         let req = Request(.get, "relative-redirect/2", header: ["x": "y"])
         let c = AnyCall<DataResponseParser>(req)
         let (_, response) = try await tester.performTest(call: c)
-        let expectedUrl = await URL(string: "get", relativeTo: tester.session.client.baseURL)?.absoluteURL
+        let expectedUrl = await URL(string: "get", relativeTo: tester.session.client.url)?.absoluteURL
         #expect(response.url == expectedUrl)
     }
 

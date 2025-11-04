@@ -91,7 +91,7 @@ class MultipartTests: XCTestCase {
             let multipartBody: MultipartBody
         }
 
-        let client = DefaultClient(baseURL: URL(string: "https://httpbin.org")!)
+        let client = DefaultClient(url: URL(string: "https://httpbin.org")!)
         let session = Session(with: client)
         let call = PostCall(multipartBody: multipartBody)
 

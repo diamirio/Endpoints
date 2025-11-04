@@ -7,7 +7,7 @@ import Foundation
 public struct JSONParser<T: Decodable>: ResponseParser {
     public typealias OutputType = T
 
-    public var jsonDecoder: JSONDecoder
+    public let jsonDecoder: JSONDecoder
 
     public init() {
         self.jsonDecoder = JSONDecoder()

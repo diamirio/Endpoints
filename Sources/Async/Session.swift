@@ -6,9 +6,9 @@ import Foundation
 #endif
 
 public actor Session<CL: Client> {
-    public let debug = false
-    public let urlSession: URLSession
     public let client: CL
+    public let urlSession: URLSession
+    public let debug: Bool
 
     public init(
         with client: CL,
@@ -16,10 +16,12 @@ public actor Session<CL: Client> {
             configuration: .default,
             delegate: URLSessionDelegateHandler(),
             delegateQueue: nil
-        )
+        ),
+        debug: Bool = false
     ) {
         self.client = client
         self.urlSession = urlSession
+        self.debug = debug
     }
 
     @discardableResult

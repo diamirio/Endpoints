@@ -40,7 +40,7 @@ class RequestTests: XCTestCase {
         req.url = absoluteURL
         let c = AnyCall<DataResponseParser>(req)
 
-        let urlReq = try await DefaultClient(baseURL: URL(string: "http://google.com")!).encode(call: c)
+        let urlReq = try await DefaultClient(url: URL(string: "http://google.com")!).encode(call: c)
 
         XCTAssertEqual(urlReq.url, absoluteURL)
         XCTAssertEqual(urlReq.httpBody, body.requestData)
@@ -101,7 +101,7 @@ extension RequestTests {
     ) async throws -> URLRequest {
         let request = Request(.get, path, query: queryParams)
         let call = AnyCall<DataResponseParser>(request)
-        let client = DefaultClient(baseURL: URL(string: baseUrl)!)
+        let client = DefaultClient(url: URL(string: baseUrl)!)
         let urlRequest = try await client.encode(call: call)
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
