@@ -11,6 +11,8 @@ public struct JSONParser<T: Decodable>: ResponseParser {
 
     public init() {
         self.jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .iso8601
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
     public func parse(data: Data, encoding _: String.Encoding) throws -> OutputType {
