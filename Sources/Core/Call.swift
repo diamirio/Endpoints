@@ -50,5 +50,5 @@ public extension Call {
     func validate(
         response _: HTTPURLResponse?,
         data _: Data?
-    ) throws { /* no validation by default */ }
+    ) async throws { /* no validation by default */ }
 }

@@ -14,7 +14,7 @@ public final class StatusCodeValidator: ResponseValidator {
     public func validate(
         response: HTTPURLResponse?,
         data _: Data?
-    ) throws {
+    ) async throws {
         if let code = response?.statusCode,
            !isAcceptableStatus(code: code) {
             throw StatusCodeError.unacceptable(code: code, reason: nil)

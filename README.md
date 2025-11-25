@@ -339,7 +339,7 @@ struct MyCall: Call {
     }
 
     // Custom validation for this specific call
-    func validate(response: HTTPURLResponse?, data: Data?) throws {
+    func validate(response: HTTPURLResponse?, data: Data?) async throws {
         guard let response = response else { return }
 
         // Require a specific header for this call
