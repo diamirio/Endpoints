@@ -43,7 +43,7 @@ class EndpointsJSONCodableTests: XCTestCase {
         }
     }
 
-    func testUsingCustomDecoderAndAnyClient() async throws {
+    func testUsingCustomDecoderAndDefaultClient() async throws {
         let client = DefaultClient(url: URL(string: "www.tailored-apps.com")!)
         let call = PersonCall()
 

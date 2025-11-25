@@ -35,7 +35,7 @@ import Foundation
 ///
 /// Adopts `ResponseValidator`, so you can override `validate` if
 /// you want to validate the response for a specific `Call` type.
-/// `AnyClient` will use this method to validate the response of the calls
+/// `Session` will use this method to validate the response of the calls
 /// request before using its `Parser` to parse it.
 ///
 /// - seealso: `Client`, `Session`, `DataParser`, `Request`
