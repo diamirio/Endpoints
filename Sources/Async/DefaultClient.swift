@@ -42,6 +42,6 @@ public struct DefaultClient: Client {
         response: HTTPURLResponse?,
         data: Data?
     ) async throws {
-        try statusCodeValidator.validate(response: response, data: data)
+        try await statusCodeValidator.validate(response: response, data: data)
     }
 }
