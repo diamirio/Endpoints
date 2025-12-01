@@ -4,13 +4,15 @@ import Foundation
 
 /// A `JSONParser` is a `DecodableParser` that works with JSON representation.
 /// It provides aa `jsonDecoder` to decode a response.
-open class JSONParser<T: Decodable>: ResponseParser {
+public struct JSONParser<T: Decodable>: ResponseParser {
     public typealias OutputType = T
 
-    public required init() {}
+    public let jsonDecoder: JSONDecoder
 
-    open var jsonDecoder: JSONDecoder {
-        JSONDecoder()
+    public init() {
+        self.jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .iso8601
+        jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
     public func parse(data: Data, encoding _: String.Encoding) throws -> OutputType {

@@ -6,7 +6,7 @@ import Foundation
 public enum EndpointsParsingError: LocalizedError {
     /// `Data` is missing.
     ///
-    /// Thrown by `AnyClient.parse` when the response data is `nil`.
+    /// Thrown by `DefaultClient.parse` when the response data is `nil`.
     case missingData
 
     /// `Data` is in an invalid format.

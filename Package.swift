@@ -1,4 +1,4 @@
-// swift-tools-version:6.1
+// swift-tools-version:6.2
 
 import PackageDescription
 
@@ -17,9 +17,7 @@ let package = Package(
             targets: ["Endpoints"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.50.4")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Endpoints",

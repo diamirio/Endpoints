@@ -8,7 +8,7 @@ import Foundation
 ///
 /// Adopted by `Data` and `String`.
 /// - seealso: `FormEncodedBody`, `JSONEncodedBody`.
-public protocol Body {
+public protocol Body: Sendable {
     /// Returns HTTP Header parameters required for `self`, if any.
     ///
     /// This is usally a "Content-Type" header like "application/json" for a

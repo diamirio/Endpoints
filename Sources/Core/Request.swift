@@ -48,16 +48,18 @@ public struct Request: URLRequestEncodable {
     }
 }
 
-public extension URL {
+extension URL {
     /// `true` if `self` has no scheme.
     ///
-    /// - note: Used by `AnyClient.encode` to determine if a `URLRequest` should be
+    /// - note: Used by `DefaultClient.encode` to determine if a `URLRequest` should be
     /// encoded using `self` alone (when `false`) or in combination with
-    /// its `baseURL` (when `true`).
+    /// its base URL (when `true`).
     var isRelative: Bool {
         scheme == nil
     }
+}
 
+public extension URL {
     /// Creates a relative URL with a given `path` and `query` Dictionary.
     init(path: String?, query: Parameters?) {
         var components = URLComponents()

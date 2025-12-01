@@ -5,7 +5,7 @@ import Foundation
 /// A type that can transform itself into an `URLRequest`.
 ///
 /// This protocol is adopted by `Request`, `URLRequest`, `URL` and `Call`.
-public protocol URLRequestEncodable: CustomDebugStringConvertible {
+public protocol URLRequestEncodable: CustomDebugStringConvertible, Sendable {
     /// Returns an `URLRequest` configured with the data encapsulated by `self`.
     var urlRequest: URLRequest { get }
 }

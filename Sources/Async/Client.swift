@@ -3,11 +3,11 @@
 import Foundation
 
 /// A type responsible for encoding and parsing all calls for a given Web API.
-/// A basic implementation is provided by `AnyClient`.
-public protocol Client: ResponseValidator {
+/// A basic implementation is provided by `DefaultClient`.
+public protocol Client: ResponseValidator, Sendable {
     /// Converts a `Call` created for this client's Web API
     /// into a `URLRequest`.
-    func encode<C: Call>(call: C) async throws -> URLRequest
+    func encode(call: some Call) async throws -> URLRequest
 
     /// Converts the `URLSession`s result for a `Call` to
     /// this client's Web API into the expected output type.

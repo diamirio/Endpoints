@@ -13,7 +13,7 @@ class EndpointsJSONCodableTests: XCTestCase {
     // this test case is relevant, as there is a difference between using [City].parse
     // and parse on the same type, but with the heavy generics use of Endpoints
     func testDecodingArrayViaResponse() async throws {
-        let client = AnyClient(baseURL: URL(string: "www.tailored-apps.com")!)
+        let client = DefaultClient(url: URL(string: "www.tailored-apps.com")!)
         let call = CitiesCall()
 
         let cities = try await client.parse(
@@ -43,8 +43,8 @@ class EndpointsJSONCodableTests: XCTestCase {
         }
     }
 
-    func testUsingCustomDecoderAndAnyClient() async throws {
-        let client = AnyClient(baseURL: URL(string: "www.tailored-apps.com")!)
+    func testUsingCustomDecoderAndDefaultClient() async throws {
+        let client = DefaultClient(url: URL(string: "www.tailored-apps.com")!)
         let call = PersonCall()
 
         do {
@@ -127,8 +127,12 @@ extension EndpointsJSONCodableTests.Person {
     }
 }
 
-class DateCrashParser<T: Decodable>: JSONParser<T> {
-    override var jsonDecoder: JSONDecoder {
-        EndpointsJSONCodableTests.getDateCrashDecoder()
+struct DateCrashParser<T: Decodable>: ResponseParser {
+    typealias OutputType = T
+
+    let jsonDecoder = EndpointsJSONCodableTests.getDateCrashDecoder()
+
+    func parse(data: Data, encoding: String.Encoding) throws -> T {
+        try jsonDecoder.decode(OutputType.self, from: data)
     }
 }

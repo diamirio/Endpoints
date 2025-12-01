@@ -5,11 +5,10 @@ import Foundation
     import OSLog
 #endif
 
-open class Session<CL: Client> {
-    public var debug = false
-
-    public var urlSession: URLSession
+public actor Session<CL: Client> {
     public let client: CL
+    public let urlSession: URLSession
+    public let debug: Bool
 
     public init(
         with client: CL,
@@ -17,14 +16,18 @@ open class Session<CL: Client> {
             configuration: .default,
             delegate: URLSessionDelegateHandler(),
             delegateQueue: nil
-        )
+        ),
+        debug: Bool = false
     ) {
         self.client = client
         self.urlSession = urlSession
+        self.debug = debug
     }
 
     @discardableResult
-    open func dataTask<C: Call>(for call: C) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
+    public func dataTask<C: Call>(
+        for call: C
+    ) async throws -> (C.Parser.OutputType, HTTPURLResponse) {
         let urlRequest = try await client.encode(call: call)
 
         let (data, response) = try await urlSession.data(for: urlRequest)

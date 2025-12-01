@@ -2,6 +2,8 @@
 
 import Foundation
 
+public typealias Parameters = [String: String]
+
 public class FakeHTTPURLResponse: HTTPURLResponse, @unchecked Sendable {
     public init(
         status code: Int = 200,

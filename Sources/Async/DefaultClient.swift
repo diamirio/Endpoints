@@ -2,31 +2,31 @@
 
 import Foundation
 
-open class AnyClient: Client {
+public struct DefaultClient: Client {
     /// The base URL used by `encode` to convert `Call`s into `URLRequest`s.
-    public let baseURL: URL
+    public let url: URL
 
     /// Used by `validate` to check if the status code of a response is valid.
     public let statusCodeValidator = StatusCodeValidator()
 
     /// Creates a client with a base URL.
-    public init(baseURL: URL) {
-        self.baseURL = baseURL
+    public init(url: URL) {
+        self.url = url
     }
 
-    open func encode(
+    public func encode(
         call: some Call
     ) async throws -> URLRequest {
         var urlRequest = call.request.urlRequest
 
-        if let url = urlRequest.url, url.isRelative {
-            urlRequest.url = URL(string: url.relativeString, relativeTo: baseURL)
+        if let requestUrl = urlRequest.url, requestUrl.isRelative {
+            urlRequest.url = URL(string: requestUrl.relativeString, relativeTo: url)
         }
 
         return urlRequest
     }
 
-    open func parse<C>(
+    public func parse<C>(
         response: HTTPURLResponse?,
         data: Data?,
         for call: C
@@ -38,10 +38,10 @@ open class AnyClient: Client {
         return try C.Parser().parse(response: response, data: data)
     }
 
-    open func validate(
+    public func validate(
         response: HTTPURLResponse?,
         data: Data?
     ) async throws {
-        try statusCodeValidator.validate(response: response, data: data)
+        try await statusCodeValidator.validate(response: response, data: data)
     }
 }

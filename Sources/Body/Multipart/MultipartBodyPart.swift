@@ -2,7 +2,7 @@
 
 import Foundation
 
-public protocol MultipartBodyPart {
+public protocol MultipartBodyPart: Sendable {
     /// The name (usually from the HTML form)
     ///
     /// There can be multiple parts with the same name.
