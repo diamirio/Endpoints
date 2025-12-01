@@ -58,7 +58,7 @@ extension URL {
         scheme == nil
     }
 }
-    
+
 public extension URL {
     /// Creates a relative URL with a given `path` and `query` Dictionary.
     init(path: String?, query: Parameters?) {
