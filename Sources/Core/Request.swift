@@ -48,7 +48,7 @@ public struct Request: URLRequestEncodable {
     }
 }
 
-public extension URL {
+extension URL {
     /// `true` if `self` has no scheme.
     ///
     /// - note: Used by `DefaultClient.encode` to determine if a `URLRequest` should be
@@ -57,7 +57,9 @@ public extension URL {
     var isRelative: Bool {
         scheme == nil
     }
-
+}
+    
+public extension URL {
     /// Creates a relative URL with a given `path` and `query` Dictionary.
     init(path: String?, query: Parameters?) {
         var components = URLComponents()
