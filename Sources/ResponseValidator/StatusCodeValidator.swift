@@ -10,14 +10,20 @@ public final class StatusCodeValidator: ResponseValidator {
         (200 ..< 300).contains(code)
     }
 
-    /// - throws: `StatusCodeError.unacceptable` with `reason` set to `nil`
+    /// - throws: `EndpointsError including StatusCodeError.unacceptable` with `reason` set to `nil`
     public func validate(
         response: HTTPURLResponse?,
         data _: Data?
     ) async throws {
         if let code = response?.statusCode,
            !isAcceptableStatus(code: code) {
-            throw StatusCodeError.unacceptable(code: code, reason: nil)
+            throw EndpointsError(
+                error: StatusCodeError.unacceptable(
+                    code: code,
+                    reason: nil
+                ),
+                response: response
+            )
         }
     }
 }
