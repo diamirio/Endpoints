@@ -282,6 +282,10 @@ print("image url: \(body.data.url)")
 
 Example implementation can be found [here](https://github.com/diamirio/Endpoints-Example).
 
+## AI Agent Skill
+
+The repo ships an agent skill that explains how to use Endpoints (Calls, Clients, parsers, error handling): [`.agents/skills/endpoints`](.agents/skills/endpoints/SKILL.md). Link or copy it into your project's skills directory to let coding agents write Endpoints code consistently.
+
 ## Migration Guides
 
 If you're upgrading from a previous version, please refer to the migration guides:
