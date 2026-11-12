@@ -22,11 +22,15 @@ public protocol Body: Sendable {
 }
 
 public extension Body {
-    var header: Parameters? { nil }
+    var header: Parameters? {
+        nil
+    }
 }
 
 extension Data: Body {
-    public var requestData: Data { self }
+    public var requestData: Data {
+        self
+    }
 }
 
 extension String: Body {
