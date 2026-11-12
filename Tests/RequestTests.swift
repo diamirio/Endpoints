@@ -33,14 +33,14 @@ class RequestTests: XCTestCase {
     }
 
     func testHATEOASRequest() async throws {
-        let absoluteURL = URL(string: "https://httpbin.org/get?x=z")!
-        let body = try! JSONEncodedBody(jsonObject: ["x": "y"])
+        let absoluteURL = try XCTUnwrap(URL(string: "https://httpbin.org/get?x=z"))
+        let body = try JSONEncodedBody(jsonObject: ["x": "y"])
 
         var req = Request(.get, "post", query: ["x": "y"], header: ["x": "y"], body: body)
         req.url = absoluteURL
         let c = AnyCall<DataResponseParser>(req)
 
-        let urlReq = try await DefaultClient(url: URL(string: "http://google.com")!).encode(call: c)
+        let urlReq = try await DefaultClient(url: XCTUnwrap(URL(string: "http://google.com"))).encode(call: c)
 
         XCTAssertEqual(urlReq.url, absoluteURL)
         XCTAssertEqual(urlReq.httpBody, body.requestData)
@@ -48,10 +48,10 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(urlReq.allHTTPHeaderFields?["x"], "y")
     }
 
-    func testEmptyCurlRepresentation() {
-        let r = Request(
+    func testEmptyCurlRepresentation() throws {
+        let r = try Request(
             .get,
-            url: URL(string: "https://httpbin.org/get?x=z")!,
+            url: XCTUnwrap(URL(string: "https://httpbin.org/get?x=z")),
             header: ["a": "b"],
             body: "BODY".data(using: .utf8)
         )
@@ -63,8 +63,8 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(curl, "$ curl -i -X GET -H \"a: b\" -d \"BODY\" \"https://httpbin.org/get?x=z\"")
     }
 
-    func testEmptyBodyCurlRepresentation() {
-        let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: ["a": "b"])
+    func testEmptyBodyCurlRepresentation() throws {
+        let r = try Request(.get, url: XCTUnwrap(URL(string: "https://httpbin.org/get?x=z")), header: ["a": "b"])
         let curl = r.cURLRepresentation(prettyPrinted: false)
 
         print(curl)
@@ -79,7 +79,12 @@ class RequestTests: XCTestCase {
 
     func testBinaryDataCurlRepresentation() throws {
         let body = try FileUtil.load(named: "binary", withExtension: "jpg")
-        let r = Request(.get, url: URL(string: "https://httpbin.org/get?x=z")!, header: ["a": "b"], body: body)
+        let r = try Request(
+            .get,
+            url: XCTUnwrap(URL(string: "https://httpbin.org/get?x=z")),
+            header: ["a": "b"],
+            body: body
+        )
         let curl = r.cURLRepresentation(prettyPrinted: false, bodyEncoding: .utf8)
 
         print(curl)

@@ -2,12 +2,12 @@
 import Foundation
 import Testing
 
-@Suite("Client Tests")
+@Suite("Client Tests", .serialized)
 struct ClientTests {
     let tester: ClientTester<DefaultClient>
 
     init() {
-        let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
+        let baseURL = URL(string: "https://httpbin.org/")!
         self.tester = ClientTester(client: DefaultClient(url: baseURL))
     }
 
@@ -50,7 +50,7 @@ struct ClientTests {
     }
 
     @MainActor
-    @Test func getDataWithCancellationWhenTaskIsNotStarted() async throws {
+    @Test func getDataWithCancellationWhenTaskIsNotStarted() async {
         let task = Task {
             do {
                 let call = AnyCall<DataResponseParser>(Request(.get, "delay/5"))
@@ -123,9 +123,7 @@ struct ClientTests {
         let headers = try #require(body["headers"] as? [String: String], "Headers are not castable")
         #expect(headers["Content-Type"] == "application/json")
 
-        let json = try #require(body["json"] as? [String: String], "JSON body is not castable")
-
-        return json
+        return try #require(body["json"] as? [String: String], "JSON body is not castable")
     }
 
     @Test func getString() async throws {
@@ -238,7 +236,7 @@ struct ClientTests {
         #expect(response.statusCode == 200)
     }
 
-    // Helper types
+    /// Helper types
     struct TestError: LocalizedError {
         let error: Error?
         let response: HTTPURLResponse? = nil

@@ -53,12 +53,12 @@ public struct MultipartBody: Body {
     public var requestData: Data {
         var data = Data()
 
-        /// ### See RFC 2046 5.1:
-        /// The Content-Type field for multipart entities requires one parameter, "boundary".  The boundary delimiter
-        /// line is then defined as a line consisting entirely of two hyphen characters ("-", decimal value 45)
-        /// followed by the boundary parameter value from the Content-Type header field, optional linear whitespace,
-        /// and a terminating CRLF. Boundary delimiters must not appear within the encapsulated material,
-        /// and must be no longer than 70 characters, not counting the two leading hyphens.
+        // ### See RFC 2046 5.1:
+        // The Content-Type field for multipart entities requires one parameter, "boundary".  The boundary delimiter
+        // line is then defined as a line consisting entirely of two hyphen characters ("-", decimal value 45)
+        // followed by the boundary parameter value from the Content-Type header field, optional linear whitespace,
+        // and a terminating CRLF. Boundary delimiters must not appear within the encapsulated material,
+        // and must be no longer than 70 characters, not counting the two leading hyphens.
         let partBoundaryPrefix = "--\(boundary)\(MultipartBody.lineEnd)"
 
         for part in parts {

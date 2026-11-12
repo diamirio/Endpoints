@@ -4,7 +4,7 @@ import Endpoints
 import Foundation
 import Testing
 
-// Helper struct for running API calls within tests.
+/// Helper struct for running API calls within tests.
 struct ClientTester<CL: Client>: Sendable {
     var session: Session<CL>
 

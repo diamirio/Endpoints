@@ -26,11 +26,11 @@ public struct DefaultClient: Client {
         return urlRequest
     }
 
-    public func parse<C>(
+    public func parse<C: Call>(
         response: HTTPURLResponse?,
         data: Data?,
         for call: C
-    ) async throws -> C.Parser.OutputType where C: Call {
+    ) async throws -> C.Parser.OutputType {
         guard let data, let response else {
             throw EndpointsParsingError.missingData
         }
