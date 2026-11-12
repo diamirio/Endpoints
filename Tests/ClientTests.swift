@@ -2,12 +2,12 @@
 import Foundation
 import Testing
 
-@Suite("Client Tests")
+@Suite("Client Tests", .serialized)
 struct ClientTests {
     let tester: ClientTester<DefaultClient>
 
     init() {
-        let baseURL = URL(string: "https://nghttp2.org/httpbin/")!
+        let baseURL = URL(string: "https://httpbin.org/")!
         self.tester = ClientTester(client: DefaultClient(url: baseURL))
     }
 
